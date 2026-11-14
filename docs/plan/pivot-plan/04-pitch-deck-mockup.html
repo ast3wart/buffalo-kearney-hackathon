@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equipment X-Ray Deck</title>
+<style>
+:root{
+  --bg:#e9ebee; --slide:#ffffff; --ink:#14181f; --muted:#5b6472; --line:#d8dce2;
+  --accent:#c2410c; --accent-soft:#fdeee5; --ok:#0f766e; --ok-soft:#e3f4f1; --warn:#a16207; --warn-soft:#fdf5dc;
+  --tile:#f4f5f7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c0e12; --slide:#161a21; --ink:#e8ebf0; --muted:#9aa3b1; --line:#2a303a;
+    --accent:#fb923c; --accent-soft:#3a2216; --ok:#2dd4bf; --ok-soft:#10302c; --warn:#facc15; --warn-soft:#332b0e; --tile:#1e232c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c0e12; --slide:#161a21; --ink:#e8ebf0; --muted:#9aa3b1; --line:#2a303a;
+  --accent:#fb923c; --accent-soft:#3a2216; --ok:#2dd4bf; --ok-soft:#10302c; --warn:#facc15; --warn-soft:#332b0e; --tile:#1e232c;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif}
+.deck{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 16px 80px}
+.slide{position:relative;width:min(1100px,100%);aspect-ratio:16/9;background:var(--slide);border:1px solid var(--line);border-radius:10px;padding:3.2% 4%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.slide.hidden-appx{border-style:dashed}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(18px,2.6vw,30px);line-height:1.15;margin:.25em 0 .6em;max-width:90%}
+h2{font-size:clamp(14px,1.5vw,18px);margin:0 0 .4em}
+p,li{font-size:clamp(11px,1.15vw,15px)}
+ul{margin:0;padding-left:1.1em} li{margin:.2em 0}
+.foot{position:absolute;left:4%;right:4%;bottom:2.4%;font-size:clamp(9px,.85vw,11px);color:var(--muted);display:flex;justify-content:space-between;gap:12px}
+.grid{display:grid;gap:14px;flex:1;min-height:0}
+.g2{grid-template-columns:1.3fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--tile);border-radius:8px;padding:12px 14px}
+.big{font-size:clamp(28px,5vw,64px);font-weight:800;color:var(--accent);line-height:1}
+.mid{font-size:clamp(20px,2.8vw,36px);font-weight:800;color:var(--accent);line-height:1.05}
+.muted{color:var(--muted)}
+.trust{background:var(--ok-soft);border-left:4px solid var(--ok);padding:10px 14px;border-radius:6px}
+.warn{background:var(--warn-soft);color:var(--warn);font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px}
+.ph{border:2px dashed var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px;text-align:center;padding:8px}
+.flow{display:flex;align-items:stretch;gap:10px;margin:6px 0 14px}
+.flow .card{flex:1;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.arrow{align-self:center;color:var(--accent);font-weight:800}
+.title-slide{justify-content:center;background:linear-gradient(135deg,var(--slide) 55%,var(--accent-soft))}
+.title-slide h1{font-size:clamp(26px,4.4vw,54px);max-width:80%}
+table{border-collapse:collapse;width:100%;font-size:clamp(10px,1.05vw,14px)}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.matrix{position:relative;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);margin:4px 0 22px 22px}
+.matrix .q{position:absolute;width:50%;height:50%;border:1px dashed var(--line)}
+.dot{position:absolute;transform:translate(-50%,-50%);background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:3px 9px;font-size:clamp(9px,.95vw,12px);white-space:nowrap}
+.dot.us{background:var(--accent);color:#fff;border:none;font-weight:700}
+.axis-x{position:absolute;bottom:-20px;left:0;right:0;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.axis-y{position:absolute;left:-22px;top:0;bottom:0;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
+.funnel{display:flex;flex-direction:column;align-items:center;gap:6px}
+.funnel .tier{background:var(--tile);border-radius:6px;padding:8px 12px;text-align:center}
+.phase{border-top:4px solid var(--line);padding-top:8px}
+.phase.now{border-color:var(--accent)}
+.nav{position:fixed;bottom:14px;right:16px;display:flex;gap:8px;align-items:center;background:var(--slide);border:1px solid var(--line);border-radius:20px;padding:6px 10px;font-size:13px}
+.nav button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:3px 10px;cursor:pointer}
+.present .slide{display:none}.present .slide.on{display:flex;width:min(96vw,calc(96vh*16/9))}
+.present .deck{min-height:100vh;justify-content:center;padding:0}
+@media (max-width:700px){.g2,.g3,.g4{grid-template-columns:1fr}.slide{aspect-ratio:auto;min-height:56vw}.foot{position:static;margin-top:12px}}
+@media print{body{background:#fff}.nav{display:none}.deck{padding:0;gap:0}.slide{page-break-after:always;border:none;border-radius:0;box-shadow:none;width:100%}}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<section class="slide title-slide">
+  <div class="kicker">Kearney × PERLab Hackathon · Startup track · Team Buffalo</div>
+  <h1>Equipment X-Ray: the system of record for aging factory equipment</h1>
+  <p class="muted" style="max-width:70%">We tell a buyer which hidden parts will stop which production lines, what it'll cost and when, and we show the evidence behind every number.</p>
+  <div class="foot"><span>[Full-bleed visual: control-cabinet photo with detected components boxed]</span><span>1</span></div>
+</section>
+
+<!-- 2 PROBLEM -->
+<section class="slide">
+  <div class="kicker">Problem</div>
+  <h1>Buyers pay for capacity they can't see is about to fail</h1>
+  <div class="grid g2">
+    <div>
+      <div class="card" style="margin-bottom:10px"><h2>Hidden obsolete parts</h2><p>Machines run on controllers, drives and screens the manufacturer stopped making, and no one has a spare.</p></div>
+      <div class="card" style="margin-bottom:10px"><h2>Surprise CapEx after close</h2><p>Sellers freeze equipment spending 12–18 months before a sale. A buyer found a +105% CapEx adjustment before close.</p></div>
+      <div class="card"><h2>Weeks-long outages</h2><p>PLC lead times of 10–24 weeks. 44% of plants have equipment interruptions every month.</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+        <div class="big">83%</div>
+        <p>of automation assets in one real plant audit were <b>discontinued or end-of-life</b> (699 of 843)</p>
+      </div>
+      <div class="card"><h2>Who decides</h2><p>PE operating partner · VP Operations · deal partner</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Sources: Siemens 2025 case (one plant, not a prevalence rate); ABB 2025 survey (n=3,600); EFESO case; Hebbia; distributor lead-time estimates Q1 2026</span><span>2</span></div>
+</section>
+
+<!-- 3 SOLUTION -->
+<section class="slide">
+  <div class="kicker">Solution · how it works</div>
+  <h1>Photos in, a costed risk register out, with evidence behind every number</h1>
+  <div class="flow">
+    <div class="card"><h2>Input</h2><p>Nameplate + cabinet photos<br>Equipment list (CMMS export)<br>Storeroom stock</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><h2>Product</h2><p>Vision reads parts → matched to lifecycle KB → <b>registry</b>: plant → line → machine → component</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><h2>Output</h2><p>CapEx cliff · "pay $X less" · single points of failure · where to source every part</p></div>
+  </div>
+  <div class="grid g2" style="flex:0">
+    <div class="trust"><b>A person stays in control:</b> low-confidence readings and big-ticket items go to a reviewer before they reach an investment memo or a purchase order.</div>
+    <ul><li>Ranges, never false precision</li><li>Click any number → photo, reading, source, confidence</li><li>Vendor-neutral across all brands</li></ul>
+  </div>
+  <div class="foot"><span>[Screenshot: CapEx cliff + evidence drawer from the demo]</span><span>3</span></div>
+</section>
+
+<!-- 4 PROOF -->
+<section class="slide">
+  <div class="kicker">Proof</div>
+  <h1>We measured it, we didn't assume it</h1>
+  <div class="grid g3" style="flex:0;margin-bottom:12px">
+    <div class="card"><div class="mid">[xx]%</div><p>precision / recall reading components, against a planted-answer test portfolio</p></div>
+    <div class="card"><div class="mid">Live</div><p>photo of a real machine in this room → appears in the registry on stage</p></div>
+    <div class="card"><div class="mid">3</div><p>Velocity research chats that <b>corrected</b> our claims (diligence alone is small → we repositioned)</p></div>
+  </div>
+  <div class="grid g2" style="flex:1">
+    <div class="card"><h2>Case: what a 2-day controls check found</h2><p style="font-style:italic">"$4.1M near-term CapEx, including two end-of-life control systems. The buyer used it in price negotiation."</p></div>
+    <ul><li>Finding changed the deal price</li><li>Done by a people service: starts from scratch each deal</li><li>We make that repeatable and keep the record</li></ul>
+  </div>
+  <div class="foot"><span>Case: Joltek (vendor-reported, via Velocity). Accuracy: xray/evaluate.py on synthetic data, labeled as such</span><span>4</span></div>
+</section>
+
+<!-- 5 CUSTOMER -->
+<section class="slide">
+  <div class="kicker">Target customer</div>
+  <h1>Multi-plant manufacturers and PE portfolios, starting at the acquisition</h1>
+  <div class="grid g2" style="flex:0;margin-bottom:12px">
+    <div class="card"><h2>Ideal customer</h2><p>PE fund or corporate acquirer with 3+ plants of mixed brands and messy registers. <b>Trigger:</b> an acquisition or add-on.</p></div>
+    <div class="card"><div class="mid">~76%</div><p>of US buyout deals are add-ons. Each one brings a new register and storeroom.</p></div>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h2>Deal partner</h2><p><b>Wants:</b> the right price, holdback terms<br><b>Cares because:</b> hidden CapEx destroys returns</p></div>
+    <div class="card"><h2>Operating partner</h2><p><b>Wants:</b> portfolio-wide savings<br><b>Cares because:</b> paid on value created across companies</p></div>
+    <div class="card"><h2>Plant manager</h2><p><b>Wants:</b> uptime, a spare when it matters<br><b>Cares because:</b> a dead controller stops the line for weeks</p></div>
+  </div>
+  <div class="foot"><span>Source: PitchBook via CapitalPad</span><span>5</span></div>
+</section>
+
+<!-- 6 COMPETITION -->
+<section class="slide">
+  <div class="kicker">Competition</div>
+  <h1>Everyone values the machine. No one keeps the record.</h1>
+  <div class="grid g2">
+    <div class="matrix">
+      <div class="q" style="left:50%;top:0;background:var(--accent-soft)"></div>
+      <div class="dot" style="left:22%;top:72%">Appraisers</div>
+      <div class="dot" style="left:30%;top:56%">Ops diligence</div>
+      <div class="dot" style="left:68%;top:66%">Controls diligence</div>
+      <div class="dot" style="left:28%;top:28%">OEM audits</div>
+      <div class="dot" style="left:56%;top:40%">Spare-parts data</div>
+      <div class="dot" style="left:22%;top:12%">Sensors / CMMS</div>
+      <div class="dot us" style="left:78%;top:16%">Equipment X-Ray</div>
+      <div class="axis-x"><span>Single brand / asset value</span><span>Vendor-neutral component risk →</span></div>
+      <div class="axis-y"><span>One-time</span><span>Persistent record →</span></div>
+    </div>
+    <div>
+      <table>
+        <tr><th>Group</th><th>Falls short</th></tr>
+        <tr><td>Appraisers</td><td>Value, not "what keeps it running"</td></tr>
+        <tr><td>Controls diligence</td><td>People service; data not kept</td></tr>
+        <tr><td>OEM audits</td><td>Own brand only, needs site access</td></tr>
+        <tr><td>Spare-parts data</td><td>Storeroom, not installed base</td></tr>
+        <tr><td>Sensors / CMMS</td><td>Need months of data or clean records</td></tr>
+      </table>
+      <div class="trust" style="margin-top:10px"><b>Coming soon:</b> cross-portfolio spare sharing. "Plant B has 2 on the shelf."</div>
+    </div>
+  </div>
+  <div class="foot"><span>Positions are qualitative, from market-validation.md §2</span><span>6</span></div>
+</section>
+
+<!-- 7 VALUE CAPTURE -->
+<section class="slide">
+  <div class="kicker">Value capture</div>
+  <h1>Paid once at the deal, every month after</h1>
+  <table>
+    <tr><th>Stage</th><th>Buyer</th><th>Pricing</th><th>Pays for itself because</th></tr>
+    <tr><td><b>Diligence scan</b></td><td>Deal team, via appraiser</td><td>Fixed fee per deal <span class="warn">⚠ hypothesis</span></td><td>Cuts adviser days on site; findings move price</td></tr>
+    <tr><td><b>Plant registry</b></td><td>VP Ops</td><td>$ / plant / month <span class="warn">⚠ hypothesis</span></td><td>Avoids rush buys and surprise outages</td></tr>
+    <tr><td><b>Portfolio license</b></td><td>PE operating partner</td><td>Fund-wide license</td><td>Spare sharing, pooled buying</td></tr>
+    <tr><td><b>Sourcing</b></td><td>Procurement</td><td>Take rate / savings share</td><td>Verified sellers, successor parts</td></tr>
+  </table>
+  <div class="grid g3" style="flex:0;margin-top:14px">
+    <div class="card"><p class="muted">Cost anchor</p><p>Appraisal $2–15k · ops diligence $15–25k per deal</p></div>
+    <div class="card"><p class="muted">Our cost per scan</p><p>Vision API + reviewer minutes [estimate]</p></div>
+    <div class="card"><p class="muted">Margin target</p><p>[software-like, after KB build-out]</p></div>
+  </div>
+  <div class="foot"><span>Price benchmarks: provider pages via market-validation.md; our prices are untested</span><span>7</span></div>
+</section>
+
+<!-- 8 MARKET -->
+<section class="slide">
+  <div class="kicker">Market size</div>
+  <h1>Diligence is small. The installed base is not.</h1>
+  <div class="grid g2">
+    <div class="funnel">
+      <div class="tier" style="width:100%"><div class="mid">~$93B</div><p>US MRO spend (~$42B industrial): the spend pool, not our revenue</p></div>
+      <div class="tier" style="width:80%"><div class="mid">~$21.6B</div><p>Global automation spares</p></div>
+      <div class="tier" style="width:60%"><div class="mid">[SAM]</div><p>Multi-plant + PE-backed plants × $/plant</p></div>
+      <div class="tier" style="width:40%"><div class="mid">[SOM]</div><p>Yr-3 plants via channel</p></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:10px"><h2>We admit it: the wedge is small</h2><p>1,670 deals × 20% × $10k ≈ <b>$3M / yr</b>. That's not the business. It's how we get in.</p></div>
+      <div class="card"><h2>What we capture</h2><p>The avoidable slice: missing critical spares, rush buys, 22% of MRO stock idle for 5+ yrs, badly timed replacements.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Mordor Intelligence (estimate); automation spares (estimate); Axial 2025 listings; SPARETECH survey (vendor). SAM/SOM to fill after deep research</span><span>8</span></div>
+</section>
+
+<!-- 9 GTM -->
+<section class="slide">
+  <div class="kicker">Go-to-market</div>
+  <h1>Sell through the advisers, then convert after close</h1>
+  <div class="grid g3" style="flex:0">
+    <div class="card"><div class="mid">1 · Reach</div><p><b>Channel:</b> appraisers + ops-diligence firms add our scan to their report</p><p class="muted">Tactic: make them faster, they keep sign-off</p></div>
+    <div class="card"><div class="mid">2 · Convert</div><p><b>After close:</b> "keep this record current"</p><p class="muted">Tactic: the scan is already done, so the registry is live on day 1</p></div>
+    <div class="card"><div class="mid">3 · Expand</div><p><b>Across the fund:</b> every add-on gets scanned</p><p class="muted">Tactic: show the operating partner portfolio-wide savings</p></div>
+  </div>
+  <div class="trust" style="margin-top:16px"><b>Year-1 targets:</b> 3 paid diligence pilots · 1–2 channel partners · 1 PE portfolio (3+ plants) on the registry · first cross-plant spare-sharing win</div>
+  <div class="foot"><span>Targets are plans, not traction</span><span>9</span></div>
+</section>
+
+<!-- 10 ROADMAP -->
+<section class="slide">
+  <div class="kicker">Roadmap</div>
+  <h1>Diagnose, register, source, then network</h1>
+  <div class="grid" style="grid-template-columns:repeat(6,1fr);flex:0">
+    <div class="phase now"><h2>0 · MVP</h2><p>AI diagnostic + registry slice. <b>Built this weekend</b></p></div>
+    <div class="phase"><h2>1 · Diligence</h2><p>Field capture, bigger KB, adviser reports</p></div>
+    <div class="phase"><h2>2 · Registry</h2><p>Living record per plant</p></div>
+    <div class="phase"><h2>3 · Sourcing</h2><p>Live offers, successors, scarcity alerts</p></div>
+    <div class="phase"><h2>4 · Portfolio</h2><p>Spare sharing, pooled buying</p></div>
+    <div class="phase"><h2>5 · Predictive</h2><p>Sensors, own detector, failure models</p></div>
+  </div>
+  <div class="card" style="margin-top:16px"><h2>Flywheel</h2><p>Every scan → labeled photos + components → better KB → better sourcing and predictions → more customers → outcome data no one else has</p></div>
+  <div class="foot"><span><b>Why us:</b> Asher + Brandon · accuracy measured against a planted answer key · vendor-neutral matching reused from a prior build (97.8–100% P/R)</span><span>10</span></div>
+</section>
+
+<!-- 11 RISK -->
+<section class="slide">
+  <div class="kicker">Risk + implementation</div>
+  <h1>What could go wrong, and how we'd know</h1>
+  <table>
+    <tr><th>Risk</th><th>Answer</th><th>Test</th></tr>
+    <tr><td>OT-security tools already inventory PLCs</td><td>They need network access to an owned plant. We work pre-close. Future data source.</td><td>Velocity check + 3 customer interviews</td></tr>
+    <tr><td>KB coverage of old equipment</td><td>Start with top families of 5 brands; every scan grows it</td><td>% of components matched per pilot</td></tr>
+    <tr><td>Accuracy on worn nameplates</td><td>Confidence + human review + retake prompt</td><td>Precision/recall on real pilot photos</td></tr>
+    <tr><td>Data ownership in a portfolio</td><td>Fund-level agreement up front</td><td>Term sheet with first portfolio</td></tr>
+    <tr><td>Sourcing site terms of use</td><td>Official APIs + partner feeds only</td><td>Partner agreements before Phase 3</td></tr>
+  </table>
+  <div class="foot"><span>From 02-market-validity.md</span><span>11</span></div>
+</section>
+
+<!-- 12 RECOMMENDATION -->
+<section class="slide title-slide">
+  <div class="kicker">Recommendation</div>
+  <h1>Run 3 paid pilots and 1 portfolio</h1>
+  <div class="grid g3" style="flex:0;max-width:90%">
+    <div class="card"><h2>Measure</h2><p>What the existing advisers missed</p></div>
+    <div class="card"><h2>Measure</h2><p>Which findings changed a decision or a price</p></div>
+    <div class="card"><h2>Measure</h2><p>Whether the buyer paid separately for it</p></div>
+  </div>
+  <div class="foot"><span>Equipment X-Ray · Team Buffalo</span><span>12</span></div>
+</section>
+
+<!-- A1 -->
+<section class="slide hidden-appx">
+  <div class="kicker">Appendix A1 · hidden</div>
+  <h1>Unit economics assumptions</h1>
+  <table>
+    <tr><th>Input</th><th>Assumption</th><th>Basis</th></tr>
+    <tr><td>Diligence fee</td><td>[$ per deal]</td><td>Below appraisal ($2–15k) and ops diligence ($15–25k)</td></tr>
+    <tr><td>Registry price</td><td>[$ / plant / month]</td><td>To validate in pilots</td></tr>
+    <tr><td>Cost per scan</td><td>[API $ + reviewer hrs]</td><td>Measured during the demo build</td></tr>
+    <tr><td>Conversion, scan → registry</td><td>[%]</td><td>Pilot metric</td></tr>
+  </table>
+  <div class="foot"><span>All placeholders until pilots</span><span>A1</span></div>
+</section>
+
+<!-- A2 -->
+<section class="slide hidden-appx">
+  <div class="kicker">Appendix A2 · hidden</div>
+  <h1>Downside is a small services business; the upside needs recurring revenue</h1>
+  <div class="grid g2">
+    <div class="card"><h2>Downside: diligence only</h2><div class="mid">≈ $3M / yr</div><p>1,670 deals × 20% × $10k. A tool for advisers.</p></div>
+    <div class="card"><h2>Base: recurring registry</h2><div class="mid">[plants × $/plant]</div><p>Depends on conversion after close and portfolio expansion.</p></div>
+  </div>
+  <div class="foot"><span>Illustration only</span><span>A2</span></div>
+</section>
+
+<!-- A3 -->
+<section class="slide hidden-appx">
+  <div class="kicker">Appendix A3 · hidden</div>
+  <h1>In a low-liquidity PE market, a verified equipment record frees up cash <span class="warn">⚠ to validate</span></h1>
+  <div class="grid g3">
+    <div class="card"><h2>Faster, cleaner exits</h2><p>Sell-side readiness: less buyer diligence, smaller "unknown CapEx" discount and escrow.</p></div>
+    <div class="card"><h2>Idle spares → cash</h2><p>22% of MRO stock idle for 5+ yrs. Move or sell surplus across the portfolio; stop duplicate buys.</p></div>
+    <div class="card"><h2>Targeted CapEx</h2><p>Replace, repair or stock a spare per asset, instead of blanket replacement.</p></div>
+  </div>
+  <div class="foot"><span>Hypotheses; see 08-deep-research-prompt.md</span><span>A3</span></div>
+</section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <span id="count">all</span>
+  <button id="next" aria-label="Next slide">→</button>
+  <button id="mode">Present</button>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0,present=false;
+const count=document.getElementById('count');
+function show(){
+  slides.forEach((s,k)=>s.classList.toggle('on',k===i));
+  count.textContent=present?`${i+1} / ${slides.length}`:'all';
+  if(!present) slides[i].scrollIntoView({behavior:'smooth',block:'center'});
+}
+function go(d){i=Math.max(0,Math.min(slides.length-1,i+d));show();}
+document.getElementById('prev').onclick=()=>go(-1);
+document.getElementById('next').onclick=()=>go(1);
+document.getElementById('mode').onclick=e=>{present=!present;document.body.classList.toggle('present',present);e.target.textContent=present?'Grid':'Present';show();};
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}
+  if(e.key==='p'){document.getElementById('mode').click();}
+});
+</script>
+</body>
+</html>
