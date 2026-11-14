@@ -1,0 +1,13 @@
+# Open questions
+
+## For mentors (Sat morning)
+- [ ] What counts as "using" Velocity for judging?
+- [ ] What are the judging criteria and weights? Pitch length? Does the demo have to be live?
+- [ ] What do real client BOM and warranty files look like? (We'll say a mentor confirmed the format.)
+- [ ] Are LLM APIs allowed?
+- [ ] Does the submission need a public repo?
+
+## For us (decide tonight)
+- [ ] Who is Role A and who is Role B?
+- [ ] Which LLM API for the brief, and who has a key?
+- [ ] Fictional company name and the 3 products

@@ -1,6 +1,6 @@
 # Kearney Hackathon Game Plan
 
-> The interactive version (scorecard sliders and checklist) is [game-plan.html](game-plan.html).
+> The interactive version (scorecard sliders and checklist) is [track-decision.html](track-decision.html).
 
 ## Recommendation: Corporate Track 3, BOM Cost Linkage
 

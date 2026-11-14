@@ -1,0 +1,6 @@
+failure_code,system,description,likely_categories
+H-21,hydraulic,Hydraulic leak at cylinder,seal;hose
+D-10,drivetrain,Noise / vibration in driveline,bearing;belt
+E-05,electrical,No start / intermittent power,electrical;fuel
+B-02,brakes,Brake noise / reduced braking,brake
+N-01,engine,Oil leak / low oil pressure,filter
