@@ -13,7 +13,7 @@
 - **Brandon:** 🛠 Warranty thread (warranty claims, claim-to-part matching, early-warning spike detection)
 
 ## The idea: Afterlife
-**One-liner:** *Every BOM team will show you what a product costs. We show you the warranty problem coming before it costs you, and which supplier pays for it.*
+**One-liner:** *Every BOM team will show you what a product costs. We show you the warranty problem coming before it costs you, and which supplier to take it to.*
 
 A manufacturer's **BOMs** (engineering), **production purchases** (procurement), **spare-part purchases** (service), and **warranty claims** (service) don't link to each other:
 1. **Spare parts** are often bought by a separate service team from distributors, as free-text purchase lines with no internal part number. The company pays 1.5–5× more for the *same part* it buys cheaply for production, and nobody sees it.
@@ -25,10 +25,12 @@ A manufacturer's **BOMs** (engineering), **production purchases** (procurement),
 - **Early warning:** spots a shared part from one supplier failing across many products after a specific build month.
 - **Lifecycle cost:** build cost vs. true cost including spares and warranty, per product.
 - **Supplier brief:** a one-page, deal-ready document per supplier with two asks:
-  - **warranty recovery** ("your seal kit caused N claims / $X since March builds")
+  - **warranty recovery review** ("N claims since March builds are linked to your seal kit. Here's the evidence; we request a returned-part review"). Afterlife produces evidence-backed **leads**, not findings of supplier fault
   - **spare-part price harmonization** ("we pay $4.12 in production and $15 as a spare for the same part")
 
-**Demo moment:** ⚠ *Seal kit SK-220 (Supplier X): claims up 3× across 7 products since the March build. Exposure $2.1M. [Generate brief]*
+**Demo moment:** ⚠ *Seal kit SK-220 (Supplier X): claims up 3× across 7 products since the March build. Linked claim cost $2.1M, pending review. [Generate brief]*
+
+**What Afterlife does NOT do:** it doesn't determine supplier fault or liability. A failure code is a symptom, not a cause, and recovery depends on returned-part analysis, engineering review, and contract terms. Dollar figures are **recovery opportunities** (linked claim cost × a 25–50% *scenario* capture rate), not money owed.
 
 ## Three synthetic companies (to show it generalizes)
 | Company | Industry | Warranty % of revenue (calibrated to 2024 SEC filer) | Role |
@@ -52,7 +54,7 @@ Builds run Jan 2025 – Sep 2026, data as of Oct 31 2026, 24-month warranty.
 
 ## Benchmarks we already have
 - 217 US public companies reported warranty payments in 2024 (SEC XBRL `ProductWarrantyAccrualPayments`). Ford paid $5.83B, Caterpillar $824M, Cummins $704M. The median is ≈0.6% of revenue, but equipment and vehicle makers run 1.3–3%.
-- Warranty Week: suppliers bore about **10%** of industry warranty costs in 2019, vs. a possible "fair share" of up to **37%**. The OEM/supplier split was ~84/16 in 2017. GM recovered at least 90% of the Chevy Bolt recall cost from its battery supplier.
+- Warranty Week: suppliers bore about **10–15%** of tracked automotive warranty costs (about 12% in early 2023). The often-quoted **37%** is only a hypothetical ceiling based on suppliers' share of sales, **not** a recoverable amount. The OEM/supplier split was ~84/16 in 2017. GM recovered at least 90% of the Chevy Bolt recall cost from its battery supplier.
 
 ## What we want from Velocity
 1. **Supplier warranty recovery:** how manufacturers recover warranty costs from suppliers, and what prevents them (data gaps, contracts, causal-part attribution).

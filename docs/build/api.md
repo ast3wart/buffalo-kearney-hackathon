@@ -30,7 +30,9 @@ FastAPI at `:8000`, interactive docs at `/docs`. **Every data endpoint takes `?c
     "products_affected": ["UV-400", "UV-600", "TR-250"],
     "start_build_month": "2026-04", "mis_window": 3,
     "baseline_rate": 4.1, "current_rate": 14.6, "ratio": 3.6,
-    "claims": 29, "exposure_usd": 2100000, "recoverable_usd": 1450000 } ]
+    "claims": 29, "exposure_usd": 2100000,
+    "recovery_opportunity_usd": { "low": 525000, "high": 1050000 },   // scenario 25–50% capture
+    "status": "linked_pending_review" } ]
 
 // GET /claim-rates/{part_no}  🛠  (both views, decided at CP0)
 { "mis_window": 3,
@@ -39,7 +41,7 @@ FastAPI at `:8000`, interactive docs at `/docs`. **Every data endpoint takes `?c
               "mature": true, "is_spike": false } ],                                          // what alerts use
   "heatmap": [ { "build_month": "2026-03", "mis": 1, "cum_rate": 1.6 } ] }
 ```
-`recoverable_usd` = attributable warranty cost × a conservative capture rate (25–50%), stated on screen.
+`exposure_usd` = cost of claims **linked** to this part/supplier. `recovery_opportunity_usd` = exposure × a **scenario** capture rate (25–50%), always shown as a range with the label *"claims linked to a candidate part/supplier, pending engineering and contract review"*. Never call it "recoverable" or "owed" (see docs/plan/concept.md, "What Afterlife does NOT do").
 
 ## Screens (web/)
 | Route | Screen | Thread | Calls |

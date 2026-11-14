@@ -9,7 +9,7 @@ Each person owns **one complete thread**: fake data → matching → insight →
 - [ ] `afterlife/generate_claims.py`: failure codes, messy claims, planted spike, driven by each company profile (Northwind has no spike)
 - [ ] `afterlife/match_claims.py`: claim → causal part
 - [ ] `afterlife/detect.py`: claim rates and spike alerts
-- [ ] `brief.warranty_section()`: warranty recovery ask
+- [ ] `brief.warranty_section()`: warranty recovery *review* ask (linked claims + evidence, never "caused")
 - [ ] API: `/alerts`, `/claim-rates/{part_no}`
 - [ ] Screen: `/alerts` (Early warning, with the claim-rate chart)
 - [ ] Pitch: **the alert moment**

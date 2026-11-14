@@ -8,5 +8,8 @@
 | How is the spike not just noise? | Claims are pooled across products and normalized per 1,000 units built, with a minimum claim count. We show the planted spike is caught and report false alarms. |
 | Does this scale to millions of rows? | Matching is narrowed by product BOM and category first. Fuzzy matching only runs on a few candidates, and the LLM only on ties. |
 | Why doesn't SAP or a warranty tool already do this? | Warranty tools stay inside the service team. Procurement tools don't see claims. The link between them is the gap (see Velocity market research). |
-| How sure are the savings? | Shown as ranges with a capture rate from published benchmarks. |
+| How sure are the savings? | Spare-part overspend is a direct price comparison. Warranty $ are **recovery opportunities**: linked claim cost × a 25–50% **scenario** capture rate, shown as a range. We never claim a supplier owes it. |
+| So you're saying the supplier is at fault? | No. Afterlife links claims to a **candidate** part and supplier with a confidence score. Fault depends on returned-part analysis, engineering review, and the supply contract. We produce the evidence pack that starts that review. |
+| Suppliers only pay ~10% of warranty. Isn't the gap to 37% huge? | Warranty Week's 37% is a hypothetical ceiling based on share of sales, not proof of fault, so we don't claim it. Our pitch is speed and evidence: finding the right cases to review, early. |
+| What doesn't your tool handle? | Contract terms, returned-part test results, and dispute workflow. A next step would be a small supplier-terms table (recovery clause, cost-share %) so briefs reflect what each contract allows. |
 | How would Kearney use this? | As a week-1 diagnostic in a cost or aftermarket engagement, replacing weeks of manual Excel matching. |

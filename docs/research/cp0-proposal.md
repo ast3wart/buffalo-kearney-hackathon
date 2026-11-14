@@ -123,7 +123,7 @@ We didn't map these to UNSPSC codes. We couldn't verify the official class codes
     "products_affected": ["UV-400", "UV-600", "TR-250"],
     "start_build_month": "2026-04", "mis_window": 3,
     "baseline_rate": 4.1, "current_rate": 14.6, "ratio": 3.6,   // claims per 1,000 built within 3 MIS
-    "claims": 29, "exposure_usd": 2100000, "recoverable_usd": 1450000 }
+    "claims": 29, "exposure_usd": 2100000, "recovery_opportunity_usd": { "low": 525000, "high": 1050000 } }  // renamed Sat, see velocity.md
 ]
 
 // GET /claim-rates/{part_no}  🛠  (chart + optional heatmap)
@@ -134,10 +134,10 @@ We didn't map these to UNSPSC codes. We couldn't verify the official class codes
 
 ## Pitch numbers from this research (for the deck)
 From Warranty Week's analyses of US companies. Treat them as indicative, since they vary by year and company:
-- Suppliers paid **about 10%** of industry warranty costs in 2019, while a "fair share" could be **as high as 37%**. That gap is the recovery opportunity Afterlife goes after.
+- Suppliers paid **about 10%** of industry warranty costs in 2019. Warranty Week floats **37%** only as a *hypothetical ceiling* based on suppliers' share of sales, and says the correct share can't be determined from public data. **Don't present 37% as money Afterlife recovers** (corrected Sat after Velocity review).
 - 2017: the OEM/supplier split was about **84% / 16%**.
 - Big recoveries do happen: GM recovered **at least 90%** of the Chevy Bolt battery recall cost from its supplier.
-- → Use a **conservative capture rate** (e.g. 25–50% of attributable cost) for `recoverable_usd`, and say so.
+- → Use a **scenario** capture rate (25–50% of linked claim cost) for `recovery_opportunity_usd`, shown as a range and labeled as a scenario.
 
 ## Sources
 - SAP EKPO fields (NETPR, PEINH): [leanx.eu EKPO](https://leanx.eu/en/sap/table/ekpo.html), [se80 PEINH](https://www.se80.co.uk/sap-data-element/?name=peinh)

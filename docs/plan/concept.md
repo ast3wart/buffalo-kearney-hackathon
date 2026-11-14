@@ -2,7 +2,7 @@
 
 **Track:** Corporate Track 3, BOM Cost Linkage (Kearney × PERLab, Nov 13–15 2026)
 
-**One-liner:** *Every BOM team will show you what a product costs. We show you the warranty problem coming before it costs you, and which supplier pays for it.*
+**One-liner:** *Every BOM team will show you what a product costs. We show you the warranty problem coming before it costs you, and which supplier to take it to.*
 
 ## The problem
 A manufacturer's parts lists (BOMs), production purchases, spare-part purchases, and warranty claims live in four places owned by three teams (engineering, procurement, service). They don't link:
@@ -16,11 +16,16 @@ A manufacturer's parts lists (BOMs), production purchases, spare-part purchases,
 2. **Early warning:** because claims are linked across products through shared parts, it spots one supplier's part failing across many products after a specific build month.
 3. **Lifecycle cost:** build cost vs. true cost including spares and warranty, per product.
 4. **Supplier brief:** a one-page, deal-ready document per supplier with the two levers:
-   - **Warranty recovery:** "Your seal kit caused N claims / $X since March builds."
+   - **Warranty recovery review:** "N claims since the March build are linked to your seal kit, with this evidence and confidence. We request a returned-part review." It's a lead with evidence, not an accusation.
    - **Spare-part price harmonization:** "We pay $4.12 in production and $15 as a spare for the same part."
 
+## What Afterlife does NOT do (say this out loud)
+- **It doesn't decide fault or liability.** A failure code describes the symptom, not the cause. Whether a supplier pays depends on returned-part analysis, engineering review, and the supply contract, none of which are in our data.
+- **Its $ are opportunities, not money owed.** "Recovery opportunity" = linked claim cost × a **scenario** capture rate (25–50%), shown as a range and labeled as such.
+- The value: it turns thousands of unlinked claims into a short, ranked list of **evidence-backed cases worth investigating**, in days instead of weeks.
+
 ## The demo moment
-> ⚠ **Seal kit SK-220 (Supplier X):** claims up 3× across 7 products since the March build. Exposure $2.1M. **[Generate brief]**
+> ⚠ **Seal kit SK-220 (Supplier X):** claims up 3× across 7 products since the March build. Linked claim cost $2.1M, pending review. **[Generate brief]**
 
 ## How this differs from a plain cost-rollup ("Teardown")
 | | Teardown (what most teams will build) | Afterlife |

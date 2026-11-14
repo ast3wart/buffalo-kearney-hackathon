@@ -2,7 +2,7 @@
 
 **Kearney × PERLab Hackathon · Corporate Track 3: BOM Cost Linkage · Team Buffalo (Asher + Brandon)**
 
-> Every BOM team will show you what a product costs. We show you the warranty problem coming before it costs you, and which supplier pays for it.
+> Every BOM team will show you what a product costs. We show you the warranty problem coming before it costs you, and which supplier to take it to.
 
 Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spend ↔ warranty claims** (including claims with no part number), spots a **shared part failing across products** early, and writes a **supplier brief** covering warranty recovery and spare-part price harmonization.
 
