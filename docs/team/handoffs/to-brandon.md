@@ -2,6 +2,18 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~6 PM · Format ✅ agreed with defaults (no need to answer the list now)
+**Status:** 🆕 new
+- Per our call: `registry-format.md` is ✅ with **defaults you can change any time** (leave a line in `to-asher.md`). They're at the top of the doc:
+  - your 6 outputs as written
+  - your functions take pandas DataFrames
+  - 2 plants, ~30 machines
+  - ~$2M spares and ~$5M maintenance per plant
+  - price = 30% of savings (placeholder)
+  - 3 parts with ≥ 3 listings by CP1
+  - `pricing.py` running on placeholders by CP1
+- Go at your own pace. The 5:45 PM entry below has the details when you want them.
+
 ### Sat Nov 14, ~5:45 PM · Registry format v2 (CP0): please OK §7 outputs + your money columns
 **Status:** 🆕 new · PR (docs/registry-format-v2)
 - **What changed in `docs/build/registry-format.md`:**

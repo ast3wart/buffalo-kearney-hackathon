@@ -1,8 +1,15 @@
 # Registry data format (v2: CP0)
 
-**Status:**
-- **Agreed by Asher** (Sat ~5:45 PM): file layout, IDs, value lists, money as ranges, owners, valuation from listings.
-- **Pending Brandon:** the outputs (§7) and the money columns he fills.
+**Status: ✅ AGREED (Sat ~6 PM) with defaults.** Brandon may revise the money-side items (the §7 outputs, his columns, the defaults below) at any time, as long as he leaves a line in Asher's inbox.
+
+**Defaults (Brandon owns these and can change them):**
+- **His outputs:** the six §7 tables as written.
+- **His functions take pandas DataFrames** read from SQLite. They don't need a database connection, so his code runs without the app.
+- **Demo portfolio:** 2 plants (PA owned, PB owned), ~3 lines each, ~30 machines total.
+- **Money per plant:** ~$2M spares inventory, ~$5M maintenance budget.
+- **Price = 30% of modeled savings per plant.** Placeholder until `xray/pricing.py` computes it.
+- **Listings:** ≥ 3 listings for **3 parts by CP1**, more later.
+- **By CP1:** `xray/pricing.py` runs on placeholder inputs. The research fills them in afterward.
 
 **Rule:** after CP0, changing this doc means a line in the other person's inbox **before** you build.
 
