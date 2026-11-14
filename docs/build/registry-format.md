@@ -5,7 +5,7 @@
 **Defaults (Brandon owns these and can change them):**
 - **His outputs:** the six §7 tables as written.
 - **His functions take pandas DataFrames** read from SQLite. They don't need a database connection, so his code runs without the app.
-- **Demo portfolio:** 2 plants (PA owned, PB owned), ~3 lines each, ~30 machines total.
+- **Demo portfolio:** 6 plants (see interfaces.md §2).
 - **Money per plant:** ~$2M spares inventory, ~$5M maintenance budget.
 - **Price = 30% of modeled savings per plant.** Placeholder until `xray/pricing.py` computes it.
 - **Listings:** ≥ 3 listings for **3 parts by CP1**, more later.
@@ -22,12 +22,12 @@ This doc describes the full data model, so the pitch and the roadmap hang togeth
 
 | Needed for the demo | Minimum |
 |---|---|
-| Plants / lines / machines | 2 plants, ~3 lines each, ~30 machines. Identity, criticality, line downtime $/h (ranges) |
-| Components | ~40–60, with ~10 photographed (nameplate or cabinet) for the vision step. The rest come from the equipment list. |
+| Plants / lines / machines | **6 plants** (Halvorsen: Toledo, Fort Wayne, Lima; Brightwater: Waukesha, Oshkosh; target Tillman: Rockford; see interfaces.md §2), ~14 lines, ~66 machines. Identity, criticality, line downtime $/h (ranges) |
+| Components | ~123, with ~10 photographed (nameplate or cabinet) for the vision step. The rest come from the equipment list. |
 | Spares | a short storeroom list per plant with **the planted Plant B spare** and **one duplicate** |
 | KB | ~30 parts: lifecycle status, successor, failure rate, migration cost (ranges) |
 | Listings | **3 parts with ≥ 3 real listings each**, plus 1 part with none (shows the alternatives path) |
-| `plant_financials` | one row per plant, placeholder ranges |
+| `plant_financials` | one row per plant (6), placeholder ranges |
 | Outputs | CapEx cliff, single points of failure, sourcing for 3 parts, accuracy, price per plant (placeholder model), deal view for one plant |
 | **Skip for the demo** | work orders, book value, seller trust beyond a simple score, `alternatives` beyond 1–2 rows, migration downtime, multi-currency, real CMMS/ERP connectors |
 

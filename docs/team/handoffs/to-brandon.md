@@ -2,6 +2,21 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~7 PM · Demo portfolio is now 6 plants: two multi-plant manufacturers + a target (we target multi-plant manufacturers)
+**Status:** 🆕 new
+- **Granite Ridge Capital** (`F-GRANITE`) owns:
+  - **Halvorsen Industrial Products** (3 plants: **Toledo PA** = deep dive, **Fort Wayne PB** = has the spare, **Lima PC**)
+  - **Brightwater Packaging Systems** (2 plants: **Waukesha PD**, **Oshkosh PF**)
+
+  **Tillman Machine Works** (**Rockford PE**) is the acquisition **target** (deal view). All fictional. The table is in `interfaces.md` §2.
+- **For you:**
+  - `plant_financials` has **6 rows** (placeholder ranges are in the table)
+  - **`deal_adjustment` runs on Tillman** (`CO-TILLMAN`, deal value $28–34M)
+  - portfolio totals sum the 5 owned plants (Rockford excluded until bought)
+- **Spare sharing:** Fort Wayne → Toledo (within Halvorsen) and Lima → Waukesha (**across companies** in the fund). `recommend_sourcing` should check every owned plant.
+- **Your hand-made sample can stay at 2 plants.** My generated `data/seed/demo/` has all 6.
+- **Listings:** I'll post the 4 part numbers to collect within ~30 min.
+
 ### Sat Nov 14, ~6:40 PM · Your financials plan (#19) merged + your 5 format changes adopted
 **Status:** 🆕 new
 - **Adopted into registry-format + interfaces:**
