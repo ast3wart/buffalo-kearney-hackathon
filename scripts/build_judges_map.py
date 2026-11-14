@@ -19,6 +19,20 @@ def r(a, b):
 CSS = open(sys.argv[3]).read()
 # ONE <style> block: Velocity's source viewer keeps a single style block and drops the rest
 r("</style>\n", "\n/* ---- judges' edition visual layer ---- */\n" + CSS + "\n</style>\n")
+# number the decision cards D1-D8 like docs/plan/data-decisions.md (PR #8), and add D9
+for num, area in [("D1", "Ingestion"), ("D2", "Claim → part links"), ("D3", "Supplier attribution"), ("D4", "Early warning"),
+                  ("D5", "Cost"), ("D6", "Agreement terms"), ("D7", "Supplier brief"), ("D8", "Dates")]:
+    r(f'<span class="area">{area}</span>', f'<span class="area">{num} · {area}</span>')
+d9 = """    <div><span class="area">D9 · Recovery workflow</span>
+      <div class="rule"><p>Five states: <b>Alert → Opportunity → Eligible</b> (computed by the app) <b>→ Submitted → Settled</b> (people). Eligible = warranty claim, paid, link at or above the recovery threshold or confirmed, single-supplier lot, agreement reviewed, inside the warranty window, before the filing deadline. Finance books money outside Afterlife.</p>
+        <p class="why">Separates an estimated opportunity from a recoverable claim. See <a href="#recovery">From alert to recovered money</a> for two real claims run through the gate.</p></div>
+      <div class="own"><b>Owners</b>App (first three states) · warranty recovery manager, finance</div></div>
+"""
+i = s.index('<span class="area">D8 · Dates</span>')
+j = s.index("</div></div>", i) + len("</div></div>")
+s = s[:j] + "\n" + d9 + s[j:]
+r('<div class="eyebrow">Settled Nov 14</div>\n    <h2>Decisions</h2>', '<div class="eyebrow">Recommended Nov 14 · D1–D9 · your view welcome</div>\n    <h2>Decisions</h2>')
+
 r("<h1>Afterlife Data Map</h1>", '<h1>Afterlife Data Map<span class="ed">Judges’ edition</span></h1>')
 r("<span>contract <b>v4</b> (PR #6, in review)</span>", "<span>contract <b>v4</b> (merged)</span>")
 r("contract v4 (PR #6) ·", "contract v4 ·")

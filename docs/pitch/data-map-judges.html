@@ -339,6 +339,10 @@ tbody tr:hover td { background: color-mix(in srgb, var(--spend) 7%, transparent)
 footer { border-top: 0; text-align: center; justify-items: center; }
 @media (prefers-reduced-motion: reduce) { .sys:hover, .lane:hover, .style:hover, .gatecard:hover { transform: none; } }
 
+/* an odd last decision card (D9) spans the full row instead of sitting alone */
+.dec > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.dec a, .view a { color: var(--spend); text-underline-offset: 2px; }
+
 </style>
 
 </head>
@@ -377,7 +381,7 @@ footer { border-top: 0; text-align: center; justify-items: center; }
 
 <section id="decisions">
   <div class="sec-head">
-    <div class="eyebrow">Settled Nov 14</div>
+    <div class="eyebrow">Recommended Nov 14 · D1–D9 · your view welcome</div>
     <h2>Decisions</h2>
   </div>
   <div class="callout">
@@ -385,35 +389,40 @@ footer { border-top: 0; text-align: center; justify-items: center; }
     <p>Afterlife finds a part-and-lot cohort whose claim rate jumped, shows the data behind it, and drafts a supplier brief for a person to review. It does not claim that monthly supplier shares prove a supplier is liable for each individual claim.</p>
   </div>
   <div class="dec">
-    <div><span class="area">Ingestion</span>
+    <div><span class="area">D1 · Ingestion</span>
       <div class="rule"><p>CSV extracts plus the SAP adapter. No live connectors. <code>check.py</code> is a hard stop: any failed check blocks the run.</p>
         <p class="why">Row-level quarantine (load the good rows, hold the bad ones) is a production feature, not a demo one. Adapter tests already cover PO-line IDs, zero-padded numbers, decimal commas and price units.</p></div>
       <div class="own"><b>Owner</b>Spend thread</div></div>
-    <div><span class="area">Claim → part links</span>
+    <div><span class="area">D2 · Claim → part links</span>
       <div class="rule"><p>A link is a suggestion with evidence and a confidence score. Alerts use links at confidence 0.5 and above. Recovery uses only links at the recovery threshold or confirmed by a person.</p>
         <p class="why">Recovery threshold = the lowest confidence that reaches 99% precision on holdout data. On spend links that is 0.8 today; claim links get their own number once <code>match_claims</code> is built.</p></div>
       <div class="own"><b>Owner</b>Warranty thread</div></div>
-    <div><span class="area">Supplier attribution</span>
+    <div><span class="area">D3 · Supplier attribution</span>
       <div class="rule"><p>Supplier shares estimate a cohort's exposure. A single claim is assigned to a supplier only when its product-month used one supplier's lot. Claims from mixed months are labeled <b>supplier unresolved</b> and shown with their count and cost.</p>
         <p class="why">Production use needs serial-to-batch records (which lot went into which unit). We name that as a data requirement.</p></div>
       <div class="own"><b>Owner</b>Warranty thread</div></div>
-    <div><span class="area">Early warning</span>
+    <div><span class="area">D4 · Early warning</span>
       <div class="rule"><p>An alert triggers an investigation; it doesn't accuse anyone. Rule: mature build months only, at least 2 baseline months, rate ratio ≥ 1.5, at least 10 claims after the step, and Benjamini–Hochberg q &lt; 0.05 across every part-supplier series tested. Each alert shows its denominators and q-value.</p>
         <p class="why">A build month counts as mature once its 3 months in service plus the typical reporting lag have passed.</p></div>
       <div class="own"><b>Reviews before a supplier is named</b>Supplier quality engineer</div></div>
-    <div><span class="area">Cost</span>
+    <div><span class="area">D5 · Cost</span>
       <div class="rule"><p>Warranty cost = parts + labor + other cost, counted once. Service purchases for warranty repairs reconcile against claims and are never added. Lifecycle cost on the Overview = build cost + spare-part purchases + gross warranty cost. Net warranty cost (gross minus settled recoveries) is shown beside it, not instead of it.</p></div>
       <div class="own"><b>Signs off reconciliation</b>Finance</div></div>
-    <div><span class="area">Agreement terms</span>
+    <div><span class="area">D6 · Agreement terms</span>
       <div class="rule"><p>A person reviews every agreement once before its terms value any recovery. Amended clauses, missing fields and low-confidence values are flagged for that review.</p>
         <p class="why">Stricter than reviewing only flagged fields, and still cheap: a supplier has one agreement, and it's reused for every claim.</p></div>
       <div class="own"><b>Reviews</b>Procurement</div></div>
-    <div><span class="area">Supplier brief</span>
+    <div><span class="area">D7 · Supplier brief</span>
       <div class="rule"><p>Always a draft. It keeps four levels of evidence apart: observed claims, inferred part links, cohort exposure for the supplier, and claims individually attributable to the supplier. Only the last level can enter a recovery submission.</p></div>
       <div class="own"><b>Owners</b>Supplier quality (technical), procurement (negotiation), warranty recovery manager (submission), finance (books)</div></div>
-    <div><span class="area">Dates</span>
+    <div><span class="area">D8 · Dates</span>
       <div class="rule"><p>Time in service counts from the build month. That's a stated demo limitation; production needs the retail sale or registration date. Filing deadlines count from <code>paid_date</code>, which v4 provides.</p></div>
       <div class="own"><b>Owner</b>Warranty thread</div></div>
+    <div><span class="area">D9 · Recovery workflow</span>
+      <div class="rule"><p>Five states: <b>Alert → Opportunity → Eligible</b> (computed by the app) <b>→ Submitted → Settled</b> (people). Eligible = warranty claim, paid, link at or above the recovery threshold or confirmed, single-supplier lot, agreement reviewed, inside the warranty window, before the filing deadline. Finance books money outside Afterlife.</p>
+        <p class="why">Separates an estimated opportunity from a recoverable claim. See <a href="#recovery">From alert to recovered money</a> for two real claims run through the gate.</p></div>
+      <div class="own"><b>Owners</b>App (first three states) · warranty recovery manager, finance</div></div>
+
   </div>
 </section>
 

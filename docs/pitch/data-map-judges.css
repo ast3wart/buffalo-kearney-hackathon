@@ -112,3 +112,7 @@ tbody tr:hover td { background: color-mix(in srgb, var(--spend) 7%, transparent)
 .qs .ref { font: 600 0.66rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: #5fd0d3; }
 footer { border-top: 0; text-align: center; justify-items: center; }
 @media (prefers-reduced-motion: reduce) { .sys:hover, .lane:hover, .style:hover, .gatecard:hover { transform: none; } }
+
+/* an odd last decision card (D9) spans the full row instead of sitting alone */
+.dec > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.dec a, .view a { color: var(--spend); text-underline-offset: 2px; }
