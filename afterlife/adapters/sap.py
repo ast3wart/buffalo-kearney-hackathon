@@ -57,9 +57,13 @@ def _po_parts(ids: pd.Series) -> tuple[pd.Series, pd.Series]:
 def canonical_po_id(ids: pd.Series) -> pd.Series:
     """The po_line_id a PO line has AFTER an SAP round trip ('PO-450001-010' -> '0000450001-00010').
     For SAP-format companies, every table that references a PO line (build_supply, truth_links,
-    truth_spikes) must use this form, or joins break (found by Brandon in the CP1 review)."""
+    truth_spikes) must use this form, or joins break (found by Brandon in the CP1 review).
+    Ids with no digits (e.g. '') are returned unchanged rather than becoming NaN.
+    NOTE: non-numeric prefixes are dropped, so 'PO-450001-010' and 'TX2-450001-010' collide.
+    Generators for SAP companies must mint distinct numeric PO numbers (callers check for collisions)."""
     ebeln, ebelp = _po_parts(ids)
-    return ebeln + "-" + ebelp
+    canon = ebeln + "-" + ebelp
+    return canon.where(ebeln.notna(), ids.astype(str))
 
 
 def to_contract(table: str, df: pd.DataFrame) -> pd.DataFrame:
@@ -67,7 +71,11 @@ def to_contract(table: str, df: pd.DataFrame) -> pd.DataFrame:
     df = df.rename(columns=LABELS)
     out = df.rename(columns=MAPS.get(table, {}))
     if "EBELN" in out.columns and "EBELP" in out.columns:
-        out.insert(0, "po_line_id", out["EBELN"].astype(str) + "-" + out["EBELP"].astype(str).str.zfill(5))
+        # same normalization as canonical_po_id, so an extract that lost its zero padding
+        # (e.g. re-saved through Excel: EBELN '450001') still joins
+        ebeln = out["EBELN"].astype(str).str.extract(r"(\d+)")[0].str.zfill(10)
+        ebelp = out["EBELP"].astype(str).str.extract(r"(\d+)")[0].fillna("10").str.zfill(5)
+        out.insert(0, "po_line_id", ebeln + "-" + ebelp)
         out = out.drop(columns=["EBELN", "EBELP"])
     for col in ["part_no", "supplier_id"]:
         if col in out.columns:

@@ -47,3 +47,29 @@ def test_sap_company_still_joins_after_write_and_load(tmp_path):
     check.check(load(tmp_path), is_sample=True)
     fails = [m for s, m in check.results if s == "FAIL"]
     assert not fails, fails
+
+
+def test_extract_without_zero_padding_still_joins():
+    """Review finding: an extract re-saved through Excel loses EBELN's leading zeros."""
+    raw = pd.DataFrame({"EBELN": ["450001"], "EBELP": ["10"], "MATNR": ["100447102"], "LIFNR": ["100011"],
+                        "NETPR": ["4.12"], "PEINH": ["1"], "BEDAT": ["20260211"], "TXZ01": ["x"]})
+    out = sap.to_contract("production_spend", raw)
+    assert out.loc[0, "po_line_id"] == sap.canonical_po_id(pd.Series(["PO-450001-010"]))[0]
+
+
+def test_canonical_po_id_leaves_unparseable_ids_alone():
+    assert sap.canonical_po_id(pd.Series(["", "abc"])).tolist() == ["", "abc"]
+
+
+def test_sap_write_rejects_colliding_po_ids(tmp_path):
+    import pytest
+    from afterlife.generate import write
+    rows = [{"po_line_id": "PO-450001-010", "supplier_id": "S-1"}, {"po_line_id": "TX2-450001-010", "supplier_id": "S-2"}]
+    with pytest.raises(ValueError, match="collision"):
+        write({"production_spend": rows}, tmp_path, extract_format="sap")
+
+
+def test_sap_write_does_not_invent_missing_tables(tmp_path):
+    from afterlife.generate import _sap_po_ids_everywhere
+    out = _sap_po_ids_everywhere({"production_spend": [{"po_line_id": "PO-450001-010"}]})
+    assert set(out) == {"production_spend"}

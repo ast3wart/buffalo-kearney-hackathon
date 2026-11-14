@@ -75,6 +75,13 @@ def check(t, is_sample: bool = False):
     (ok if len(ab) and ab.abbr.is_unique else fail)(f"abbreviations: {len(ab)} unique entries (company shorthand, v3 #10)")
 
     # 1c. spend-side SAP fields (💲)
+    all_po = pd.concat([t["production_spend"].po_line_id, t["service_spend"].po_line_id]).astype("string")
+    bad = all_po.isna() | (all_po.str.strip() == "")
+    (ok if not bad.any() else fail)("every spend line has a po_line_id" if not bad.any()
+                                    else f"{int(bad.sum())} spend lines have an empty po_line_id")
+    dup = all_po[~bad].duplicated()
+    (ok if not dup.any() else fail)("po_line_id is unique across production + service spend" if not dup.any()
+                                    else f"{int(dup.sum())} duplicate po_line_ids, e.g. {all_po[~bad][dup].head(3).tolist()}")
     for src in ["production_spend", "service_spend"]:
         df = t[src]
         known = df.part_no.dropna()

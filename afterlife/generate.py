@@ -44,14 +44,24 @@ def _sap_po_ids_everywhere(tables: dict[str, list[dict]]) -> dict[str, list[dict
     ids = [r["po_line_id"] for t in SPEND_TABLES for r in tables.get(t, [])]
     if not ids:
         return tables
-    mapping = dict(zip(ids, sap.canonical_po_id(pd.Series(ids))))
+    canon = sap.canonical_po_id(pd.Series(ids, dtype="string")).tolist()
+    mapping = dict(zip(ids, canon))
+    collided = {c for c in canon if canon.count(c) > 1}
+    if collided:
+        raise ValueError(f"SAP po_line_id collision: {len(collided)} canonical ids shared by different lines, "
+                         f"e.g. {sorted(collided)[:3]}. Mint distinct numeric PO numbers for SAP companies.")
     out = dict(tables)
-    out["build_supply"] = [{**r, "po_line_id": mapping.get(r["po_line_id"], r["po_line_id"])}
-                           for r in tables.get("build_supply", [])]
-    out["truth_links"] = [{**r, "source_id": mapping.get(r["source_id"], r["source_id"])}
-                          if r["source_table"] in SPEND_TABLES else r for r in tables.get("truth_links", [])]
-    out["truth_spikes"] = [{**r, "from_po_line_id": mapping.get(r["from_po_line_id"], r["from_po_line_id"])}
-                           for r in tables.get("truth_spikes", [])]
+    # Safety net: the generator should already mint SAP-form ids for SAP companies. Any table that
+    # references a PO line and is missing here is caught by afterlife.check's join checks.
+    if "build_supply" in tables:
+        out["build_supply"] = [{**r, "po_line_id": mapping.get(r["po_line_id"], r["po_line_id"])}
+                               for r in tables["build_supply"]]
+    if "truth_links" in tables:
+        out["truth_links"] = [{**r, "source_id": mapping.get(r["source_id"], r["source_id"])}
+                              if r["source_table"] in SPEND_TABLES else r for r in tables["truth_links"]]
+    if "truth_spikes" in tables:
+        out["truth_spikes"] = [{**r, "from_po_line_id": mapping.get(r["from_po_line_id"], r["from_po_line_id"])}
+                               for r in tables["truth_spikes"]]
     return out
 
 
