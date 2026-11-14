@@ -3,13 +3,16 @@
 - `main` must always run. Work on short branches named by thread: `warranty/claims-gen`, `spend/match`, and so on.
 - Commit early and push often. Merge to `main` with a quick PR, or straight away if the other person is mid-task. Just say so in chat.
 - Never commit `data/generated/`, `.env`, or API keys (they're gitignored).
-- API keys go in `.env` (`ANTHROPIC_API_KEY=...`) and are loaded by `brief.py`.
+- API keys go in `.env` (`ANTHROPIC_API_KEY=...`), copied from `.env.example`, and are loaded by `brief.py`. The web app reads `web/.env.local` (from `web/.env.example`).
+- `temp/` (local scratch notes) and `.worktrees/` are gitignored.
 
 ## Setup (once)
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 (cd web && npm install)
+cp .env.example .env                    # then add ANTHROPIC_API_KEY (optional: brief falls back to a template)
+cp web/.env.example web/.env.local      # API URL for the Next.js app
 ```
 
 ## Every session
