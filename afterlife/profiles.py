@@ -99,7 +99,7 @@ PROFILES = [
         "causal_blank_share": 0.65, "causal_wrong_share": 0.08, "typo_rate": 0.07,
         "products": [("SS-70", "Skid steer 70", "skid_steer", 220), ("SS-90", "Skid steer 90", "skid_steer", 160),
                      ("EX-35", "Mini excavator 3.5t", "excavator", 180), ("EX-55", "Mini excavator 5.5t", "excavator", 120)],
-        "spike": {"category": "bearing", "start_build_month": "2025-10", "multiplier": 2.5,
+        "spike": {"category": "bearing", "start_build_month": "2025-10", "multiplier": 4.0,  # 2.5x was mostly missed at Ironridge's volume (PR #4 review)
                   "dual_sourced": True},
     },
     {
