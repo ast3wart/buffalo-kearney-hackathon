@@ -127,7 +127,8 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 | line_id, plant_id, line_name, product | | Asher |
 | revenue_per_day_low, revenue_per_day_high | output value of the line | Brandon |
 | contribution_margin_pct | share of revenue actually lost when the line stops | Brandon |
-| downtime_cost_per_hour_low, downtime_cost_per_hour_high | lost contribution + idle labor + recovery | Brandon |
+| operating_hours_per_day | scheduled run hours (e.g. 16) | Brandon |
+| downtime_cost_per_hour_low, downtime_cost_per_hour_high | **derived** = revenue_per_day ÷ operating_hours_per_day × contribution margin (+ idle labor); fill only to override | Brandon |
 
 ### `<plant>/assets.csv` (CMMS / equipment-list export: one row per machine)
 | Column | Meaning | Owner |
@@ -180,7 +181,7 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 | aliases | other ways the part is written, separated by `;` (e.g. "1756L61;1756-L61/B") | Asher |
 | lifecycle_status, status_date | from §3, with the date it took effect | Asher |
 | typical_life_years_low, typical_life_years_high | | Asher |
-| annual_failure_rate_low, annual_failure_rate_high | probability of failure per year (for Brandon's downtime expected value) | Brandon |
+| annual_failure_rate_low, annual_failure_rate_high | optional override. **The default failure probability comes from an age-band parameter in `valuation.py`** (age, condition, duty), not lifecycle status. Discontinued raises *hours down*, not the odds. | Brandon |
 | successor_part_no | official replacement (also a row in alternatives.csv) | Asher |
 | migration_cost_low, migration_cost_high | engineering + install to move to the successor | Brandon |
 | migration_downtime_hours | planned downtime to migrate | Brandon |
@@ -231,10 +232,10 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 |---|---|---|
 | `part_valuation` | kb_id, condition, n_listings, price_low (25th pct), price_mid (median), price_high (75th pct), sold_n, confidence (`high` ≥ 3 listings, `low` 1–2, `none` 0 → see alternatives), as_of | Brandon `xray/sourcing.py` |
 | `sourcing_recommendation` | component_id, action (use_shelf_spare / buy_spare / migrate / monitor), spare_id (if on a shelf at any plant), best_listing_id, alt_id, reason | Brandon `xray/sourcing.py` (**shelf first, then outside**) |
-| `capex_by_year` | company_id, plant_id, year, capex_type, capex_low, capex_high, driver_component_ids | Brandon `xray/valuation.py` |
-| `spof` | component_id, line_id, criticality, annual_failure_rate, downtime_exposure_per_year_low/high (prob × hours × $/h), why | Brandon `xray/valuation.py` |
+| `capex_by_year` | company_id, plant_id, year, capex_type (`growth` only if typed in by the user), capex_low, capex_high, driver_component_ids | Brandon `xray/valuation.py` |
+| `spof` | component_id, line_id, criticality, annual_failure_rate, hours_down_low/high (depends on sourcing: shelf / lead time / migration), downtime_exposure_per_year_low/high (prob × hours × $/h), why | Brandon `xray/valuation.py` (reads `sourcing_recommendation`) |
 | `deal_adjustment` (deal lens only) | company_id, deferred_capex_low/high, suggested_price_reduction_low/high, suggested_holdback, rationale | Brandon `xray/valuation.py` |
-| `plant_savings` + `price` | plant_id, lever, savings_low/base/high, one_time (yes/no); price_per_plant_low/high, value_capture_pct, customer_payback_months | Brandon `xray/pricing.py` |
+| `plant_savings` + `price` | plant_id, lever, savings_low/base/high, one_time (yes/no), in_price_base (yes/no; one-time release and downtime avoided are shown separately); price_per_plant_low/high, value_capture_pct, customer_payback_months, failed_checks | Brandon `xray/pricing.py` |
 | `accuracy` | field, records, predicted, correct, precision, recall, ci_low, ci_high | Asher `xray/evaluate.py` |
 
 ## 8. Answer key (`data/truth/<portfolio_id>/`, read only by evaluate.py)

@@ -1,6 +1,6 @@
 # Interfaces, demo portfolio and demo script (CP0, items 3–8)
 
-**Status: ✅ DEFAULTS LOCKED (Sat ~6:15 PM)** so both threads can build now.
+**Status: ✅ DEFAULTS LOCKED (Sat ~6:15 PM); Brandon's model-spec changes adopted (~6:40 PM)** so both threads can build now.
 - Brandon owns the money-side items (§1 function behavior, §2 dollar scale, §3 headline numbers). He may revise them, as long as he leaves a line in Asher's inbox.
 - Data format: [registry-format.md](registry-format.md).
 - **We're building a DEMO.** Build only what the demo needs.
@@ -18,11 +18,11 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 |---|---|---|
 | `xray/sourcing.py` | `value_parts(reg) -> part_valuation` | price range per part and condition, from listings (≥ 3 → high confidence) |
 | | `recommend_sourcing(reg, part_valuation) -> sourcing_recommendation` | **shelf at any plant first**, then the best listing; `alt_id` if none |
-| `xray/valuation.py` | `capex_by_year(reg, part_valuation, start_year=2027, years=5) -> capex_by_year` | low/high per plant, per year, per capex_type |
-| | `spof(reg) -> spof` | line-stopping components + yearly downtime exposure (failure prob × hours × $/h) |
-| | `deal_adjustment(reg, capex_by_year, company_id) -> deal_adjustment` | deal lens only: price reduction + holdback (no double counting) |
+| `xray/valuation.py` | `capex_by_year(reg, part_valuation, start_year=2027, years=5) -> capex_by_year` | low/high per plant, per year, per capex_type (`maintenance` by age vs life; `deferred` = past life or discontinued with no spare, years 0–2; `growth` only if typed in by the user) |
+| | `spof(reg, sourcing_recommendation) -> spof` | line-stopping components + yearly downtime exposure = P(fail by age band) × **hours down** × $/h. Hours down depend on sourcing: shelf spare (here or a sister plant) = swap (+ transfer) time; none = lead time; discontinued with no listings = lead time + migration. Redundant machines score 0. |
+| | `deal_adjustment(reg, capex_by_year, company_id, discount_rate) -> deal_adjustment` | deal lens only: price cut = PV(deferred CapEx, low); holdback = PV(high − low); no double counting |
 | `xray/pricing.py` | `plant_savings(reg, sourcing_recommendation) -> plant_savings` | savings per plant per lever, low/base/high, one-time vs yearly |
-| | `price(plant_savings, value_capture_pct=0.30) -> price` | price per plant, customer payback months |
+| | `price(plant_savings, value_capture_pct=0.30) -> price` | price = capture % × **auditable recurring** savings (`in_price_base`); payback months; flags failed price checks (ROI ≥ 3×, payback ≤ 12 mo, approval ceiling, comparables) |
 
 ### Asher (machine thread)
 | Module | Function | Returns |
@@ -67,7 +67,7 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | Carrying cost / yr | 15–25% of inventory | 15–25% |
 | Rush premiums / yr | $40–80k | $25–50k |
 
-All dollar figures are **placeholders (Brandon's to refine from research)**, labeled as such in `plant_financials.source`.
+All dollar figures are **placeholders (Brandon's to refine from research)**, labeled as such in `plant_financials.source`. **This table is the demo scale.** Brandon's [model-spec §4](../plan/financials/model-spec.md) anchors point here. Downtime $/h is **derived**: revenue_per_day ÷ operating_hours_per_day (16 h) × contribution margin (+ idle labor). Plant-level money levers are **scaled by the share of the plant the register covers** (model-spec §2).
 
 **Planted problems (the answer key):**
 1. **6–8 discontinued or end-of-life controllers/drives/HMIs** across both plants, plus some active parts (mixed brands).

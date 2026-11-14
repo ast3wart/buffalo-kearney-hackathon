@@ -12,7 +12,7 @@
 | # | Blocker | Status | Fix |
 |---|---|---|---|
 | 1 | CP0 sign-off on the registry format | ✅ **Done** (PR #17, agreed with defaults) | Only revisit if the money-side changes in model-spec.md are adopted. Leave a line in `to-asher.md`. |
-| 2 | **No sample registry** (`data/` doesn't exist yet) | 🔴 **Open** | Hand-make `data/seed/sample/` in the agreed format: 2 plants, 2 lines each, ~6 machines, ~10 components, 3 KB parts, **1 Plant B spare**, 1 duplicate. ~20 min. Don't wait for Asher's full generator. |
+| 2 | **No sample registry** (`data/` doesn't exist yet) | 🔴 **Open** | Brandon hand-makes `data/seed/sample/` in the agreed format: 2 plants, 2 lines each, ~6 machines, ~10 components, 3 KB parts, **1 Plant B spare**, 1 duplicate. ~20 min. Don't wait for Asher's full generator. **Use the demo scale in [interfaces.md §2](../../build/interfaces.md).** Asher's full `data/seed/demo/` replaces it at CP1. |
 | 3 | P1 research answers | 🟡 Running / to start | Paste all P1 prompts now. Build on the fallbacks in velocity-prompts.md and swap in real numbers as they land. |
 | 4 | Real listings for 3 parts | 🟡 To do | By hand, not scraped (see model-spec §3). 3 parts × ≥ 3 listings + 1 part with none. |
 | 5 | Inputs missing from the old backlog (discount rate, component costs, escrow rules, cost to serve, approval limits, transfer cost) | 🟡 Prompts #15–20 | Fallbacks unblock the code. |

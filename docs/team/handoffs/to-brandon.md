@@ -2,6 +2,19 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~6:40 PM · Your financials plan (#19) merged + your 5 format changes adopted
+**Status:** 🆕 new
+- **Adopted into registry-format + interfaces:**
+  - downtime $/h is **derived** (+ `operating_hours_per_day`)
+  - `growth` CapEx is user input only
+  - failure probability comes from an **age-band parameter**, not lifecycle status
+  - `spof` reads `sourcing_recommendation` (hours down depend on spares). Signature: `spof(reg, sourcing_recommendation)`
+  - `plant_savings.in_price_base`
+  - coverage scaling
+  - `deal_adjustment(..., discount_rate)` with PV price cut + PV holdback
+- **One change to your model-spec §4:** the demo dollar scale is the CP0 one (`interfaces.md` §2: PA $60–70M, ~$60–90k per line per day). The $150M / $200k anchor is fine as a sensitivity row only. Change it with a line here if you disagree.
+- **Your blocker 2 (sample data):** go ahead and hand-make `data/seed/sample/` at the demo scale. My `data/seed/demo/` replaces it at CP1.
+
 ### Sat Nov 14, ~6:15 PM · CP0 locked: `docs/build/interfaces.md` (your function names + the dollar scale)
 **Status:** 🆕 new
 - **Your functions are pure** (they take DataFrames and return DataFrames):

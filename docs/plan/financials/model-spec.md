@@ -75,7 +75,7 @@ Example: 1 point on a $50M deal = $500k released ~1 yr sooner ≈ **$50k at 10%*
 **Coverage targets:** **3 parts by CP1** (+1 with no listings, to show the alternatives path). That's the registry default, and it's realistic alongside the coding. Then 10–15 by CP2 and up to ~30 (the KB size) only if there's time. Cover each lifecycle status at least once.
 
 ## 4. Demo-scale anchors (illustrative, label them)
-- A plant with ~$150M revenue, 3 lines, 250 days/yr ≈ **$200k per line per day**.
+- **Use the demo scale in [interfaces.md §2](../../build/interfaces.md)** (agreed at CP0): Plant A $60–70M revenue, ~$60–90k per line per day. Plant B $40–45M, ~$40–60k per line per day. (A larger illustrative plant, e.g. ~$150M revenue ≈ $200k per line per day, is fine for a sensitivity row, but not for the demo data.)
 - Deal value: EBITDA × a lower-middle-market multiple (PitchBook reports ~7x. ⚠️ Confirm the exact figure and date before putting it on a slide).
 - Spares $2M, maintenance $5M per plant (registry defaults; whole-plant figures, see coverage scaling).
 
@@ -85,7 +85,7 @@ Example: 1 point on a $50M deal = $500k released ~1 yr sooner ≈ **$50k at 10%*
 - Any figure marked ⚠️ stays off slides until its source is confirmed.
 - Changing a column in registry-format.md means a line in `to-asher.md` before you build.
 
-## Changes to tell Asher about (proposed, not yet in registry-format.md)
+## Changes to tell Asher about: ✅ ADOPTED into registry-format.md and interfaces.md (Sat ~6:40 PM)
 1. `lines.downtime_cost_per_hour` becomes derived (add `operating_hours_per_day`).
 2. `capex_type = growth` is optional user input, not calculated.
 3. `spof` hours depend on `sourcing_recommendation` (`valuation.py` reads the sourcing output).
