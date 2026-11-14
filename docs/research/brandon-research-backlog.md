@@ -31,6 +31,8 @@
 | 12 | P3 | **Adoption curve** (2/5/10% assumption) | "What adoption rates did comparable industrial software reach among US mid-market manufacturers within 3–5 years (CMMS, MES, predictive maintenance, spare-parts tools)? Surveys on CMMS penetration and predictive-maintenance adoption with sources. Use defaults; no clarifying questions." |
 | 13 | P3 | **PE-owned manufacturing count** (portfolio license sizing) | "How many US manufacturing companies are PE-owned, and how many plants do they operate on average? Use PitchBook, PESP, Mergr or similar; label lower bounds. Use defaults; no clarifying questions." |
 
+**More prompts (#15–20)** for inputs this list was missing (discount rate, component costs, escrow rules, cost to serve, approval limits, transfer cost), each with a fallback range: [plan/financials/velocity-prompts.md](../plan/financials/velocity-prompts.md).
+
 ## Tips
 - **Run 4–6 in parallel.** Velocity takes ~5–10 minutes per answer and sometimes asks scoping questions. Reply "use defaults, go".
 - If one fails ("unable to complete"), **narrow it** to 2–3 specific numbers and ask again. That worked for the plant count. (Asher pulled the plant count straight from Census: 25,799 plants with 100+ employees, `CB2200CBP` 2022.)

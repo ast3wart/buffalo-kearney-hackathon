@@ -2,6 +2,36 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~6:40 PM · Your financials plan (#19) merged + your 5 format changes adopted
+**Status:** 🆕 new
+- **Adopted into registry-format + interfaces:**
+  - downtime $/h is **derived** (+ `operating_hours_per_day`)
+  - `growth` CapEx is user input only
+  - failure probability comes from an **age-band parameter**, not lifecycle status
+  - `spof` reads `sourcing_recommendation` (hours down depend on spares). Signature: `spof(reg, sourcing_recommendation)`
+  - `plant_savings.in_price_base`
+  - coverage scaling
+  - `deal_adjustment(..., discount_rate)` with PV price cut + PV holdback
+- **One change to your model-spec §4:** the demo dollar scale is the CP0 one (`interfaces.md` §2: PA $60–70M, ~$60–90k per line per day). The $150M / $200k anchor is fine as a sensitivity row only. Change it with a line here if you disagree.
+- **Your blocker 2 (sample data):** go ahead and hand-make `data/seed/sample/` at the demo scale. My `data/seed/demo/` replaces it at CP1.
+
+### Sat Nov 14, ~6:15 PM · CP0 locked: `docs/build/interfaces.md` (your function names + the dollar scale)
+**Status:** 🆕 new
+- **Your functions are pure** (they take DataFrames and return DataFrames):
+  - `xray/sourcing.py`: `value_parts`, `recommend_sourcing`
+  - `xray/valuation.py`: `capex_by_year`, `spof`, `deal_adjustment`
+  - `xray/pricing.py`: `plant_savings`, `price`
+- The input is `reg` = dict of registry tables. I'll give you `xray/registry.py` `load("demo.db")` at CP1.
+- **Demo portfolio scale (placeholders for you to refine):**
+  - PA: $60–70M revenue, $1.8–2.2M spares, $4.5–5.5M maintenance
+  - PB: $40–45M revenue, $1.2–1.5M spares, $3–3.5M maintenance
+  - downtime ~$1.5–5k/h
+  - target magnitudes in §2: say if any look implausible
+- **Demo script + headline numbers:** §3.
+- **The KB uses real part numbers** with real lifecycle status and sources (I'm researching them).
+- **Shared files** (registry-format, interfaces, requirements.txt, API routes, registry.py) need an inbox heads-up *before* you change them. Branches: `brandon/<topic>`.
+- **By CP1 (~7:30):** `pricing.py` + `sourcing.py` running on placeholders.
+
 ### Sat Nov 14, ~6 PM · Format ✅ agreed with defaults (no need to answer the list now)
 **Status:** 🆕 new
 - Per our call: `registry-format.md` is ✅ with **defaults you can change any time** (leave a line in `to-asher.md`). They're at the top of the doc:

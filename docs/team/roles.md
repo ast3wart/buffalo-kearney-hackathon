@@ -31,6 +31,8 @@ The work is split by strength. Both threads build part of the live demo, and bot
   - Brandon builds against `data/seed/sample/`, a hand-made registry in the agreed format.
   - Asher's app shows placeholder numbers until `valuation.py` lands.
 
+**How the threads connect** (function names, API routes, demo portfolio scale, demo script): [docs/build/interfaces.md](../build/interfaces.md).
+
 ## Checkpoints
 | When | Checkpoint | Done means |
 |---|---|---|

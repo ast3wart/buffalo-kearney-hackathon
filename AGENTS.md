@@ -19,6 +19,7 @@
 - `docs/plan/roadmap-equipment-xray.md`: strategy, system components, sourcing rules, phases (**source of truth**)
 - `docs/team/roles.md`: who owns what, checkpoints
 - `docs/build/registry-format.md`: the data format
+- `docs/build/interfaces.md`: function signatures, API routes, demo portfolio scale, demo script (**build the DEMO, not the full model**)
 - `docs/plan/pivot-plan/`: POC scope, demo script, tech stack, deck map
 - `docs/research/`: market validation, deep-dive numbers, Brandon's market/PE/flywheel research, research backlog
 
