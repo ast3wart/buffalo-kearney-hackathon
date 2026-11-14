@@ -32,4 +32,9 @@ def normalize(text: str, abbreviations: dict[str, str]) -> str:
 def link_all(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
     from afterlife.match_spend import link_spend
     from afterlife.match_claims import link_claims
-    return pd.concat([link_spend(tables), link_claims(tables)], ignore_index=True)
+    parts = [link_spend(tables)]
+    try:   # until match_claims exists, still return the spend links (cost.py / evaluate need them)
+        parts.append(link_claims(tables))
+    except NotImplementedError:
+        pass
+    return pd.concat(parts, ignore_index=True)

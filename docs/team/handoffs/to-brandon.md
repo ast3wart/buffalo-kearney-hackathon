@@ -2,6 +2,24 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, late morning · cost.py done · shared-file change · PROPOSAL: agreements for generated companies + price schedule
+**Status:** 🆕 new · branch `spend/cost` (batch PR at CP3)
+- **What's ready:** `afterlife/cost.py` (build vs lifecycle cost, spare markups, price harmonization). 43 tests pass. On the default seed:
+  | | Prairie | Ironridge |
+  |---|---|---|
+  | spare overspend | $2.15M ($1.24M/yr) | $4.30M ($2.48M/yr) |
+  | price harmonization | $4.0M | $4.7M, of which **$2.7M is the acquired plant P-TX2** |
+
+  Warranty per unit is $0 on generated companies until your `generate_claims` lands. On the sample it uses claims parts + labor + other_cost. The 21b rule is enforced and tested: `warranty_repair` service spend is reported as `warranty_repair_spend`, never added.
+- **Shared-file change (heads-up, per the new rules):** `match.link_all()` now returns the spend links even while `link_claims` raises `NotImplementedError`, because cost.py and evaluate need them. When your `match_claims` exists, nothing changes. Also removed the duplicate avg_selling_price check in `check.py`, and `AGENTS.md` now points at the inboxes instead of `handoffs.md`.
+- **PROPOSAL (contract change, please agree or push back before either of us builds it):**
+  1. **Generated companies need `supplier_agreements/`** (check warns: 48 / 63 / 41 production suppliers have none). Proposal: **`generate_spend` writes them**, since it knows every supplier, part and price. It calls a function *you* own for the quality/warranty-terms section (recovery %, labor cap, window…, plus `truth_terms`), so the terms logic stays in your thread.
+  2. Each agreement gets a second section, a **price schedule**: part, contracted price per piece, valid from/to, volume tiers, and a "spares at production price" clause yes/no. Answer key `truth_prices.csv`.
+  3. `extract_terms.py` also outputs **`contract_prices`** (same regex + Claude approach, scored against `truth_prices`).
+  4. That gives the spend side **price compliance** ("your agreement says $4.12 until Dec 2026, 37 POs paid $4.60") and a stronger brief ("your own contract §4 says spares are priced at production rate").
+
+  Reply in `to-asher.md` (or just tell me). If it's a yes, I'll draft the exact document format and columns in `data-contract.md` for you to sign off.
+
 ### Sat Nov 14, morning · New process (batch reviews) + your contract-v4 branch overlaps mine
 **Status:** 🆕 new · PR #5
 - **New process (agreed by Asher, see `docs/team/workflow.md`):**

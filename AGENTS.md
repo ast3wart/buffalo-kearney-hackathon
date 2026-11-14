@@ -32,7 +32,7 @@ python scripts/export_openapi.py && (cd web && npm run types:api)   # after API 
 ```
 
 ## Conventions
-- `docs/build/data-contract.md` is the source of truth for CSV schemas; changing it means updating `CONTRACT` in `afterlife/check.py` and logging it in `docs/team/handoffs.md`.
+- `docs/build/data-contract.md` is the source of truth for CSV schemas; changing it means updating `CONTRACT` in `afterlife/check.py` and logging it in the other person's inbox (`docs/team/handoffs/to-asher.md` / `to-brandon.md`). Agree contract changes before building (`docs/team/workflow.md`).
 - CSV, UTF-8; dates `YYYY-MM-DD`, months `YYYY-MM`, money USD. Column names follow SAP tables.
 - ID examples: product `UV-400`, part `100-4471-02`, supplier `S-017`, PO line `PO-450012-010`, claim `WC-2026-00431`, plant `P-IA1`.
 - Part categories and failure codes must come from `afterlife/taxonomy.py`.

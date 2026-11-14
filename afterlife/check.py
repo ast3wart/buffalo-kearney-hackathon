@@ -160,8 +160,6 @@ def check(t, is_sample: bool = False):
         cost = pd.to_numeric(wc.parts_cost) + pd.to_numeric(wc.labor_cost) + pd.to_numeric(wc.other_cost)
         (ok if ((rec == 0) | (status == "recovered")).all() and (rec <= cost + 0.01).all() else fail)(
             "recovered_usd > 0 only on recovered claims, and never above the claim's total cost")
-    asp = pd.to_numeric(t["products"].avg_selling_price, errors="coerce")
-    (ok if (asp > 0).all() else fail)("products.avg_selling_price is positive (warranty % of revenue needs it)")
     # 2d. supplier agreements are documents; the answer key points at real files and production suppliers
     tt = t["truth_terms"]
     docs = set(t["supplier_agreements"].doc_file) if "supplier_agreements" in t else set()
