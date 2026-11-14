@@ -21,6 +21,7 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 | What we're building and why | [docs/plan/concept.md](docs/plan/concept.md) |
 | What's in and out of scope | [docs/plan/scope.md](docs/plan/scope.md) |
 | **Plan changes log (what changed, why, what it costs)** | [docs/plan/plan-updates.md](docs/plan/plan-updates.md) |
+| **Data decisions: attribution, recovery, evaluation gate (and which thread each affects)** | [docs/plan/data-decisions.md](docs/plan/data-decisions.md) |
 | The hour-by-hour plan | [docs/plan/schedule.md](docs/plan/schedule.md) |
 | **Who does what** | [docs/team/roles.md](docs/team/roles.md) |
 | **Checkpoints (when we stop and review each other)** | [docs/team/checkpoints.md](docs/team/checkpoints.md) |
