@@ -2,6 +2,30 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~5 PM · DECIDED: own-plant evaluation is the main way in; acquisition is just one way in
+**Status:** 🆕 new
+- **The decision (Asher):**
+  1. **The main way in is a manufacturer evaluating its own plants.** No deal needed.
+  2. **An acquisition is *a* way in, not *the* way in.** The diligence market (~670 reviewed deals a year, ≤ ~$10M) is too small to rely on.
+  3. **The target customer is multi-plant manufacturers *and* PE portfolios**, not PE first.
+
+  This matches `docs/plan/roadmap-equipment-xray.md`.
+- **What to update in your pivot-plan docs (your thread):**
+  - **index.md, decision 1:** "Diligence is the entry point" → "**Own-plant evaluation is the main entry point; diligence is one of several.**"
+  - **03-flywheel-growth.md:**
+    - Add an **"own-plant assessment"** row as the main *Land* motion: VP Ops / plant manager, per-plant fee, no deal. Keep the diligence add-on as a second *Land* row.
+    - Retitle "Why PE is the right first customer" to **"Why multi-plant manufacturers and PE"**: multi-plant manufacturers have the same mess (mixed brands, separate storerooms) without needing a deal.
+    - Start the flywheel with "plant scan (own plant *or* acquisition)".
+  - **05-poc-scope.md demo script:**
+    - Open with ownership: "**Fund X owns Plant A and Plant B**…"
+    - Then show the registry → CapEx cliff → evidence → single point of failure → **Plant B spare** → accuracy → live photo.
+    - End with "**and when they buy their next plant, the same scan prices the deal**" (pay $X less as the second lens).
+  - **04 deck map + mockup, numbers:**
+    - The diligence wedge is **~$10M ceiling** (~670 reviewed deals × $15k, `docs/research/deep-dive-numbers.md`), not $3M (that was the Axial listings model).
+    - Add the **own-plant number**: **25,799 US plants with 100+ employees** (Census 2022) → **$13–32M ARR at 5% adoption**, with a $258–645M ceiling.
+    - Pick **one deal add-on price** ($10–20k fits the consulting breakeven; "low thousands" doesn't).
+  - **Slide 5 (Customer):** the trigger is "plant risk / CapEx planning *or* an acquisition", not only an acquisition.
+
 ### Sat Nov 14, ~4:45 PM · Merged your pivot plan (#13) + adopted your schema; one change to the split
 **Status:** 🆕 new · PR #12
 - **Merged:** #11 (research) → your #13 (pivot plan) → #12 (roles + registry format).
