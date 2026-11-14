@@ -23,7 +23,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif}
 .deck{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 16px 80px}
-.slide{position:relative;width:min(1100px,100%);aspect-ratio:16/9;background:var(--slide);border:1px solid var(--line);border-radius:10px;padding:3.2% 4%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.slide{position:relative;width:min(1100px,100%);aspect-ratio:16/9;background:var(--slide);border:1px solid var(--line);border-radius:10px;padding:3.2% 4% 5.5%;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .slide.hidden-appx{border-style:dashed}
 .kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
 h1{font-size:clamp(18px,2.6vw,30px);line-height:1.15;margin:.25em 0 .6em;max-width:90%}
@@ -31,7 +31,7 @@ h2{font-size:clamp(14px,1.5vw,18px);margin:0 0 .4em}
 p,li{font-size:clamp(11px,1.15vw,15px)}
 ul{margin:0;padding-left:1.1em} li{margin:.2em 0}
 .foot{position:absolute;left:4%;right:4%;bottom:2.4%;font-size:clamp(9px,.85vw,11px);color:var(--muted);display:flex;justify-content:space-between;gap:12px}
-.grid{display:grid;gap:14px;flex:1;min-height:0}
+.grid{display:grid;gap:14px;flex:1;min-height:0;align-content:start}
 .g2{grid-template-columns:1.3fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .card{background:var(--tile);border-radius:8px;padding:12px 14px}
 .big{font-size:clamp(28px,5vw,64px);font-weight:800;color:var(--accent);line-height:1}
@@ -81,7 +81,7 @@ th{color:var(--muted);font-weight:600}
 <section class="slide">
   <div class="kicker">Problem</div>
   <h1>Buyers pay for capacity they can't see is about to fail</h1>
-  <div class="grid g2">
+  <div class="grid g2" style="align-content:stretch">
     <div>
       <div class="card" style="margin-bottom:10px"><h2>Hidden obsolete parts</h2><p>Machines run on controllers, drives and screens the manufacturer stopped making, and no one has a spare.</p></div>
       <div class="card" style="margin-bottom:10px"><h2>Surprise CapEx after close</h2><p>Sellers freeze equipment spending 12–18 months before a sale. A buyer found a +105% CapEx adjustment before close.</p></div>
@@ -109,7 +109,7 @@ th{color:var(--muted);font-weight:600}
     <div class="arrow">→</div>
     <div class="card"><h2>Output</h2><p>CapEx cliff · "pay $X less" · single points of failure · where to source every part</p></div>
   </div>
-  <div class="grid g2" style="flex:0">
+  <div class="grid g2" style="flex:none">
     <div class="trust"><b>A person stays in control:</b> low-confidence readings and big-ticket items go to a reviewer before they reach an investment memo or a purchase order.</div>
     <ul><li>Ranges, never false precision</li><li>Click any number → photo, reading, source, confidence</li><li>Vendor-neutral across all brands</li></ul>
   </div>
@@ -120,12 +120,12 @@ th{color:var(--muted);font-weight:600}
 <section class="slide">
   <div class="kicker">Proof</div>
   <h1>We measured it, we didn't assume it</h1>
-  <div class="grid g3" style="flex:0;margin-bottom:12px">
+  <div class="grid g3" style="flex:none;margin-bottom:12px">
     <div class="card"><div class="mid">[xx]%</div><p>precision / recall reading components, against a planted-answer test portfolio</p></div>
     <div class="card"><div class="mid">Live</div><p>photo of a real machine in this room → appears in the registry on stage</p></div>
     <div class="card"><div class="mid">3</div><p>Velocity research chats that <b>corrected</b> our claims (diligence alone is small → we repositioned)</p></div>
   </div>
-  <div class="grid g2" style="flex:1">
+  <div class="grid g2" style="flex:none">
     <div class="card"><h2>Case: what a 2-day controls check found</h2><p style="font-style:italic">"$4.1M near-term CapEx, including two end-of-life control systems. The buyer used it in price negotiation."</p></div>
     <ul><li>Finding changed the deal price</li><li>Done by a people service: starts from scratch each deal</li><li>We make that repeatable and keep the record</li></ul>
   </div>
@@ -136,7 +136,7 @@ th{color:var(--muted);font-weight:600}
 <section class="slide">
   <div class="kicker">Target customer</div>
   <h1>Multi-plant manufacturers and PE portfolios</h1>
-  <div class="grid g2" style="flex:0;margin-bottom:12px">
+  <div class="grid g2" style="flex:none;margin-bottom:12px">
     <div class="card"><h2>Ideal customer</h2><p>Manufacturer or PE portfolio with 3+ plants of mixed brands and messy registers. <b>Trigger:</b> plant risk / CapEx planning (main), or an acquisition / pre-exit.</p></div>
     <div class="card"><div class="mid">25,799</div><p>US plants with 100+ employees (Census 2022). Plus: 67.1% of US mid-market PE deals are add-ons, each bringing a new register.</p></div>
   </div>
@@ -152,7 +152,7 @@ th{color:var(--muted);font-weight:600}
 <section class="slide">
   <div class="kicker">Competition</div>
   <h1>Everyone values the machine. No one keeps the record.</h1>
-  <div class="grid g2">
+  <div class="grid g2" style="align-content:stretch">
     <div class="matrix">
       <div class="q" style="left:50%;top:0;background:var(--accent-soft)"></div>
       <div class="dot" style="left:22%;top:72%">Appraisers</div>
@@ -191,7 +191,7 @@ th{color:var(--muted);font-weight:600}
     <tr><td><b>Portfolio license</b></td><td>PE operating partner</td><td>Fund-wide license</td><td>Spare sharing, pooled buying</td></tr>
     <tr><td><b>Sourcing</b></td><td>Procurement</td><td>Take rate / savings share</td><td>Verified sellers, successor parts</td></tr>
   </table>
-  <div class="grid g3" style="flex:0;margin-top:14px">
+  <div class="grid g3" style="flex:none;margin-top:14px">
     <div class="card"><p class="muted">Cost anchor</p><p>Appraisal $2–15k · ops diligence $15–25k per deal</p></div>
     <div class="card"><p class="muted">Our cost per scan</p><p>Vision API + reviewer minutes [estimate]</p></div>
     <div class="card"><p class="muted">Margin target</p><p>[software-like, after KB build-out]</p></div>
@@ -222,7 +222,7 @@ th{color:var(--muted);font-weight:600}
 <section class="slide">
   <div class="kicker">Go-to-market</div>
   <h1>Sell to plant owners; deals and advisers are a second channel</h1>
-  <div class="grid g3" style="flex:0">
+  <div class="grid g3" style="flex:none">
     <div class="card"><div class="mid">1 · Reach</div><p><b>Direct:</b> own-plant pilots at multi-plant manufacturers. <b>Channel:</b> appraisers + ops-diligence firms add our scan to deal reports</p><p class="muted">Tactic: start with the plant at highest risk; advisers keep sign-off</p></div>
     <div class="card"><div class="mid">2 · Convert</div><p><b>After the assessment (or close):</b> "keep this record current"</p><p class="muted">Tactic: the scan is already done, so the registry is live on day 1</p></div>
     <div class="card"><div class="mid">3 · Expand</div><p><b>Across plants and the fund:</b> every plant and add-on gets scanned</p><p class="muted">Tactic: show the operating partner portfolio-wide savings</p></div>
@@ -235,7 +235,7 @@ th{color:var(--muted);font-weight:600}
 <section class="slide">
   <div class="kicker">Roadmap</div>
   <h1>Diagnose, register, source, then network</h1>
-  <div class="grid" style="grid-template-columns:repeat(6,1fr);flex:0">
+  <div class="grid" style="grid-template-columns:repeat(6,1fr);flex:none">
     <div class="phase now"><h2>0 · MVP</h2><p>AI diagnostic + registry slice. <b>Built this weekend</b></p></div>
     <div class="phase"><h2>1 · Diligence</h2><p>Field capture, bigger KB, adviser reports</p></div>
     <div class="phase"><h2>2 · Registry</h2><p>Living record per plant</p></div>
@@ -266,7 +266,7 @@ th{color:var(--muted);font-weight:600}
 <section class="slide title-slide">
   <div class="kicker">Recommendation</div>
   <h1>Run 3 paid pilots and 1 portfolio</h1>
-  <div class="grid g3" style="flex:0;max-width:90%">
+  <div class="grid g3" style="flex:none;max-width:90%">
     <div class="card"><h2>Measure</h2><p>What the existing advisers missed</p></div>
     <div class="card"><h2>Measure</h2><p>Which findings changed a decision or a price</p></div>
     <div class="card"><h2>Measure</h2><p>Whether the buyer paid separately for it</p></div>
