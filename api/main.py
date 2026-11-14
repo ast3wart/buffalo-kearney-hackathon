@@ -32,23 +32,43 @@ class TableCount(BaseModel):
     rows: int
 
 
+class Company(BaseModel):
+    company_id: str
+    company_name: str
+    industry: str
+    data_as_of: str
+
+
 class Health(BaseModel):
     ok: bool
-    source: str
     run_at: str
+    companies: list[Company]
     tables: list[TableCount]
+
+
+def _companies(con) -> list[Company]:
+    rows = con.execute("SELECT company_id, company_name, industry, data_as_of FROM companies ORDER BY company_id").fetchall()
+    return [Company(company_id=a, company_name=b, industry=c, data_as_of=d) for a, b, c, d in rows]
+
+
+@app.get("/companies", response_model=list[Company])
+def list_companies() -> list[Company]:
+    with db() as con:
+        return _companies(con)
 
 
 @app.get("/health", response_model=Health)
 def health() -> Health:
     with db() as con:
-        source, run_at = con.execute("SELECT source, CAST(run_at AS VARCHAR) FROM meta").fetchone()
-        names = [r[0] for r in con.execute("SELECT table_name FROM information_schema.tables WHERE table_name <> 'meta' ORDER BY 1").fetchall()]
+        run_at = con.execute("SELECT CAST(run_at AS VARCHAR) FROM meta").fetchone()[0]
+        names = [r[0] for r in con.execute(
+            "SELECT table_name FROM information_schema.tables WHERE table_name NOT IN ('meta','companies') ORDER BY 1").fetchall()]
         tables = [TableCount(name=n, rows=con.execute(f'SELECT count(*) FROM "{n}"').fetchone()[0]) for n in names]
-    return Health(ok=True, source=source, run_at=run_at, tables=tables)
+        return Health(ok=True, run_at=run_at, companies=_companies(con), tables=tables)
 
 
 # ---- Planned endpoints (see docs/build/api.md). Owners fill these in. ----
+# Every data endpoint takes ?company=<company_id> (see GET /companies) and filters WHERE company_id = ?
 # GET  /overview            spend thread : coverage + build vs lifecycle cost per product
 # GET  /links?source=&q=    both         : linking explorer rows
 # GET  /markups             spend thread : spare vs production price per part

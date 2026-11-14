@@ -1,6 +1,13 @@
 failure_code,system,description,likely_categories
-H-21,hydraulic,Hydraulic leak at cylinder,seal;hose
-D-10,drivetrain,Noise / vibration in driveline,bearing;belt
-E-05,electrical,No start / intermittent power,electrical;fuel
-B-02,brakes,Brake noise / reduced braking,brake
-N-01,engine,Oil leak / low oil pressure,filter
+HYD-ELP,hydraulic,External leakage,seal;hose;fitting;hydraulic_component
+HYD-LOP,hydraulic,Low output / pressure,hydraulic_component;seal;filter
+DRV-VIB,drivetrain,Vibration,bearing;belt;gear;wheel_tire
+DRV-NOI,drivetrain,Noise,bearing;gear;belt
+ENG-ELP,engine,External leakage (oil),filter;seal;gasket
+ENG-OHE,engine,Overheating,cooling;belt;sensor
+ELE-FTS,electrical,Fail to start,electrical;battery;fuel;sensor
+ELE-INT,electrical,Intermittent operation,electrical;sensor;harness
+BRK-NOI,brakes,Noise,brake
+BRK-DEG,brakes,Degraded performance,brake;hydraulic_component
+BDY-STR,body,Structural / cracking,structural;fastener;plastic
+LGT-FTF,lighting,Fails to function,lighting;harness

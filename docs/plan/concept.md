@@ -31,4 +31,9 @@ A manufacturer's parts lists (BOMs), production purchases, spare-part purchases,
 | Proof | "Trust us" | Accuracy measured against planted correct answers |
 
 ## Honest framing for judges
-There's no provided dataset. We generate a realistic one modeled on a mid-size utility-vehicle maker, calibrated to **real public numbers** (SEC warranty filings, NHTSA complaint patterns). We plant the correct answers so we can **measure** our accuracy. The tool reads standard ERP-style flat files, so it would run on a real client's exports.
+There's no provided dataset. We generate **three realistic companies**, each calibrated to a real public benchmark from SEC warranty filings:
+- a utility-vehicle maker (≈ Polaris)
+- a compact-equipment maker (≈ CNH)
+- an HVAC maker (≈ Carrier), which has **no** planted problem, as a control
+
+We tune on one company and report accuracy on the other two, so it isn't overfit. The control company checks that we don't raise false alarms. We plant the correct answers so we can **measure** our accuracy. The tool reads standard ERP-style flat files, so it would run on a real client's exports.

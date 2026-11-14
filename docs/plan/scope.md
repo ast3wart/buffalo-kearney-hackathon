@@ -5,9 +5,9 @@ Two people, about 20 working hours each, submission due **Sun 8:30 AM**.
 ## Must-haves (MVP)
 | # | Piece | Definition of done |
 |---|---|---|
-| M1 | Data generator | `python -m afterlife.generate` writes all tables in `docs/build/data-contract.md` to `data/generated/`, with planted links and **one planted failure spike** |
+| M1 | Data generator | `python -m afterlife.generate` writes **3 companies** (`afterlife/profiles.py`) to `data/generated/<company_id>/`, with planted links, a spike in 2 of them, and none in the control company |
 | M2 | Matching | Spend lines and claims → `links.csv` with method + confidence. Exact part number → failure code + BOM → fuzzy text |
-| M3 | Accuracy | `python -m afterlife.evaluate` prints precision and recall vs. planted answers |
+| M3 | Accuracy | `python -m afterlife.evaluate` prints precision and recall per company. Prairie = tuned, Ironridge + Northwind = **holdout** |
 | M4 | Early warning | `alerts.csv`: parts whose claims per 1,000 units jump vs. baseline, across products, by build month |
 | M5 | Cost | Build cost vs. lifecycle cost (spares + warranty) per product |
 | M6 | Brief | Markdown supplier brief: spike, $ exposure, spare-part markup line |

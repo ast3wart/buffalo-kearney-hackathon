@@ -21,4 +21,7 @@ Use this when you hand something to the other person or change something they de
 | Sat ~10 PM | 💲 Asher → 🛠 Brandon | Deck draft for review |
 
 ## Log
-_(nothing yet)_
+### Fri Nov 13 · both · CP0 contract lock
+- What changed: data contract v2 (part_no + price_unit on spend, info_records, dataset_info, 12 SYSTEM-MODE failure codes, 21 categories). **Three companies** in `data/generated/<company_id>/`. API takes `?company=`.
+- Where: `docs/build/data-contract.md`, `docs/build/api.md`, `afterlife/taxonomy.py`, `afterlife/profiles.py`, `afterlife/check.py`
+- What you need: generators take a `profile` argument. Run `python -m afterlife.check` before pushing.

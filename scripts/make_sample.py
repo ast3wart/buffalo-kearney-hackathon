@@ -8,7 +8,12 @@ Run: python scripts/make_sample.py
 """
 import csv
 import random
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from afterlife.taxonomy import FAILURE_CODES  # noqa: E402
+from afterlife.profiles import PROFILES, dataset_info  # noqa: E402
 
 OUT = Path(__file__).resolve().parent.parent / "data" / "sample"
 rng = random.Random(42)
@@ -81,11 +86,13 @@ for p, (sid, spn, desc, uom, pack) in prod_src.items():
     for i in range(2):  # two POs per part
         n += 1
         pid = f"PO-4500{n:02d}-010"
+        price_unit = 100 if (p == "100-4471-02" and i == 1) else 1  # SAP trap: price is per 100
         production_spend.append({
-            "po_line_id": pid, "supplier_id": sid, "supplier_name": SUP[sid][0], "supplier_pn": spn,
+            "po_line_id": pid, "part_no": p if rng.random() < 0.85 else "",  # ~85% carry the material number
+            "supplier_id": sid, "supplier_name": SUP[sid][0], "supplier_pn": spn,
             "description": desc, "qty": rng.choice([500, 1000, 2000]) // pack, "uom": uom,
-            "unit_price": round(std * pack * rng.uniform(0.97, 1.05), 2), "po_date": f"2026-0{i * 3 + 1}-15",
-            "plant": "P-IA1", "country": SUP[sid][1]})
+            "unit_price": round(std * pack * price_unit * rng.uniform(0.97, 1.05), 2), "price_unit": price_unit,
+            "po_date": f"2026-0{i * 3 + 1}-15", "plant": "P-IA1", "country": SUP[sid][1]})
         truth_links.append({"source_table": "production_spend", "source_id": pid, "part_no": p})
     # service-team buys the same part from a distributor at a markup, with different wording
     n += 1
@@ -93,20 +100,15 @@ for p, (sid, spn, desc, uom, pack) in prod_src.items():
     pid = f"PO-7700{n:02d}-010"
     markup = rng.uniform(1.6, 4.5)
     service_spend.append({
-        "po_line_id": pid, "supplier_id": sid2, "supplier_name": SUP[sid2][0],
+        "po_line_id": pid, "part_no": p if rng.random() < 0.15 else "",  # mostly free-text buys
+        "supplier_id": sid2, "supplier_name": SUP[sid2][0],
         "supplier_pn": f"QS-{rng.randint(10000, 99999)}", "description": desc.upper().replace(" X ", "X"),
-        "qty": rng.choice([20, 40, 60]), "uom": "EA", "unit_price": round(std * markup, 2),
+        "qty": rng.choice([20, 40, 60]), "uom": "EA", "unit_price": round(std * markup, 2), "price_unit": 1,
         "po_date": "2026-05-02", "plant": "SVC-1", "country": "US",
         "channel": rng.choice(["spares", "warranty_repair"])})
     truth_links.append({"source_table": "service_spend", "source_id": pid, "part_no": p})
 
-failure_codes = [
-    {"failure_code": "H-21", "system": "hydraulic", "description": "Hydraulic leak at cylinder", "likely_categories": "seal;hose"},
-    {"failure_code": "D-10", "system": "drivetrain", "description": "Noise / vibration in driveline", "likely_categories": "bearing;belt"},
-    {"failure_code": "E-05", "system": "electrical", "description": "No start / intermittent power", "likely_categories": "electrical;fuel"},
-    {"failure_code": "B-02", "system": "brakes", "description": "Brake noise / reduced braking", "likely_categories": "brake"},
-    {"failure_code": "N-01", "system": "engine", "description": "Oil leak / low oil pressure", "likely_categories": "filter"},
-]
+failure_codes = FAILURE_CODES  # shared taxonomy (afterlife/taxonomy.py)
 texts = {
     "200-1180-01": ["hyd leak boom cyl, repl seal kit", "cust reports fluid under unit, cyl seals worn", "lift cyl weeping, resealed"],
     "500-7731-01": ["hyd hose chafed and leaking, repl hose", "burst hose at loader valve"],
@@ -117,8 +119,8 @@ texts = {
     "700-5520-02": ["front brake squeal, pads replaced"],
     "300-0912-00": ["oil leak at filter, filter gasket torn"],
 }
-code_for = {"200-1180-01": "H-21", "500-7731-01": "H-21", "100-4471-02": "D-10", "400-2205-03": "D-10",
-            "600-3310-00": "E-05", "800-1004-00": "E-05", "700-5520-02": "B-02", "300-0912-00": "N-01"}
+code_for = {"200-1180-01": "HYD-ELP", "500-7731-01": "HYD-ELP", "100-4471-02": "DRV-NOI", "400-2205-03": "DRV-VIB",
+            "600-3310-00": "ELE-FTS", "800-1004-00": "ELE-FTS", "700-5520-02": "BRK-NOI", "300-0912-00": "ENG-ELP"}
 base_rate = {p: 0.004 for p in cat}  # claims per unit built per BOM occurrence (sample-sized)
 SPIKE_PART, SPIKE_FROM, SPIKE_X = "200-1180-01", "2026-04", 3.0
 
@@ -151,6 +153,8 @@ write("part_master", part_master)
 write("bom", bom)
 write("builds", builds)
 write("production_spend", production_spend)
+write("info_records", [{"part_no": p, "supplier_id": v[0], "supplier_pn": v[1]} for p, v in prod_src.items()])
+write("dataset_info", [{"key": k, "value": v} for k, v in {**dataset_info(PROFILES[0]), "company_id": "sample", "first_build_month": months[0], "last_build_month": months[-1]}.items()])
 write("service_spend", service_spend)
 write("failure_codes", failure_codes)
 write("warranty_claims", claims)
