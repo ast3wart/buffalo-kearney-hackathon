@@ -24,7 +24,14 @@ Use this when you hand something to the other person or change something they de
 ### Sat Nov 14, early AM · Asher → Brandon · Data contract v3 (from your CP0 review)
 - What changed: merged your `plan/cp0-additions` into `test-data-batch`, then applied #10–15, #17, and the #19 schema. New tables: `build_supply.csv`, `abbreviations.csv`. `truth_spikes.from_po_line_id`, links v2 columns, `runs` table, SAP adapter. Northwind has HVAC codes and categories (24 categories, 16 failure codes in the union).
 - Where: `docs/build/data-contract.md` (v3 section + SAP table), `afterlife/taxonomy.py`, `afterlife/profiles.py`, `afterlife/adapters/sap.py`, `afterlife/check.py`, `scripts/make_sample.py`, `tests/`
-- What you need: `git checkout test-data-batch && git pull`. Your sample now has a dual-sourced seal kit (Keystone S-022 / Bluewater S-023) with the spike only on Keystone's April lot `PO-450005-010`, so build `detect.py` against that. Please confirm or push back at CP1.
+- What you need to do:
+  - **CP1 review (now):**
+    1. `git fetch && git checkout test-data-batch && git pull`, then `./scripts/checkpoint.sh` (should be green)
+    2. Read `docs/plan/plan-updates.md` → Update 4, and the status table at the top of the addendum in `docs/research/cp0-proposal.md`
+    3. Look at `data/sample/build_supply.csv` + `truth_spikes.csv`. The seal kit is dual-sourced (Keystone S-022 / Bluewater S-023), and the spike is only on Keystone's April lot `PO-450005-010`. Is that usable for `detect.py`?
+    4. Answer in a PR #1 comment: which Claude model ID to pin, and who has an API key
+    5. All good → merge PR #1 with **"Create a merge commit"** (not rebase). Anything off → comment on the PR and tell Asher
+  - **After the merge (your next task, not part of the review):** `git checkout main && git pull && git checkout -b warranty/detect`, then build `detect.py` against that sample spike
 - Known issues: none. `./scripts/checkpoint.sh` is green, 7 tests pass.
 
 ### Fri Nov 13 · both · CP0 contract lock
