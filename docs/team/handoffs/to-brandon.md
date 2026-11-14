@@ -23,8 +23,15 @@
   - **04 deck map + mockup, numbers:**
     - The diligence wedge is **~$10M ceiling** (~670 reviewed deals × $15k, `docs/research/deep-dive-numbers.md`), not $3M (that was the Axial listings model).
     - Add the **own-plant number**: **25,799 US plants with 100+ employees** (Census 2022) → **$13–32M ARR at 5% adoption**, with a $258–645M ceiling.
-    - Pick **one deal add-on price** ($10–20k fits the consulting breakeven; "low thousands" doesn't).
+    - **Don't pick a price.** Prices come out of your **financial model** (below). Until it runs, the deck shows ranges labeled "model output pending" ("low thousands" vs $10–20k gets settled by the model, not by us).
   - **Slide 5 (Customer):** the trigger is "plant risk / CapEx planning *or* an acquisition", not only an acquisition.
+- **NEW: you build the financial model that predicts the price (Asher's decision: we don't pick prices).** Price = a share of **modeled cost saved per plant**, not a number we choose. Suggested shape (yours to change):
+  - **Inputs per plant:** spares inventory $, maintenance budget, carrying-cost %, rush-buy premiums, # of critical end-of-life components, line revenue per day / downtime $/h, probability of failure. Take them from the registry where possible, so the model runs **per plant in the demo**.
+  - **Savings levers:** spares released (one-time) · carrying cost avoided · rush premiums avoided · purchases avoided via a sister-plant spare · planned vs. emergency replacement. Keep **downtime avoided** as a separate, clearly labeled expected value: probability × hours × $/h.
+  - **Outputs:** savings per plant per year (low/base/high) → **price per plant = value-capture share × savings** (e.g. 20–40%) → payback period / ROI for the customer. Same for the deal module (value of the CapEx finding vs. fee) and for a portfolio license.
+  - **Market roll-up:** price × 25,799 plants × adoption (replace the hard-coded `PRICES` in `scripts/market_model.py` with your model's output).
+  - **Where:** e.g. `xray/pricing.py` (runs on the registry) + a sensitivity table in `docs/research/`. Every input labeled measured / survey / vendor / assumption.
+  - **Starting point:** the $10k / $30k / $60k per-plant scenario and the case studies in `docs/research/deep-dive-numbers.md` §D.
 - **KEEP the liquidity angle (Asher: it's important).** Keep it in doc 03, doc 08 and appendix A3, and give it a main-deck mention (e.g. on the business-model or why-now slide), not only the appendix:
   - faster, cleaner exits (a seller scans before a sale)
   - cash tied up in idle spares
@@ -38,7 +45,7 @@
 - **Merged:** #11 (research) → your #13 (pivot plan) → #12 (roles + registry format).
 - **Adopted from your plan:** the **2-plant portfolio** (for the Plant B spare moment), **SQLite + seed files**, and your schema (`fund`, `spare_stock`, ranges, `lead_time_wks`, `authorized`). It's all in `docs/build/registry-format.md`, with each column tagged by owner.
 - **Changed: the split.** Your doc 05 split was written before we split the work by strength. **Asher (CS + stats) takes data, vision, matching, accuracy and the app. You (finance + accounting) take valuation (`xray/valuation.py`), the cost columns, sourcing (`xray/sourcing.py`), the estimates and the pitch numbers.** I put a note on doc 05. See `docs/team/roles.md`.
-- **For you to settle (money thread):** your doc 03 prices the deal add-on at "low thousands", but the deep dive's consulting breakeven assumes a **$10–20k** module (`docs/research/deep-dive-numbers.md`). Pick one number for the deck.
+- **For you to settle (money thread):** your doc 03 prices the deal add-on at "low thousands", but the deep dive's consulting breakeven assumes a **$10–20k** module (`docs/research/deep-dive-numbers.md`). **Superseded (~5 PM):** don't pick a number. Your financial model derives it (see the 5 PM entry).
 - **What you need to do now (CP0):** sign off on `registry-format.md`, especially the 💲 columns and outputs.
 
 ### Sat Nov 14, ~4 PM · Roles for Equipment X-Ray + registry format to sign off (CP0)

@@ -20,6 +20,7 @@ The work is split by strength. Both threads build part of the live demo, and bot
 | Valuation: CapEx cliff by year, "pay $X less" / holdback, deferred CapEx as a hidden liability, discounting | `xray/valuation.py` |
 | Cost columns in the knowledge base (replacement and migration cost) and lines (revenue per day, downtime $/hour) | `kb_entry`, `line` seeds |
 | Sourcing: 2–3 discontinued parts with offers from OEM, refurbisher and eBay (price, lead time, condition, trust) + the buy / migrate / monitor rule | `sourcing_offer` seed + `xray/sourcing.py` |
+| **Financial model that predicts the price:** cost saved per plant (levers, low/base/high) → price per plant, deal module and portfolio license → customer ROI → market roll-up. We don't pick prices; the model derives them. | `xray/pricing.py` + sensitivity table |
 | Refine the estimates with Velocity: willingness to pay, downtime value, sourcing take-rate, PE portfolio size | `docs/research/deep-dive-numbers.md`, `scripts/market_model.py` |
 | Pitch numbers + judge Q&A: problem, market, business model, consulting-firm breakeven | `docs/pitch/` |
 

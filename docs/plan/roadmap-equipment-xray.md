@@ -103,8 +103,8 @@ Liquidity sells all four. **Status:** hypothesis until the doc 08 research backs
 | Phase | What | Who pays / how | Proof point |
 |---|---|---|---|
 | **0 · MVP (hackathon)** | AI diagnostic: photos + list → components → lifecycle → **CapEx cliff, single points of failure, sourcing**, measured on a fake factory with planted answers | Demo | Accuracy number; live photo of a real machine |
-| **1 · Plant assessment** | Field capture + report for **your own plant**. The same product sold as a **deal module** through appraisers and operations-diligence firms. | **Per-plant assessment fee** (anchor: today's controls reviews cost $6–30k); deal module about $10–20k | Hours saved against a real assessor; findings people act on |
-| **2 · Living registry** | Every assessed plant stays current: lifecycle alerts, spares, a replacement plan | **Subscription per plant (~$10–25k/yr)** | Fewer rush buys, less spares stock, fewer surprise outages (audited) |
+| **1 · Plant assessment** | Field capture + report for **your own plant**. The same product sold as a **deal module** through appraisers and operations-diligence firms. | **Per-plant assessment fee** (anchor: today's controls reviews cost $6–30k); deal-module price from the financial model | Hours saved against a real assessor; findings people act on |
+| **2 · Living registry** | Every assessed plant stays current: lifecycle alerts, spares, a replacement plan | **Subscription per plant** (price = share of modeled savings per plant) | Fewer rush buys, less spares stock, fewer surprise outages (audited) |
 | **3 · Sourcing** | Shelf-first across plants, outside offers, successor advice, scarcity alerts | Same subscribers; later a **take rate** through partners | Purchases avoided because a sister plant had the part; faster sourcing |
 | **4 · Portfolio network** | Across a company's plants and a PE firm's companies: pooled spares, shared buying, standard parts | **Portfolio license** (one sale, 10–30 companies) | Spares shared between companies; group purchasing savings |
 | **5 · Predictive** | Sensors and failure history → our own models for remaining life and failure risk | Premium tier; partners | Downtime avoided, measured. This is when downtime becomes a counted number. |
@@ -125,7 +125,7 @@ Liquidity sells all four. **Status:** hypothesis until the doc 08 research backs
 6. **This roadmap**, with the flywheel and the PE portfolio vision.
 
 ## Risks and open questions
-- **Willingness to pay $10–25k per plant per year** is untested. Next step: paid pilots.
+- **Price** comes from Brandon's financial model (share of cost saved per plant), not a chosen number. Willingness to pay is still untested. Next step: paid pilots.
 - **Value is a scenario** from vendor cases, and downtime isn't counted yet. Prove it in pilots.
 - **Incumbents:** Rockwell/Siemens/ABB installed-base services, SPARETECH/Verusen, CMMS tools. Our edge is multi-brand, from the photo and the panel (not only the ERP), and cross-plant.
 - **Accuracy on worn plates and crowded cabinets:** measure it; firmware isn't readable from labels.
