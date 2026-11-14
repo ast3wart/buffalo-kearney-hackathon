@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/companies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Companies */
+        get: operations["list_companies_companies_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/health": {
         parameters: {
             query?: never;
@@ -25,14 +42,25 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** Company */
+        Company: {
+            /** Company Id */
+            company_id: string;
+            /** Company Name */
+            company_name: string;
+            /** Industry */
+            industry: string;
+            /** Data As Of */
+            data_as_of: string;
+        };
         /** Health */
         Health: {
             /** Ok */
             ok: boolean;
-            /** Source */
-            source: string;
             /** Run At */
             run_at: string;
+            /** Companies */
+            companies: components["schemas"]["Company"][];
             /** Tables */
             tables: components["schemas"]["TableCount"][];
         };
@@ -52,6 +80,26 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    list_companies_companies_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Company"][];
+                };
+            };
+        };
+    };
     health_health_get: {
         parameters: {
             query?: never;

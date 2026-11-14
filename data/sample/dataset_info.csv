@@ -1,0 +1,10 @@
+key,value
+company_id,sample
+company_name,Prairie Utility Vehicles
+industry,Utility vehicles and compact tractors
+data_as_of,2026-10-31
+first_build_month,2026-01
+last_build_month,2026-06
+currency,USD
+warranty_months,24
+mis_window,3

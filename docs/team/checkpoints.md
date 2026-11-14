@@ -34,7 +34,8 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 
 **Exit:** contracts committed, layout committed, each person knows their first task.
 
-## CP1 · Morning resync (Sat 9:00 AM, 15 min, standing)
+## CP1 · Morning resync + confirm contract v3 (Sat 9:00 AM, 30 min)
+- [ ] Brandon confirms or pushes back on **data contract v3** (`docs/plan/plan-updates.md`, Update 4). Decide when `test-data-batch` merges to main. Pin the LLM model ID
 - [ ] Each person: what's done, what's next, anything blocking (2 min each)
 - [ ] Any contract changes overnight? If yes, read them out loud and check `docs/team/handoffs.md`
 - [ ] Confirm the times for CP2 and CP3
@@ -74,9 +75,9 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 **Why:** after this, the numbers in the pitch shouldn't change.
 - [ ] `./scripts/checkpoint.sh` fully green on **fully generated** data, with no warnings left that we can't explain
 - [ ] Sanity on the story numbers, written into `docs/pitch/demo-script.md`:
-  - [ ] % of spend linked, % of claims linked, precision and recall
+  - [ ] % of spend linked, % of claims linked, precision and recall **per company**. Holdout companies within a few points of Prairie?
   - [ ] Warranty ≈ 2.5% of revenue (SEC benchmark)?
-  - [ ] Spike caught? Any false alarms?
+  - [ ] Spike caught in Prairie + Ironridge? **Zero alerts for Northwind** (the control)?
   - [ ] Build cost vs. lifecycle cost per product, spare-part markup range
   - [ ] Recovery $ + harmonization $ per supplier, and do the two halves of the brief **add up consistently**?
 - [ ] **Go/no-go on stretch:** only if everything above is solid
@@ -119,7 +120,7 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 ## Notes log
 _Write 2–3 lines after each checkpoint: decisions, numbers, cuts._
 
-- CP0:
+- CP0 (Fri Nov 13, done): **3 companies, not 1** (Prairie = tune, Ironridge + Northwind = holdout, Northwind = no-spike control). all research proposals accepted except claim line items and BOM uom. Spikes shown both ways, alerts use the MIS window (3). Window Jan 2025–Sep 2026, as of Oct 31 2026. Clean industrial style. See docs/research/cp0-proposal.md.
 - CP1:
 - CP2:
 - CP3:

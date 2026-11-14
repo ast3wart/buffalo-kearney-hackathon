@@ -1,17 +1,19 @@
-po_line_id,supplier_id,supplier_name,supplier_pn,description,qty,uom,unit_price,po_date,plant,country
-PO-450001-010,S-011,Great Lakes Bearing Co,6204-2RSH,Deep groove ball bearing 20x47x14 sealed,500,EA,4.16,2026-01-15,P-IA1,US
-PO-450002-010,S-011,Great Lakes Bearing Co,6204-2RSH,Deep groove ball bearing 20x47x14 sealed,2000,EA,4.19,2026-04-15,P-IA1,US
-PO-450004-010,S-022,Keystone Seal Works,KSW-HC40-K,Hydraulic cylinder seal kit 40 mm bore,500,EA,11.85,2026-01-15,P-IA1,MX
-PO-450005-010,S-022,Keystone Seal Works,KSW-HC40-K,Hydraulic cylinder seal kit 40 mm bore,500,EA,11.8,2026-04-15,P-IA1,MX
-PO-450007-010,S-031,Northfield Filtration,NF-M20-OS,Spin-on oil filter M20 x 1.5,50,BX10,31.28,2026-01-15,P-IA1,US
-PO-450008-010,S-031,Northfield Filtration,NF-M20-OS,Spin-on oil filter M20 x 1.5,50,BX10,31.96,2026-04-15,P-IA1,US
-PO-450010-010,S-044,Ridgeway Drive Systems,RDS-CVT32,CVT drive belt 32mm,2000,EA,26.46,2026-01-15,P-IA1,US
-PO-450011-010,S-044,Ridgeway Drive Systems,RDS-CVT32,CVT drive belt 32mm,1000,EA,26.36,2026-04-15,P-IA1,US
-PO-450013-010,S-052,Delta Fluid Power,DFP-3824,Hydraulic hose assembly 3/8 in x 24 in,2000,EA,18.13,2026-01-15,P-IA1,CN
-PO-450014-010,S-052,Delta Fluid Power,DFP-3824,Hydraulic hose assembly 3/8 in x 24 in,500,EA,17.92,2026-04-15,P-IA1,CN
-PO-450016-010,S-063,Summit Electric Parts,SEP-IGN12K,Keyed ignition switch 12V,500,EA,9.75,2026-01-15,P-IA1,CN
-PO-450017-010,S-063,Summit Electric Parts,SEP-IGN12K,Keyed ignition switch 12V,1000,EA,9.95,2026-04-15,P-IA1,CN
-PO-450019-010,S-070,Midland Brake Supply,MBS-FP220,Front brake pad set,2000,EA,14.08,2026-01-15,P-IA1,US
-PO-450020-010,S-070,Midland Brake Supply,MBS-FP220,Front brake pad set,2000,EA,14.51,2026-04-15,P-IA1,US
-PO-450022-010,S-081,Harbor Fuel Components,HFC-EFP12,Electric fuel pump 12 V,500,EA,46.32,2026-01-15,P-IA1,KR
-PO-450023-010,S-081,Harbor Fuel Components,HFC-EFP12,Electric fuel pump 12 V,1000,EA,48.26,2026-04-15,P-IA1,KR
+po_line_id,part_no,supplier_id,supplier_name,supplier_pn,description,qty,uom,unit_price,price_unit,po_date,plant,country
+PO-450001-010,100-4471-02,S-011,Great Lakes Bearing Co,6204-2RSH,Deep groove ball bearing 20x47x14 sealed,500,EA,4.21,1,2026-01-15,P-IA1,US
+PO-450002-010,100-4471-02,S-011,Great Lakes Bearing Co,6204-2RSH,Deep groove ball bearing 20x47x14 sealed,1000,EA,404.93,100,2026-04-15,P-IA1,US
+PO-450004-010,200-1180-01,S-022,Keystone Seal Works,KSW-HC40-K,Hydraulic cylinder seal kit 40 mm bore,500,EA,12.04,1,2026-01-15,P-IA1,MX
+PO-450005-010,200-1180-01,S-022,Keystone Seal Works,KSW-HC40-K,Hydraulic cylinder seal kit 40 mm bore,500,EA,11.5,1,2026-04-15,P-IA1,MX
+PO-450006-010,200-1180-01,S-023,Bluewater Seal Co,BW-SK40H,"Seal kit, hyd. cylinder, 40mm",1000,EA,11.71,1,2026-01-15,P-IA1,US
+PO-450007-010,200-1180-01,S-023,Bluewater Seal Co,BW-SK40H,"Seal kit, hyd. cylinder, 40mm",2000,EA,11.58,1,2026-04-15,P-IA1,US
+PO-450009-010,300-0912-00,S-031,Northfield Filtration,NF-M20-OS,Spin-on oil filter M20 x 1.5,200,BX10,31.22,1,2026-01-15,P-IA1,US
+PO-450010-010,300-0912-00,S-031,Northfield Filtration,NF-M20-OS,Spin-on oil filter M20 x 1.5,100,BX10,33.56,1,2026-04-15,P-IA1,US
+PO-450012-010,400-2205-03,S-044,Ridgeway Drive Systems,RDS-CVT32,CVT drive belt 32mm,1000,EA,26.64,1,2026-01-15,P-IA1,US
+PO-450013-010,400-2205-03,S-044,Ridgeway Drive Systems,RDS-CVT32,CVT drive belt 32mm,2000,EA,27.59,1,2026-04-15,P-IA1,US
+PO-450015-010,500-7731-01,S-052,Delta Fluid Power,DFP-3824,Hydraulic hose assembly 3/8 in x 24 in,1000,EA,19.3,1,2026-01-15,P-IA1,CN
+PO-450016-010,500-7731-01,S-052,Delta Fluid Power,DFP-3824,Hydraulic hose assembly 3/8 in x 24 in,2000,EA,18.17,1,2026-04-15,P-IA1,CN
+PO-450018-010,600-3310-00,S-063,Summit Electric Parts,SEP-IGN12K,Keyed ignition switch 12V,500,EA,9.62,1,2026-01-15,P-IA1,CN
+PO-450019-010,,S-063,Summit Electric Parts,SEP-IGN12K,Keyed ignition switch 12V,2000,EA,9.7,1,2026-04-15,P-IA1,CN
+PO-450021-010,700-5520-02,S-070,Midland Brake Supply,MBS-FP220,Front brake pad set,2000,EA,14.41,1,2026-01-15,P-IA1,US
+PO-450022-010,700-5520-02,S-070,Midland Brake Supply,MBS-FP220,Front brake pad set,2000,EA,14.26,1,2026-04-15,P-IA1,US
+PO-450024-010,800-1004-00,S-081,Harbor Fuel Components,HFC-EFP12,Electric fuel pump 12 V,500,EA,47.4,1,2026-01-15,P-IA1,KR
+PO-450025-010,,S-081,Harbor Fuel Components,HFC-EFP12,Electric fuel pump 12 V,500,EA,46.93,1,2026-04-15,P-IA1,KR
