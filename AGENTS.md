@@ -1,14 +1,26 @@
 # AGENTS.md
 
-**Equipment X-Ray** (working name) does pre-deal equipment diligence for manufacturing acquisitions (Kearney × PERLab hackathon, Startup track):
-1. Take photos of nameplates and control cabinets, plus the target's equipment list.
+**Equipment X-Ray** (working name) is the system of record for aging plant equipment (Kearney × PERLab hackathon, Startup track):
+1. Take photos of nameplates and control cabinets, plus a plant's equipment list and storeroom stock.
 2. Identify the machines and their components with off-the-shelf Claude vision.
-3. Check each one against a lifecycle knowledge base.
-4. Output the CapEx cliff, "pay $X less", the single points of failure, and where to source every part.
+3. Check each one against a lifecycle knowledge base and build a registry: fund/company → plant → line → machine → component.
+4. Output the CapEx cliff, the single points of failure, and sourcing (shelf at any plant first, then outside). For a deal, also output "pay $X less".
+
+## Strategy (DECIDED; follow it, don't contradict it)
+- **Customers:** multi-plant manufacturers **and** PE portfolios (not PE first).
+- **Main way in:** a manufacturer evaluating its **own plants**. No deal needed.
+- **An acquisition is ONE way in**, not the main one. The deal market is too small to rely on (~670 reviewed US deals a year, ≤ ~$10M). A seller's pre-exit scan is another way in.
+- **Keep the liquidity angle:** freeing up cash (idle spares, targeted CapEx, cleaner exits, verified collateral). Label it a hypothesis until research backs it.
+- **Don't pick prices.** Prices come from Brandon's financial model (share of cost saved per plant).
+- **We don't replace appraisers or engineers.** They keep the sign-off.
+- **Source of truth:** `docs/plan/roadmap-equipment-xray.md`. If another doc disagrees, the roadmap wins. `docs/plan/idea-equipment-xray.md` is HISTORICAL (deal-only framing).
 
 ## Read first
-- `docs/plan/idea-equipment-xray.md`: problem, user, workflow, competition, weekend build
-- `docs/plan/roadmap-equipment-xray.md`: system components, registry data model, sourcing rules, phases
+- `docs/plan/roadmap-equipment-xray.md`: strategy, system components, sourcing rules, phases (**source of truth**)
+- `docs/team/roles.md`: who owns what, checkpoints
+- `docs/build/registry-format.md`: the data format
+- `docs/plan/pivot-plan/`: POC scope, demo script, tech stack, deck map
+- `docs/research/`: market validation, deep-dive numbers, Brandon's market/PE/flywheel research, research backlog
 
 ## Layout
 ```

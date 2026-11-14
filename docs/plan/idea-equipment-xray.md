@@ -2,7 +2,7 @@
 
 **Status:** PROPOSED pivot (Sat Nov 14, ~11:45 AM). Asher + Claude, after the judge review. **Brandon: read, push back, and say yes or no.** Nothing in the code has changed yet.
 
-> **Update (~4:30 PM):** market research repositioned us: **evaluating your own plants is the business; acquisitions are one entry point.** The current version is the **[roadmap](roadmap-equipment-xray.md)**. Sections below that frame this as deal-only are superseded.
+> ⚠️ **HISTORICAL (written at ~11:45 AM, before the market research). Do not use for strategy.** The source of truth is the **[roadmap](roadmap-equipment-xray.md)**: **evaluating your own plants is the main way in; an acquisition is one way in; customers are multi-plant manufacturers and PE portfolios.** This doc is kept for the problem background, competitor list and why-us points. Its user/workflow/pitch sections describe a deal-only tool and are superseded.
 >
 > **Update (~12:30 PM):** a mentor reviewed the idea, said keep digging, and steered us toward a **platform roadmap** (diagnostic MVP → central machine/part registry → **parts sourcing** → PE portfolio network). See **[roadmap-equipment-xray.md](roadmap-equipment-xray.md)**.
 

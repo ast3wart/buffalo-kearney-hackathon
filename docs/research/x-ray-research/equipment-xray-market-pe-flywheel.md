@@ -1,10 +1,11 @@
 # Equipment X-Ray — Market, PE Buyer Strategy & Competitive Flywheel
 
 **Research snapshot:** November 14, 2026  
-**Audience:** Kearney × PERLab Hackathon judges; PE deal teams, operating partners, and industrial diligence advisers  
+**Audience:** Kearney × PERLab Hackathon judges; operations and finance leaders at multi-plant manufacturers; PE operating partners and deal teams; industrial diligence advisers  
+**Strategy alignment (Sat 5 PM):** framed to match [the roadmap](../../plan/roadmap-equipment-xray.md): **evaluating your own plants is the main way in; an acquisition is one way in** (that market is too small to rely on). Customers are **multi-plant manufacturers and PE portfolios**. The data, sources and guardrails are unchanged.  
 **Scope:** U.S. mid-market discrete manufacturing (machinery, HVAC, appliances, industrial equipment)
 
-> **Executive thesis:** Equipment X-Ray converts physical manufacturing equipment evidence into investment-grade capital-risk and sourcing intelligence. Start with a paid pre-acquisition equipment-diligence report; retain the equipment registry after close; expand across portfolio companies to identify CapEx priorities, common spares, supplier overlap, and standardized upgrade opportunities.
+> **Executive thesis:** Equipment X-Ray converts physical manufacturing equipment evidence into investment-grade capital-risk and sourcing intelligence. **Start with a paid assessment of a manufacturer's own plants**; keep the equipment registry live; expand across the company's plants (or a PE fund's portfolio companies) to identify CapEx priorities, common spares, supplier overlap, and standardized upgrade opportunities. **Acquisitions and pre-exit scans are additional ways in**: a deal scan becomes the acquired plant's registry.
 
 ## 1. Why now: three market forces
 
@@ -14,7 +15,7 @@
 - **Implication (inference):** With exits delayed and investors seeking distributions, PE managers have incentives to prevent unexpected maintenance CapEx, improve free cash flow, and make exit diligence easier. This does **not** mean every fund will increase technology spending.
 - **Pitch framing:** “Protect cash flow and make the next exit more defensible by turning hidden equipment risk into a quantified capital plan.”
 
-### B. Buy-and-build is a repeatable wedge for a portfolio registry
+### B. Buy-and-build multiplies the registry (one way in, not the main one)
 
 - **67.1% of U.S. PE middle-market transactions through Q3 2026 were add-ons** (PitchBook data reported by *The Lead*, Nov. 5, 2026). **Source type:** market-data provider. [PitchBook commentary/republication](https://theleadpc.com/the-pulse-of-private-equity-11-2-2026/); [PitchBook Q3 2026 report](https://pitchbook.com/news/reports/q3-2026-us-pe-middle-market-report).
 - **40.1% of industrial manufacturing deal volume, but only 16.6% of deal value, involved PE in Q2 2026**, in KPMG's defined U.S. industrial transaction sample. **Source type:** consultancy analyzing S&P/PitchBook data. [KPMG industrial M&A](https://kpmg.com/us/en/articles/mergers-acquisitions-trends-industrial-manufacturing.html).
@@ -32,13 +33,13 @@
 
 | Buyer / champion | Trigger | First useful deliverable | Expansion |
 |---|---|---|---|
-| **PE deal team / investment principal** | Pre-signing or confirmatory diligence | Equipment risk register, deferred-maintenance CapEx scenarios, evidence supporting deal discussions | Use on next acquisition / before exit |
-| **Operational due diligence or appraisal firm** | Mandated diligence assignment | Rapid, repeatable equipment and obsolescence appendix | Channel partner supplying many deal introductions |
-| **PE operating partner / value-creation team** | 100-day plan and hold period | Prioritized plant upgrade and downtime-risk plan | PE-wide subscription |
-| **Portfolio procurement lead** | Multiple plants / add-ons with overlapping parts | Common OEM/part mapping, price dispersion, verified sourcing options | Shared inventory, group procurement |
-| **Manufacturing CFO / plant reliability leader** | CapEx budget and operational continuity | Living asset register, replacement-cost bands, risk review | Recurring monitoring and work orders |
+| **Manufacturing VP Ops / CFO / plant reliability leader** (main) | CapEx budget, operational continuity, obsolescence risk | Living asset register, replacement-cost bands, risk review | All plants on the subscription; recurring monitoring and work orders |
+| **Multi-plant procurement lead** (company or PE portfolio) | Multiple plants / add-ons with overlapping parts | Common OEM/part mapping, price dispersion, verified sourcing options | Shared inventory, group procurement |
+| **PE operating partner / value-creation team** | Hold period, 100-day plan, pre-exit preparation | Prioritized plant upgrade and downtime-risk plan; verified record for exit | PE-wide portfolio license |
+| **PE deal team / investment principal** (one way in) | Pre-signing or confirmatory diligence | Equipment risk register, deferred-maintenance CapEx scenarios, evidence supporting deal discussions | Registry continues after close; use on next acquisition / before exit |
+| **Operational due diligence or appraisal firm** (channel for deals) | Mandated diligence assignment | Rapid, repeatable equipment and obsolescence appendix | Channel partner supplying deal introductions |
 
-**Best near-term wedge:** Sell a bounded **deal-time assessment** via diligence advisers or PE operating teams. **Land and expand:** convert the diligence snapshot into a post-close living registry, then a portfolio-level view. Pricing models (per deal, per plant, portfolio license, sourcing transaction fee) are hypotheses to test, not market benchmarks.
+**Main way in:** sell a bounded **assessment of a manufacturer's own plants** (or a PE portfolio company's plants) directly to operations/finance leaders. **Additional ways in:** a deal-time assessment via diligence advisers, or a pre-exit scan. Either way, the snapshot becomes a living registry, then a company- or portfolio-level view. The deal market alone is too small to rely on (~670 reviewed US deals a year, ≤ ~$10M; see [deep-dive-numbers.md](../deep-dive-numbers.md)). Pricing models (per deal, per plant, portfolio license, sourcing transaction fee) are hypotheses to test, not market benchmarks.
 
 **Important financial distinction:** A flagged obsolete component is **not automatically** a dollar-for-dollar purchase-price deduction or a debt-like item. Separate (1) recurring normalized maintenance CapEx, (2) urgent deferred work, (3) optional modernization/growth CapEx, and (4) modeled risk exposure. Deal treatment is negotiated and requires accounting/legal diligence. Avoid adding the same exposure to both an EBITDA multiple adjustment and a separate purchase-price deduction.
 
@@ -58,7 +59,7 @@
 
 ```mermaid
 flowchart TD
-    A[Deal-time equipment scan] --> B[Post-close living plant registry]
+    A[Plant scan: own plant (main), or an acquired / pre-exit plant] --> B[Living plant registry]
     B --> C[Sourcing / lifecycle alerts and verified outcomes]
     C --> D[PE portfolio view: common parts and purchasing leverage]
     D --> E[Proprietary observed prices, lead times, failures, upgrades]
@@ -66,7 +67,7 @@ flowchart TD
     F --> A
 ```
 
-**Flywheel logic:** Each acquisition creates a structured equipment dataset; post-close users validate it; sourcing and repairs add real outcomes; aggregated, permitted data improves subsequent diligence. The moat is **not the computer-vision model**. It is a combination of **verified proprietary outcomes, cross-company normalization, workflow integration, procurement relationships, and distribution through repeat deal buyers**.
+**Flywheel logic:** Each plant scan (own plant, or acquired) creates a structured equipment dataset; plant users validate it; sourcing and repairs add real outcomes; aggregated, permitted data improves the next assessment (own plant or deal). The moat is **not the computer-vision model**. It is a combination of **verified proprietary outcomes, cross-company normalization, workflow integration, procurement relationships, and distribution through multi-plant manufacturers, PE portfolios and diligence channel partners**.
 
 ### Competitive moat table
 
@@ -76,7 +77,7 @@ flowchart TD
 | **Predictive performance** | Observed failures and replacements tied to exact part, duty cycle, and environment | Real outcomes enable model calibration beyond generic EOL labels | Cannot claim reliable failure prediction until validated against held-out outcomes |
 | **Cross-plant network utility** | More participating plants, compatible spares and benchmarked quotes | Additional counterparties create matching/sourcing opportunities | Spare ownership, compatibility, location, firmware and security may prevent sharing |
 | **Workflow/data integration** | ERP, FI-AA fixed assets, SAP PM/CMMS, purchasing, evidence chain | Clean, longitudinal records and integrations create switching costs | Customer systems and data quality vary widely |
-| **Distribution and trust** | Diligence-firm relationships, PE relationships, audit-ready evidence | Repeat engagements and credible track records lower acquisition friction | Must earn trust; all cost and risk estimates need provenance |
+| **Distribution and trust** | Multi-plant manufacturer relationships, PE operating partners, diligence-firm channel, audit-ready evidence | Plant-by-plant expansion, repeat portfolio engagements and credible track records lower acquisition friction | Must earn trust; all cost and risk estimates need provenance |
 
 **Guardrail:** A larger dataset does not automatically improve outputs; **verified outcomes and permissioned access** are what make the loop credible. Each customer should control confidential plant and pricing data, with opt-in/contractually authorized aggregate benchmarks.
 
@@ -84,18 +85,18 @@ flowchart TD
 
 | Phase | What ships | Buyer and value | Proof point / moat built |
 |---|---|---|---|
-| **MVP — Hackathon** | Nameplate/cabinet vision; extracted OEM/model/catalog numbers; lifecycle citations; replacement-cost **range**; line-level risk; illustrative CapEx cliff and deal memo | Deal team / diligence specialist: faster, more evidence-backed assessment | Extraction accuracy on realistic images, source links, human-review flags; do **not** present synthetic normalization accuracy as field-tested |
+| **MVP — Hackathon** | Nameplate/cabinet vision; extracted OEM/model/catalog numbers; lifecycle citations; replacement-cost **range**; line-level risk; illustrative CapEx cliff and deal memo | Plant owner (VP Ops / CFO): evidence-backed CapEx and obsolescence plan. Deal team as a second lens: faster, evidence-backed diligence | Extraction accuracy on realistic images, source links, human-review flags; do **not** present synthetic normalization accuracy as field-tested |
 | **Phase 2 — Living registry** | Company → Plant → Line → Machine → Component; asset tags; serials; location; SAP FI-AA/PM/CMMS links; periodic status review; actual costs | Operating partner / plant leader: ongoing capital and obsolescence planning | Post-close use and verified repairs/purchases; longitudinal data |
 | **Phase 3 — Portfolio intelligence** | Cross-plant part matching; sourcing price comparisons; spare compatibility; stock sharing candidates; group upgrade plans | Portfolio procurement / PE value creation: cash and spend optimization | Verified purchasing savings, avoided duplicate buys and deployed spare-sharing wins |
 | **Phase 4 — Predictive / data products** | Calibrated risk models; supplier reliability; benchmarked replacement costs; optional lender/insurer insights | PE fund, advisers, selected financial counterparties | Independently validated outcomes and explicit data licensing agreements |
 
-**Suggested first-year milestones (targets, not forecasts):** 3 paid diligence pilots through 1–2 adviser partners; one PE portfolio with 3+ registered plants; one documented cross-plant sourcing or spares win; curated lifecycle/part coverage for leading PLC, drive, and HMI product families.
+**Suggested first-year milestones (targets, not forecasts):** 3 paid own-plant pilots at multi-plant manufacturers; 1–2 deal pilots through adviser partners; one PE portfolio with 3+ registered plants; one documented cross-plant sourcing or spares win; curated lifecycle/part coverage for leading PLC, drive, and HMI product families.
 
 ## 6. Architecture and demo guardrails
 
 **Minimum normalized entities/fields:** `fund_id`, `company_id`, `plant_id`, `line_id`, `machine_id`, `component_id`; OEM and normalized part number; original part/model; serial number and asset tag; location; `erp_asset_id`; acquisition date and net book value (if known); lifecycle status and OEM source/as-of date; estimated replacement cost low/base/high, currency, and evidence; actual price/PO references; installation/criticality; downtime assumptions; `maintenance_vs_growth_capex`; estimate confidence and reviewer status.
 
-**Recommended deal outputs:**
+**Recommended outputs** (plant owner first; the deal outputs below are the same data seen through a deal lens):
 
 1. **Risk-ranked asset table:** critical component, production dependency, failure mode, OEM status, source evidence.
 2. **CapEx cliff / scenario chart:** earliest required action, expected timing range, cost range; separate maintenance, deferred maintenance, and optional growth.
@@ -107,9 +108,9 @@ flowchart TD
 
 ## 7. Suggested pitch wording
 
-> **“Equipment X-Ray turns physical manufacturing assets into investment-grade intelligence. We start with a faster, evidence-backed operational diligence report that exposes hidden capital requirements. After the deal, every verified asset, replacement, and purchase strengthens a living registry—unlocking cross-plant sourcing and better future diligence. Our moat isn't recognizing a PLC in a photograph; it's accumulating permissioned, verified industrial outcomes across repeated acquisitions.”**
+> **“Equipment X-Ray turns physical manufacturing assets into investment-grade intelligence. We start by assessing a manufacturer's own plants and exposing the hidden capital requirements inside its machines. Every verified asset, replacement, and purchase strengthens a living registry, unlocking cross-plant sourcing, a cleaner exit, and a faster assessment when the company buys its next plant. Our moat isn't recognizing a PLC in a photograph; it's accumulating permissioned, verified industrial outcomes across many plants and portfolios.”**
 
-**Commercial story:** **Land** with a per-deal diligence report → **convert** to plant subscription → **expand** through the fund's add-on acquisitions → **network** through validated sourcing/spares matches → **improve** future decisions using observed outcomes.
+**Commercial story:** **Land** with an own-plant assessment (or, as a second door, a deal or pre-exit scan) → **convert** to a plant subscription → **expand** across the company's plants and the fund's portfolio companies and add-ons → **network** through validated sourcing/spares matches → **improve** future decisions using observed outcomes.
 
 ## 8. What is sourced versus still unproven
 
