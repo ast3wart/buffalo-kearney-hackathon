@@ -328,7 +328,7 @@ tbody tr:hover td { background: color-mix(in srgb, var(--spend) 7%, transparent)
 .view h2 { color: var(--hero-ink); }
 .view .sec-head .eyebrow { color: var(--hero-muted); }
 .view .sec-head p { color: color-mix(in srgb, var(--hero-ink) 80%, transparent); }
-.qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; counter-reset: q; }
+.qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 196px), 1fr)); gap: 12px; counter-reset: q; }
 .qs > div { counter-increment: q; background: color-mix(in srgb, var(--hero-ink) 6%, transparent); border: 1px solid color-mix(in srgb, var(--hero-ink) 14%, transparent);
   border-radius: var(--radius); padding: 16px 16px 14px 52px; position: relative; display: grid; gap: 6px; align-content: start; }
 .qs > div::before { content: counter(q); position: absolute; left: 14px; top: 14px; width: 26px; height: 26px; border-radius: 50%;
@@ -372,7 +372,7 @@ footer { border-top: 0; text-align: center; justify-items: center; }
   <nav class="toc sticky" aria-label="Sections">
     <a href="#decisions">Decisions</a><a href="#assumptions">Assumptions</a><a href="#systems">Systems &amp; SAP</a>
     <a href="#fields">Fields</a><a href="#attribution">Supplier attribution</a><a href="#documents">Supplier documents</a>
-    <a href="#recovery">Alert to recovery</a><a href="#evaluation">Evaluation gate</a><a href="#flow">Data flow</a><a href="#your-view">Your view</a>
+    <a href="#recovery">Alert to recovery</a><a href="#evaluation">Evaluation gate</a><a href="#flow">Data flow</a><a href="#open-decisions">Open decisions</a><a href="#your-view">Your view</a>
   </nav>
 
 <section id="decisions">
@@ -746,6 +746,21 @@ Sections 7.2 and 7.3 are replaced as follows. Supplier reimburses 80% …</pre>
   </div>
 </section>
 
+
+<section id="open-decisions">
+  <div class="sec-head"><div class="eyebrow">Open · your view welcome</div><h2>Open decisions</h2>
+    <p>Added after this morning's work on the spend side. Not settled yet: we'd like a practitioner's view before we commit.</p></div>
+  <div class="dec">
+    <div><span class="area">D10 · Contract compliance</span>
+      <div class="rule"><p>Findings compare what was paid with the price <b>extracted from the supplier's own agreement</b>: <b>price leakage</b> (production paid above the contract price within its validity dates) and <b>spares clause</b> (a spare bought above series price where the agreement says spares come at series price). Each finding shows the PO line, the agreement document and the clause.</p>
+        <p class="why">Proposed rule: these are opportunities for a sourcing review, never amounts owed, and the agreement must have had its one-time review (D6) before its prices drive a finding. Today: Prairie $2.3M leakage (0.34% of spend, 137 PO lines) and $0.8M spares-clause gap, read from 48 agreements.</p></div>
+      <div class="own"><b>Owner</b>Spend thread · reviewed by procurement</div></div>
+    <div><span class="area">D11 · Spare-part markups are a scenario</span>
+      <div class="rule"><p>The service-vs-production markup and its "overspend" stay labeled <b>scenario estimates</b>. Contract-based findings (D10) lead, because they cite the supplier's own document.</p>
+        <p class="why">Velocity research found no study supporting a typical 1.5–5× gap for identical parts, and published supply terms often require spares at the series price (e.g. DRÄXLMAIER's purchasing terms). We now model most spares near contract price and only off-contract buys with a real markup.</p></div>
+      <div class="own"><b>Owner</b>Spend thread</div></div>
+  </div>
+</section>
 
 <section id="your-view">
   <div class="view">

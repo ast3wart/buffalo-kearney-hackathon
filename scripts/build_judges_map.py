@@ -28,7 +28,7 @@ nav_end = s.index("</nav>", nav_start) + len("</nav>")
 nav = s[nav_start:nav_end]
 s = s[:nav_start] + s[nav_end:]
 nav = nav.replace('<nav class="toc"', '<nav class="toc sticky"').replace(
-    '<a href="#flow">Data flow</a>', '<a href="#flow">Data flow</a><a href="#your-view">Your view</a>')
+    '<a href="#flow">Data flow</a>', '<a href="#flow">Data flow</a><a href="#open-decisions">Open decisions</a><a href="#your-view">Your view</a>')
 glance = """
 <div class="glance" aria-label="At a glance">
   <div class="kpi" style="--c: var(--shared)"><span class="s">Companies</span><span class="v">3</span><span class="l">Tuning, holdout (raw SAP extract + acquired plant), and an HVAC control with no planted problem</span></div>
@@ -54,7 +54,23 @@ view = """
   </div>
 </section>
 """
-r("<footer>", view + "\n<footer>")
+open_dec = """
+<section id="open-decisions">
+  <div class="sec-head"><div class="eyebrow">Open · your view welcome</div><h2>Open decisions</h2>
+    <p>Added after this morning's work on the spend side. Not settled yet: we'd like a practitioner's view before we commit.</p></div>
+  <div class="dec">
+    <div><span class="area">D10 · Contract compliance</span>
+      <div class="rule"><p>Findings compare what was paid with the price <b>extracted from the supplier's own agreement</b>: <b>price leakage</b> (production paid above the contract price within its validity dates) and <b>spares clause</b> (a spare bought above series price where the agreement says spares come at series price). Each finding shows the PO line, the agreement document and the clause.</p>
+        <p class="why">Proposed rule: these are opportunities for a sourcing review, never amounts owed, and the agreement must have had its one-time review (D6) before its prices drive a finding. Today: Prairie $2.3M leakage (0.34% of spend, 137 PO lines) and $0.8M spares-clause gap, read from 48 agreements.</p></div>
+      <div class="own"><b>Owner</b>Spend thread · reviewed by procurement</div></div>
+    <div><span class="area">D11 · Spare-part markups are a scenario</span>
+      <div class="rule"><p>The service-vs-production markup and its "overspend" stay labeled <b>scenario estimates</b>. Contract-based findings (D10) lead, because they cite the supplier's own document.</p>
+        <p class="why">Velocity research found no study supporting a typical 1.5–5× gap for identical parts, and published supply terms often require spares at the series price (e.g. DRÄXLMAIER's purchasing terms). We now model most spares near contract price and only off-contract buys with a real markup.</p></div>
+      <div class="own"><b>Owner</b>Spend thread</div></div>
+  </div>
+</section>
+"""
+r("<footer>", open_dec + view + "\n<footer>")
 
 r("\n</body>", """
 <script>

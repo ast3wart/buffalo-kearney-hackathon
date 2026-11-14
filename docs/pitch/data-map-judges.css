@@ -102,7 +102,7 @@ tbody tr:hover td { background: color-mix(in srgb, var(--spend) 7%, transparent)
 .view h2 { color: var(--hero-ink); }
 .view .sec-head .eyebrow { color: var(--hero-muted); }
 .view .sec-head p { color: color-mix(in srgb, var(--hero-ink) 80%, transparent); }
-.qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; counter-reset: q; }
+.qs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 196px), 1fr)); gap: 12px; counter-reset: q; }
 .qs > div { counter-increment: q; background: color-mix(in srgb, var(--hero-ink) 6%, transparent); border: 1px solid color-mix(in srgb, var(--hero-ink) 14%, transparent);
   border-radius: var(--radius); padding: 16px 16px 14px 52px; position: relative; display: grid; gap: 6px; align-content: start; }
 .qs > div::before { content: counter(q); position: absolute; left: 14px; top: 14px; width: 26px; height: 26px; border-radius: 50%;
