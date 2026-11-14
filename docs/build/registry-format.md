@@ -13,6 +13,8 @@
 
 **Rule:** after CP0, changing this doc means a line in the other person's inbox **before** you build.
 
+**Function names, API routes, demo portfolio scale and demo script:** [interfaces.md](interfaces.md).
+
 **Source of truth for strategy:** [roadmap](../plan/roadmap-equipment-xray.md). Builds on Brandon's schema ([pivot-plan/06](../plan/pivot-plan/06-tech-stack.md)) and integrations ([pivot-plan/07](../plan/pivot-plan/07-integrations.md)).
 
 ## ⚠️ We are building a DEMO, not the full product

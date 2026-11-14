@@ -3,7 +3,8 @@
 1. **Work on a branch** named after the topic, e.g. `mvp/vision-extract`. Commit and push as often as you like.
 2. **Before pushing, run `./scripts/checkpoint.sh`.** GitHub runs the same checks on every push (✅/❌ next to each commit).
 3. **Merge to `main` with a PR** after a quick skim by the other person. Use "Create a merge commit", then delete the branch.
-4. **Tell the other person when you change something they depend on** (data model, shared code, API shapes, demo script): one line in their inbox ([handoffs/](handoffs/README.md)).
+4. **Shared files need a heads-up in the other person's inbox *before* you change them:** `docs/build/registry-format.md`, `docs/build/interfaces.md`, `requirements.txt`, `api/main.py` route shapes, `xray/registry.py`. Anything else they depend on (demo script, data) gets a line when you push. Inboxes: [handoffs/](handoffs/README.md).
+4b. **Branches:** `asher/<topic>` and `brandon/<topic>`. Merge to `main` at checkpoints.
 5. **Never commit** `.env` or API keys (gitignored).
 
 ## Setup (once)
