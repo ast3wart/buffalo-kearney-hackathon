@@ -150,6 +150,9 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 ### `supplier_agreements/`: one document per production supplier (v4, a folder, not a CSV)
 Supplier quality agreements and amendments as `.md` / `.txt` (a real client sends PDFs; convert to text first). Loaded by `io.load_documents()` as `[doc_file, text]`. Wording varies on purpose: prose clauses, a terms table, and **amendments that supersede the original clause** (the latest one wins). The file name is not trusted: which supplier the document is for is extracted too.
 
+#### Price schedule section (💲, generated companies, Sat Nov 14)
+Every generated agreement also has a price schedule: **"## 5. Prices"** (formal / amended styles) or **"PRICE SCHEDULE (per piece, USD)"** (table style). One markdown table row per part: `| Buyer part no. | Supplier part no. | Description | Price per piece (USD) | Valid from | Valid to |`, followed by clause **5.3**: either *"Supplier supplies the parts above as spare parts at the current series price …"* or *"Spare parts are priced separately by quotation."* Agreements for generated companies are written by `generate_spend.py` via `afterlife/agreements.py` (the warranty section wording and `warranty_terms()` are 🛠 Brandon's to own). Acquired-plant (legacy) suppliers have no agreement in the system, which is realistic, so the check warns.
+
 ## Generated-only (answer key, never used by matching)
 ### `truth_links.csv`
 | column | type | notes |
@@ -240,6 +243,21 @@ Rule: if a real manufacturer has it as a **field in a system**, we model it as a
 | in-service (retail) date | Claim system / dealer registration | not modeled: MIS counts from build month (documented simplification) |
 
 Warranty claims never come through the SAP spend adapter below; they keep contract columns for every company, including Ironridge (`source_system = WTY`).
+
+### `truth_prices.csv` (💲, generated companies): the contract prices each agreement states
+| column | type | example |
+|---|---|---|
+| doc_file | str | `sqa_delta-fluid-power.md` |
+| supplier_id | str | `S-014` |
+| part_no | str | `105-2563-08` |
+| contract_price_ea | float | `527.31`: per piece, USD |
+| valid_from, valid_to | date | `2025-01-01`, `2026-12-31` |
+| spares_at_series_price | bool | clause 5.3 grants spares at series price |
+
+### Outputs added Sat Nov 14 (💲)
+- **`contract_prices`** (`extract_prices.py`): `doc_file, supplier_id, part_no, supplier_pn, contract_price_ea, valid_from, valid_to, spares_at_series_price, method, confidence, evidence, run_id`. Extracted from the documents, scored against `truth_prices` (100% on 3 fresh companies).
+- **`contract_compliance`** (`cost.contract_compliance`): `finding` = `price_leakage` (production paid > contract price × 1.005 within validity) or `spares_clause` (spare paid > series price × 1.10, packaging allowance, where the clause applies), with `part_no, supplier_id, agreement_supplier_id, doc_file, plant, po_line_id, po_date, price_ea, contract_price_ea, qty_ea, gap_usd`. High-confidence links only. Estimates for review, not amounts owed.
+- **Generator realism (after Velocity research):** spares are mostly bought near contract price (`spare_contract_share` 0.6 at 1.0–1.25×); only off-contract buys carry `spare_markup` (1.4–4.5×). Production pays exactly the contract price except `price_leak_share` (15%) of supplier-part pairs with an unapproved 3–8% increase from some quarter.
 
 ## SAP extract format (v3 #15, Ironridge)
 A company with `extract_format: "sap"` in its profile ships `production_spend`, `service_spend`, `part_master` and `info_records` with **SAP technical field names and quirks**. `io.load()` detects the headers and `afterlife/adapters/sap.py` converts them to the columns above, so nothing downstream changes.

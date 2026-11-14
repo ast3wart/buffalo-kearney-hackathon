@@ -31,10 +31,11 @@ def _try(name, fn, *args):
 
 
 def run_company(tables: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
-    from afterlife import match, detect, cost, extract_terms
+    from afterlife import match, detect, cost, extract_terms, extract_prices
     outputs: dict[str, pd.DataFrame | None] = {"links": _try("links", match.link_all, tables)}
     if "supplier_agreements" in tables:
         outputs["supplier_terms"] = _try("supplier_terms", extract_terms.extract_terms, tables)
+        outputs["contract_prices"] = _try("contract_prices", extract_prices.extract_prices, tables)
     links = outputs["links"]
     if links is not None:
         has_claims = "warranty_claims" in tables and len(tables["warranty_claims"]) > 0
@@ -46,6 +47,9 @@ def run_company(tables: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
         outputs["lifecycle_cost"] = _try("lifecycle_cost", cost.lifecycle_cost, tables, links)
         outputs["spare_markups"] = _try("spare_markups", cost.spare_markups, tables, links)
         outputs["price_harmonization"] = _try("price_harmonization", cost.price_harmonization, tables, links)
+        if outputs.get("contract_prices") is not None:
+            outputs["contract_compliance"] = _try("contract_compliance", cost.contract_compliance, tables, links,
+                                                  outputs["contract_prices"])
     return {k: v for k, v in outputs.items() if v is not None}
 
 

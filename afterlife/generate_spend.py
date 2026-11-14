@@ -22,6 +22,7 @@ import random
 
 import pandas as pd
 
+from afterlife import agreements
 from afterlife.adapters import sap
 from afterlife.profiles import COMMON
 from afterlife.taxonomy import CATEGORIES
@@ -277,11 +278,16 @@ def generate(seed: int, profile: dict) -> dict[str, list[dict]]:
             spn = f"{''.join(w[0] for w in s['supplier_name'].split()[:2]).upper()}-{rng.randint(1000, 99999)}"
             info_records.append({"part_no": pn, "supplier_id": s["supplier_id"], "supplier_pn": spn})
             level = 1.0 if k == 0 else rng.uniform(0.92, 1.12)        # second source priced differently
+            # Under contract, a PO pays exactly the contract price. A minority of supplier-part pairs get an
+            # unapproved price increase from some quarter on: that's the "price leakage" the compliance check finds
+            leaks = rng.random() < profile.get("price_leak_share", 0.15)
+            leak_from = rng.randint(1, len(quarters) - 1)
+            leak_rate = rng.uniform(0.03, 0.08)
             wording = _supplier_wording(p["_plain"], rng)
             for qi, q in enumerate(quarters):
                 pid = new_po("prod")
                 lot[(pn, s["supplier_id"], q)] = pid
-                drift = 1 + 0.01 * qi                                   # ~4%/yr price creep
+                drift = 1 + leak_rate if leaks and qi >= leak_from else 1.0
                 price_unit = 100 if (p["std_cost"] < 1.5 and rng.random() < 0.5) or rng.random() < 0.03 else 1
                 qty = max(1, int(q_units.get(q, 0) / (len(sources[pn]) or 1) / p["_pack"] * rng.uniform(1.0, 1.15)))
                 production_spend.append({
@@ -289,7 +295,7 @@ def generate(seed: int, profile: dict) -> dict[str, list[dict]]:
                     "part_no": pn if rng.random() < profile["prod_part_no_fill"] else "",
                     "supplier_id": s["supplier_id"], "supplier_name": s["supplier_name"], "supplier_pn": spn,
                     "description": _typo(wording, rng, typo), "qty": qty, "uom": p["_uom"],
-                    "unit_price": round(p["std_cost"] * level * drift * p["_pack"] * price_unit * rng.uniform(0.98, 1.02), 2),
+                    "unit_price": round(p["std_cost"] * level * drift * p["_pack"] * price_unit, 2),
                     "price_unit": price_unit, "po_date": f"{_quarter_start(q)}-{rng.randint(1, 20):02d}",
                     "plant": "P-MAIN", "country": s["country"]})
                 truth_links.append({"source_table": "production_spend", "source_id": pid, "part_no": pn})
@@ -318,11 +324,13 @@ def generate(seed: int, profile: dict) -> dict[str, list[dict]]:
     distributors = [new_supplier("hose", "") for _ in range(2)]
     for d, name in zip(distributors, ["Parts Distribution", "Service Supply"]):
         d["supplier_name"] = f"{d['supplier_name'].split()[0]} {name}"
-    mk_lo, mk_hi = profile["spare_markup"]
+    mk_lo, mk_hi = profile["spare_markup"]                    # off-contract distributor buys
+    ct_lo, ct_hi = profile.get("spare_contract_markup", (1.0, 1.25))   # bought near the contract price
     for p in part_master:
         if rng.random() > 0.6:
             continue
-        markup = rng.uniform(mk_lo, mk_hi)
+        on_contract = rng.random() < profile.get("spare_contract_share", 0.0)
+        markup = rng.uniform(ct_lo, ct_hi) if on_contract else rng.uniform(mk_lo, mk_hi)
         d = rng.choice(distributors)
         for _ in range(rng.randint(1, 4)):
             pid = new_po("svc")
@@ -372,9 +380,46 @@ def generate(seed: int, profile: dict) -> dict[str, list[dict]]:
                       "from_po_line_id": lot[(spike_part, a, _quarter(spike["start_build_month"]))],
                       "multiplier": spike["multiplier"]}
 
+    # ---- supplier agreements (v4 documents + price schedule) for every main-plant production supplier ----
+    # separate RNG so adding agreements never changes any spend value above
+    arng = random.Random(seed * 7919 + 1)
+    by_supplier: dict[str, list] = {}
+    for pn, srcs in sources.items():
+        for k, s in enumerate(srcs):
+            by_supplier.setdefault(s["supplier_id"], [s, []])[1].append((pn, k))
+    spn_of = {(r["part_no"], r["supplier_id"]): r["supplier_pn"] for r in info_records}
+    po_by_id = {r["po_line_id"]: r for r in production_spend}
+    pm_by = {p["part_no"]: p for p in part_master}
+    supplier_agreements, truth_terms, truth_prices = [], [], []
+    valid_from, valid_to = f"{COMMON['first_build_month']}-01", "2026-12-31"
+    for sid, (s, items) in sorted(by_supplier.items()):
+        terms = agreements.warranty_terms(arng)
+        spares_clause = arng.random() < profile.get("spares_clause_share", 0.5)
+        rows = []
+        for pn, k in sorted(items):
+            p = pm_by[pn]
+            # contract price = the supplier's base price per piece at signing (before the ~1%/quarter creep that
+            # later lots carry: that creep is the "price leakage" the compliance check finds)
+            first = po_by_id[lot[(pn, sid, quarters[0])]]
+            contract_ea = round(first["unit_price"] / first["price_unit"] / p["_pack"], 4)
+            rows.append({"part_no": pn, "supplier_pn": spn_of[(pn, sid)], "description": p["description"],
+                         "price_ea": contract_ea, "valid_from": valid_from, "valid_to": valid_to})
+        fname = agreements.doc_file_name(s["supplier_name"])
+        supplier_agreements.append({"doc_file": fname, "text": agreements.render_agreement(
+            profile["company_name"], s, terms, rows, spares_clause)})
+        truth_terms.append({"doc_file": fname, "supplier_id": sid, "recovery_pct": terms["recovery_pct"],
+                            "labor_covered": terms["labor_covered"],
+                            "labor_rate_cap": terms["labor_rate_cap"] if terms["labor_rate_cap"] else "",
+                            "recovery_window_months": terms["recovery_window_months"],
+                            "filing_deadline_days": terms["filing_deadline_days"]})
+        truth_prices += [{"doc_file": fname, "supplier_id": sid, "part_no": r["part_no"], "contract_price_ea": r["price_ea"],
+                          "valid_from": r["valid_from"], "valid_to": r["valid_to"], "spares_at_series_price": spares_clause}
+                         for r in rows]
+
     for p in part_master:
         for k in ("_plain", "_uom", "_pack"):
             p.pop(k)
     return {"products": products, "part_master": part_master, "bom": bom, "builds": builds,
             "production_spend": production_spend, "service_spend": service_spend, "info_records": info_records,
-            "build_supply": build_supply, "truth_links": truth_links, "_spike_plan": spike_plan}
+            "build_supply": build_supply, "truth_links": truth_links, "_spike_plan": spike_plan,
+            "supplier_agreements": supplier_agreements, "truth_terms": truth_terms, "truth_prices": truth_prices}

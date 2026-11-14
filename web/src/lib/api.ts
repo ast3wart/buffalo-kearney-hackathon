@@ -6,6 +6,7 @@ export type Company = components["schemas"]["Company"];
 export type Overview = components["schemas"]["Overview"];
 export type Markup = components["schemas"]["Markup"];
 export type Harmonization = components["schemas"]["Harmonization"];
+export type Compliance = components["schemas"]["Compliance"];
 
 /** ?company=… from the URL, or the first company the API knows about. */
 export async function resolveCompany(param: string | string[] | undefined): Promise<string> {

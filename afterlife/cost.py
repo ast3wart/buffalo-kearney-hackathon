@@ -158,3 +158,48 @@ def price_harmonization(tables, links) -> pd.DataFrame:
     g = g[g.savings_usd > 0.005]
     return (g[["part_no", "supplier_id", "plant", "price_ea", "best_price_ea", "qty_ea", "savings_usd"]]
             .round({"price_ea": 4, "best_price_ea": 4}).sort_values("savings_usd", ascending=False).reset_index(drop=True))
+
+
+LEAKAGE_TOL = 0.005      # paid > contract by more than 0.5% = leakage (rounding noise below that)
+SPARES_PACKAGING = 0.10  # the series-price clause allows special spare-parts packaging "at cost": allow +10%
+
+
+def contract_compliance(tables, links, contract_prices: pd.DataFrame) -> pd.DataFrame:
+    """Paid vs the price in the supplier's own agreement (contract_prices = extract_prices output).
+
+    finding = "price_leakage": a production line paid above the contract price for that part + supplier
+              (within the validity dates). gap_usd = (paid - contract) x pieces.
+    finding = "spares_clause": a service (spare) purchase of a part whose production supplier's agreement says
+              spares come at the series price, paid more than series price + packaging allowance.
+              gap_usd = (paid - contract) x pieces: what buying under the clause would have saved.
+    High-confidence links only. Analytics estimates for a sourcing review, not amounts owed.
+    """
+    cols = ["finding", "part_no", "supplier_id", "agreement_supplier_id", "doc_file", "plant", "po_line_id",
+            "po_date", "price_ea", "contract_price_ea", "qty_ea", "gap_usd"]
+    if contract_prices is None or contract_prices.empty:
+        return pd.DataFrame(columns=cols)
+    cp = contract_prices.astype({"part_no": str, "supplier_id": str}).copy()
+    cp["contract_price_ea"] = pd.to_numeric(cp.contract_price_ea)
+    out = []
+    prod = _lines(tables, links, "production_spend", CONF_MIN)
+    if len(prod):
+        p = prod.astype({"supplier_id": str}).merge(cp, on=["part_no", "supplier_id"])
+        d = pd.to_datetime(p.po_date)
+        p = p[(d >= pd.to_datetime(p.valid_from)) & (d <= pd.to_datetime(p.valid_to))]
+        p = p[p.price_ea > p.contract_price_ea * (1 + LEAKAGE_TOL)]
+        out.append(p.assign(finding="price_leakage", agreement_supplier_id=p.supplier_id,
+                            gap_usd=(p.price_ea - p.contract_price_ea) * p.qty_ea))
+    svc = _lines(tables, links, "service_spend", CONF_MIN)
+    clause = cp[cp.spares_at_series_price.astype(str).str.lower().isin(["true", "1"])]
+    if len(svc) and len(clause):
+        best = clause.sort_values("contract_price_ea").drop_duplicates("part_no")   # cheapest series price with the clause
+        s = svc.astype({"supplier_id": str}).merge(
+            best[["part_no", "supplier_id", "doc_file", "contract_price_ea"]].rename(columns={"supplier_id": "agreement_supplier_id"}),
+            on="part_no")
+        s = s[s.price_ea > s.contract_price_ea * (1 + SPARES_PACKAGING)]
+        out.append(s.assign(finding="spares_clause", gap_usd=(s.price_ea - s.contract_price_ea) * s.qty_ea))
+    if not out:
+        return pd.DataFrame(columns=cols)
+    res = pd.concat(out, ignore_index=True)
+    res["gap_usd"] = res.gap_usd.round(2)
+    return res[cols].round({"price_ea": 4, "contract_price_ea": 4}).sort_values("gap_usd", ascending=False).reset_index(drop=True)

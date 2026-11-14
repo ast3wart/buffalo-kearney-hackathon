@@ -1,4 +1,4 @@
-import { getJSON, resolveCompany, API_URL, type Overview, type Markup, type Harmonization } from "@/lib/api";
+import { getJSON, resolveCompany, API_URL, type Overview, type Markup, type Harmonization, type Compliance } from "@/lib/api";
 import { Card, PageHeader, PartNo, Stat, fmt } from "@/components/ui";
 import { CostChart } from "@/components/CostChart";
 
@@ -9,13 +9,15 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
   let o: Overview | null = null;
   let markups: Markup[] = [];
   let harm: Harmonization[] = [];
+  let comp: Compliance[] = [];
   let error = "";
   try {
     company = await resolveCompany(param);
-    [o, markups, harm] = await Promise.all([
+    [o, markups, harm, comp] = await Promise.all([
       getJSON<Overview>(`/overview?company=${company}`),
       getJSON<Markup[]>(`/markups?company=${company}&limit=8`),
       getJSON<Harmonization[]>(`/harmonization?company=${company}&limit=6`),
+      getJSON<Compliance[]>(`/compliance?company=${company}&limit=6`),
     ]);
   } catch (e) {
     error = String(e);
@@ -45,19 +47,24 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
         subtitle={<>{o.industry} · data as of {o.data_as_of}</>}
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-        <Card><Stat label="Spare-part overspend per year (same part, service vs production price)" value={fmt.usd(o.spare_overspend_usd_per_year)} tone="warn" /></Card>
+      <div className="mb-2 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <Card><Stat label={`Paid above the supplier's own contract price (${o.contract_leakage_lines} PO lines)`} value={fmt.usd(o.contract_leakage_usd)} tone="alert" /></Card>
+        <Card><Stat label="Spares bought above series price despite a 'spares at series price' clause" value={fmt.usd(o.spares_clause_gap_usd)} tone="alert" /></Card>
         <Card><Stat label="Price harmonization (paid above best supplier / plant)" value={fmt.usd(o.harmonization_usd)} tone="warn" /></Card>
         {o.acquired_plant_harmonization_usd > 0 ? (
-          <Card><Stat label="…of which: acquired-plant premium" value={fmt.usd(o.acquired_plant_harmonization_usd)} tone="alert" /></Card>
+          <Card><Stat label="…of which: acquired-plant premium" value={fmt.usd(o.acquired_plant_harmonization_usd)} tone="warn" /></Card>
         ) : (
-          <Card><Stat label="Spend linked with high confidence (≥ 0.8)" value={fmt.pct((cov.production_high_conf_pct + cov.service_high_conf_pct) / 2)} tone="ok" /></Card>
+          <Card>
+            <Stat label="Warranty cost, % of revenue"
+                  value={o.has_claims ? `${o.warranty_pct_revenue.toFixed(2)}%` : <span className="text-muted">pending claims</span>} />
+          </Card>
         )}
-        <Card>
-          <Stat label="Warranty cost, % of revenue"
-                value={o.has_claims ? `${o.warranty_pct_revenue.toFixed(2)}%` : <span className="text-muted">pending claims</span>} />
-        </Card>
       </div>
+      <p className="mb-6 text-xs text-muted">
+        Contract figures compare what was paid with the price schedule read from {o.agreements_read} supplier agreements
+        (extracted from the documents). Spare-part overspend vs production price: {fmt.usd(o.spare_overspend_usd_per_year)}/yr
+        (scenario estimate: most spares are bought near contract price; only off-contract buys carry a real markup).
+      </p>
 
       <div className="mb-6 grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
@@ -90,8 +97,39 @@ export default async function OverviewPage({ searchParams }: { searchParams: Pro
         </Card>
       </div>
 
+      <div className="mb-6">
+        <Card title="Your own contracts say otherwise: biggest gaps vs the agreed price">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-muted">
+                <th className="py-1">Finding</th><th className="py-1">Part</th><th className="py-1">Agreement</th>
+                <th className="py-1 text-right">Paid / pc</th><th className="py-1 text-right">Contract / pc</th>
+                <th className="py-1 text-right">Gap</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comp.map((c) => (
+                <tr key={`${c.finding}-${c.po_line_id}`} className="border-t border-line">
+                  <td className="py-1.5">
+                    <span className={`rounded px-1.5 py-0.5 text-xs ${c.finding === "spares_clause" ? "bg-alert-soft text-alert" : "bg-warn-soft text-warn"}`}>
+                      {c.finding === "spares_clause" ? "spares clause" : "price leakage"}
+                    </span>
+                    <div className="mt-0.5 font-mono text-xs text-muted">{c.po_line_id} · {c.po_date}</div>
+                  </td>
+                  <td className="py-1.5"><PartNo>{c.part_no}</PartNo><div className="text-xs text-muted">{c.description}</div></td>
+                  <td className="py-1.5 font-mono text-xs text-muted">{c.doc_file}</td>
+                  <td className="tabular py-1.5 text-right">${c.price_ea.toFixed(2)}</td>
+                  <td className="tabular py-1.5 text-right">${c.contract_price_ea.toFixed(2)}</td>
+                  <td className="tabular py-1.5 text-right">{fmt.usd(c.gap_usd)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </Card>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card title="Biggest spare-part markups (same part)">
+        <Card title="Biggest spare-part markups (same part, scenario estimate)">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs text-muted">

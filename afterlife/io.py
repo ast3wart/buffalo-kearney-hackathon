@@ -15,7 +15,7 @@ ID_COLUMNS = ["product_id", "part_no", "supplier_id", "po_line_id", "source_id",
 TABLES = [
     "products", "part_master", "bom", "builds", "production_spend",
     "service_spend", "info_records", "build_supply", "abbreviations", "failure_codes",
-    "warranty_claims", "dataset_info", "truth_links", "truth_spikes", "truth_terms",
+    "warranty_claims", "dataset_info", "truth_links", "truth_spikes", "truth_terms", "truth_prices",
 ]
 DOCS = "supplier_agreements"  # v4: folder of contract documents (text), not a CSV
 

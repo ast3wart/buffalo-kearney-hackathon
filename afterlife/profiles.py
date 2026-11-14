@@ -58,7 +58,10 @@ PROFILES = [
         "exclude_categories": ["compressor", "refrigerant_component", "motor"],
         "pn_format": "{a:03d}-{b:04d}-{c:02d}",          # 100-4471-02
         "desc_style": "erp_shorthand",                      # BRG,BALL,6204-2RS,20MM
-        "prod_part_no_fill": 0.85, "service_part_no_fill": 0.15, "spare_markup": (1.6, 4.5),
+        "prod_part_no_fill": 0.85, "service_part_no_fill": 0.15, "spare_markup": (1.5, 4.0),
+        # Velocity (Sat AM): no study supports 1.5-5x as TYPICAL. Most spares are bought near the contract price;
+        # only off-contract distributor buys carry the big markup (spare_markup applies to those only)
+        "spare_contract_share": 0.6, "spare_contract_markup": (1.0, 1.25), "spares_clause_share": 0.6, "price_leak_share": 0.15,
         "dual_source_share": 0.15,                          # share of parts with 2 production suppliers
         "acquired_plant": None,
         "extract_format": "contract",                       # columns as in the data contract
@@ -86,7 +89,10 @@ PROFILES = [
         "exclude_categories": ["compressor", "refrigerant_component", "motor", "lighting"],
         "pn_format": "IR-{n:05d}",                          # IR-04471
         "desc_style": "erp_shorthand",
-        "prod_part_no_fill": 0.80, "service_part_no_fill": 0.10, "spare_markup": (1.8, 5.0),
+        "prod_part_no_fill": 0.80, "service_part_no_fill": 0.10, "spare_markup": (1.5, 4.5),
+        # Velocity (Sat AM): no study supports 1.5-5x as TYPICAL. Most spares are bought near the contract price;
+        # only off-contract distributor buys carry the big markup (spare_markup applies to those only)
+        "spare_contract_share": 0.6, "spare_contract_markup": (1.0, 1.25), "spares_clause_share": 0.6, "price_leak_share": 0.15,
         "dual_source_share": 0.20,
         # v3 #12: acquired plant on a legacy ERP. No MATNR, own supplier list, own description style,
         # own price level, so a plant-vs-plant harmonization lever exists alongside production-vs-spare
@@ -116,6 +122,9 @@ PROFILES = [
         "pn_format": "NW{n:04d}{rev}",                      # NW4471A
         "desc_style": "plain_words",                        # "Scroll compressor 5 ton 460V"
         "prod_part_no_fill": 0.90, "service_part_no_fill": 0.30, "spare_markup": (1.4, 3.5),
+        # Velocity (Sat AM): no study supports 1.5-5x as TYPICAL. Most spares are bought near the contract price;
+        # only off-contract distributor buys carry the big markup (spare_markup applies to those only)
+        "spare_contract_share": 0.6, "spare_contract_markup": (1.0, 1.25), "spares_clause_share": 0.6, "price_leak_share": 0.15,
         "dual_source_share": 0.10,
         "acquired_plant": None,
         "extract_format": "contract",

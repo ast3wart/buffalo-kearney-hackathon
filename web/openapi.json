@@ -198,6 +198,79 @@
           }
         }
       }
+    },
+    "/compliance": {
+      "get": {
+        "summary": "Compliance",
+        "description": "\ud83d\udcb2 Paid vs the supplier's own agreement (prices extracted from the documents), biggest gap first.",
+        "operationId": "compliance_compliance_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Company"
+            }
+          },
+          {
+            "name": "finding",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(price_leakage|spares_clause)$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Finding"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 25,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Compliance"
+                  },
+                  "title": "Response Compliance Compliance Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -229,6 +302,79 @@
           "data_as_of"
         ],
         "title": "Company"
+      },
+      "Compliance": {
+        "properties": {
+          "finding": {
+            "type": "string",
+            "title": "Finding"
+          },
+          "part_no": {
+            "type": "string",
+            "title": "Part No"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "supplier_id": {
+            "type": "string",
+            "title": "Supplier Id"
+          },
+          "agreement_supplier_id": {
+            "type": "string",
+            "title": "Agreement Supplier Id"
+          },
+          "doc_file": {
+            "type": "string",
+            "title": "Doc File"
+          },
+          "plant": {
+            "type": "string",
+            "title": "Plant"
+          },
+          "po_line_id": {
+            "type": "string",
+            "title": "Po Line Id"
+          },
+          "po_date": {
+            "type": "string",
+            "title": "Po Date"
+          },
+          "price_ea": {
+            "type": "number",
+            "title": "Price Ea"
+          },
+          "contract_price_ea": {
+            "type": "number",
+            "title": "Contract Price Ea"
+          },
+          "qty_ea": {
+            "type": "number",
+            "title": "Qty Ea"
+          },
+          "gap_usd": {
+            "type": "number",
+            "title": "Gap Usd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "finding",
+          "part_no",
+          "description",
+          "supplier_id",
+          "agreement_supplier_id",
+          "doc_file",
+          "plant",
+          "po_line_id",
+          "po_date",
+          "price_ea",
+          "contract_price_ea",
+          "qty_ea",
+          "gap_usd"
+        ],
+        "title": "Compliance"
       },
       "Coverage": {
         "properties": {
@@ -468,6 +614,26 @@
           "has_claims": {
             "type": "boolean",
             "title": "Has Claims"
+          },
+          "contract_leakage_usd": {
+            "type": "number",
+            "title": "Contract Leakage Usd",
+            "default": 0.0
+          },
+          "contract_leakage_lines": {
+            "type": "integer",
+            "title": "Contract Leakage Lines",
+            "default": 0
+          },
+          "spares_clause_gap_usd": {
+            "type": "number",
+            "title": "Spares Clause Gap Usd",
+            "default": 0.0
+          },
+          "agreements_read": {
+            "type": "integer",
+            "title": "Agreements Read",
+            "default": 0
           }
         },
         "type": "object",

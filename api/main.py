@@ -117,6 +117,10 @@ class Overview(BaseModel):
     acquired_plant_harmonization_usd: float   # part of harmonization_usd paid at non-main plants
     warranty_pct_revenue: float               # whole company; 0 until claims exist
     has_claims: bool
+    contract_leakage_usd: float = 0.0         # production paid above the supplier's own contract price
+    contract_leakage_lines: int = 0
+    spares_clause_gap_usd: float = 0.0        # spares bought above series price despite a "spares at series price" clause
+    agreements_read: int = 0                  # supplier agreement documents the prices were extracted from
 
 
 def _pct(con, table: str, company: str, high: bool) -> float:
@@ -168,13 +172,25 @@ def overview(company: str = Query(..., description="company_id from GET /compani
                        coalesce(sum(savings_usd) FILTER (WHERE plant <> (
                            SELECT plant FROM production_spend WHERE company_id = ? GROUP BY plant ORDER BY count(*) DESC LIMIT 1)), 0)
                 FROM price_harmonization WHERE company_id = ?""", [company, company]).fetchone()
+        leak = leak_n = clause = 0.0
+        if _has_table(con, "contract_compliance"):
+            leak, leak_n, clause = con.execute("""SELECT
+                    coalesce(sum(gap_usd) FILTER (WHERE finding = 'price_leakage'), 0),
+                    count(*) FILTER (WHERE finding = 'price_leakage'),
+                    coalesce(sum(gap_usd) FILTER (WHERE finding = 'spares_clause'), 0)
+                FROM contract_compliance WHERE company_id = ?""", [company]).fetchone()
+        docs = 0
+        if _has_table(con, "contract_prices"):
+            docs = con.execute("SELECT count(DISTINCT doc_file) FROM contract_prices WHERE company_id = ?", [company]).fetchone()[0]
         rev = sum(p.revenue for p in products)
         warr = sum(p.warranty_pct_revenue * p.revenue / 100 for p in products)
         return Overview(company_id=c.company_id, company=c.company_name, industry=c.industry, data_as_of=c.data_as_of,
                         coverage=cov, products=products, spare_overspend_usd=round(over, 2),
                         spare_overspend_usd_per_year=round(over_y, 2), harmonization_usd=round(harm, 2),
                         acquired_plant_harmonization_usd=round(harm_acq, 2),
-                        warranty_pct_revenue=round(100 * warr / rev, 3) if rev else 0.0, has_claims=has_claims)
+                        warranty_pct_revenue=round(100 * warr / rev, 3) if rev else 0.0, has_claims=has_claims,
+                        contract_leakage_usd=round(leak, 2), contract_leakage_lines=int(leak_n),
+                        spares_clause_gap_usd=round(clause, 2), agreements_read=int(docs))
 
 
 class Markup(BaseModel):
@@ -228,6 +244,43 @@ def harmonization(company: str = Query(...), limit: int = Query(25, ge=1, le=100
             FROM price_harmonization h LEFT JOIN part_master pm ON pm.company_id = h.company_id AND pm.part_no = h.part_no
             WHERE h.company_id = ? ORDER BY h.savings_usd DESC LIMIT ?""", [company, limit]).fetchall()
         return [Harmonization(**dict(zip(Harmonization.model_fields, r))) for r in rows]
+
+
+class Compliance(BaseModel):
+    finding: str                 # price_leakage | spares_clause
+    part_no: str
+    description: str
+    supplier_id: str             # who we paid
+    agreement_supplier_id: str   # whose agreement sets the price
+    doc_file: str                # the agreement the contract price was extracted from
+    plant: str
+    po_line_id: str
+    po_date: str
+    price_ea: float
+    contract_price_ea: float
+    qty_ea: float
+    gap_usd: float
+
+
+@app.get("/compliance", response_model=list[Compliance])
+def compliance(company: str = Query(...), finding: str | None = Query(None, pattern="^(price_leakage|spares_clause)$"),
+               limit: int = Query(25, ge=1, le=1000)) -> list[Compliance]:
+    """💲 Paid vs the supplier's own agreement (prices extracted from the documents), biggest gap first."""
+    with db() as con:
+        _company_or_404(con, company)
+        if not _has_table(con, "contract_compliance"):
+            return []
+        where, args = "c.company_id = ?", [company]
+        if finding:
+            where += " AND c.finding = ?"
+            args.append(finding)
+        rows = con.execute(f"""
+            SELECT c.finding, c.part_no, coalesce(pm.description, ''), CAST(c.supplier_id AS VARCHAR),
+                   CAST(c.agreement_supplier_id AS VARCHAR), c.doc_file, c.plant, CAST(c.po_line_id AS VARCHAR),
+                   CAST(c.po_date AS VARCHAR), c.price_ea, c.contract_price_ea, c.qty_ea, c.gap_usd
+            FROM contract_compliance c LEFT JOIN part_master pm ON pm.company_id = c.company_id AND pm.part_no = c.part_no
+            WHERE {where} ORDER BY c.gap_usd DESC LIMIT ?""", [*args, limit]).fetchall()
+        return [Compliance(**dict(zip(Compliance.model_fields, r))) for r in rows]
 
 
 # ---- Planned endpoints (see docs/build/api.md). Owners fill these in. ----

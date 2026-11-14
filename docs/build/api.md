@@ -9,6 +9,7 @@ FastAPI at `:8000`, interactive docs at `/docs`. **Every data endpoint takes `?c
 | GET | `/companies` | shared | company_id, name, industry, data_as_of | ✅ done |
 | GET | `/overview` | 💲 spend | coverage (all / high-confidence), build vs. lifecycle cost per product, spare overspend, harmonization (incl. acquired plant), warranty % of revenue | ✅ done |
 | GET | `/markups` | 💲 spend | part, production $/EA, service $/EA, ratio, overspend (period + per year); high-confidence links only | ✅ done |
+| GET | `/compliance?finding=` | 💲 spend | paid vs the supplier's own agreement (price leakage, spares clause), with the agreement document and the contract price | ✅ done |
 | GET | `/harmonization` | 💲 spend | lines paid above the best supplier × plant price: part, supplier, plant, price, best price, savings | ✅ done |
 | GET | `/alerts` | 🛠 warranty | alert rows (see data contract) | todo |
 | GET | `/claim-rates/{part_no}` | 🛠 warranty | **both views:** raw claims per 1,000 by build month, *and* MIS-window rates (mature months only) + heatmap | todo |

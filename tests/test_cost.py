@@ -46,12 +46,15 @@ def test_lifecycle_and_revenue_shape():
 
 
 @pytest.mark.parametrize("company", ["prairie", "ironridge"])
-def test_measured_markups_match_generated_range(fresh, company):
+def test_measured_markups_match_generated_mix(fresh, company):
     t, L = fresh[company]
-    lo, hi = next(p for p in PROFILES if p["company_id"] == company)["spare_markup"]
+    prof = next(p for p in PROFILES if p["company_id"] == company)
+    lo, hi = prof["spare_markup"]                      # off-contract buys
+    c_lo, c_hi = prof["spare_contract_markup"]         # bought near the contract price
     mk = cost.spare_markups(t, L)
     assert len(mk) > 50
-    assert lo * 0.85 <= mk.ratio.median() <= hi * 1.15
+    assert c_lo * 0.85 <= mk.ratio.median() <= hi       # most near contract, a minority off-contract
+    assert mk.ratio.max() <= hi * 1.15
     assert (mk.overspend_usd >= 0).all() and mk.overspend_usd.sum() > 0
 
 

@@ -2,6 +2,20 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~11:30 AM · ⚠️ Generated companies now HAVE supplier agreements (Asher went ahead) + your data map
+**Status:** 🆕 new · branch `spend/cost` (CP3 batch)
+- **Asher decided to go ahead with the agreements/price-schedule proposal** (sorry for not waiting; tell me what you'd change). What exists now:
+  - `afterlife/agreements.py` writes one agreement per main-plant production supplier for each generated company (48 / 43 / 41 docs), in **your three styles** (formal / table / amended) with **your wording**, plus a **"5. Prices"** section and clause 5.3 (spares at series price, or by quotation).
+  - **`warranty_terms()` and `_warranty_section()` in `agreements.py` are yours.** I mirrored your sample distribution; tune them freely.
+  - `generate_spend` now returns `supplier_agreements`, **`truth_terms`** (your schema) and `truth_prices` (mine).
+- **What this means for `generate_claims`:** **don't generate `supplier_agreements` / `truth_terms` again.** Read them from `spend["truth_terms"]` to value recovery. If your function returns those keys, they'll override mine in `generate.py` (`{**spend, **claims}`). Your `extract_terms.py` can be built and scored against these docs right away.
+- **Shared files touched:** `io.py` (`truth_prices` in TABLES), `check.py` (truth_prices checks), `run.py` (`contract_prices`, `contract_compliance`), `profiles.py` (spare-pricing and leak knobs), `api/main.py` (`/compliance`, overview fields).
+- **Velocity changed the spend story** (log in `docs/research/velocity.md`): 1.5–5× spare markups aren't a typical benchmark, so spares are now mostly near the contract price. The headline is **"paid vs the supplier's own contract"**: Prairie $2.3M leakage + $0.8M spares-clause gap, both shown on the Overview with the agreement document.
+- **Notes on your "Afterlife Data Map" (in Velocity):** great for judges. Three small things:
+  1. Add **spend assumptions** to the checklist: "spare markups are a scenario, not a benchmark (Velocity)", "production pays the contract price except ~15% of pairs with unapproved increases", "supplier part-number lookups are complete (to be made patchy)".
+  2. It says **"contract (PR #6, in review)"**, but #6 is merged.
+  3. The sample shows plant **`P-IA1`**, generated companies use **`P-MAIN`** (acquired plant `P-TX2`). Worth a footnote.
+
 ### Sat Nov 14, ~11 AM · Overview screen + spend endpoints live · shared-file changes you'll touch
 **Status:** 🆕 new · branch `spend/cost` (batch PR at CP3)
 - **What's ready:** `GET /overview`, `GET /markups`, `GET /harmonization` (all `?company=`), and the **Overview screen** (`web/src/app/page.tsx`): headline savings, after-sale cost chart, coverage bars, markup and harmonization tables. Tested in `tests/test_api.py` (44 tests pass).

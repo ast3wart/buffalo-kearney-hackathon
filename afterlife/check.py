@@ -171,6 +171,12 @@ def check(t, is_sample: bool = False):
     (ok if prod_sup <= set(tt.supplier_id) else warn)(
         "every production supplier has an agreement" if prod_sup <= set(tt.supplier_id)
         else f"{len(prod_sup - set(tt.supplier_id))} production suppliers have no agreement (recovery can't be valued)")
+    tp = t.get("truth_prices")
+    if tp is not None and len(tp):   # price schedules in the agreements (💲, generated companies)
+        (ok if set(tp.doc_file) <= docs else fail)("every truth_prices doc_file exists in supplier_agreements/")
+        (ok if set(tp.part_no.astype(str)) <= set(t["part_master"].part_no) else fail)("truth_prices parts exist in part_master")
+        (ok if set(tp.supplier_id.astype(str)) <= prod_sup else fail)("truth_prices suppliers are production suppliers")
+        (ok if (pd.to_numeric(tp.contract_price_ea) > 0).all() else fail)("truth_prices.contract_price_ea is positive")
     pct = pd.to_numeric(tt.recovery_pct)
     (ok if ((pct > 0) & (pct <= 1)).all() else fail)("truth_terms.recovery_pct is in (0, 1]")
     codes = set(t["failure_codes"].failure_code)
