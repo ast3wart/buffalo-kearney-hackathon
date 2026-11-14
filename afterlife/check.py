@@ -16,7 +16,7 @@ from afterlife.io import ROOT, SAMPLE, companies, load
 from afterlife.taxonomy import CATEGORIES, FAILURE_CODES
 
 CONTRACT = {
-    "products": ["product_id", "product_name", "family"],
+    "products": ["product_id", "product_name", "family", "net_price"],
     "part_master": ["part_no", "description", "category", "std_cost"],
     "bom": ["product_id", "part_no", "qty_per", "position"],
     "builds": ["product_id", "build_month", "units_built"],
@@ -62,6 +62,14 @@ def check(t, is_sample: bool = False):
         return
 
     parts = set(t["part_master"].part_no)
+    price = pd.to_numeric(t["products"].net_price, errors="coerce")
+    (ok if price.notna().all() and (price > 0).all() else fail)("every product has a positive net_price (21a)")
+    if not is_sample:   # generated prices are build cost x markup; the sample BOM is only 8 parts
+        pm_cost = pd.to_numeric(t["part_master"].set_index("part_no").std_cost)
+        b = t["bom"].assign(c=lambda d: pd.to_numeric(d.qty_per) * d.part_no.map(pm_cost))
+        build = b.groupby("product_id").c.sum()
+        margin = t["products"].set_index("product_id").net_price.astype(float) / build
+        (ok if (margin > 1).all() else fail)(f"net_price above build cost for every product (markup {margin.min():.2f}–{margin.max():.2f}x)")
     info = dict(zip(t["dataset_info"].key, t["dataset_info"].value))
     need = {"company_id", "company_name", "industry", "data_as_of", "first_build_month", "last_build_month", "currency", "warranty_months", "mis_window"}
     (ok if need <= set(info) else fail)("dataset_info has all keys" if need <= set(info) else f"dataset_info missing {sorted(need - set(info))}")

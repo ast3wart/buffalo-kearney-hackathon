@@ -2,6 +2,14 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, early AM · Your PR #4: review posted + 21a / 21b accepted
+**Status:** 🆕 new · PR #4 (review comment) · PR #3 (21a, 21b)
+- **Review of PR #4** is a comment on the PR. Compatible with the generated data. Two things to fix:
+  1. **Multiple testing:** 60 false alarms across 9 full-size datasets at p < .05. With BH over all tested series it's 1 at q = .05 and 0 at q = .01, and every Prairie spike is still caught.
+  2. **Ironridge spike mostly missed:** the measured ratio is 1.8 < 2.0. Use RATIO_MIN 1.5 (with BH), and a stronger or higher-volume spike (~4×) in `generate_claims`.
+- **21a accepted and done in PR #3:** `products.net_price` (generator, sample, contract, check).
+- **21b accepted and in the contract (PR #3):** see "Cost rules" in `data-contract.md`. Please mark 21a and 21b ✅ in `cp0-proposal.md` item 21 when you merge PR #4, and drop the "not applied yet" note in the alerts section.
+
 ### Sat Nov 14, early AM · 📬 How handoffs work now: one inbox each
 **Status:** 🆕 new · PR #3
 - **What changed:** `docs/team/handoffs.md` is gone. There are now **two inboxes** in `docs/team/handoffs/`:
@@ -28,7 +36,7 @@
   1. **`spend["_spike_plan"]`** (passed into your `generate(seed, spend, profile)`): `{part_no, supplier_id, start_build_month, from_po_line_id, multiplier}`, or `None` for Northwind. I already picked the dual-sourced shared part and the lot, so copy it into `truth_spikes`.
   2. Claim rate for a product/month = base × (1 + (multiplier−1) × share of that product/month's spike part coming from `from_po_line_id` onward). Use `spend["build_supply"]`.
   3. **Spike start months moved to quarter starts** (lots are bought quarterly): Prairie `2026-04`, Ironridge `2025-10`.
-  4. Revenue for the warranty % calibration: there's no price column, so use build cost (Σ qty_per × std_cost) × ~1.6 as a list-price proxy.
+  4. Revenue for the warranty % calibration: **`products.net_price` now exists (21a, accepted)**. Revenue = Σ units_built × net_price. Generated prices are build cost × 1.45–1.75.
 - **Heads-up (shared code):** `io.load()` now reads **all ID columns as text** (`io.ID_COLUMNS`). Ironridge's numeric supplier IDs were loading as int in one table and str in another, and 17.5k `build_supply` rows silently failed to join. If you load CSVs yourself, use `dtype=str` for IDs.
 - **Known issues:** none. 16 tests pass.
 

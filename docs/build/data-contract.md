@@ -35,6 +35,7 @@ Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each c
 | product_id | str | `UV-400` |
 | product_name | str | `Ranger-style utility vehicle 400` |
 | family | str | `utility_vehicle` |
+| net_price | float | `14500.0`: net selling price per unit (USD). Revenue = Σ units_built × net_price, the denominator for warranty as a % of revenue (21a, Sat Nov 14) |
 
 ### `part_master.csv` [MARA]
 | column | type | example |
@@ -181,6 +182,13 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only) |
 | ratio | float |
 | exposure_usd | float |
+
+## Cost rules (accounting)
+**Double-count rule (21b, accepted Sat Nov 14).** For `cost.lifecycle_cost` and anything else that adds up cost:
+- **Warranty cost = `warranty_claims.parts_cost + labor_cost`.**
+- `service_spend` with **`channel = warranty_repair`** is the purchasing side of those same repairs. It's used **only to reconcile** (e.g. "claims parts cost vs. warranty-repair purchases") and **never added** to cost.
+- Only `service_spend` with **`channel = spares`** is added, as spare-part cost.
+- All `$` from `detect.py` and `cost.py` are analytics estimates, not accruals or receivables.
 
 ## SAP extract format (v3 #15, Ironridge)
 A company with `extract_format: "sap"` in its profile ships `production_spend`, `service_spend`, `part_master` and `info_records` with **SAP technical field names and quirks**. `io.load()` detects the headers and `afterlife/adapters/sap.py` converts them to the columns above, so nothing downstream changes.

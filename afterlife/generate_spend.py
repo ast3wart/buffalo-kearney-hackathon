@@ -1,6 +1,6 @@
 """[SPEND thread · Asher] Products, BOMs, builds, production + service purchase lines.
 
-generate(seed, profile) -> {products, part_master, bom, builds, production_spend, service_spend,
+generate(seed, profile) -> {products (with net_price, 21a), part_master, bom, builds, production_spend, service_spend,
                             info_records, build_supply, truth_links, _spike_plan}
 dataset_info, abbreviations and failure_codes are written by generate.py from the profile, and so is the
 SAP formatting for extract_format='sap'. Keys starting with "_" are NOT written: `_spike_plan` tells the
@@ -226,6 +226,14 @@ def generate(seed: int, profile: dict) -> dict[str, list[dict]]:
         for pid in usage[p["part_no"]]:
             bom.append({"product_id": pid, "part_no": p["part_no"], "qty_per": rng.randint(lo, hi),
                         "position": p["category"]})
+
+    # 21a: net selling price per unit = build cost (sum of qty_per x std_cost) x markup, so warranty as a
+    # % of revenue can be computed and compared with the SEC peers in profiles.py
+    std = {p["part_no"]: p["std_cost"] for p in part_master}
+    mk_lo, mk_hi = profile.get("price_markup", (1.45, 1.75))
+    for prod in products:
+        build_cost = sum(r["qty_per"] * std[r["part_no"]] for r in bom if r["product_id"] == prod["product_id"])
+        prod["net_price"] = round(build_cost * rng.uniform(mk_lo, mk_hi), -1)
 
     # ---- suppliers: a pool per category, numeric LIFNR-style ids for SAP companies --------------------
     n_sup = 0
