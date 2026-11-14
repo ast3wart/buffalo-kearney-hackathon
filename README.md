@@ -29,6 +29,7 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 | **The data formats (the contract between us)** | [docs/build/data-contract.md](docs/build/data-contract.md) |
 | How the pieces fit | [docs/build/architecture.md](docs/build/architecture.md) |
 | Real-world numbers (SEC, NHTSA) | [docs/research/data-sources.md](docs/research/data-sources.md) |
+| **Warranty accounting rules (exposure vs. accrual, who decides what)** | [docs/research/warranty-accounting.md](docs/research/warranty-accounting.md) |
 | Velocity prompts and log (required!) | [docs/research/velocity.md](docs/research/velocity.md) |
 | Questions for mentors and for us | [docs/research/open-questions.md](docs/research/open-questions.md) |
 | Demo script / judge Q&A | [docs/pitch/](docs/pitch/) |

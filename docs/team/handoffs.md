@@ -21,6 +21,18 @@ Use this when you hand something to the other person or change something they de
 | Sat ~10 PM | 💲 Asher → 🛠 Brandon | Deck draft for review |
 
 ## Log
+### Sat Nov 14, morning · Brandon → Asher · detect v1 + two accounting asks for the spend thread
+- What changed / what's ready:
+  - `afterlife/detect.py` v1 works on the sample. It finds Keystone's seal-kit spike from `PO-450005-010` and doesn't flag Bluewater.
+  - `alerts` has new columns (`claims`, `p_value`, `excess_cost_usd`, `open_exposure_usd`, `attribution`, `spike_claims`). The data contract is updated.
+  - New `docs/research/warranty-accounting.md` (accounting guardrails). The proposals are in `cp0-proposal.md` item 21.
+- Where: branch `warranty/detect` (PR to main), `tests/test_detect.py`, `pytest.ini` (tests only collect from `tests/`)
+- What I need from you (decide at CP2, cheap now):
+  1. **21a:** add `net_price` to `products.csv` in `generate_spend` (warranty as a % of revenue needs it; the profiles already calibrate against it)
+  2. **21b, double-count rule** for `cost.lifecycle_cost`: warranty cost = claim `parts_cost + labor_cost`. `service_spend` with `channel = warranty_repair` is for reconciliation only and **not added**. Only `spares` is added.
+  3. Not mine, from the PR #1 review: the SAP adapter turns `PO-450001-010` into `0000450001-00010`, so Ironridge's `build_supply` / `truth_links` won't join its spend.
+- Known issues: `detect` only runs in `afterlife.run` once `match_claims` produces links (next on my list). Tests use the answer-key links.
+
 ### Sat Nov 14, early AM · Asher → Brandon · Data contract v3 (from your CP0 review)
 - What changed: merged your `plan/cp0-additions` into `test-data-batch`, then applied #10–15, #17, and the #19 schema. New tables: `build_supply.csv`, `abbreviations.csv`. `truth_spikes.from_po_line_id`, links v2 columns, `runs` table, SAP adapter. Northwind has HVAC codes and categories (24 categories, 16 failure codes in the union).
 - Where: `docs/build/data-contract.md` (v3 section + SAP table), `afterlife/taxonomy.py`, `afterlife/profiles.py`, `afterlife/adapters/sap.py`, `afterlife/check.py`, `scripts/make_sample.py`, `tests/`

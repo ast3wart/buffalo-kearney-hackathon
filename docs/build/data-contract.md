@@ -41,7 +41,7 @@ Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each c
 |---|---|---|
 | part_no | str | `100-4471-02` |
 | description | str | `BRG,BALL,6204-2RS,20MM` |
-| category | str | `bearing`: **must be one of the 21 in `taxonomy.CATEGORIES`** |
+| category | str | `bearing`: **must be one of the 24 in `taxonomy.CATEGORIES`** |
 | std_cost | float | `4.10` |
 
 ### `bom.csv` [STKO/STPO], single level for MVP
@@ -181,6 +181,15 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only) |
 | ratio | float |
 | exposure_usd | float |
+| p_value | float: one-sided significance of the step (detect v1) |
+| claims | int: claims linked + attributed to this part/supplier since `start_build_month` |
+| excess_cost_usd | float: share of exposure above what the baseline predicts = exposure × (1 − 1/ratio) |
+| open_exposure_usd | float: exposure from claims with `recovery_status = none` (and `claim_type = warranty` once 21c lands) |
+| from_po_line_id | str: first affected supplier lot |
+| attribution | str: weakest evidence after the start: `clean` / `deconvolved` / `ambiguous` |
+| spike_claims | int: claims within the MIS window after the start (the numerator of `current_rate`) |
+
+All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Proposed accounting changes to this contract (`net_price`, `claim_type`, the double-count rule, supplier warranty terms) are listed in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed) and are not applied yet.
 
 ## SAP extract format (v3 #15, Ironridge)
 A company with `extract_format: "sap"` in its profile ships `production_spend`, `service_spend`, `part_master` and `info_records` with **SAP technical field names and quirks**. `io.load()` detects the headers and `afterlife/adapters/sap.py` converts them to the columns above, so nothing downstream changes.
