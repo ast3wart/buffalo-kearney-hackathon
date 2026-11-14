@@ -17,6 +17,7 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 ## 🗺 Where things are
 | If you want… | Go to |
 |---|---|
+| **Start here: BOMs, spend cubes, claims primer** (download and open in a browser) | [docs/learn/boms-and-spend-cubes.html](docs/learn/boms-and-spend-cubes.html) |
 | What we're building and why | [docs/plan/concept.md](docs/plan/concept.md) |
 | What's in and out of scope | [docs/plan/scope.md](docs/plan/scope.md) |
 | The hour-by-hour plan | [docs/plan/schedule.md](docs/plan/schedule.md) |
