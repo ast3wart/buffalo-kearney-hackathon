@@ -37,9 +37,10 @@ def test_sap_company_still_joins_after_write_and_load(tmp_path):
     Catches broken joins between spend (SAP ids) and build_supply / truth_links / truth_spikes."""
     from afterlife import check
     from afterlife.generate import write
-    from afterlife.io import load
+    from afterlife.io import load, load_documents
     tables = {f.stem: pd.read_csv(f, dtype=str, keep_default_na=False).to_dict("records")
               for f in SAMPLE.glob("*.csv")}
+    tables["supplier_agreements"] = load_documents(SAMPLE).to_dict("records")  # v4 documents ride along
     write(tables, tmp_path, extract_format="sap")
     raw = pd.read_csv(tmp_path / "production_spend.csv", dtype=str)
     assert {"EBELN", "MATNR", "LIFNR"} <= set(raw.columns)          # really written as SAP

@@ -4,6 +4,9 @@ Pool claims across ALL products sharing a part. Two views (decided at CP0):
   raw  : claims per 1,000 built by build_month (intuitive chart, biased toward recent builds)
   mis  : claims within MIS_WINDOW months in service per 1,000 built, MATURE build months only
          (build_month + MIS_WINDOW <= data_as_of). Alerts use THIS view.
+         v4 (TODO): claims arrive with a reporting lag (claim_date - failure_date). Treat a build month as
+         mature only once build_month + MIS_WINDOW + typical lag (e.g. the 90th percentile lag in the data)
+         <= data_as_of, or the latest months look falsely clean.
 
 v3 #13 supplier attribution: claims don't say which supplier's part was fitted. build_supply says
 which supplier lot each (product, build_month, part) consumed and in what share. Each cell is:
@@ -117,6 +120,8 @@ def _cell_claims(tables, links: pd.DataFrame, window: int) -> pd.DataFrame:
     c = c[c.mis >= 0].copy()
     c["in_window"] = (c.mis <= window).astype(int)
     c["cost"] = pd.to_numeric(c.parts_cost, errors="coerce").fillna(0) + pd.to_numeric(c.labor_cost, errors="coerce").fillna(0)
+    if "other_cost" in c:  # v4: handling / freight / sublet are part of warranty cost (contract "Cost rules")
+        c["cost"] += pd.to_numeric(c.other_cost, errors="coerce").fillna(0)
     is_open = c.recovery_status.astype(str).str.lower().eq(OPEN_RECOVERY_STATUS) if "recovery_status" in c else True
     if "claim_type" in c:
         is_open = is_open & c.claim_type.astype(str).str.lower().eq(RECOVERABLE_CLAIM_TYPE)

@@ -13,6 +13,14 @@ def test_bom_parts_exist_in_part_master():
     assert set(t["bom"].part_no) <= set(t["part_master"].part_no)
 
 
+def test_sample_agreements_load_as_documents():
+    t = load(SAMPLE)
+    docs = t["supplier_agreements"]
+    assert list(docs.columns) == ["doc_file", "text"] and len(docs) > 0
+    assert set(t["truth_terms"].doc_file) <= set(docs.doc_file)
+    assert docs.text.str.len().min() > 100
+
+
 def test_sample_passes_contract_check():
     from afterlife import check
     check.results.clear()

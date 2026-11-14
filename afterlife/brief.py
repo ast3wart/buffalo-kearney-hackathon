@@ -6,6 +6,10 @@
 Fill TEMPLATE from numbers first (works with no API key); optionally
 polish with an LLM (ANTHROPIC_API_KEY in .env). Never let the LLM invent numbers.
 
+v4: value the recovery opportunity with the supplier's EXTRACTED terms (supplier_terms: recovery_pct, labor
+coverage and cap, recovery window) on PAID claims still inside the filing deadline, and quote the clause
+(supplier_terms.evidence). Already recovered_usd is shown separately, never double counted.
+
 Wording rule (after Velocity review, Sat Nov 14): claims are LINKED to a candidate part/supplier;
 never say the supplier "caused" them or "owes" money. $ are recovery OPPORTUNITIES (scenario range).
 """

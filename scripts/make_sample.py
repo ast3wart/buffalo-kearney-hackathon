@@ -10,19 +10,32 @@ v3 story baked in (Brandon's CP0 review, #13): the hydraulic seal kit 200-1180-0
     April, partly on UV-600 (50% Keystone), and not on Bluewater-only builds.
     That makes "which supplier, which lot" a real inference instead of a lookup.
 
+v4 (accounting fields): claims carry claim_date / paid_date / claim_type / other_cost / recovered_usd, products carry
+avg_selling_price, and each production supplier has a supplier quality agreement DOCUMENT in
+supplier_agreements/ (recovery terms are extracted from text, they are not ERP fields). All v4 values come
+from a separate RNG so every v3 value stays identical; only claims not yet reported by data_as_of drop out.
+
 Run: python scripts/make_sample.py
 """
 import csv
+import datetime as dt
 import random
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from afterlife.profiles import PROFILES, dataset_info, abbreviations_rows, failure_code_rows  # noqa: E402
+from afterlife.profiles import COMMON, PROFILES, dataset_info, abbreviations_rows, failure_code_rows  # noqa: E402
 
 OUT = Path(__file__).resolve().parent.parent / "data" / "sample"
 rng = random.Random(42)
+rng4 = random.Random(4242)  # v4 fields only, so the v3 draws above don't shift
 PROFILE = PROFILES[0]  # Prairie vocabulary
+
+
+def write_doc(name, text):
+    d = OUT / "supplier_agreements"
+    d.mkdir(parents=True, exist_ok=True)
+    (d / name).write_text(text)
 
 
 def write(name, rows):
@@ -144,6 +157,59 @@ for r in build_supply:
     if r["part_no"] == SEAL and r["po_line_id"] == SPIKE_FROM_PO:
         spike_share[(r["product_id"], r["build_month"])] = r["share"]
 
+# v4: supplier recovery terms. The truth lives here; the pipeline only sees the documents.
+# supplier: (recovery_pct, labor_covered, labor_rate_cap, recovery_window_months, filing_deadline_days, doc style)
+TERMS = {
+    "S-011": (1.00, True, 95, 24, 60, "formal"), "S-022": (0.80, True, 90, 18, 45, "amended"),
+    "S-023": (1.00, False, None, 24, 90, "table"), "S-031": (0.50, False, None, 12, 30, "formal"),
+    "S-044": (1.00, True, 85, 24, 60, "table"), "S-052": (0.60, True, 75, 12, 30, "formal"),
+    "S-063": (1.00, False, None, 18, 60, "table"), "S-070": (0.75, True, 90, 24, 45, "amended"),
+    "S-081": (1.00, True, 100, 24, 90, "formal"),
+}
+
+
+def agreement_doc(sid):
+    pct, labor, cap, window, filing, style = TERMS[sid]
+    name, country = SUP[sid]
+    cover = (f"parts and dealer labor, labor at the hours actually claimed and capped at USD {cap} per hour"
+             if labor else "the parts only; dealer labor is excluded")
+    if style == "table":
+        return (f"PRAIRIE UTILITY VEHICLES · SUPPLIER WARRANTY TERMS\nVendor: {name} (vendor no. {sid}), {country}\n\n"
+                f"| Term | Value |\n|---|---|\n| Warranty period | {window} months from end-unit build date |\n"
+                f"| Recovery share | {pct:.0%} |\n| Labor reimbursed | {'yes, max $' + str(cap) + '/hr' if labor else 'no'} |\n"
+                f"| Claim filing deadline | {filing} days after dealer claim is paid |\n"
+                f"| Freight / handling | not recoverable |\n")
+    body = (f"# Supplier Quality Agreement\nPrairie Utility Vehicles (\"Buyer\") and {name}, supplier no. {sid} "
+            f"(\"Supplier\"), {country}. Effective 2025-01-01.\n\n## 4. Quality\n4.1 Supplier maintains IATF 16949 "
+            f"certification and ships with a certificate of conformance per lot.\n\n## 7. Warranty\n"
+            f"7.1 Supplier warrants each part for {window} months from the date of manufacture of the end unit "
+            f"in which it is installed.\n")
+    if style == "amended":
+        return (body + f"7.2 For field failures attributable to Supplier's parts, Supplier reimburses 100% of {cover}.\n"
+                f"7.3 Recovery claims are submitted within 90 days after Buyer pays the dealer claim.\n"
+                f"7.4 Freight, handling and administrative fees are not recoverable.\n\n"
+                f"## Amendment No. 1 (effective 2025-06-01)\nSections 7.2 and 7.3 are replaced as follows. "
+                f"Supplier reimburses {pct:.0%} of {cover}. Recovery claims must be submitted within {filing} days "
+                f"after Buyer pays the dealer claim; late claims are void. All other terms are unchanged.\n")
+    return (body + f"7.2 For field failures attributable to Supplier's parts, Supplier reimburses {pct:.0%} of {cover}.\n"
+            f"7.3 Recovery claims are submitted within {filing} days after Buyer pays the dealer claim.\n"
+            f"7.4 Freight, handling and administrative fees are not recoverable.\n")
+
+
+docs, truth_terms = {}, []
+for sid in TERMS:
+    pct, labor, cap, window, filing, _ = TERMS[sid]
+    fname = "sqa_" + SUP[sid][0].lower().replace(" ", "-") + ".md"
+    docs[fname] = agreement_doc(sid)
+    truth_terms.append({"doc_file": fname, "supplier_id": sid, "recovery_pct": pct, "labor_covered": labor,
+                        "labor_rate_cap": cap if cap else "", "recovery_window_months": window,
+                        "filing_deadline_days": filing})
+main_supplier = {}  # (product, month, part) -> supplier with the largest share (who a recovery claim goes to)
+for r in build_supply:
+    key = (r["product_id"], r["build_month"], r["part_no"])
+    if r["share"] > main_supplier.get(key, (None, 0))[1]:
+        main_supplier[key] = (r["supplier_id"], r["share"])
+
 failure_codes = failure_code_rows(PROFILE)
 texts = {
     "200-1180-01": ["hyd leak boom cyl, repl seal kit", "cust reports fluid under unit, cyl seals worn", "lift cyl weeping, resealed"],
@@ -162,7 +228,8 @@ BASE = 0.004  # claims per unit built per BOM line (sample-sized)
 # multiple-testing correction (Asher's PR #4 review, finding 2: the spike part needs more volume)
 PART_RATE = {SEAL: 3.0}
 
-claims, k = [], 0
+AS_OF = dt.date.fromisoformat(COMMON["data_as_of"])
+claims, k, unreported = [], 0, 0
 for b in builds:
     for p, q in bom_map[b["product_id"]]:
         mult = 1 + (SPIKE_X - 1) * spike_share.get((b["product_id"], b["build_month"]), 0) if p == SEAL else 1
@@ -176,14 +243,39 @@ for b in builds:
             r = rng.random()
             causal = p if r < 0.3 else ("" if r < 0.9 else rng.choice(list(cat)))  # 60% blank, 10% wrong
             labor = round(rng.uniform(0.8, 3.5), 1)
+            # same draw order as v3 (serial, date, text, parts cost, dealer) so v3 values don't change
+            serial = f"{b['product_id'].replace('-', '')}-{y[2:]}-{mo}-{rng.randint(1, 999):05d}"
+            failure_date = f"{y}-{fail_mo:02d}-{rng.randint(1, 28):02d}"
+            text = rng.choice(texts[p])
+            parts_cost, labor_cost = round(std[p] * rng.uniform(2, 4), 2), round(labor * 85, 2)
+            dealer = f"D-{rng.randint(100, 140)}"
+            # v4: reporting lag. A claim reaches us 2-40 days after the failure; later than data_as_of = not in the data yet.
+            claim_date = dt.date.fromisoformat(failure_date) + dt.timedelta(days=rng4.randint(2, 40))
+            paid = claim_date + dt.timedelta(days=rng4.randint(7, 45))
+            other_cost = round(rng4.uniform(8, 40), 2)
+            ct_roll = rng4.random()  # 21c: goodwill and campaign claims are never recovered from the supplier
+            claim_type = "goodwill" if ct_roll < 0.05 else "campaign" if ct_roll < 0.07 else "warranty"
+            status, recovered = "none", 0.0
+            if paid <= AS_OF and claim_type == "warranty":
+                sid, _ = main_supplier[(b["product_id"], b["build_month"], p)]
+                pct, labor_ok, cap, window, _, _ = TERMS[sid]
+                in_window = (fail_mo - int(mo)) + 12 * (int(failure_date[:4]) - int(y)) <= window
+                roll = rng4.random()
+                if in_window and roll < 0.15:
+                    status = "recovered"
+                    recovered = round(pct * (parts_cost + (min(labor_cost, labor * cap) if labor_ok else 0)), 2)
+                elif in_window and roll < 0.30:
+                    status = "submitted"
+            if claim_date > AS_OF:
+                unreported += 1
+                continue
             claims.append({
                 "claim_id": cid, "product_id": b["product_id"],
-                "serial_no": f"{b['product_id'].replace('-', '')}-{y[2:]}-{mo}-{rng.randint(1, 999):05d}",
-                "build_month": b["build_month"], "failure_date": f"{y}-{fail_mo:02d}-{rng.randint(1, 28):02d}",
-                "failure_code": code_for[p], "claim_text": rng.choice(texts[p]), "causal_part_no": causal,
-                "labor_hrs": labor, "parts_cost": round(std[p] * rng.uniform(2, 4), 2),
-                "labor_cost": round(labor * 85, 2), "dealer_id": f"D-{rng.randint(100, 140)}",
-                "recovery_status": "none"})
+                "serial_no": serial, "build_month": b["build_month"], "failure_date": failure_date,
+                "claim_date": claim_date.isoformat(), "paid_date": paid.isoformat() if paid <= AS_OF else "",
+                "claim_type": claim_type, "failure_code": code_for[p], "claim_text": text, "causal_part_no": causal,
+                "labor_hrs": labor, "parts_cost": parts_cost, "labor_cost": labor_cost, "other_cost": other_cost,
+                "dealer_id": dealer, "recovery_status": status, "recovered_usd": recovered})
             truth_links.append({"source_table": "warranty_claims", "source_id": cid, "part_no": p})
 
 info = {**dataset_info(PROFILE), "company_id": "sample", "first_build_month": months[0], "last_build_month": months[-1]}
@@ -200,7 +292,10 @@ write("failure_codes", failure_codes)
 write("warranty_claims", claims)
 write("dataset_info", [{"key": key, "value": v} for key, v in info.items()])
 write("truth_links", truth_links)
+write("truth_terms", truth_terms)
+for fname, text in docs.items():
+    write_doc(fname, text)
 write("truth_spikes", [{"part_no": SEAL, "supplier_id": SPIKE_SUPPLIER, "start_build_month": "2026-04",
                         "from_po_line_id": SPIKE_FROM_PO, "multiplier": SPIKE_X}])
-print(f"sample written to {OUT}: {len(claims)} claims, {len(production_spend)} production POs, "
+print(f"sample written to {OUT}: {len(claims)} claims ({unreported} not reported by data_as_of), {len(docs)} agreements, {len(production_spend)} production POs, "
       f"{len(service_spend)} service POs, {len(build_supply)} build_supply rows")

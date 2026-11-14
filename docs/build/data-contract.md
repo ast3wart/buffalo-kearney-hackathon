@@ -13,6 +13,12 @@ Column names follow common SAP tables (noted in brackets) so Kearney judges reco
 - **SAP extracts:** a company can arrive with raw SAP field names, which `afterlife/adapters/sap.py` maps on load (see "SAP extract format").
 - **Acquired plant (Ironridge):** a second plant with no part numbers. It's a profile knob, with no column change.
 
+**v4 (Sat Nov 14), accounting fields (PROPOSED by Brandon, Asher to confirm).** Changes from v3:
+- **Claims:** `claim_date` (reporting lag), `paid_date` (blank = unpaid), `claim_type` (21c), `other_cost` (handling, freight, sublet), `recovered_usd`. Claims not yet reported by `data_as_of` are simply absent.
+- **Products:** `avg_selling_price`, so warranty cost can be shown as % of revenue next to the SEC benchmarks.
+- **Supplier agreements are documents, not columns:** new `supplier_agreements/` folder (one text file per production supplier). Recovery terms are *extracted* by `afterlife/extract_terms.py` (regex + Claude) into the `supplier_terms` output, scored against the new `truth_terms.csv` answer key.
+- No change to the SAP adapter: none of these fields are in the EKKO/EKPO/MARA/EINA extract (see "Stored or extracted?").
+
 Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each company's subset and abbreviations are in `afterlife/profiles.py`. `python -m afterlife.check` enforces this file.
 
 ## Inputs (what a client would give us)
@@ -127,14 +133,22 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | serial_no | str | `UV4-26-03-01188` |
 | build_month | str | `2026-03` |
 | failure_date | date | `2026-07-19`: between build month and `data_as_of`. **Months in service (MIS)** = months from build_month to failure_date |
+| claim_date | date | `2026-08-02`: dealer submitted the claim, between failure_date and `data_as_of`. The gap is the **reporting lag**; recent build months are under-reported until it closes (v4) |
+| paid_date | date | `2026-08-20`: we paid the dealer. **Blank = not yet paid.** Supplier recovery filing deadlines count from here (v4) |
+| claim_type | str | `warranty` / `goodwill` / `campaign` (21c, v4). Only `warranty` is recoverable from the supplier; campaigns are reserved separately |
 | failure_code | str | `HYD-ELP` |
 | claim_text | str | `hyd leak boom cyl, replaced seal kit` |
 | causal_part_no | str | often **blank** or wrong. This is what we infer |
 | labor_hrs | float | `2.5` |
 | parts_cost | float | `38.00` |
 | labor_cost | float | `212.50` |
+| other_cost | float | `24.00`: handling, freight, sublet (v4). Part of warranty cost, but **not** recoverable under the sample agreements |
 | dealer_id | str | `D-118` |
-| recovery_status | str | `none` / `submitted` / `recovered` |
+| recovery_status | str | `none` / `submitted` / `recovered`. Only paid claims are submitted |
+| recovered_usd | float | `152.80`: credit received from the supplier, `0` unless `recovered` (v4) |
+
+### `supplier_agreements/`: one document per production supplier (v4, a folder, not a CSV)
+Supplier quality agreements and amendments as `.md` / `.txt` (a real client sends PDFs; convert to text first). Loaded by `io.load_documents()` as `[doc_file, text]`. Wording varies on purpose: prose clauses, a terms table, and **amendments that supersede the original clause** (the latest one wins). The file name is not trusted: which supplier the document is for is extracted too.
 
 ## Generated-only (answer key, never used by matching)
 ### `truth_links.csv`
@@ -153,6 +167,17 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | from_po_line_id | str | `PO-450005-010`: the first affected lot of that supplier (v3) |
 | multiplier | float | `3.0` |
 
+### `truth_terms.csv`: what each agreement actually says (v4)
+| column | type | example |
+|---|---|---|
+| doc_file | str | `sqa_keystone-seal-works.md` |
+| supplier_id | str | `S-022` |
+| recovery_pct | float | `0.8`: share of the recoverable cost the supplier reimburses |
+| labor_covered | bool | `True` |
+| labor_rate_cap | float | `90`: max USD per labor hour reimbursed. Blank = no cap / labor not covered |
+| recovery_window_months | int | `18`: from the end unit's build month |
+| filing_deadline_days | int | `45`: days after `paid_date` to file the recovery claim |
+
 ## Outputs (tables in results.duckdb)
 ### `links`: both threads (spend rows from match_spend, claim rows from match_claims)
 | column | type | notes |
@@ -165,6 +190,9 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | source_system | str | `SAP-P-IA1` / `LEGACY-P-TX2` / `SERVICE-PORTAL` / `WTY` (v3) |
 | evidence | str | JSON of the signals that agreed, e.g. `{"spec_code":"6204","category":"bearing","info_record":false,"fuzzy":0.91}` (v3) |
 | run_id | str | ties the row to `runs` (v3) |
+
+### `supplier_terms`: 🛠 Warranty thread, extracted from `supplier_agreements/` (v4)
+The `truth_terms` columns plus `method` (`regex` / `llm` / `human`), `confidence` (0–1), `evidence` (JSON: the clause quoted for each field) and `run_id`. Blank fields = needs human review. Recoverable amount for a linked claim = `recovery_pct × (parts_cost + (labor_covered ? min(labor_cost, labor_hrs × labor_rate_cap) : 0))`, only inside the window and filing deadline.
 
 ### `runs` (v3 #17): one row per `python -m afterlife.run`
 `run_id, started_at, git_commit, input_hashes, model_id, prompt_version, metrics_json`
@@ -179,7 +207,7 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | products_affected | int |
 | start_build_month | str |
 | mis_window | int (3) |
-| baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only) |
+| baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only; v4: "mature" also allows for the reporting lag) |
 | ratio | float |
 | exposure_usd | float |
 | p_value | float: one-sided significance of the step, corrected for picking the best split (detect v1) |
@@ -191,14 +219,27 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | attribution | str: weakest evidence after the start: `clean` / `deconvolved` / `ambiguous` |
 | spike_claims | int: claims within the MIS window after the start (the numerator of `current_rate`) |
 
-All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Accounting changes are tracked in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed): the selling price (`products.avg_selling_price`, 21a) and the double-count rule (21b, "Cost rules" below) are applied; `claim_type` and supplier warranty terms are still proposed.
+All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Accounting changes are tracked in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed): the selling price (`products.avg_selling_price`, 21a) and the double-count rule (21b, "Cost rules" below) are applied; `claim_type` (21c) and supplier terms as documents (21g) are in contract v4.
 
 ## Cost rules (accounting)
 **Double-count rule (21b, accepted Sat Nov 14).** For `cost.lifecycle_cost` and anything else that adds up cost:
-- **Warranty cost = `warranty_claims.parts_cost + labor_cost`.**
+- **Warranty cost = `warranty_claims.parts_cost + labor_cost + other_cost`** (v4 adds `other_cost`). The supplier-recovery basis is narrower: parts + covered labor per `supplier_terms`, `claim_type = warranty` only.
 - `service_spend` with **`channel = warranty_repair`** is the purchasing side of those same repairs. It's used **only to reconcile** (e.g. "claims parts cost vs. warranty-repair purchases") and **never added** to cost.
 - Only `service_spend` with **`channel = spares`** is added, as spare-part cost.
 - All `$` from `detect.py` and `cost.py` are analytics estimates, not accruals or receivables.
+
+## Stored or extracted? (v4)
+Rule: if a real manufacturer has it as a **field in a system**, we model it as a column and assume it arrives in the extract. If it lives in **contract text**, we model it as a document and extract it with the AI step. That keeps the AI where it earns its place and keeps the numbers auditable.
+
+| Data point | Where it lives at a real SAP client | Our model |
+|---|---|---|
+| claim_date, paid_date, labor/parts/other cost split | Warranty claim system: SAP Warranty Claim Processing (claim header and items), or a dealer portal | column on `warranty_claims` |
+| recovery_status, recovered_usd | Same claim system, supplier-recovery claim/credit memo (FI vendor credit) | column on `warranty_claims` |
+| avg_selling_price | SD billing documents (VBRK/VBRP), averaged per material | column on `products` |
+| recovery %, labor coverage, labor cap, window, filing deadline | Supplier quality agreement / purchasing contract, PDF or long text. Rarely structured fields | **document** → `extract_terms.py` → `supplier_terms` |
+| in-service (retail) date | Claim system / dealer registration | not modeled: MIS counts from build month (documented simplification) |
+
+Warranty claims never come through the SAP spend adapter below; they keep contract columns for every company, including Ironridge (`source_system = WTY`).
 
 ## SAP extract format (v3 #15, Ironridge)
 A company with `extract_format: "sap"` in its profile ships `production_spend`, `service_spend`, `part_master` and `info_records` with **SAP technical field names and quirks**. `io.load()` detects the headers and `afterlife/adapters/sap.py` converts them to the columns above, so nothing downstream changes.

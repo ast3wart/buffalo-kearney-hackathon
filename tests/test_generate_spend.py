@@ -17,6 +17,7 @@ def test_spend_side_passes_contract_check(profile, tmp_path):
     write(tables, tmp_path, profile["extract_format"])
     t = load(tmp_path)
     t["warranty_claims"] = pd.DataFrame(columns=check.CONTRACT["warranty_claims"])
+    t["truth_terms"] = pd.DataFrame(columns=check.CONTRACT["truth_terms"])  # v4: written by generate_claims
     spikes = [plan] if plan else []
     t["truth_spikes"] = pd.DataFrame(spikes, columns=check.CONTRACT["truth_spikes"])
     if plan and profile["extract_format"] == "sap":   # write() would canonicalize this id for SAP companies

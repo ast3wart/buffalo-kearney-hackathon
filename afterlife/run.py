@@ -31,8 +31,10 @@ def _try(name, fn, *args):
 
 
 def run_company(tables: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
-    from afterlife import match, detect, cost
+    from afterlife import match, detect, cost, extract_terms
     outputs: dict[str, pd.DataFrame | None] = {"links": _try("links", match.link_all, tables)}
+    if "supplier_agreements" in tables:
+        outputs["supplier_terms"] = _try("supplier_terms", extract_terms.extract_terms, tables)
     links = outputs["links"]
     if links is not None:
         rates = _try("claim_rates", detect.claim_rates, tables, links)

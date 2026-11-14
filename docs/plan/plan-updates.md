@@ -6,6 +6,11 @@ Running log of plan changes after the original plan (`docs/archive/track-decisio
 
 ---
 
+## Update 6 · Sat Nov 14 · Contract v4: accounting fields (PROPOSED by Brandon, Asher to confirm)
+**What:** claims get a reporting lag (`claim_date`), payment (`paid_date`), full cost (`other_cost`), `recovered_usd` and `claim_type` (21c); products get `avg_selling_price`; supplier recovery terms arrive as **documents** that an AI step extracts (`supplier_terms`).
+**Why:** the brief's recovery ask needs the contract terms to put a defensible $ on it, the reporting lag stops `detect.py` from reading recent builds as falsely clean, and ASP lets us benchmark warranty % of revenue against the SEC filers. Terms are documents because that's where they live at a real SAP client: it's the honest place for the AI workflow.
+**Cost:** ~1 h for Brandon (generator + extractor), a few minutes for Asher (ASP in `generate_spend`). No change to the SAP adapter or the spend columns. This reverses two "skip this weekend" items in Update 5 (paid date, supplier terms): filing deadlines count from `paid_date`, and the terms are the AI step.
+
 ## Update 5 · Sat Nov 14, morning · Warranty accounting fit + detect v1 (🛠, PROPOSED where noted)
 Research notes and design rules: **[../research/warranty-accounting.md](../research/warranty-accounting.md)**. Change list with owners: **[cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed)**. Future accounting changes go in those two docs first, and this log points to them.
 
