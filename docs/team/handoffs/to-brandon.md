@@ -2,6 +2,18 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~7:15 PM · The 4 parts to collect listings for (CP1)
+**Status:** 🆕 new · KB: `data/reference/kb.csv` (30 real parts, branch `asher/demo-data`)
+| Part | kb_id | Why it's in the demo | Target |
+|---|---|---|---|
+| **2094-BC01-MP5-S**: Rockwell **Kinetix 6000** servo axis module (discontinued Dec 2023) | KB-009 | **The line-stopping part at Toledo Line 2.** Fort Wayne has 2 on its shelf. | ≥ 3 listings (eBay sold, Radwell, PLC Center, DoSupply…) |
+| **22B-D010N104**: Rockwell **PowerFlex 40** 5HP drive (discontinued Jun 2025) | KB-006 | Common drive across plants; successor 25B-D010N104 (PowerFlex 525) | ≥ 3 listings, plus 1 for the successor if easy |
+| **1769-L32E**: Rockwell **CompactLogix** controller (discontinued Dec 2020) | KB-002 | Drives the CapEx cliff (migrate to 5069-L320ER) | ≥ 3 listings |
+| **6ES5943-7UB11**: Siemens **S5-115U CPU 943** (very old) | KB-029 | **Candidate for the "no / few listings" path** → alternatives | Record whatever you find. If ≥ 3 turn up, tell me and I'll pick a rarer part. |
+
+- One row per listing in `data/reference/listings.csv` (columns in registry-format §5). `url` + `seen_on` are required. Counterfeit risk shows for non-authorized sellers.
+- **Collect by hand, don't scrape.**
+
 ### Sat Nov 14, ~7 PM · Demo portfolio is now 6 plants: two multi-plant manufacturers + a target (we target multi-plant manufacturers)
 **Status:** 🆕 new
 - **Granite Ridge Capital** (`F-GRANITE`) owns:
