@@ -2,17 +2,23 @@
 
 **Kearney × PERLab Hackathon · Startup track · Team Buffalo (Asher + Brandon)**
 
-> Anyone can ask an AI what a machine is. We tell a buyer which hidden parts will stop which production lines, what it'll cost and when, and we show the evidence behind every number.
+> Anyone can ask an AI what a machine is. We tell a plant owner which hidden parts will stop which production lines, what it'll cost and when, and we show the evidence behind every number.
 
-Old manufacturers grow by buying smaller companies, often for their production capacity. Before signing, a buyer rarely sees that the target's machines run on **controllers, drives and screens the manufacturer stopped making**. One failure there can stop a line for weeks.
+Factories run on **controllers, drives and screens their manufacturers stopped making**. One failure there can stop a line for weeks, and most plants don't have a full picture of what's inside their machines.
 
-Equipment X-Ray takes the target plant's equipment list and **photos of nameplates and control cabinets**, and turns them into:
+Equipment X-Ray takes a plant's equipment list and **photos of nameplates and control cabinets**, and turns them into a **living registry of every machine and every critical part**. From that registry it produces:
 - a **CapEx cliff** (equipment spending needed, year by year)
-- **how much less to pay**
 - the **single points of failure**
-- **where to source every part**
+- **where to source every part**, checking the shelves at your other plants first
 
-The evidence sits behind every number. After the deal, the same scan becomes a **central registry of every machine and every part** (age, value, replacement date, sourcing). Across a private equity portfolio, companies can then **share spares and buy together**.
+The evidence sits behind every number.
+
+**Who it's for:** **multi-plant manufacturers and PE portfolios.**
+- **Evaluating your own plants is the main way in.**
+- **An acquisition is one way in:** the same scan prices the deal ("pay $X less") and becomes the acquired plant's registry. A seller's pre-exit scan is another.
+- Across plants and portfolio companies, owners **share spares, buy together and free up cash**.
+
+**Strategy source of truth:** [docs/plan/roadmap-equipment-xray.md](docs/plan/roadmap-equipment-xray.md).
 
 ## ⏰ Deadlines
 | | |

@@ -28,12 +28,13 @@
 Live marketplace search · sensors · login · mobile field app · trained component detector · real CMMS/ERP connectors · reading maintenance logs at scale.
 
 ## Demo script (~3 min)
-1. "Fund X just bought Plant A." Open the registry: Plant A, lines, machines.
-2. CapEx cliff → **"pay $X less"** → click a bar → evidence drawer (photo, KB source, confidence).
+1. "Fund X **owns** Plant A and Plant B." Open the registry: Plant A, lines, machines.
+2. CapEx cliff → click a bar → evidence drawer (photo, KB source, confidence).
 3. SPOF: "Line 2 stops if this discontinued drive fails. Lead time 20 weeks."
 4. Sourcing → **"Plant B already has 2 on the shelf."** ← the portfolio moment
 5. Accuracy tile: precision/recall on the planted answer key.
 6. Live photo → it appears in the registry.
+7. Close: "**And when they buy their next plant, the same scan prices the deal**" → show "pay $X less" as the second lens.
 
 ## Rough split (adjust to who's ahead)
 > **Superseded (Sat ~4:30 PM):** see [docs/team/roles.md](../../team/roles.md). Asher (CS + stats) takes data, vision, matching, accuracy and the app. Brandon (finance + accounting) takes valuation, cost data, sourcing, the estimates and the pitch numbers.

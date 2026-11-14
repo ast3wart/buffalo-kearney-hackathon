@@ -27,7 +27,7 @@
    - On photo savings alone, it would take 643 a year, which is not viable.
    - Post-close plant programs stack recurring revenue on top.
 
-**So the story becomes:** *"We don't replace the appraiser. We give the deal team and the plant owner a decision they don't get today: which hidden parts stop which lines, what it costs, and when. The deal is where the record starts; owning the plant is where it pays."*
+**So the story becomes:** *"We don't replace the appraiser. We give the deal team and the plant owner a decision they don't get today: which hidden parts stop which lines, what it costs, and when. Evaluating your own plants is where it starts and pays; a deal is one more way in."*
 
 ---
 
@@ -81,7 +81,7 @@
 | Controls-review hours freed | $623k | $1.5M | $2.4M |
 | New $15k decision module, if **every** reviewed deal bought it | $6.8M | $10.1M | $13.5M |
 
-**Verdict:** diligence alone is a **~$10M ceiling**. It's a wedge, not the business.
+**Verdict:** diligence alone is a **~$10M ceiling**. It's one way in, not the business.
 
 ## D. Your own plants (MEASURED plant counts × VELOCITY value)
 - **Plants:**
@@ -146,7 +146,7 @@
   - **Keep as a toolkit or partner** if volume is 20–30.
   - **No-go on a broad platform now:** it needs ~110 engagements a year.
 - **Competition:** Bain, Kearney, A&M and EFESO in operational diligence; KPMG and EY; DNV; OEMs (ABB, Siemens, Rockwell, IBM Maximo); appraisers with mobile capture apps.
-- **Our wedge:** an independent, multi-brand, investment-committee-ready priority list that **stays useful after closing**.
+- **Our edge:** an independent, multi-brand priority list for a plant owner (and investment-committee-ready for a deal) that **stays current**.
 
 ## What to say on stage
 - "Photo capture alone saves an appraiser about **$700**. We checked, and that's not our business."
@@ -154,7 +154,7 @@
   - which hidden components stop which lines
   - a 3–5-year CapEx range with evidence
   - what's on the shelf across your plants"
-- "**~670 US deals a year** get an equipment or controls review today, and **25,799 US plants** have 100+ employees. Deals are the entry point; the plants are the business."
+- "**~670 US deals a year** get an equipment or controls review today, and **25,799 US plants** have 100+ employees. Your own plants are the business; deals are one more way in."
 - "For a consulting firm, this pays back at **~45 engagements a year** with a $15k module, and every post-close plant program adds recurring revenue."
 - "**Next step:** paid pilots that measure hours saved, findings the advisers missed, and whether the buyer pays separately."
 

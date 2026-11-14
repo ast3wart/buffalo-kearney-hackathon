@@ -1,5 +1,7 @@
 # Is the problem big enough? Market validation (Sat Nov 14, afternoon)
 
+> **Strategy decided after this doc (Sat 5 PM):** own-plant evaluation is the **main** way in; an acquisition is **one** way in; customers are multi-plant manufacturers **and** PE. Where this doc calls the acquisition "the entry point", read "one way in". Source of truth: [roadmap](../plan/roadmap-equipment-xray.md).
+
 **Why:** a mentor pushed back on four points:
 1. The market may be very small.
 2. Our tool **won't replace appraisers**, so in a deal it is an **extra cost**.
@@ -13,7 +15,7 @@
 ## TL;DR (what we tell the judges)
 1. **The pain is real and large, but nobody has measured the "cost of not knowing."** Downtime is huge, and aging automation is widespread. But no source says how much of that cost better equipment visibility would prevent, so we won't claim a headline number we can't defend.
 2. **Acquisition diligence alone is a small market, and an extra cost.** The mentor is right. Specialist controls-diligence firms and OEM audits already exist. The fees are thousands to tens of thousands of dollars per deal, and nobody publishes a market size.
-3. **The bigger market is recurring:** multi-plant manufacturers and **PE portfolios** keeping an **installed-base record** (every machine → every critical component → stock on the shelf → verified sourcing → a replace/repair/retrofit decision). An acquisition is the **entry point**, not the business.
+3. **The bigger market is recurring:** multi-plant manufacturers and **PE portfolios** keeping an **installed-base record** (every machine → every critical component → stock on the shelf → verified sourcing → a replace/repair/retrofit decision). An acquisition is **one way in**, not the business; the main way in is evaluating your own plants.
 4. **The positioning answers the "extra cost" objection:** we **supplement** appraisers and operations consultants. They sign off, and our evidence-backed component and CapEx findings feed their report. A deal team pays once. A plant operator needs the record kept current, so it pays every month.
 
 ---
@@ -79,12 +81,12 @@ So the decision of replace now, repair or retrofit, or stock a spare is live and
 ## 4. Recommendation
 **Reposition:** *installed-base risk and replacement planning for multi-plant manufacturers and PE portfolios.*
 
-| | Diligence wedge (one-time) | Core product (recurring) |
+| | Deal way in (one-time, secondary) | Core product: own plants (recurring, main) |
 |---|---|---|
 | Buyer | Deal team, **sold through appraisers and operations-diligence firms** as an add-on that makes them faster | Plant ops / VP Operations, PE operating partner |
 | Answer to "extra cost" | Small fixed fee. The appraiser and engineer keep sign-off, and we cut their days on site. | It replaces rush buys, stranded stock and surprise outages, so it pays for itself |
 | Output | Verified part IDs, end-of-life and spares flags, line criticality, 3–5-year CapEx range | Living registry + sourcing + alerts + cross-plant spare sharing |
 
-**The demo stays the same** (photo → components → lifecycle → CapEx cliff → sourcing). The **story** shifts from "a diligence tool" to "**the system of record for aging equipment, and the acquisition is how you start it.**"
+**The demo stays the same** (photo → components → lifecycle → CapEx cliff → sourcing). The **story** shifts from "a diligence tool" to "**the system of record for aging equipment**" (own plants first; an acquisition is one way in).
 
 **Next validation step (say this on stage):** paid pilots on live deals and plants. For each, record what the existing advisers missed, which findings changed a decision, and whether the buyer paid separately.

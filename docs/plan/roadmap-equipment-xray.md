@@ -19,7 +19,7 @@
 
 **Who uses it:**
 - **Primary: plant owners.** VP Operations and maintenance/reliability leaders at **multi-plant manufacturers**, plus **PE operating partners** running portfolios.
-- **Entry point: acquisitions.** A deal team (or the appraiser / operations-diligence firm working for it) runs the first scan. After closing, that scan becomes the acquired plant's registry.
+- **Other ways in (not the main one):** an acquisition (a deal team, or the appraiser / operations-diligence firm working for it, runs the first scan, and after closing it becomes the acquired plant's registry) or a seller's pre-exit scan. The deal market alone is too small to rely on.
 
 **What we don't do:** we **don't replace appraisers or engineers**. They keep the sign-off. We give them and the owner a faster, evidence-backed record and a decision.
 

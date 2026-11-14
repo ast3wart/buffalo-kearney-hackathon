@@ -4,7 +4,7 @@
 
 ## The flywheel
 ```
-  Diligence scan (entry point, sold through appraisers + ops-diligence firms)
+  Plant scan: own plant (main way in) · or an acquired / pre-exit plant (via appraisers + ops-diligence firms)
         │
         ▼
   Plant registry after close (subscription per plant)
@@ -28,13 +28,15 @@
 ## Land and expand
 | Stage | Motion | Buyer | Revenue (⚠️ working assumptions to test) | Proof point |
 |---|---|---|---|---|
-| **Land** | Add-on in the appraiser's or ops-diligence firm's report. **Cuts their days on site.** | Deal team | Fixed fee per deal (low thousands) | Findings change a price or deal terms |
-| **Convert** | "Keep this current after close" | VP Ops / plant manager | $/plant/month | Replacement plan used; an outage avoided |
-| **Expand** | Roll out across the fund. Each new add-on gets scanned on day 1. | PE operating partner | Portfolio license | Spares shared between companies |
+| **Land (main)** | **Own-plant assessment**: scan a manufacturer's plants, no deal needed | VP Ops / CFO / reliability leader | Per-plant fee (from Brandon's financial model) | CapEx plan used; spares found; an outage avoided |
+| **Land (also)** | Add-on in the appraiser's or ops-diligence firm's report, or a pre-exit scan. **Cuts their days on site.** | Deal team / seller | Per-deal fee (from the financial model) | Findings change a price or deal terms |
+| **Convert** | "Keep this current" (after the assessment or after close) | VP Ops / plant manager | $/plant/month | Replacement plan used; an outage avoided |
+| **Expand** | Roll out across the company's plants, or across the fund. Each new add-on gets scanned on day 1. | VP Ops (multi-plant) / PE operating partner | Portfolio license | Spares shared between companies |
 | **Network** | Sourcing, cross-plant spares, group buying | Procurement | Take rate / share of savings | Rush buys and stranded stock go down |
 | **Data products (later)** | Lifespan and failure models | Lenders, insurers | Data licensing (needs a data-ownership agreement) | Better loss and collateral estimates |
 
-## Why PE is the right first customer
+## Why multi-plant manufacturers and PE (together, not PE first)
+- **Multi-plant manufacturers** have the same mess (mixed brands, separate storerooms, different part names) and the CapEx budget, **with no deal needed**. This is the main door.
 - **One relationship, many plants:** a fund does repeat deals *and* owns many plants.
 - **Buy-and-build** creates the mess we clean up (different brands, names and storerooms).
 - **Operating partners are paid on portfolio-wide savings**, which is our portfolio layer.
@@ -42,13 +44,13 @@
 
 ## A new angle: freeing up cash for PE firms (hypothesis, ⚠️ test in doc 8)
 PE is in a low-liquidity period: exits are slow and LPs want cash back. Three ways the product could help:
-1. **Faster, cleaner exits (sell-side readiness):** a verified equipment record with an evidence trail cuts the buyer's diligence time and the "unknown CapEx" discount on price. → **A possible second entry point: the seller scans before a sale.**
+1. **Faster, cleaner exits (sell-side readiness):** a verified equipment record with an evidence trail cuts the buyer's diligence time and the "unknown CapEx" discount on price. → **Another way in: the seller scans before a sale.**
 2. **Cash tied up in idle spare parts:** 22% of MRO stock hasn't moved in 5+ yrs. A cross-portfolio view can **move or sell surplus spares** and avoid duplicate buys. Lower inventory = more cash.
 3. **Targeted CapEx instead of blanket replacement:** a per-asset replace / repair / stock-a-spare decision spends cash only where the risk is.
 4. **Verified collateral (stretch):** asset-based and NAV lenders rely on equipment appraisals. A current, evidence-backed register could support financing. ⚠️ Speculative. Validate before claiming.
 
 ## Year-1 milestones (pitch version)
-1. 3 paid diligence pilots through 1–2 appraisal or ops-diligence partners.
+1. 3 paid own-plant pilots at multi-plant manufacturers, plus 1–2 deal pilots through appraisal or ops-diligence partners.
 2. 1 PE portfolio (3+ plants) on the registry subscription.
 3. A first documented cross-plant spare-sharing win.
 4. A KB covering the top controller, drive and HMI families of the 5 largest automation brands.

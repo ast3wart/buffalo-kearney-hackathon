@@ -4,7 +4,7 @@
 
 ---
 
-> I'm building a product that turns photos of factory nameplates and control cabinets, plus equipment lists, into a living register of every machine and critical component (controllers, drives, HMIs). Each component gets a lifecycle status, a 3–5-year CapEx forecast, single points of failure, and sourcing for spares. Buyers are multi-plant manufacturers and private equity portfolios; acquisition diligence is the entry point. Research the following, with dated sources (2024–2026 preferred). Label each figure as measured, survey, vendor or estimate.
+> I'm building a product that turns photos of factory nameplates and control cabinets, plus equipment lists, into a living register of every machine and critical component (controllers, drives, HMIs). Each component gets a lifecycle status, a 3–5-year CapEx forecast, single points of failure, and sourcing for spares. Buyers are multi-plant manufacturers and private equity portfolios; evaluating their own plants is the main use, and acquisition diligence is one additional way in. Research the following, with dated sources (2024–2026 preferred). Label each figure as measured, survey, vendor or estimate.
 >
 > 1. **US reindustrialization:** how big is reshoring and new manufacturing investment (construction spending, announced projects, CHIPS/IRA-related manufacturing, Section 232 tariffs on machinery and robotics)? Who is driving it (sectors, regions, companies, policy)? How does it affect demand for existing plants, equipment age, and the M&A market for small and mid-sized manufacturers?
 > 2. **Private equity in manufacturing:** deal volume and value in industrials, the share of add-ons in buy-and-build, typical holding periods, and the largest active industrial roll-up investors.

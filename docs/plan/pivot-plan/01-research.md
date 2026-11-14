@@ -36,4 +36,4 @@ An appraisal answers *what the equipment is worth*. A buyer also needs to know *
 
 ## The pivot decision
 **Before:** "an AI diligence tool for acquisitions."
-**After:** "**installed-base risk and replacement planning for multi-plant manufacturers and PE portfolios**. Diligence is the entry point." The demo flow stays the same: photo → components → lifecycle → CapEx cliff → sourcing.
+**After:** "**installed-base risk and replacement planning for multi-plant manufacturers and PE portfolios**. Own-plant evaluation is the main way in; an acquisition is one way in." The demo flow stays the same: photo → components → lifecycle → CapEx cliff → sourcing.

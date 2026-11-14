@@ -2,6 +2,19 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~5:30 PM · I aligned your docs to the strategy (no need to redo the edit list below) + merged your research (#15)
+**Status:** 🆕 new
+- **Why:** agents will work on this repo, so the docs can't disagree. Your #15 research was pushed before the decision, so that's on us, not you. **Everything good in it is kept:** the Bain liquidity numbers, the PitchBook 67.1% add-on share, the NAM/Reshoring stats, the Kearney cross-portfolio paper, the guardrails, the charts, and the flywheel and moat logic.
+- **What I changed (framing only, no data):**
+  - In your research doc and all pivot-plan docs: own plants are the main way in, an acquisition is one way in, and the customers are multi-plant manufacturers + PE.
+  - The flywheel now starts at "plant scan (own plant, or acquired / pre-exit)".
+  - The buyer table has the plant owner first.
+  - The demo opens with "Fund X **owns** Plant A and B" and ends with the deal lens.
+  - Deck numbers: deals ≤ ~$10M, 25,799 plants, 67.1% add-ons, prices = output of your financial model.
+  - The liquidity angle is kept and marked important.
+  - README and AGENTS.md were rewritten. **AGENTS.md now has a "Strategy (DECIDED)" section, and the roadmap is the source of truth.**
+- **The 5 PM edit list below is DONE.** Your open items: the **financial model** (`xray/pricing.py`) and the **research backlog** (P1 by CP1).
+
 ### Sat Nov 14, ~5 PM · DECIDED: own-plant evaluation is the main way in; acquisition is just one way in
 **Status:** 🆕 new
 - **The decision (Asher):**
