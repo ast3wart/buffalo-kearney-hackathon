@@ -2,6 +2,8 @@
 
 **Status:** PROPOSED pivot (Sat Nov 14, ~11:45 AM). Asher + Claude, after the judge review. **Brandon: read, push back, and say yes or no.** Nothing in the code has changed yet.
 
+> **Update (~4:30 PM):** market research repositioned us: **evaluating your own plants is the business; acquisitions are one entry point.** The current version is the **[roadmap](roadmap-equipment-xray.md)**. Sections below that frame this as deal-only are superseded.
+>
 > **Update (~12:30 PM):** a mentor reviewed the idea, said keep digging, and steered us toward a **platform roadmap** (diagnostic MVP → central machine/part registry → **parts sourcing** → PE portfolio network). See **[roadmap-equipment-xray.md](roadmap-equipment-xray.md)**.
 
 ---
@@ -88,7 +90,7 @@ The AI model is **not** the differentiator; anyone can send a photo to Claude. J
 
 **Simplified / roadmap (say so on stage):** sensors, live market valuations, a trained component detector, maintenance-log reading at scale.
 
-**What carries over from Afterlife:** app shell (Next.js + FastAPI + DuckDB), CI + `checkpoint.sh`, the synthetic generator + answer-key approach, normalize/matching, document reading, the Velocity research habit.
+**What carries over from Afterlife:** app shell (Next.js + FastAPI; SQLite for the demo, see pivot-plan/06-tech-stack.md), CI + `checkpoint.sh`, the synthetic generator + answer-key approach, normalize/matching, document reading, the Velocity research habit.
 
 ## 10. Pitch outline (Startup track)
 1. **Hook:** "Buyers pay for a factory's production capacity, and can't see the equipment cliff coming."

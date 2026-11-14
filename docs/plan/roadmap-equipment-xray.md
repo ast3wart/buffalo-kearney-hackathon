@@ -1,95 +1,118 @@
 # Equipment X-Ray: platform roadmap and how the system works
 
-**Status:** DRAFT (Sat Nov 14, ~12:30 PM), written after a mentor conversation. Companion to [idea-equipment-xray.md](idea-equipment-xray.md). **Brandon: review and edit freely.**
+**Status:** UPDATED Sat Nov 14, ~4:30 PM, after the market research. Companion to [idea-equipment-xray.md](idea-equipment-xray.md). **Brandon: review and edit freely.**
 
-## What the mentor told us
-- **Think like a private equity firm:** the value is in **bringing manufacturing companies together** (a PE firm owns several), not in a one-off tool.
-- **Have a clear plan for the MVP (the AI diagnostic tool) and how the whole system works. Show a ROADMAP, don't try to build everything.**
-- **Sourcing parts is a VERY important part:** a central database of every machine and every part inside it, and for each part, where to get it (manufacturer, distributors, refurbishers, eBay, other reputable sites).
-- **The all-in-one is what makes it valuable to companies:** diagnose → register → know every part's age, value and replacement date → source it.
+> **What changed:** the research says **evaluating your own plants is the business; acquisitions are one way in.**
+> - Supplementing an appraisal saves only ~$700 a job.
+> - Deal diligence alone is worth about $10M a year at most.
+> - **25,799 US plants** have 100+ employees, each with ~$10–60k a year of savings we can audit.
+>
+> Evidence: [market-validation.md](../research/market-validation.md) and [deep-dive-numbers.md](../research/deep-dive-numbers.md).
+
+## Positioning
+**Equipment X-Ray is the system of record for aging plant equipment.** It shows:
+- every machine
+- every critical component inside it
+- what's on the shelf across your plants
+- where to buy the rest
+- when to replace, repair or retrofit
+
+**Who uses it:**
+- **Primary: plant owners.** VP Operations and maintenance/reliability leaders at **multi-plant manufacturers**, plus **PE operating partners** running portfolios.
+- **Entry point: acquisitions.** A deal team (or the appraiser / operations-diligence firm working for it) runs the first scan. After closing, that scan becomes the acquired plant's registry.
+
+**What we don't do:** we **don't replace appraisers or engineers**. They keep the sign-off. We give them and the owner a faster, evidence-backed record and a decision.
+
+## What the mentors told us
+- Think like a **PE firm**: the value is in **bringing manufacturing companies together**.
+- Have a clear **MVP plan and a ROADMAP**. Don't build everything.
+- **Parts sourcing is VERY important:** a central database of every machine and part, and where to get each one.
+- The **all-in-one** (diagnose → register → age, value, replacement date → source) is the value.
+- **We won't replace appraisals soon, so in a deal we're an extra cost.** That's why the business is the recurring own-plant product, not the one-off diligence.
+
+## Market (what the numbers say)
+| Channel | Size | Quality |
+|---|---|---|
+| Appraisal time saved by photo capture | ~2–5 of ~64 h, **~$700/job**, **~$270k/yr** US-wide | Velocity model. **Not a business.** |
+| Controls / obsolescence review time saved | ~21 of ~104 h, **~$3.4k/job**, **~$1.5M/yr** | Velocity model |
+| New decision module in deals ($15k) | ~670 reviewed deals/yr (450–900), **~$10M/yr ceiling** | 1,667 deals/yr measured; the rest modeled |
+| **Own plants (core)** | **25,799 US plants with 100+ employees**; at $10–25k/plant/yr and 5% adoption, **$13–32M ARR**; ceiling **$258–645M** | Plant count measured (Census 2022); value and price are scenarios |
+| Value to each plant | **$10k / $30k / $60k a year** that can be audited (less spares carrying cost, fewer rush buys), plus **$100–400k one-time** spares released. **Downtime avoided not counted** (upside). | Velocity scenario; vendor cases |
+| Upside beyond that | Downtime avoided, a sourcing take-rate on **~$93B US MRO spend**, PE portfolio licenses, smaller plants, international | Not yet sized |
 
 ## The platform in one picture
 ```
  CAPTURE                 UNDERSTAND                    REGISTRY (the core asset)             ACT
  ───────                 ──────────                    ─────────────────────────             ───
- photos of nameplates ─┐                               Company                               • CapEx cliff + deal price (diligence)
- + control cabinets    ├─► vision AI reads ──► match ─► └─ Plant                             • replacement plan per plant
- equipment lists       │   make/model/serial,  to KB     └─ Line                             • SOURCING: where to buy each part
- maintenance logs      │   components inside             └─ Machine                            (OEM, distributors, refurbishers,
- (later) sensors      ─┘   + confidence                    └─ Component (part no., age,         surplus, eBay), price, lead time,
-                                                              value, lifecycle, remaining life)   condition, seller trust
-                                ▲                                         │                    • PORTFOLIO (PE): pooled spares,
-                                └──── human review of low-confidence ─────┘                      shared buying, standardization
+ photos of nameplates ─┐                               Company / PE portfolio                • replace / repair / retrofit plan per plant
+ + control cabinets    ├─► vision AI reads ──► match ─► └─ Plant                             • CapEx cliff by year (ranges + evidence)
+ equipment lists       │   make/model/serial,  to KB     └─ Line ($/day, downtime $/h)       • SOURCING: shelf first (any plant), then
+ maintenance / ERP     │   components inside             └─ Machine                            OEM, distributors, refurbishers, surplus,
+ storeroom records     │   + confidence                    └─ Component (part no., age,         eBay; price, lead time, trust score
+ (later) sensors      ─┘                                      lifecycle, spares, successor)    • alerts: part going end-of-life, spare found
+                                ▲                                         │                    • DEALS: "pay $X less", holdback, 100-day plan
+                                └──── human review of low-confidence ─────┘
 ```
 
 ## How the system works (components)
 | # | Component | What it does | Notes |
 |---|---|---|---|
-| 1 | **Capture** | Guided collection of nameplate + cabinet photos and the target's equipment list; quality check (blur, glare, cut-off) | Starts as a web upload; later a field tool for site walks |
-| 2 | **Vision extraction** | Off-the-shelf vision AI (Claude) reads fields + lists components, each with confidence | No training at first (see idea doc §8) |
-| 3 | **Normalization + matching** | Cleans manufacturer/model names and catalog numbers; matches to known products | Reuses our existing matching approach |
-| 4 | **Knowledge base (KB)** | Per product: lifecycle status (active / discontinued), typical lifespan, replacement cost, successor/migration path, spare availability | **The moat.** Seeded from manufacturer lifecycle tools + curated research; grows with every scan |
-| 5 | **Machine registry** | The central database: Company → Plant → Line → Machine → Component, with age, value, remaining life, evidence | **The core asset** the mentor described |
-| 6 | **Risk + valuation engine** | Remaining useful life, single points of failure per line, CapEx cliff by year, value ranges | Ranges + evidence, never fake precision |
-| 7 | **Sourcing engine** | For each part: search reputable channels, compare price / lead time / condition / seller trust, suggest successors when discontinued | See "Sourcing" below |
-| 8 | **Portfolio layer (PE)** | One view across many companies: shared spares, pooled buying, standardizing on common machines/parts, benchmarks | The "bring manufacturers together" value |
-| 9 | **Human review** | Flags low-confidence readings, big-ticket items, counterfeit risk | Required before anything drives a deal or purchase |
-
-### Data model (registry)
-| Entity | Key fields |
-|---|---|
-| **Company** | name, owner (e.g. PE fund), acquisition date |
-| **Plant** | location, lines, production value per day |
-| **Line** | product, revenue per day of production (for downtime cost) |
-| **Machine** | make, model, serial, year, photos, condition, value range, remaining life |
-| **Component** | part no., manufacturer, type (controller, drive, HMI, motor…), install/date code, lifecycle status, replacement cost, successor, spares on hand |
-| **Sourcing offer** | part no., channel, seller, price, condition (new / refurbished / used), lead time, seller trust score, link, seen-at |
-| **Evidence** | photo, reading, source document, confidence, reviewer |
+| 1 | **Capture** | Guided photos of nameplates and cabinets, plus equipment lists and storeroom/ERP exports; quality check | Web upload first; a field tool for plant walks later |
+| 2 | **Vision extraction** | Off-the-shelf Claude reads the fields and lists the components, each with a confidence | No training at first. It can't read firmware from a label; that needs other sources. |
+| 3 | **Normalization + matching** | Cleans manufacturer/model names and catalog numbers, then matches them to the knowledge base | `xray/matching.py` |
+| 4 | **Knowledge base** | Per product: lifecycle status, typical life, replacement and migration cost, successor, spares availability | **The moat.** Grows with every plant. |
+| 5 | **Machine registry** | Company → Plant → Line → Machine → Component, with evidence | **The core asset.** Data format: [registry-format.md](../build/registry-format.md). |
+| 6 | **Valuation + risk** | CapEx cliff by year, single points of failure per line, exposure in $, deal adjustment | Ranges, never false precision |
+| 7 | **Sourcing** | Checks shelves at **every plant first**, then outside channels by trust; recommends buy a spare / migrate / monitor | See below |
+| 8 | **Portfolio layer** | One view across plants and companies: shared spares, pooled buying, standard parts, benchmarks | The "bring manufacturers together" value |
+| 9 | **Human review** | Flags low-confidence readings, big-ticket items, counterfeit risk | Engineer and appraiser keep the sign-off |
 
 ## Sourcing (the feature the mentor called out)
-For every component in the registry:
-1. **Status first:** active, or discontinued? If discontinued, what's the official successor and migration path?
-2. **Search channels**, in order of trust:
-   - the manufacturer and its **authorized distributors** (new, warrantied)
-   - **specialist refurbishers / repair houses** (tested, often warrantied)
-   - **industrial surplus dealers**
-   - **marketplaces like eBay** (cheapest, highest counterfeit and condition risk)
-3. **Compare** price, lead time, condition, warranty, and a **seller trust score** (history, returns, certifications).
-4. **Recommend** per part: *buy a spare now* (single point of failure + scarce), *migrate to successor* (discontinued + spares drying up), or *monitor* (active, plentiful).
-5. **Watch:** alert when a scarce part appears in stock somewhere, or when the price moves.
+1. **Shelf first:** is a usable spare already sitting at **this plant or a sister plant**? This is the most defensible saving. The purchase order, the transfer and the inventory balance make it auditable.
+2. **Status:** is the part active or discontinued? If discontinued, what's the successor and the migration path?
+3. **Outside channels, by trust:**
+   - manufacturer and authorized distributors
+   - refurbishers and repair houses
+   - surplus dealers
+   - marketplaces like eBay
+4. **Compare** price, lead time, condition, warranty and a **seller trust score**.
+5. **Recommend:** *buy a spare now*, *migrate*, or *monitor*.
+6. **Watch:** alerts when a scarce part appears or a price moves.
 
-**Design rules:** use official APIs and partner feeds where they exist, and respect each site's terms of use (no unlicensed scraping); always show **counterfeit risk** for non-authorized sellers; a person approves purchases.
-
-**Portfolio twist (PE):** before buying outside, check whether **another company in the same portfolio already has the spare** sitting on a shelf.
+**Rules:**
+- Use official APIs and partner feeds, and respect each site's terms of use.
+- Always show counterfeit risk. In ERAI's 2025 reports, 60% of suspect counterfeit parts were obsolete parts.
+- A person approves every purchase.
 
 ## Roadmap
-| Phase | What | Who pays / why | Proof point |
+| Phase | What | Who pays / how | Proof point |
 |---|---|---|---|
-| **0 · MVP (hackathon)** | **AI diagnostic tool**: photos + equipment list → machines and components identified → lifecycle check → **CapEx cliff, "pay $X less", single points of failure**, with evidence and measured accuracy on a planted-answer test factory | Demo for judges | Live photo of a real machine on stage; accuracy number |
-| **1 · Diligence product** | Field capture for site walks; bigger KB; reports for investment memos | PE deal teams, corporate M&A: **fee per diligence** | Used on real deals; findings change prices |
-| **2 · Machine registry** | Every scanned plant becomes a living registry: every machine, every part, age, value, replacement dates | Owners after the deal: **subscription per plant** | Replacement plans; avoided downtime |
-| **3 · Sourcing engine** | Where to buy every part; successor/migration advice; scarcity alerts | Same subscribers; possibly **take rate** on purchases through partners | Faster sourcing of discontinued parts; avoided outages |
-| **4 · Portfolio network** | Across a PE firm's companies: pooled spares, shared buying, standardizing machines and parts, benchmarks | **PE firms (portfolio-wide license)** | Spares shared between companies; group purchasing savings |
-| **5 · Predictive + new revenue** | Clip-on sensors for condition; failure history → our own trained detector and failure models; possibly financing/insurance partners | Premium tier; partners | Fewer surprise failures; better lifespan models than anyone |
+| **0 · MVP (hackathon)** | AI diagnostic: photos + list → components → lifecycle → **CapEx cliff, single points of failure, sourcing**, measured on a fake factory with planted answers | Demo | Accuracy number; live photo of a real machine |
+| **1 · Plant assessment** | Field capture + report for **your own plant**. The same product sold as a **deal module** through appraisers and operations-diligence firms. | **Per-plant assessment fee** (anchor: today's controls reviews cost $6–30k); deal module about $10–20k | Hours saved against a real assessor; findings people act on |
+| **2 · Living registry** | Every assessed plant stays current: lifecycle alerts, spares, a replacement plan | **Subscription per plant (~$10–25k/yr)** | Fewer rush buys, less spares stock, fewer surprise outages (audited) |
+| **3 · Sourcing** | Shelf-first across plants, outside offers, successor advice, scarcity alerts | Same subscribers; later a **take rate** through partners | Purchases avoided because a sister plant had the part; faster sourcing |
+| **4 · Portfolio network** | Across a company's plants and a PE firm's companies: pooled spares, shared buying, standard parts | **Portfolio license** (one sale, 10–30 companies) | Spares shared between companies; group purchasing savings |
+| **5 · Predictive** | Sensors and failure history → our own models for remaining life and failure risk | Premium tier; partners | Downtime avoided, measured. This is when downtime becomes a counted number. |
 
-**Flywheel:** every diligence → more labeled photos and components → better KB → better sourcing and predictions → more customers → more data.
+**Flywheel:** every plant scanned (own or acquired) → more labeled photos and components → better knowledge base → better sourcing and risk calls → more plants → more data.
+
+**For a consulting firm (e.g. Kearney):**
+- Build it as a narrow, expert-reviewed **assessment accelerator** ($400–800k).
+- It breaks even at **~45 engagements a year** with a $15k module, and post-close plant programs add recurring revenue.
+- **No broad platform yet** (that needs ~110 engagements a year).
 
 ## What we show at the hackathon
-1. **The MVP working** (Phase 0), on a synthetic target factory with an answer key, plus one live photo of a real machine.
-2. **The registry view** for that factory: every machine → every component, age, value, replacement date (a working slice).
-3. **Sourcing for 2–3 components** in the demo: clearly labeled as a prototype (curated or live-searched offers), with the trust score and the buy / migrate / monitor recommendation.
-4. **This roadmap** as a slide, with the flywheel and the PE portfolio vision.
-5. **Business model** by phase (per diligence → per plant → portfolio license).
+1. **The MVP working** on the fake factory with an answer key, plus one live photo.
+2. **The registry view:** every machine → every component, with age, status, evidence.
+3. **CapEx cliff + single points of failure**, plus the deal view ("pay $X less") as a second lens on the same data.
+4. **Sourcing for 2–3 parts:** shelf-first, then outside offers with a trust score and buy / migrate / monitor.
+5. **Market + business model:** $13–32M ARR at 5% of US plants (our floor), with upside from downtime, sourcing and PE portfolios; the consulting-firm breakeven.
+6. **This roadmap**, with the flywheel and the PE portfolio vision.
 
 ## Risks and open questions
-- **Sourcing data access:** which channels have APIs or partner feeds; terms-of-use limits on searching sites.
-- **Counterfeit and condition risk** on used marketplaces: how we score trust credibly.
-- **KB coverage:** how fast we can cover the long tail of old machines.
-- **Accuracy on worn nameplates:** measure, don't assume.
-- **Who owns the data** in a PE portfolio (each company vs. the fund).
-- **Track:** confirm the Startup track switch with organizers.
-
-## Questions for Brandon
-1. Does this match what you'd want to pitch? Anything to cut?
-2. Which phase-0 pieces do you want to own?
-3. Sourcing demo: curated offers (safe) vs. a live search (riskier, more wow)?
+- **Willingness to pay $10–25k per plant per year** is untested. Next step: paid pilots.
+- **Value is a scenario** from vendor cases, and downtime isn't counted yet. Prove it in pilots.
+- **Incumbents:** Rockwell/Siemens/ABB installed-base services, SPARETECH/Verusen, CMMS tools. Our edge is multi-brand, from the photo and the panel (not only the ERP), and cross-plant.
+- **Accuracy on worn plates and crowded cabinets:** measure it; firmware isn't readable from labels.
+- **Sourcing data access** and terms of use; counterfeit risk.
+- **Who owns the data** in a PE portfolio (each company or the fund).
