@@ -1,24 +1,16 @@
 import type { Config } from "tailwindcss";
 
-// Clean industrial (CP0): light neutral, one teal accent, red = alerts, mono part numbers.
 export default {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     extend: {
       colors: {
-        bg: "var(--bg)",
-        surface: "var(--surface)",
-        ink: "var(--ink)",
-        muted: "var(--muted)",
-        line: "var(--line)",
-        accent: { DEFAULT: "var(--accent)", soft: "var(--accent-soft)" },
-        alert: { DEFAULT: "var(--alert)", soft: "var(--alert-soft)" },
-        warn: { DEFAULT: "var(--warn)", soft: "var(--warn-soft)" },
-        ok: "var(--ok)",
-      },
-      fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+        background: "var(--background)",
+        foreground: "var(--foreground)",
       },
     },
   },

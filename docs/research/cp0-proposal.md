@@ -1,19 +1,6 @@
 # CP0 proposal: contract changes from research
 
-**Status: DECIDED at CP0 (Fri Nov 13, Asher + Brandon). Applied** to `docs/build/data-contract.md`, `docs/build/api.md`, `afterlife/taxonomy.py`, `afterlife/check.py`, `scripts/make_sample.py`.
-
-| # | Decision |
-|---|---|
-| 1 | ✅ **Both views:** raw claims-per-1,000 by build month shown as the intuitive chart, and the **MIS-window method drives the alerts**. Side by side in the app to show why raw misleads |
-| 2–4 | ✅ `part_no` on spend lines, ✅ `info_records.csv`, ✅ `price_unit` |
-| 5 | ✅ 12 `SYSTEM-MODE` failure codes |
-| 6 | ✅ All 21 categories |
-| 7 | ✅ Builds Jan 2025 – Sep 2026, data as of Oct 31 2026, 24-month warranty, MIS window 3 |
-| 8–9 | ❌ Claim line items and BOM uom stay out (Q&A "next step") |
-| API | ✅ Shapes accepted as drafted (`/claim-rates` returns both views) |
-| Style | ✅ Clean industrial: light neutral, teal accent, red alerts, mono part numbers |
-| Branches | ✅ `spend/...` and `warranty/...` |
-| Companies | ✅ **Added after CP0: 3 companies, not 1** (`afterlife/profiles.py`). Prairie (tune), Ironridge (holdout), Northwind (holdout, no-spike control). One folder per company, same contract |
+**Status: PROPOSAL.** Nothing here is applied yet. At CP0, go through each item and mark ✅ accept / ❌ reject. Then update `docs/build/data-contract.md`, `afterlife/check.py` (`CONTRACT`), and `scripts/make_sample.py` in one commit.
 
 🛠 = Brandon (Warranty) · 💲 = Asher (Spend)
 

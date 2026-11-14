@@ -2,25 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Design tokens: change colors HERE only. Both threads use the Tailwind names (bg-surface, text-alert, …). */
 :root {
-  --bg: #f4f5f3;
-  --surface: #ffffff;
-  --ink: #17201c;
-  --muted: #5d6a64;
-  --line: #dde2de;
-  --accent: #0f766e;
-  --accent-soft: #e2f1ef;
-  --alert: #c0262d;
-  --alert-soft: #fbe9e9;
-  --warn: #b45309;
-  --warn-soft: #fcf0e2;
-  --ok: #15803d;
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
 body {
-  background: var(--bg);
-  color: var(--ink);
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
 }
-
-.tabular { font-variant-numeric: tabular-nums; }

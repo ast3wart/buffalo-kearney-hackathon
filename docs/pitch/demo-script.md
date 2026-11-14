@@ -7,6 +7,5 @@
 | 1:00 | 🛠 | **Link it:** run the matching. "We linked N% of service spend and N% of claims, at P% precision, measured against planted correct answers." |
 | 1:45 | 🛠 | **The alert:** "Seal kit SK-220: claims up 3× across 7 products since March builds. No single product team could see this." |
 | 2:30 | 💲 | **The brief:** generate it. Warranty recovery of $X plus spare-part markup of $Y. "This is what you take into Monday's supplier meeting." |
-| 3:05 | 🛠 | **Generalizes:** switch company. Ironridge's spike is caught too, Northwind (the control) shows no alerts. Holdout accuracy is within a few points. |
 | 3:15 | 🛠 | **Real-world grounding:** "217 US public companies reported warranty payments in 2024. Ford alone paid $5.8B." Velocity research slide. |
 | 3:45 | 💲 | **Close:** "Every BOM team shows you what a product costs. We show you the problem coming, and who pays for it." |

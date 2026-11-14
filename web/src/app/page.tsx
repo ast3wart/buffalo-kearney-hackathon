@@ -1,8 +1,7 @@
 import { getJSON, type Health, API_URL } from "@/lib/api";
-import { Card, PageHeader, Todo } from "@/components/ui";
 
-// Overview: 💲 Asher. Calls GET /overview?company=… (docs/build/api.md)
-export default async function Overview() {
+// Hello-world: proves Next.js → FastAPI → DuckDB works. Replace with the Overview screen.
+export default async function Home() {
   let health: Health | null = null;
   let error = "";
   try {
@@ -11,41 +10,31 @@ export default async function Overview() {
     error = String(e);
   }
   return (
-    <>
-      <PageHeader title="Overview" subtitle="Build cost vs. lifecycle cost, and how much of the spend and claims we could link." />
-      <div className="space-y-4">
-        <Todo owner="💲 Asher">coverage stats + build vs. lifecycle cost per product from GET /overview</Todo>
-        {error ? (
-          <Card tone="alert" title="API not reachable">
-            <p className="text-sm">
-              Can&apos;t reach {API_URL}. Run <code>python -m afterlife.run</code>, then{" "}
-              <code>uvicorn api.main:app --reload</code>.
+    <main className="mx-auto max-w-3xl px-4 py-12 space-y-6">
+      <h1 className="text-3xl font-semibold">Afterlife</h1>
+      {error ? (
+        <div className="rounded border border-red-300 bg-red-50 p-4 text-sm text-red-800">
+          Can&apos;t reach the API at {API_URL}. Start it with{" "}
+          <code>uvicorn api.main:app --reload</code> after <code>python -m afterlife.run</code>.
+          <pre className="mt-2 whitespace-pre-wrap">{error}</pre>
+        </div>
+      ) : (
+        health && (
+          <>
+            <p className="text-sm text-gray-500">
+              Data source: <code>{health.source}</code> · pipeline run at {health.run_at}
             </p>
-          </Card>
-        ) : (
-          health && (
-            <Card title={`Pipeline status · run at ${health.run_at}`}>
-              <ul className="mb-3 text-sm">
-                {health.companies.map((c) => (
-                  <li key={c.company_id}>
-                    <b>{c.company_name}</b> <span className="text-muted">· {c.industry} · data as of {c.data_as_of}</span>
-                  </li>
+            <table className="w-full text-sm">
+              <thead><tr className="text-left text-gray-500"><th className="py-1">Table</th><th className="py-1 text-right">Rows</th></tr></thead>
+              <tbody>
+                {health.tables.map((t) => (
+                  <tr key={t.name} className="border-t"><td className="py-1 font-mono">{t.name}</td><td className="py-1 text-right tabular-nums">{t.rows}</td></tr>
                 ))}
-              </ul>
-              <table className="w-full text-sm">
-                <tbody>
-                  {health.tables.map((t) => (
-                    <tr key={t.name} className="border-t border-line">
-                      <td className="py-1 font-mono">{t.name}</td>
-                      <td className="tabular py-1 text-right">{t.rows}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Card>
-          )
-        )}
-      </div>
-    </>
+              </tbody>
+            </table>
+          </>
+        )
+      )}
+    </main>
   );
 }

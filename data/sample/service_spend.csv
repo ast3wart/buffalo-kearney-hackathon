@@ -1,9 +1,9 @@
-po_line_id,part_no,supplier_id,supplier_name,supplier_pn,description,qty,uom,unit_price,price_unit,po_date,plant,country,channel
-PO-770003-010,,S-090,QuickServe Parts Distribution,QS-10851,DEEP GROOVE BALL BEARING 20X47X14 SEALED,20,EA,13.57,1,2026-05-02,SVC-1,US,warranty_repair
-PO-770006-010,,S-090,QuickServe Parts Distribution,QS-89131,HYDRAULIC CYLINDER SEAL KIT 40 MM BORE,40,EA,21.63,1,2026-05-02,SVC-1,US,spares
-PO-770009-010,,S-090,QuickServe Parts Distribution,QS-57400,SPIN-ON OIL FILTER M20X1.5,60,EA,12.82,1,2026-05-02,SVC-1,US,spares
-PO-770012-010,,S-090,QuickServe Parts Distribution,QS-69429,CVT DRIVE BELT 32MM,60,EA,111.05,1,2026-05-02,SVC-1,US,warranty_repair
-PO-770015-010,,S-090,QuickServe Parts Distribution,QS-42087,HYDRAULIC HOSE ASSEMBLY 3/8 INX24 IN,20,EA,61.94,1,2026-05-02,SVC-1,US,warranty_repair
-PO-770018-010,,S-090,QuickServe Parts Distribution,QS-14207,KEYED IGNITION SWITCH 12V,40,EA,37.54,1,2026-05-02,SVC-1,US,warranty_repair
-PO-770021-010,,S-090,QuickServe Parts Distribution,QS-94259,FRONT BRAKE PAD SET,40,EA,49.71,1,2026-05-02,SVC-1,US,spares
-PO-770024-010,,S-090,QuickServe Parts Distribution,QS-38746,ELECTRIC FUEL PUMP 12 V,20,EA,193.37,1,2026-05-02,SVC-1,US,warranty_repair
+po_line_id,supplier_id,supplier_name,supplier_pn,description,qty,uom,unit_price,po_date,plant,country,channel
+PO-770003-010,S-090,QuickServe Parts Distribution,QS-38893,DEEP GROOVE BALL BEARING 20X47X14 SEALED,40,EA,13.04,2026-05-02,SVC-1,US,warranty_repair
+PO-770006-010,S-090,QuickServe Parts Distribution,QS-30379,HYDRAULIC CYLINDER SEAL KIT 40 MM BORE,20,EA,29.75,2026-05-02,SVC-1,US,warranty_repair
+PO-770009-010,S-090,QuickServe Parts Distribution,QS-44671,SPIN-ON OIL FILTER M20X1.5,20,EA,8.31,2026-05-02,SVC-1,US,warranty_repair
+PO-770012-010,S-090,QuickServe Parts Distribution,QS-92397,CVT DRIVE BELT 32MM,60,EA,66.16,2026-05-02,SVC-1,US,warranty_repair
+PO-770015-010,S-090,QuickServe Parts Distribution,QS-47930,HYDRAULIC HOSE ASSEMBLY 3/8 INX24 IN,20,EA,41.6,2026-05-02,SVC-1,US,spares
+PO-770018-010,S-090,QuickServe Parts Distribution,QS-58520,KEYED IGNITION SWITCH 12V,40,EA,25.92,2026-05-02,SVC-1,US,spares
+PO-770021-010,S-090,QuickServe Parts Distribution,QS-32431,FRONT BRAKE PAD SET,60,EA,47.8,2026-05-02,SVC-1,US,spares
+PO-770024-010,S-090,QuickServe Parts Distribution,QS-83000,ELECTRIC FUEL PUMP 12 V,20,EA,158.98,2026-05-02,SVC-1,US,warranty_repair

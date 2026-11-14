@@ -5,28 +5,6 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/companies": {
-      "get": {
-        "summary": "List Companies",
-        "operationId": "list_companies_companies_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/Company"
-                  },
-                  "type": "array",
-                  "title": "Response List Companies Companies Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/health": {
       "get": {
         "summary": "Health",
@@ -48,50 +26,19 @@
   },
   "components": {
     "schemas": {
-      "Company": {
-        "properties": {
-          "company_id": {
-            "type": "string",
-            "title": "Company Id"
-          },
-          "company_name": {
-            "type": "string",
-            "title": "Company Name"
-          },
-          "industry": {
-            "type": "string",
-            "title": "Industry"
-          },
-          "data_as_of": {
-            "type": "string",
-            "title": "Data As Of"
-          }
-        },
-        "type": "object",
-        "required": [
-          "company_id",
-          "company_name",
-          "industry",
-          "data_as_of"
-        ],
-        "title": "Company"
-      },
       "Health": {
         "properties": {
           "ok": {
             "type": "boolean",
             "title": "Ok"
           },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
           "run_at": {
             "type": "string",
             "title": "Run At"
-          },
-          "companies": {
-            "items": {
-              "$ref": "#/components/schemas/Company"
-            },
-            "type": "array",
-            "title": "Companies"
           },
           "tables": {
             "items": {
@@ -104,8 +51,8 @@
         "type": "object",
         "required": [
           "ok",
+          "source",
           "run_at",
-          "companies",
           "tables"
         ],
         "title": "Health"

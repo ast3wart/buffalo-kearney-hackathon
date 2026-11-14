@@ -8,24 +8,16 @@ GENERATED = ROOT / "data" / "generated"
 
 TABLES = [
     "products", "part_master", "bom", "builds", "production_spend",
-    "service_spend", "info_records", "failure_codes", "warranty_claims",
-    "dataset_info", "truth_links", "truth_spikes",
+    "service_spend", "failure_codes", "warranty_claims",
+    "truth_links", "truth_spikes",
 ]
 
 
-def companies(prefer_generated: bool = True) -> list[tuple[str, Path]]:
-    """[(company_id, folder)] for every company in data/generated/<company_id>/.
-    Falls back to [("sample", data/sample/)] until the generator has run."""
-    if prefer_generated and GENERATED.exists():
-        found = sorted((d.name, d) for d in GENERATED.iterdir() if (d / "warranty_claims.csv").exists())
-        if found:
-            return found
-    return [("sample", SAMPLE)]
-
-
 def data_dir(prefer_generated: bool = True) -> Path:
-    """First company's folder (convenience for quick scripts)."""
-    return companies(prefer_generated)[0][1]
+    """Use data/generated/ if it has files, else fall back to data/sample/."""
+    if prefer_generated and (GENERATED / "warranty_claims.csv").exists():
+        return GENERATED
+    return SAMPLE
 
 
 def load(directory: Path | None = None) -> dict[str, pd.DataFrame]:

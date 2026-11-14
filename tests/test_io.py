@@ -16,5 +16,5 @@ def test_bom_parts_exist_in_part_master():
 def test_sample_passes_contract_check():
     from afterlife import check
     check.results.clear()
-    check.check(load(SAMPLE), is_sample=True)
+    check.check(load(SAMPLE))
     assert not [m for s, m in check.results if s == "FAIL"]
