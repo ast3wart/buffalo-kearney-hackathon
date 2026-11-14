@@ -15,7 +15,7 @@ from afterlife.io import ROOT, SAMPLE, companies, load
 from afterlife.taxonomy import CATEGORIES, FAILURE_CODES
 
 CONTRACT = {
-    "products": ["product_id", "product_name", "family"],
+    "products": ["product_id", "product_name", "family", "avg_selling_price"],
     "part_master": ["part_no", "description", "category", "std_cost"],
     "bom": ["product_id", "part_no", "qty_per", "position"],
     "builds": ["product_id", "build_month", "units_built"],
@@ -28,12 +28,15 @@ CONTRACT = {
     "abbreviations": ["abbr", "expansion"],
     "dataset_info": ["key", "value"],
     "failure_codes": ["failure_code", "system", "description", "likely_categories"],
-    "warranty_claims": ["claim_id", "product_id", "serial_no", "build_month", "failure_date", "failure_code",
-                        "claim_text", "causal_part_no", "labor_hrs", "parts_cost", "labor_cost", "dealer_id",
-                        "recovery_status"],
+    "warranty_claims": ["claim_id", "product_id", "serial_no", "build_month", "failure_date", "claim_date",
+                        "paid_date", "failure_code", "claim_text", "causal_part_no", "labor_hrs", "parts_cost",
+                        "labor_cost", "other_cost", "dealer_id", "recovery_status", "recovered_usd"],
     "truth_links": ["source_table", "source_id", "part_no"],
     "truth_spikes": ["part_no", "supplier_id", "start_build_month", "from_po_line_id", "multiplier"],
+    "truth_terms": ["doc_file", "supplier_id", "recovery_pct", "labor_covered", "labor_rate_cap",
+                    "recovery_window_months", "filing_deadline_days"],
 }
+RECOVERY_STATUSES = {"none", "submitted", "recovered"}
 
 results: list[tuple[str, str]] = []
 
@@ -130,6 +133,35 @@ def check(t, is_sample: bool = False):
         bm = pd.to_datetime(t["warranty_claims"].build_month + "-01")
         (ok if (fd <= pd.Timestamp(as_of)).all() else fail)(f"no claim fails after data_as_of ({as_of})")
         (ok if (fd >= bm).all() else fail)("no claim fails before its build month")
+        # 2c. v4 accounting fields: reporting lag, payment, recovery (🛠)
+        wc = t["warranty_claims"]
+        cd, pd_ = pd.to_datetime(wc.claim_date), pd.to_datetime(wc.paid_date)
+        (ok if ((cd >= fd) & (cd <= pd.Timestamp(as_of))).all() else fail)(
+            "claim_date is between failure_date and data_as_of (claims not yet reported are absent)")
+        (ok if (pd_.isna() | ((pd_ >= cd) & (pd_ <= pd.Timestamp(as_of)))).all() else fail)(
+            "paid_date is blank (unpaid) or between claim_date and data_as_of")
+        status = wc.recovery_status
+        (ok if set(status) <= RECOVERY_STATUSES else fail)(f"recovery_status in {sorted(RECOVERY_STATUSES)}")
+        (ok if not (pd_.isna() & (status != "none")).any() else fail)("only paid claims are submitted for recovery")
+        rec = pd.to_numeric(wc.recovered_usd)
+        cost = pd.to_numeric(wc.parts_cost) + pd.to_numeric(wc.labor_cost) + pd.to_numeric(wc.other_cost)
+        (ok if ((rec == 0) | (status == "recovered")).all() and (rec <= cost + 0.01).all() else fail)(
+            "recovered_usd > 0 only on recovered claims, and never above the claim's total cost")
+    asp = pd.to_numeric(t["products"].avg_selling_price, errors="coerce")
+    (ok if (asp > 0).all() else fail)("products.avg_selling_price is positive (warranty % of revenue needs it)")
+    # 2d. supplier agreements are documents; the answer key points at real files and production suppliers
+    tt = t["truth_terms"]
+    docs = set(t["supplier_agreements"].doc_file) if "supplier_agreements" in t else set()
+    (ok if set(tt.doc_file) <= docs else fail)(
+        f"every truth_terms doc_file exists in supplier_agreements/ ({len(docs)} documents)" if set(tt.doc_file) <= docs
+        else f"truth_terms points at missing documents: {sorted(set(tt.doc_file) - docs)[:3]}")
+    prod_sup = set(t["production_spend"].supplier_id)
+    (ok if set(tt.supplier_id) <= prod_sup else fail)("truth_terms suppliers are production suppliers")
+    (ok if prod_sup <= set(tt.supplier_id) else warn)(
+        "every production supplier has an agreement" if prod_sup <= set(tt.supplier_id)
+        else f"{len(prod_sup - set(tt.supplier_id))} production suppliers have no agreement (recovery can't be valued)")
+    pct = pd.to_numeric(tt.recovery_pct)
+    (ok if ((pct > 0) & (pct <= 1)).all() else fail)("truth_terms.recovery_pct is in (0, 1]")
     codes = set(t["failure_codes"].failure_code)
     (ok if set(t["warranty_claims"].failure_code) <= codes else fail)("claim failure codes all defined")
     cats = set(t["part_master"].category)

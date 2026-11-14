@@ -6,6 +6,11 @@ Running log of plan changes after the original plan (`docs/archive/track-decisio
 
 ---
 
+## Update 5 · Sat Nov 14 · Contract v4: accounting fields (PROPOSED by Brandon, Asher to confirm)
+**What:** claims get a reporting lag (`claim_date`), payment (`paid_date`), full cost (`other_cost`) and `recovered_usd`; products get `avg_selling_price`; supplier recovery terms arrive as **documents** that an AI step extracts (`supplier_terms`).
+**Why:** the brief's recovery ask needs the contract terms to put a defensible $ on it, the reporting lag stops `detect.py` from reading recent builds as falsely clean, and ASP lets us benchmark warranty % of revenue against the SEC filers. Terms are documents because that's where they live at a real SAP client: it's the honest place for the AI workflow.
+**Cost:** ~1 h for Brandon (generator + extractor), a few minutes for Asher (ASP in `generate_spend`). No change to the SAP adapter or the spend columns.
+
 ## Update 4 · Sat Nov 14, early AM · Contract v3 applied (DECIDED by Asher, Brandon to confirm at CP1)
 Brandon's branch `plan/cp0-additions` was merged into `test-data-batch`, and Tier 1 (#10–14), #15, #17 and the #19 schema were applied as **data contract v3** (status table at the top of the addendum in `docs/research/cp0-proposal.md`).
 

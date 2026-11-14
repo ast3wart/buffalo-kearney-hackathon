@@ -9,8 +9,9 @@ GENERATED = ROOT / "data" / "generated"
 TABLES = [
     "products", "part_master", "bom", "builds", "production_spend",
     "service_spend", "info_records", "build_supply", "abbreviations", "failure_codes",
-    "warranty_claims", "dataset_info", "truth_links", "truth_spikes",
+    "warranty_claims", "dataset_info", "truth_links", "truth_spikes", "truth_terms",
 ]
+DOCS = "supplier_agreements"  # v4: folder of contract documents (text), not a CSV
 
 
 def companies(prefer_generated: bool = True) -> list[tuple[str, Path]]:
@@ -43,4 +44,16 @@ def load(directory: Path | None = None) -> dict[str, pd.DataFrame]:
                     if col in df.columns:
                         df[col] = pd.to_numeric(df[col], errors="coerce")
             out[t] = df
+    docs = load_documents(d)
+    if len(docs):
+        out[DOCS] = docs
     return out
+
+
+def load_documents(directory: Path) -> pd.DataFrame:
+    """v4: supplier agreements as [doc_file, text]. Which supplier a document belongs to, and its
+    recovery terms, are EXTRACTED from the text (afterlife/extract_terms.py), never read from the file name.
+    Real clients send PDFs; convert to .md/.txt first (out of scope for the MVP)."""
+    files = sorted(p for p in (directory / DOCS).glob("*") if p.suffix in (".md", ".txt"))
+    return pd.DataFrame({"doc_file": [p.name for p in files], "text": [p.read_text() for p in files]},
+                        columns=["doc_file", "text"])

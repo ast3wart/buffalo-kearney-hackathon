@@ -26,6 +26,7 @@ def generate(seed: int, profile: dict) -> dict[str, list[dict]]:
       part_no blank, own supplier list + supplier PNs, plain-words descriptions, higher price level
     - service_spend: same parts from a distributor at 1.5-5x, different PNs and wording, part_no ~15%
     - truth_links rows for every spend line
+    - products.avg_selling_price (v4): per-unit price, so warranty cost can be shown as % of revenue
     - po_line_id: unique and non-empty across BOTH spend tables. For SAP companies (profile["extract_format"]
       == "sap") mint distinct numeric PO numbers per plant/table (e.g. 45xxxxxxxx production, 46xxxxxxxx
       acquired plant, 47xxxxxxxx service), ideally already in canonical form "##########-#####"

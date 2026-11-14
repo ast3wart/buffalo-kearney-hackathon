@@ -50,12 +50,13 @@ afterlife/                  Python pipeline
   match_spend.py       💲   purchase line → part
   match_claims.py      🛠   claim → causal part
   detect.py            🛠   spike detection
+  extract_terms.py     🛠   supplier agreement documents → recovery terms (regex + Claude)
   cost.py              💲   build vs lifecycle cost, spare-part markups
   evaluate.py               accuracy vs planted answers (shared)
   brief.py                  supplier brief (🛠 warranty section, 💲 pricing section)
 api/main.py                 FastAPI (reads results.duckdb)
 web/                        Next.js app (types generated from the API)
-data/sample/                small dataset to build against now
+data/sample/                small dataset to build against now (supplier_agreements/ = contract documents)
 data/reference/             real SEC warranty data
 scripts/                    make_sample.py, fetch_sec_warranty.py, export_openapi.py
 tests/

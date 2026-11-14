@@ -21,6 +21,12 @@ Use this when you hand something to the other person or change something they de
 | Sat ~10 PM | 💲 Asher → 🛠 Brandon | Deck draft for review |
 
 ## Log
+### Sat Nov 14 · Brandon → Asher · Contract v4 proposal: accounting fields + supplier agreement documents
+- What changed: `warranty_claims` gains `claim_date`, `paid_date`, `other_cost`, `recovered_usd`. `products` gains `avg_selling_price`. New `supplier_agreements/` folder (documents) + `truth_terms.csv`; new output `supplier_terms` from `afterlife/extract_terms.py` (stub, wired into `run.py`). Sample regenerated: every v3 value is identical, only 5 claims not yet reported by `data_as_of` dropped out.
+- Where: branch `warranty/contract-v4-accounting`, `docs/build/data-contract.md` (v4 + "Stored or extracted?"), `afterlife/check.py`, `afterlife/io.py`, `scripts/make_sample.py`
+- What you need to do: review the PR. One thing lands in your thread: `generate_spend` must emit `products.avg_selling_price` (docstring updated). The SAP adapter is unchanged.
+- Known issues: none. `./scripts/checkpoint.sh` is green, 13 tests pass.
+
 ### Sat Nov 14, early AM · Asher → Brandon · Data contract v3 (from your CP0 review)
 - What changed: merged your `plan/cp0-additions` into `test-data-batch`, then applied #10–15, #17, and the #19 schema. New tables: `build_supply.csv`, `abbreviations.csv`. `truth_spikes.from_po_line_id`, links v2 columns, `runs` table, SAP adapter. Northwind has HVAC codes and categories (24 categories, 16 failure codes in the union).
 - Where: `docs/build/data-contract.md` (v3 section + SAP table), `afterlife/taxonomy.py`, `afterlife/profiles.py`, `afterlife/adapters/sap.py`, `afterlife/check.py`, `scripts/make_sample.py`, `tests/`

@@ -4,6 +4,9 @@ Pool claims across ALL products sharing a part. Two views (decided at CP0):
   raw  : claims per 1,000 built by build_month (intuitive chart, biased toward recent builds)
   mis  : claims within MIS_WINDOW months in service per 1,000 built, MATURE build months only
          (build_month + MIS_WINDOW <= data_as_of). Alerts use THIS view.
+         v4: claims arrive with a reporting lag (claim_date - failure_date). Count by claim_date <= data_as_of
+         (that's all we can see), and treat a build month as mature only once build_month + MIS_WINDOW
+         + typical lag (e.g. the 90th percentile lag in the data) <= data_as_of, or the latest months look falsely clean.
 Flag mis rate / baseline >= RATIO_MIN with >= MIN_CLAIMS.
 
 v3 #13 supplier attribution: claims don't say which supplier's part was fitted. Use build_supply:

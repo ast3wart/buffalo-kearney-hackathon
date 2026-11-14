@@ -2,7 +2,8 @@
 
 Each thread writes its own half:
   generate_spend.py  [SPEND]    products, part_master, bom, builds, production_spend, service_spend
-  generate_claims.py [WARRANTY] failure_codes, warranty_claims, truth_spikes (needs bom + builds)
+  generate_claims.py [WARRANTY] failure_codes, warranty_claims, truth_spikes (needs bom + builds),
+                                supplier_agreements (documents) + truth_terms (v4)
 Checklist: docs/research/data-sources.md ("Realism checklist").
 
 Writes one folder per company: data/generated/<company_id>/ (profiles in afterlife/profiles.py).
@@ -11,7 +12,7 @@ Run: python -m afterlife.generate --seed 7
 """
 import argparse
 import csv
-from afterlife.io import GENERATED
+from afterlife.io import DOCS, GENERATED
 from afterlife import generate_spend, generate_claims
 from afterlife.profiles import PROFILES, dataset_info, abbreviations_rows, failure_code_rows
 from afterlife.adapters import sap
@@ -25,6 +26,11 @@ def write(tables: dict[str, list[dict]], out_dir=GENERATED, extract_format: str 
     if extract_format == "sap":
         tables = _sap_po_ids_everywhere(tables)
     for name, rows in tables.items():
+        if name == DOCS:  # v4: documents, not a table -> one text file each
+            (out_dir / DOCS).mkdir(exist_ok=True)
+            for r in rows:
+                (out_dir / DOCS / r["doc_file"]).write_text(r["text"])
+            continue
         if extract_format == "sap" and name in sap.MAPS and rows:
             sap.from_contract(name, pd.DataFrame(rows)).to_csv(out_dir / f"{name}.csv", index=False)
             continue
