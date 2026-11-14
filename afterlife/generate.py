@@ -69,7 +69,12 @@ def generate(seed: int = 7, out_dir=GENERATED) -> None:
     for i, profile in enumerate(PROFILES):
         s = seed + i  # different but reproducible per company
         spend = generate_spend.generate(s, profile)               # includes truth_links for spend rows
-        claims = generate_claims.generate(s, spend, profile)      # includes truth_links for claim rows
+        try:
+            claims = generate_claims.generate(s, spend, profile)  # includes truth_links for claim rows
+        except NotImplementedError:
+            claims = {"truth_links": []}                           # claims generator not built yet: spend only
+            print(f"  {profile['company_id']}: claims generator not built yet, writing spend tables only")
+        spend = {k: v for k, v in spend.items() if not k.startswith("_")}   # e.g. _spike_plan: for 🛠, not a CSV
         truth = spend.pop("truth_links") + claims.pop("truth_links")
         info = [{"key": k, "value": v} for k, v in dataset_info(profile).items()]
         vocab = {"abbreviations": abbreviations_rows(profile), "failure_codes": failure_code_rows(profile)}

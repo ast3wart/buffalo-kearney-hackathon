@@ -6,6 +6,12 @@ ROOT = Path(__file__).resolve().parent.parent
 SAMPLE = ROOT / "data" / "sample"
 GENERATED = ROOT / "data" / "generated"
 
+# Identifier columns are ALWAYS read as text: numeric-looking ids (SAP supplier 100028, PO 4500000010)
+# would otherwise load as int in one table and str in another, and joins silently fail.
+ID_COLUMNS = ["product_id", "part_no", "supplier_id", "po_line_id", "source_id", "claim_id", "serial_no",
+              "causal_part_no", "from_po_line_id", "dealer_id", "supplier_pn", "build_month", "start_build_month",
+              "failure_code", "abbr", "key", "value"]
+
 TABLES = [
     "products", "part_master", "bom", "builds", "production_spend",
     "service_spend", "info_records", "build_supply", "abbreviations", "failure_codes",
@@ -13,11 +19,13 @@ TABLES = [
 ]
 
 
-def companies(prefer_generated: bool = True) -> list[tuple[str, Path]]:
+def companies(prefer_generated: bool = True, require_claims: bool = True) -> list[tuple[str, Path]]:
     """[(company_id, folder)] for every company in data/generated/<company_id>/.
-    Falls back to [("sample", data/sample/)] until the generator has run."""
+    Falls back to [("sample", data/sample/)] until the generator has run.
+    require_claims=False also returns spend-only folders (claims generator not built yet)."""
+    marker = "warranty_claims.csv" if require_claims else "part_master.csv"
     if prefer_generated and GENERATED.exists():
-        found = sorted((d.name, d) for d in GENERATED.iterdir() if (d / "warranty_claims.csv").exists())
+        found = sorted((d.name, d) for d in GENERATED.iterdir() if (d / marker).exists())
         if found:
             return found
     return [("sample", SAMPLE)]
@@ -36,7 +44,8 @@ def load(directory: Path | None = None) -> dict[str, pd.DataFrame]:
     for t in TABLES:
         p = d / f"{t}.csv"
         if p.exists():
-            df = pd.read_csv(p, keep_default_na=False, na_values=[""], dtype=str if t in sap.MAPS else None)
+            df = pd.read_csv(p, keep_default_na=False, na_values=[""],
+                             dtype=str if t in sap.MAPS else {c: str for c in ID_COLUMNS})
             if t in sap.MAPS:
                 df = sap.to_contract(t, df) if sap.looks_like_sap(df) else df
                 for col in ["qty", "unit_price", "price_unit", "std_cost"]:

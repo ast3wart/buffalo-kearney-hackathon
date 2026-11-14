@@ -2,6 +2,7 @@
 
     python -m afterlife.check            # checks every company in data/generated/ (or data/sample/ fallback)
     python -m afterlife.check sample     # force data/sample/
+    python -m afterlife.check spend      # generated companies, spend side only (before the claims generator exists)
 
 Checks the data against docs/build/data-contract.md, cross-table consistency
 (the things that silently break the other person's code), and whether the
@@ -135,9 +136,12 @@ def check(t, is_sample: bool = False):
     cats = set(t["part_master"].category)
     fc_cats = {c for s in t["failure_codes"].likely_categories for c in str(s).split(";")}
     if not is_sample:  # the tiny sample only uses 8 categories, so this only matters for generated data
-        (ok if fc_cats <= cats else warn)(
-            "failure-code categories all exist in part_master" if fc_cats <= cats
-            else f"failure-code categories with no parts generated: {sorted(fc_cats - cats)}")
+        # a code may list categories this company doesn't make (e.g. ELE-FTS -> fuel at an HVAC maker);
+        # what matters is that every code can point at SOME part
+        dead = [r.failure_code for r in t["failure_codes"].itertuples()
+                if not set(str(r.likely_categories).split(";")) & cats]
+        (ok if not dead else fail)("every failure code has at least one category with parts" if not dead
+                                   else f"failure codes with no matching parts at all: {dead}")
 
     # 3. answer key covers everything and points at real parts
     tl = t["truth_links"]
@@ -163,8 +167,9 @@ def check(t, is_sample: bool = False):
         warn("spike part is used in only 1 product, so the cross-product story won't show")
 
     # 4. realism sanity (warnings, not failures)
-    blank = t["warranty_claims"].causal_part_no.isna().mean()
-    (ok if 0.4 <= blank <= 0.8 else warn)(f"claims with blank causal_part_no: {blank:.0%} (target ~60%)")
+    if len(t["warranty_claims"]):
+        blank = t["warranty_claims"].causal_part_no.isna().mean()
+        (ok if 0.4 <= blank <= 0.8 else warn)(f"claims with blank causal_part_no: {blank:.0%} (target ~60%)")
     if not is_sample:  # sample is too small for realism stats
         share = (shared >= 2).mean()
         (ok if 0.25 <= share <= 0.6 else warn)(f"parts shared across products: {share:.0%} (target ~40%)")
@@ -185,10 +190,17 @@ def check_api_types():
 
 
 def main():
-    targets = [("sample", SAMPLE)] if "sample" in sys.argv[1:] else companies()
+    targets = [("sample", SAMPLE)] if "sample" in sys.argv[1:] else companies(require_claims=False)
+    spend_only = "spend" in sys.argv[1:]   # claims generator not built yet: check the spend side only
     for cid, d in targets:
         before = len(results)
-        check(load(d), is_sample=(d == SAMPLE))
+        tables = load(d)
+        if spend_only or "warranty_claims" not in tables:
+            if "warranty_claims" not in tables:
+                warn(f"no claims yet (claims generator not built): checking the spend side only")
+            for name in ["warranty_claims", "truth_spikes"]:
+                tables.setdefault(name, pd.DataFrame(columns=CONTRACT[name]))
+        check(tables, is_sample=(d == SAMPLE))
         for i in range(before, len(results)):
             results[i] = (results[i][0], f"[{cid}] {results[i][1]}")
     check_api_types()
