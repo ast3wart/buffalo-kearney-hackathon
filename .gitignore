@@ -2,6 +2,14 @@
 *.pdf
 __pycache__/
 .venv/
-.env
 data/generated/
 results.duckdb
+
+# secrets: real values live in .env (never committed); .env.example is the template
+.env
+.env.*
+!.env.example
+
+# local scratch notes and git worktrees (keep out of the repo)
+temp/
+.worktrees/

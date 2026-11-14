@@ -15,6 +15,8 @@
 | Branches | ✅ `spend/...` and `warranty/...` |
 | Companies | ✅ **Added after CP0: 3 companies, not 1** (`afterlife/profiles.py`). Prairie (tune), Ironridge (holdout), Northwind (holdout, no-spike control). One folder per company, same contract |
 
+> **New: [CP0 addendum](#cp0-addendum-items-1020-proposed-decide-at-cp1-sat-900-am)** (items 10–20, *proposed*, decide at CP1). These items build on the decisions above: making the three companies genuinely different, SAP-shaped inputs, real supplier attribution, evidence on every link, and where AI fits. Reasoning and plan impact: [../plan/plan-updates.md](../plan/plan-updates.md).
+
 🛠 = Brandon (Warranty) · 💲 = Asher (Spend)
 
 ## TL;DR
@@ -139,6 +141,176 @@ From Warranty Week's analyses of US companies. Treat them as indicative, since t
 - Big recoveries do happen: GM recovered **at least 90%** of the Chevy Bolt battery recall cost from its supplier.
 - → Use a **scenario** capture rate (25–50% of linked claim cost) for `recovery_opportunity_usd`, shown as a range and labeled as a scenario.
 
+---
+
+## CP0 addendum: items 10–20 (PROPOSED, decide at CP1, Sat 9:00 AM)
+
+**Status: PROPOSAL.** Nothing here is applied yet. Mark each item ✅ / ❌ at CP1. Anything that changes the contract (items 10, 12, 13, 14) goes into `data-contract.md`, `check.py` `CONTRACT`, and `make_sample.py` in **one commit**, the same way as CP0.
+**Inputs:** a review of the CP0 v2 branch, plus two research notes (`Afterlife Connectors, AI Approach & Plan Fixes`, `other-differentiating-notes`). Why each item exists and what it costs: [../plan/plan-updates.md](../plan/plan-updates.md).
+
+### TL;DR
+| # | Change | Who | Why it matters | Tier |
+|---|---|---|---|---|
+| 10 | **Each company gets its own vocabulary**, not just different weights. Abbreviations move out of `match.py` into data | both | Today all 3 companies share one category list, one failure-code list, and one hardcoded abbreviation list. "Three industries" is really one industry three times | **1 · contract** |
+| 11 | **No-literals rule + test:** no company IDs, industry words, or part numbers hardcoded in `afterlife/` logic | both | Turns "not overfit" from a claim into something a test enforces | **1 · 15 min** |
+| 12 | **Ironridge = the "acquired plant" company:** a second plant on a legacy part-numbering scheme | 💲 | Answers the SAP-savvy judge: "POs already carry MATNR, so why match?" | **1 · contract-lite** |
+| 13 | **Real supplier attribution:** spike part is dual-sourced, plus `build_supply.csv` tying build months to supplier lots | 💲 makes, 🛠 uses | Without it, "which supplier?" answers itself (one part = one supplier) | **1 · contract** |
+| 14 | **Link table v2:** add `evidence`, `source_system`, `run_id` to `links` | both | Every link shows *why*. A supplier won't pay on "the AI said so" | **1 · contract** |
+| 15 | **SAP-column adapter:** raw extracts use real SAP field names, and a mapping renames them into our contract | 💲 | "Point us at a standard SAP extract" without building a connector | 2 |
+| 16 | **AI in three narrow places**, cached and measured: description parsing, claim tie-break, brief | 💲 / 🛠 / shared | Rules decide, the model proposes and explains (Kearney's own "neurosymbolic" framing). Show accuracy *with vs. without* Claude | 2 |
+| 17 | **Run record + confidence thresholds per use** | shared | Any number traces to a run. Recovery uses only high-precision links | 2 |
+| 18 | **Evals as pytest** (accuracy floors, spike caught on several seeds, zero alerts for Northwind, brief numbers must exist in results) | each their own | Quality can't silently regress Saturday night | 2 |
+| 19 | **Review queue:** accept/reject buttons on Linking explorer → `decisions` overrides | shared | Human oversight, and a system that improves with use | 3 · stretch |
+| 20 | **Outputs positioning:** link table export "for Sievo / Tavant / SAP info records", compatible with Power BI and Spend.Pro | pitch | Shows where Afterlife fits in a client's existing tools | 3 · deck only |
+
+Tier 1 = decide and apply at CP1 (cheap now, expensive after the generators exist). Tier 2 = inside each thread on Saturday. Tier 3 = only after CP5 is green.
+
+### 10. Each company gets its own vocabulary 🛠💲
+**Problem.** `taxonomy.py` has one global list of 21 categories and 12 failure codes, and `match.ABBREVIATIONS` is a hardcoded dict of vehicle terms (`HYD`, `CYL`, `BRG`). The three profiles differ only in `category_weights`, part counts and fill rates. Northwind (HVAC) would file claims as `HYD-ELP` / `ENG-OHE` with vehicle shorthand. A judge who opens two companies side by side will see the same words.
+
+**Proposal.**
+- `taxonomy.py` keeps the **union** (the global contract). Each profile picks a **subset** plus a few industry-specific extras:
+  - Northwind adds `REF-ELP` (refrigerant leak), `CMP-FTS` (compressor fails to start), and `FAN-VIB`. It also adds categories `compressor`, `refrigerant_component` and `motor`, or maps these onto existing ones if we want to keep 21.
+  - Northwind drops the hydraulic and brake codes.
+- New per-company input `abbreviations.csv` (`abbr, expansion`). Prairie and Ironridge get `HYD, CYL, BRG, REPL`. Northwind gets `CMPR, COND, EVAP, TXV, CAP, RTU`. `normalize()` reads it from the tables instead of a constant. *Why an input file?* Real clients have their own shorthand. Treating it as client data, not code, is the honest design.
+- Per-profile **style knobs** used by both generators:
+  - `pn_format`: Prairie `100-4471-02`, Ironridge `IR-04471`, Northwind `NW4471A`
+  - `desc_style`: ERP comma shorthand vs. plain words
+  - `typo_rate`, `causal_blank_share`, `text_item_share`
+- Contract impact: one new table (`abbreviations.csv`), and the failure-code check becomes "subset of the union".
+
+### 11. No-literals rule 🛠💲
+- `afterlife/match*.py`, `detect.py` and `cost.py` must not contain company IDs, industry words, part numbers, supplier IDs, or category names used as `if` conditions. Everything comes from the tables or the profile.
+- `tests/test_no_literals.py` greps those files for every `company_id`, `part_no` and `supplier_id` in the generated data, plus the profile names, and fails if any appear.
+- Scope it to **code, not comments or docstrings**: strip them with Python's `tokenize` module first. Category names like `seal` may legitimately appear in comments or in the taxonomy, so don't grep for categories. Grep for IDs and company names only.
+- **Pitch line:** "Our matching code has never seen a company name. There's a test that fails if it does."
+
+### 12. Ironridge = the acquired-plant company 💲
+**Why.** In real SAP, production POs usually carry MATNR, so BOM ↔ production-spend matching is easy. The real hard cases are:
+- a second plant or acquired company on another ERP
+- service purchases made as free text
+- warranty claims, which never come from purchasing at all
+
+**Proposal.** Ironridge gets plant `P-TX2` (acquired). It has:
+- its own legacy numbering (`part_no` blank, `supplier_pn` from a different supplier list)
+- descriptions in another style
+- its own price levels, so the same part costs differently across the two plants. That gives a second harmonization lever: *plant vs. plant*, alongside *production vs. spare*.
+
+Contract impact: none (`plant` already exists). Only profile knobs change: `acquired_plant_share`, `acquired_plant_pn_fill = 0`.
+
+### 13. Real supplier attribution 🛠💲
+**Problem.** If each part has one production supplier, the alert already names the supplier. "Which supplier pays?" is trivial, and the brief has nothing to prove.
+
+**Proposal.**
+- The spike part is **dual-sourced**, e.g. Keystone 70% and a second seal supplier 30%.
+- New table `build_supply.csv` (generated by 💲, consumed by 🛠), modeled on goods-receipt / batch records:
+
+  | column | example |
+  |---|---|
+  | product_id | `UV-400` |
+  | build_month | `2026-04` |
+  | part_no | `200-1180-01` |
+  | supplier_id | `S-022` |
+  | po_line_id | `PO-450012-010` (the lot consumed) |
+  | share | `0.7` |
+
+- 🛠 plants the spike only on **Keystone lots from a specific PO onward**.
+- **The supplier mix must vary, or attribution is impossible.** Claims don't record which supplier's part was fitted. If every product and month is 70/30, the two suppliers can't be told apart statistically. The generator must make the mix vary, e.g. Keystone supplies UV-400 and TR-250 while the second supplier supplies UV-600, *or* the split shifts between months. Then compare rates where Keystone's share is high vs. low.
+- `detect.py` splits rates by supplier using the shares as exposure weights. Simplest honest version: for each (part, supplier), units exposed = Σ units_built × qty_per × share. Claims are allocated in proportion to share *only* inside cells that have a single supplier, and mixed cells are reported as "ambiguous". Optional extra: a 2-variable Poisson fit.
+- In real data this link comes from serial-number ↔ batch traceability (goods issue to production order). Say so in Q&A: "with serial traceability, attribution becomes exact."
+- **Brief line:** "Builds from April onward used Keystone's April 15 order (PO-450012). The other supplier's lots show no increase."
+- Contract impact: a new table, and `truth_spikes` gains `from_po_line_id`. In `make_sample.py`, give the sample seal kit two suppliers.
+
+### 14. Link table v2 🛠💲
+Add three columns to the `links` output:
+
+| column | example |
+|---|---|
+| `source_system` | `SAP-P-IA1` / `LEGACY-P-TX2` / `SERVICE-PORTAL` / `WTY` |
+| `evidence` | JSON string of the signals that agreed, e.g. `{"spec_code":"6204","category":"bearing","supplier_pn":false,"fuzzy":0.91}` |
+| `run_id` | links the row to the `runs` record (#17) |
+
+- This table is the product's main export. The Linking explorer shows `evidence` as small chips.
+- `method` gains `info_record` (supplier PN via the info-record crosswalk) and `spec_code` (spec code like `6204` or `M20X1.5` found in the description). The full set becomes `exact_pn` / `info_record` / `spec_code` / `failure_code_bom` / `fuzzy_text` / `llm`.
+
+### 15. SAP-column adapter 💲 (Tier 2)
+- Our contract stays snake_case internally. One company (proposal: Ironridge) is written in **SAP field names**:
+
+  | SAP field | Our column | Meaning |
+  |---|---|---|
+  | EBELN + EBELP | `po_line_id` | PO number + line |
+  | MATNR | `part_no` | Internal part number |
+  | TXZ01 | `description` | Short text on the PO line |
+  | LIFNR | `supplier_id` | Supplier number |
+  | IDNLF | `supplier_pn` | Supplier's own part number |
+  | MENGE | `qty` | Quantity |
+  | MEINS | `uom` | Unit of measure |
+  | NETPR | `unit_price` | Net price |
+  | PEINH | `price_unit` | Price per N units |
+  | BEDAT | `po_date` | PO date |
+  | WERKS | `plant` | Plant |
+  | MAKTX | (part_master) `description` | Material description |
+
+- `afterlife/adapters/sap.py` is a column-map dict plus a rename, run by `io.load()` when it sees SAP headers. It's about 30 lines, plus the quirks a real SAP extract has. Plant a few of them so the adapter visibly earns its keep:
+  - `MATNR` / `LIFNR` padded with **leading zeros** (`000000000100447102`). Strip them on input.
+  - Dates as `YYYYMMDD` (`BEDAT = 20260211`).
+  - `EBELN` (10 digits) + `EBELP` (5 digits, steps of 10), joined into `po_line_id`.
+  - Optional: a decimal comma in prices from a European plant (`4,12`).
+- Real extracts often have descriptive column labels (or German labels) instead of technical names, depending on how they were exported. The map should accept both, but generate only technical names.
+- The demo moment: Ironridge "arrives as a standard SAP extract", and nothing else changes.
+- **Don't** build live connectors (RFC, OData). No judge expects them this weekend.
+
+### 16. AI in three narrow places (Tier 2)
+| Where | Owner | What | Guardrails |
+|---|---|---|---|
+| Description parsing | 💲 | `BRG,BALL,6204-2RS,20MM` → `{type, size, spec_code}` once per unique description, cached | Structured JSON output; cache keyed by input hash; feeds fuzzy matching (replaces the embeddings we cut) |
+| Claim tie-break | 🛠 | Only low-confidence claim links. Send the candidates and their evidence, get a pick and a reason | Runs **in the pipeline**, never live. Proposes only; result stored with `method = llm`. Serial numbers and dealer names redacted first |
+| Supplier brief | shared | Already planned | Template first. Every number must come from `results.duckdb` (#18 checks this) |
+
+- Pin the model ID and prompt version in config. Prompts live in git (`afterlife/prompts/`).
+- **No LangGraph or agent framework.** The pipeline is a fixed sequence with 2–3 model calls. If we want something agent-like, the tie-breaker can call 2–3 lookup functions through Claude tool use.
+- **The slide:** precision and recall *rules only* vs. *rules + Claude*, per company. A measured lift beats "we use agents".
+- Don't compete with Sievo's 94% classification guarantee. Our number is measured against a known answer key, and we say exactly what it measures.
+
+### 17. Run record + thresholds (Tier 2)
+- `runs` table: `run_id, started_at, git_commit, seed, input_hashes, model_id, prompt_version, metrics_json`. About 30 lines in `run.py`.
+- `config` thresholds per use: recovery uses links with `confidence ≥ 0.9`, pricing `≥ 0.7`, and the explorer shows everything. The recovery claim says "based on N high-confidence claims".
+- **0.9 and 0.7 are placeholders.** Our confidence scores are heuristic, not probabilities. At CP3, use the answer key to pick each threshold by target precision (e.g. "≥ 97% precision for recovery" on Prairie), then confirm it holds on the holdout companies. Put the chosen precision on the slide, not the raw threshold.
+
+### 18. Evals as pytest (Tier 2)
+- `test_accuracy.py`: precision and recall floors per company and source_table (set at CP3 from the first real numbers, then ratchet up).
+- `test_detect.py`:
+  - the planted spike is caught on seeds 7, 8 and 9
+  - **zero alerts for Northwind**
+  - alerts name the planted supplier (#13)
+- `test_brief.py`: every `$` and `×` number in a generated brief appears in `results.duckdb`. This is the cheap guard against made-up numbers, and worth a slide.
+  - Simplest robust version: the template builds a dict of allowed numbers. The brief's numbers get parsed back (`$2.1M` → 2,100,000; `3.6×` → 3.6) and each must match an allowed value within rounding (±1 in the last shown digit).
+  - Run it in a mode with no API key (template only) so CI doesn't need a key. Test the LLM-polished version manually before the pitch.
+- Effort numbers in this addendum are **estimates**, not measurements. Re-check them at CP1.
+
+### 19. Review queue (Tier 3, stretch)
+- Accept/reject buttons on the Linking explorer, wired to `POST /decisions`, which writes `decisions.csv` (`source_table, source_id, part_no, verdict, reviewer, at`).
+- The next `afterlife.run` applies decisions as overrides (`method = human`).
+- **Commit the schema now** (Tier 1 cost: one line in the contract). Build the buttons only after CP5.
+
+### 20. Outputs positioning (deck only)
+- "Afterlife writes the link table that Sievo, Tavant and SAP each need":
+  - service spend ↔ BOM, for spend analytics
+  - inferred failed part + supplier mapping, for warranty-recovery tools
+  - new info records, for SAP
+- A CSV export is enough.
+- Say **compatible with** Power BI and Kearney Spend.Pro, **not integrated**. Neither has a public API or trial we could check.
+- **Path to production slide:**
+  - same steps on the client's scheduler (Dagster or Prefect)
+  - DuckDB → Snowflake / Databricks / Postgres
+  - Splink (open-source record linkage on DuckDB) once descriptions are parsed into attributes (#16)
+
+### Considered and rejected
+- **LangGraph / agent frameworks.** No visible benefit for a fixed batch pipeline. Adds state and debugging time.
+- **Graph database or OWL ontology.** Our taxonomy, failure-code map, abbreviations and link table *are* the ontology, kept as DuckDB tables. Call them that in the deck.
+- **Splink this weekend.** It's a good fit later, but it's a new dependency after CP0 and needs attribute columns first. Keep rapidfuzz.
+- **Live SAP / Sievo / Tavant connectors.** Unverifiable in a weekend, and judges won't expect them.
+
 ## Sources
 - SAP EKPO fields (NETPR, PEINH): [leanx.eu EKPO](https://leanx.eu/en/sap/table/ekpo.html), [se80 PEINH](https://www.se80.co.uk/sap-data-element/?name=peinh)
 - Vendor material number IDNLF / info records: [sapdatasheet IDNLF](https://www.sapdatasheet.org/abap/dtel/idnlf.html), [SAP Community](https://answers.sap.com/questions/397123/populating-vendor-material-number-ekpo-idnlf-again.html)
@@ -148,3 +320,4 @@ From Warranty Week's analyses of US companies. Treat them as indicative, since t
 - Months in service / maturity / early warning: [SAS Global Forum 2019 paper](https://support.sas.com/resources/papers/proceedings19/3877-2019.pdf), [Elsmar quality forum](https://elsmar.com/elsmarqualityforum/threads/10-2-5-warranty-management-process-measures.89661/), [Umbrex warranty claim rate](https://umbrex.com/resources/company-analysis/product-management/warranty-claim-rate-by-product/), [ReliaSoft warranty analysis](https://help.reliasoft.com/reference/life_data_analysis/lda/warranty_data_analysis.html)
 - ISO 14224 failure modes: [Fabrico](https://www.fabrico.io/blog/iso-14224-failure-taxonomy-codes/), [Tetra Pak](https://maintenance.tetrapak.com/service/tpms/help/b-features/ampc/maintenance-plan-development/failure-analysis-configuration/failure-modes/failure-modes.html)
 - Supplier recovery: [Warranty Week 2019](https://www.warrantyweek.com/archive/ww20190418.html), [Warranty Week 2017](https://www.warrantyweek.com/archive/ww20170622.html), [Warranty Week 2013](https://warrantyweek.com/archive/ww20130411.html)
+- Addendum (items 10–20): [Beroe: under the hood of Beroe MAX](https://www.beroeinc.com/resource-centre/insights/getting-under-the-hood-of-beroe-max-powered-by-kearney/), [Beroe MAX powered by Kearney](https://www.beroeinc.com/beroe-max-powered-by-kearney/), [Kearney procurement (SpendPro, Agent Kai, Contract IQ, NEXT)](https://www.kearney.com/industry/energy/chemicals/procurement), [SAP partner profile: Sievo](https://www.sap.com/partners/profile/sievo), [Tavant Supplier Recovery listing](https://platform.softwareone.com/product/supplier-recovery/PCP-1244-7498), [Splink on PyPI](https://pypi.org/project/splink/)
