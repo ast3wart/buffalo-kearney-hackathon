@@ -15,6 +15,20 @@
 
 **Source of truth for strategy:** [roadmap](../plan/roadmap-equipment-xray.md). Builds on Brandon's schema ([pivot-plan/06](../plan/pivot-plan/06-tech-stack.md)) and integrations ([pivot-plan/07](../plan/pivot-plan/07-integrations.md)).
 
+## ⚠️ We are building a DEMO, not the full product
+This doc describes the full data model, so the pitch and the roadmap hang together. **For the hackathon, build only the demo minimum below.** Every other column may stay blank, and every other file may be skipped. Don't build features for them.
+
+| Needed for the demo | Minimum |
+|---|---|
+| Plants / lines / machines | 2 plants, ~3 lines each, ~30 machines. Identity, criticality, line downtime $/h (ranges) |
+| Components | ~40–60, with ~10 photographed (nameplate or cabinet) for the vision step. The rest come from the equipment list. |
+| Spares | a short storeroom list per plant with **the planted Plant B spare** and **one duplicate** |
+| KB | ~30 parts: lifecycle status, successor, failure rate, migration cost (ranges) |
+| Listings | **3 parts with ≥ 3 real listings each**, plus 1 part with none (shows the alternatives path) |
+| `plant_financials` | one row per plant, placeholder ranges |
+| Outputs | CapEx cliff, single points of failure, sourcing for 3 parts, accuracy, price per plant (placeholder model), deal view for one plant |
+| **Skip for the demo** | work orders, book value, seller trust beyond a simple score, `alternatives` beyond 1–2 rows, migration downtime, multi-currency, real CMMS/ERP connectors |
+
 ---
 
 ## 1. Storage and layout
