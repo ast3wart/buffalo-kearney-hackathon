@@ -1,5 +1,16 @@
 # Velocity (Growth Signals): required
 
+## Equipment X-Ray (current project)
+Log new research here, newest first. Ideas to run:
+- What value do PE firms get from combining manufacturers (shared spares, pooled buying, standardizing equipment)?
+- How do plants source discontinued industrial parts (controllers, drives, HMIs), and what goes wrong (counterfeits, lead times)?
+- Equipment diligence and post-deal CapEx surprises: how often do they happen, and how big are they?
+
+*(no entries yet)*
+
+---
+## Afterlife (previous project): our earlier Velocity use, kept as a record
+
 Workspace: https://kearney-perlab.growthsignals.com (team **Buffalo**).
 Velocity has Research chat (explore a topic, compare approaches, find supporting evidence, explore patents), a **Source** library, **Concepts**, **Pipelines**, and four Guides.
 

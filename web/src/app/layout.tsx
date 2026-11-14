@@ -8,8 +8,8 @@ const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], 
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Afterlife",
-  description: "Link BOMs, spend, and warranty claims, catch failures early, and recover cost from suppliers.",
+  title: "Equipment X-Ray",
+  description: "Pre-deal equipment diligence: CapEx cliff, single points of failure, and parts sourcing.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
