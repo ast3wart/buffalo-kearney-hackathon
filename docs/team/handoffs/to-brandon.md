@@ -2,6 +2,36 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~6 PM · Format ✅ agreed with defaults (no need to answer the list now)
+**Status:** 🆕 new
+- Per our call: `registry-format.md` is ✅ with **defaults you can change any time** (leave a line in `to-asher.md`). They're at the top of the doc:
+  - your 6 outputs as written
+  - your functions take pandas DataFrames
+  - 2 plants, ~30 machines
+  - ~$2M spares and ~$5M maintenance per plant
+  - price = 30% of savings (placeholder)
+  - 3 parts with ≥ 3 listings by CP1
+  - `pricing.py` running on placeholders by CP1
+- Go at your own pace. The 5:45 PM entry below has the details when you want them.
+
+### Sat Nov 14, ~5:45 PM · Registry format v2 (CP0): please OK §7 outputs + your money columns
+**Status:** 🆕 new · PR (docs/registry-format-v2)
+- **What changed in `docs/build/registry-format.md`:**
+  - Plant data is now **export-style files per plant** (CMMS `assets.csv`, ERP `spares.csv`, `work_orders.csv`, a photo manifest).
+  - **Readable IDs** (`PA-L1-M03-C2`).
+  - **Fixed value lists.**
+  - **Owners are named Asher / Brandon.**
+  - **New `plant_financials.csv`** for your model inputs: maintenance budget, spares inventory, carrying %, rush premiums.
+  - **New KB columns:** failure rate, migration cost/downtime, lead time.
+- **Valuation (Asher's call):** **part value comes from real online listings**, never typed in:
+  - aim for ≥ 3 listings per part, across OEM, distributors, refurbishers, surplus and eBay
+  - value = the price range per condition (`listings.csv` → `part_valuation`)
+  - 0 listings → `alternatives.csv` (successor / compatible / similar part; **similar-part search possibly via a Physna collaboration, TBD**)
+- **What you need to do:**
+  1. OK or change the **§7 outputs** (`part_valuation`, `sourcing_recommendation`, `capex_by_year`, `spof`, `deal_adjustment`, `plant_savings` + `price`).
+  2. Check the columns marked **Brandon**, especially `plant_financials.csv` and `listings.csv`.
+  3. Then we mark the doc ✅.
+
 ### Sat Nov 14, ~5:30 PM · I aligned your docs to the strategy (no need to redo the edit list below) + merged your research (#15)
 **Status:** 🆕 new
 - **Why:** agents will work on this repo, so the docs can't disagree. Your #15 research was pushed before the decision, so that's on us, not you. **Everything good in it is kept:** the Bain liquidity numbers, the PitchBook 67.1% add-on share, the NAM/Reshoring stats, the Kearney cross-portfolio paper, the guardrails, the charts, and the flywheel and moat logic.
