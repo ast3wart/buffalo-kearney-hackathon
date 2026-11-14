@@ -3,7 +3,7 @@
 Workspace: https://kearney-perlab.growthsignals.com (team **Buffalo**).
 Velocity has Research chat (explore a topic, compare approaches, find supporting evidence, explore patents), a **Source** library, **Concepts**, **Pipelines**, and four Guides.
 
-**Budget: about 2 hours total.** Log every useful answer below, with a screenshot in `docs/research/velocity-screens/`, so it can go on a slide.
+**Budget: about 2 hours total.** Velocity keeps chat history, so just log each useful answer below. Screenshot the best 2–3 on Sat night for the deck.
 
 ## Prompts (claim one by putting your initial next to it)
 | # | Owner | Feature | Prompt / action | Feeds |
@@ -29,6 +29,6 @@ Velocity has Research chat (explore a topic, compare approaches, find supporting
 - **It corrected us:** 37% is a hypothetical ceiling (share of sales), not proof of fault. Afterlife produces *leads*, not findings of liability. Contract terms aren't in our data.
 - ⚠️ Unverified: "APQC median supplier recovery rate 35% (604 companies)". We could only confirm APQC's metric definition, and IBM lists a 25% median. Don't put it on a slide until checked.
 - **What we changed:** `recoverable_usd` → `recovery_opportunity_usd` (range, scenario), brief wording ("linked to", "request returned-part review"), a "What Afterlife does NOT do" section, the one-liner ("which supplier to take it to"), and new judge Q&A rows.
-- Screenshot: `velocity-screens/` (save it!). **Deck story: we used Velocity critically, and it sharpened the claim.**
+- Chat is saved in Velocity's history (Buffalo workspace). Grab a screenshot Sat night for the deck. **Deck story: we used Velocity critically, and it sharpened the claim.**
 
 _(paste key findings + screenshot filenames here)_
