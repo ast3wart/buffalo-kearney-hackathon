@@ -41,7 +41,7 @@ Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each c
 |---|---|---|
 | part_no | str | `100-4471-02` |
 | description | str | `BRG,BALL,6204-2RS,20MM` |
-| category | str | `bearing`: **must be one of the 21 in `taxonomy.CATEGORIES`** |
+| category | str | `bearing`: **must be one of the 24 in `taxonomy.CATEGORIES`** |
 | std_cost | float | `4.10` |
 
 ### `bom.csv` [STKO/STPO], single level for MVP
@@ -187,7 +187,7 @@ A company with `extract_format: "sap"` in its profile ships `production_spend`, 
 
 | SAP field | Our column | Table (SAP) | Quirk handled |
 |---|---|---|---|
-| EBELN + EBELP | `po_line_id` | EKKO/EKPO | joined `EBELN-EBELP` (EBELP 5 digits, steps of 10) |
+| EBELN + EBELP | `po_line_id` | EKKO/EKPO | joined `EBELN-EBELP` (EBELP 5 digits, steps of 10). For SAP-format companies **every** PO-line reference (`build_supply`, `truth_links`, `truth_spikes`) uses this form (`sap.canonical_po_id`), written by `generate.write()` |
 | MATNR | `part_no` | EKPO / MARA | numeric values zero-padded to 18, stripped |
 | TXZ01 | `description` | EKPO | short text on PO line |
 | LIFNR | `supplier_id` | EKKO / LFA1 | numeric values zero-padded to 10, stripped |
