@@ -8,7 +8,7 @@
   - No PR per file. One long-running branch per thread. **Batch PRs at CP3 (12:30), CP5 (6 PM), CP6 (9:30 PM).**
   - `./scripts/checkpoint.sh` green before every push, and **GitHub now runs the checks on every push** (✅/❌ per commit).
   - Shared files and contract changes: tell the other person the moment you push, and **agree on contract changes before building**.
-- **Your `warranty/contract-v4-accounting` overlaps my PR #5 in 6 files:** `check.py`, `generate_spend.py`, `data/sample/products.csv`, `data-contract.md`, `handoffs.md`, `make_sample.py`. Main point: we both added the selling price, you as **`products.avg_selling_price`** and me as **`products.net_price`** (21a). **Proposal: keep your name `avg_selling_price`.** I'll rename mine.
+- **Your `warranty/contract-v4-accounting` overlaps my PR #5 in 6 files:** `check.py`, `generate_spend.py`, `data/sample/products.csv`, `data-contract.md`, `handoffs.md`, `make_sample.py`. Main point: we both added the selling price, you as **`products.avg_selling_price`** and me as **`products.net_price`** (21a). **Done: renamed mine to your `avg_selling_price`**, with the same column position, sample values (14,500 / 18,900 / 22,500), contract wording and check message as your v4 branch, so that part merges cleanly.
 - **Suggested order:** merge PR #5 (my whole spend batch: generator, matcher, evaluate, inboxes, CI) into main first. Then merge main into your v4 branch, resolve the 6 files (move your `handoffs.md` entries into `to-asher.md`), and PR it at CP3.
 - PR #3 is closed; it's fully contained in PR #5.
 
@@ -28,7 +28,7 @@
 - **Review of PR #4** is a comment on the PR. Compatible with the generated data. Two things to fix:
   1. **Multiple testing:** 60 false alarms across 9 full-size datasets at p < .05. With BH over all tested series it's 1 at q = .05 and 0 at q = .01, and every Prairie spike is still caught.
   2. **Ironridge spike mostly missed:** the measured ratio is 1.8 < 2.0. Use RATIO_MIN 1.5 (with BH), and a stronger or higher-volume spike (~4×) in `generate_claims`.
-- **21a accepted and done in PR #3:** `products.net_price` (generator, sample, contract, check).
+- **21a accepted and done in PR #3:** `products.avg_selling_price` (originally `net_price`, renamed to match your v4) (generator, sample, contract, check).
 - **21b accepted and in the contract (PR #3):** see "Cost rules" in `data-contract.md`. Please mark 21a and 21b ✅ in `cp0-proposal.md` item 21 when you merge PR #4, and drop the "not applied yet" note in the alerts section.
 
 ### Sat Nov 14, early AM · 📬 How handoffs work now: one inbox each
@@ -57,7 +57,7 @@
   1. **`spend["_spike_plan"]`** (passed into your `generate(seed, spend, profile)`): `{part_no, supplier_id, start_build_month, from_po_line_id, multiplier}`, or `None` for Northwind. I already picked the dual-sourced shared part and the lot, so copy it into `truth_spikes`.
   2. Claim rate for a product/month = base × (1 + (multiplier−1) × share of that product/month's spike part coming from `from_po_line_id` onward). Use `spend["build_supply"]`.
   3. **Spike start months moved to quarter starts** (lots are bought quarterly): Prairie `2026-04`, Ironridge `2025-10`.
-  4. Revenue for the warranty % calibration: **`products.net_price` now exists (21a, accepted)**. Revenue = Σ units_built × net_price. Generated prices are build cost × 1.45–1.75.
+  4. Revenue for the warranty % calibration: **`products.avg_selling_price` now exists (21a, accepted; renamed from `net_price` to match your v4)**. Revenue = Σ units_built × avg_selling_price. Generated prices are build cost × 1.45–1.75.
 - **Heads-up (shared code):** `io.load()` now reads **all ID columns as text** (`io.ID_COLUMNS`). Ironridge's numeric supplier IDs were loading as int in one table and str in another, and 17.5k `build_supply` rows silently failed to join. If you load CSVs yourself, use `dtype=str` for IDs.
 - **Known issues:** none. 16 tests pass.
 

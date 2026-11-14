@@ -12,7 +12,7 @@ def lifecycle_cost(tables: dict[str, pd.DataFrame], links: pd.DataFrame) -> pd.D
 
     Double-count rule (21b, data-contract.md "Cost rules"): warranty = claims parts_cost + labor_cost;
     service_spend channel == "warranty_repair" is reconciliation only (NEVER added); only channel == "spares"
-    is added as spare cost. Also report warranty as a % of revenue (units_built x products.net_price)."""
+    is added as spare cost. Also report warranty as a % of revenue (units_built x products.avg_selling_price)."""
     raise NotImplementedError  # TODO(SPEND)
 
 

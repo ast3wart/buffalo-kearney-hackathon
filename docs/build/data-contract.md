@@ -35,7 +35,7 @@ Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each c
 | product_id | str | `UV-400` |
 | product_name | str | `Ranger-style utility vehicle 400` |
 | family | str | `utility_vehicle` |
-| net_price | float | `14500.0`: net selling price per unit (USD). Revenue = Σ units_built × net_price, the denominator for warranty as a % of revenue (21a, Sat Nov 14) |
+| avg_selling_price | float | `14500.00`: average net selling price per unit [VBRP-NETWR / FKIMG] (v4) |
 
 ### `part_master.csv` [MARA]
 | column | type | example |

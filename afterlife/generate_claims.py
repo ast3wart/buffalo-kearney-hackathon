@@ -9,7 +9,7 @@ def generate(seed: int, spend: dict[str, list[dict]], profile: dict) -> dict[str
     Claim text uses this company's shorthand (profile["abbreviations"]) and typo_rate.
 
     TODO(WARRANTY), per CP0:
-    - claim volume = profile["warranty_pct_revenue"] of revenue, revenue = sum(units_built x products.net_price)
+    - claim volume = profile["warranty_pct_revenue"] of revenue, revenue = sum(units_built x products.avg_selling_price)
       (21a; calibrated to SEC filers, see profiles.py)
     - failure dates spread over months-in-service with a hazard curve (more early-life failures),
       cut off at profile data_as_of (profiles.COMMON) so recent builds are genuinely immature

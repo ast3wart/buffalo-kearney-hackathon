@@ -33,12 +33,12 @@ def write(name, rows):
         w.writerows(rows)
 
 
-# net_price (21a): realistic list prices. The sample BOM only lists 8 of each vehicle's parts, so this is
+# avg_selling_price (21a / contract v4): realistic prices, same values as Brandon's v4 sample. The sample BOM only lists 8 of each vehicle's parts, so this is
 # NOT build cost x markup like the generator; it only has to be plausible for the sample's revenue math.
 products = [
-    {"product_id": "UV-400", "product_name": "Utility vehicle 400", "family": "utility_vehicle", "net_price": 14500.0},
-    {"product_id": "UV-600", "product_name": "Utility vehicle 600", "family": "utility_vehicle", "net_price": 18900.0},
-    {"product_id": "TR-250", "product_name": "Compact tractor 250", "family": "tractor", "net_price": 23500.0},
+    {"product_id": "UV-400", "product_name": "Utility vehicle 400", "family": "utility_vehicle", "avg_selling_price": 14500.0},
+    {"product_id": "UV-600", "product_name": "Utility vehicle 600", "family": "utility_vehicle", "avg_selling_price": 18900.0},
+    {"product_id": "TR-250", "product_name": "Compact tractor 250", "family": "tractor", "avg_selling_price": 22500.0},
 ]
 
 # part_no, ERP description, category, std_cost
