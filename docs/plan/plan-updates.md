@@ -6,10 +6,52 @@ Running log of plan changes after the original plan (`docs/archive/track-decisio
 
 ---
 
-## Update 5 · Sat Nov 14 · Contract v4: accounting fields (PROPOSED by Brandon, Asher to confirm)
-**What:** claims get a reporting lag (`claim_date`), payment (`paid_date`), full cost (`other_cost`) and `recovered_usd`; products get `avg_selling_price`; supplier recovery terms arrive as **documents** that an AI step extracts (`supplier_terms`).
+## Update 6 · Sat Nov 14 · Contract v4: accounting fields (PROPOSED by Brandon, Asher to confirm)
+**What:** claims get a reporting lag (`claim_date`), payment (`paid_date`), full cost (`other_cost`), `recovered_usd` and `claim_type` (21c); products get `avg_selling_price`; supplier recovery terms arrive as **documents** that an AI step extracts (`supplier_terms`).
 **Why:** the brief's recovery ask needs the contract terms to put a defensible $ on it, the reporting lag stops `detect.py` from reading recent builds as falsely clean, and ASP lets us benchmark warranty % of revenue against the SEC filers. Terms are documents because that's where they live at a real SAP client: it's the honest place for the AI workflow.
-**Cost:** ~1 h for Brandon (generator + extractor), a few minutes for Asher (ASP in `generate_spend`). No change to the SAP adapter or the spend columns.
+**Cost:** ~1 h for Brandon (generator + extractor), a few minutes for Asher (ASP in `generate_spend`). No change to the SAP adapter or the spend columns. This reverses two "skip this weekend" items in Update 5 (paid date, supplier terms): filing deadlines count from `paid_date`, and the terms are the AI step.
+
+## Update 5 · Sat Nov 14, morning · Warranty accounting fit + detect v1 (🛠, PROPOSED where noted)
+Research notes and design rules: **[../research/warranty-accounting.md](../research/warranty-accounting.md)**. Change list with owners: **[cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed)**. Future accounting changes go in those two docs first, and this log points to them.
+
+**Why.** The tool's output is dollar figures. Finance-minded judges will check three things:
+- Is an alert presented as a booked liability?
+- Is supplier money counted before it's settled?
+- Is the same part counted twice?
+
+The Velocity reframe (Update 4: "leads, not receivables") already covers the wording. This update makes the *data and calculations* match it.
+
+**Applied now (detect v1, branch `warranty/detect`):**
+- `afterlife/detect.py` works end to end on the sample:
+  - two views (raw and months in service)
+  - supplier attribution through `build_supply` (clean / deconvolved / ambiguous)
+  - a Poisson likelihood change point with ≥ 2 baseline months, a ≥ 2× ratio, ≥ 10 claims and a significance test
+  - it finds Keystone's spike from `PO-450005-010` and doesn't flag Bluewater
+- `alerts` gains `claims`, `p_value`, `excess_cost_usd`, `open_exposure_usd` and `attribution` (contract updated).
+- Tests (item 18, warranty half):
+  - the spike is caught on seeds 7, 8 and 9
+  - near-zero false alarms on clean synthetic data
+  - open exposure excludes goodwill and already-recovered claims
+- `pytest.ini` restricts test collection to `tests/`, so an archived worktree in the repo doesn't break pytest.
+
+**Proposed: decide at CP2 (Sat ~11:30) with Asher:**
+- 21a `products.net_price`. Needed for warranty as a % of revenue, which the profiles already calibrate against.
+- 21b **Double-count rule** for `cost.lifecycle_cost`: warranty cost comes from claims. `warranty_repair` service spend is for reconciliation only.
+- 21c `warranty_claims.claim_type` (`warranty` / `goodwill` / `campaign`).
+
+**Proposed, inside the warranty thread:** 21f `projected_remaining_usd` (the forward estimate "the problem coming", labelled as not an accrual).
+
+**Waiting on research:**
+- 21g `supplier_warranty_terms.csv`. It would replace the flat 25–50% scenario with contract terms, and would change the `concept.md` line saying contracts are not in our data.
+- Verification of the accounting-standard references (checklist at the end of `warranty-accounting.md`).
+
+**Thread impact:**
+- 💲 Asher: add `net_price` in `generate_spend`, and apply the double-count rule in `cost.py`. Both are cheap now and painful after CP2.
+- 🛠 Brandon: `claim_type` in `generate_claims`. `detect.py` already honours it once it exists.
+
+**Not doing:** accrual or rollforward tables, coverage type, currency conversion, paid dates. Q&A only.
+
+---
 
 ## Update 4 · Sat Nov 14, early AM · Contract v3 applied (DECIDED by Asher, Brandon to confirm at CP1)
 Brandon's branch `plan/cp0-additions` was merged into `test-data-batch`, and Tier 1 (#10–14), #15, #17 and the #19 schema were applied as **data contract v3** (status table at the top of the addendum in `docs/research/cp0-proposal.md`).

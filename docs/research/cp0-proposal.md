@@ -321,6 +321,22 @@ Add three columns to the `links` output:
   - DuckDB → Snowflake / Databricks / Postgres
   - Splink (open-source record linkage on DuckDB) once descriptions are parsed into attributes (#16)
 
+### 21. Warranty accounting fit (PROPOSED)
+**Status: PROPOSED** (Sat Nov 14, 🛠); 21a, 21b accepted by Asher in the PR #4 review. Rules, factors and references: [warranty-accounting.md](warranty-accounting.md). Reasoning: [../plan/plan-updates.md, Update 5](../plan/plan-updates.md).
+
+| # | Change | Owner | When | Contract? |
+|---|---|---|---|---|
+| 21a | `products.net_price` so warranty as a % of revenue (the calibration target in `profiles.py`) can be computed and compared with SEC peers | 💲 generator | ✅ **done** in PR #5 (named `avg_selling_price`, matching contract v4) | yes |
+| 21b | **Double-count rule:** lifecycle warranty cost = claim `parts_cost + labor_cost`. `service_spend` with `channel = warranty_repair` is for reconciliation only and never added. Only `spares` service spend is added | 💲 `cost.py`, rule by 🛠 | ✅ **done** in PR #5 (contract "Cost rules") | rule in contract |
+| 21c | `warranty_claims.claim_type` (`warranty` / `goodwill` / `campaign`). Only `warranty` feeds recovery opportunity | 🛠 generator | ✅ in contract v4 (PR #6) | yes |
+| 21d | Opportunity counts only claims with `recovery_status = none` (submitted and recovered are shown as "already in progress") | 🛠 | ✅ **done** in detect v1 (`open_exposure_usd`) | no |
+| 21e | Split exposure: `exposure_usd` (all linked), `excess_cost_usd` (above baseline), `open_exposure_usd` (21c + 21d) | 🛠 | ✅ **done** in detect v1 | alerts columns (updated) |
+| 21f | `projected_remaining_usd`: units from affected lots still under warranty × (spike − baseline rate) × average claim cost. Labelled "estimate for finance review, not an accrual" | 🛠 | Sat afternoon (Tier 2) | output only |
+| 21g | `supplier_warranty_terms.csv` (recovery %, labor rate cap, handling %, submission window, parts return, no-fault-found rate) → a contract-based range and an "expiring in 30 days" figure. Would change the line in `concept.md` saying contracts are not in our data | 🛠 | ✅ in contract v4 (PR #6), as **documents** (`supplier_agreements/`) extracted into `supplier_terms` | yes |
+| 21h | Months in service counted from `build_month`, not delivery date: document as a simplification and cover in Q&A | docs | ✅ done (Q&A) | no |
+
+Skip: accrual/rollforward table, coverage type, currency conversion. Q&A only. (`paid_date` moved into contract v4: filing deadlines count from it.)
+
 ### Considered and rejected
 - **LangGraph / agent frameworks.** No visible benefit for a fixed batch pipeline. Adds state and debugging time.
 - **Graph database or OWL ontology.** Our taxonomy, failure-code map, abbreviations and link table *are* the ontology, kept as DuckDB tables. Call them that in the deck.

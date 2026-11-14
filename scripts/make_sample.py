@@ -10,7 +10,7 @@ v3 story baked in (Brandon's CP0 review, #13): the hydraulic seal kit 200-1180-0
     April, partly on UV-600 (50% Keystone), and not on Bluewater-only builds.
     That makes "which supplier, which lot" a real inference instead of a lookup.
 
-v4 (accounting fields): claims carry claim_date / paid_date / other_cost / recovered_usd, products carry
+v4 (accounting fields): claims carry claim_date / paid_date / claim_type / other_cost / recovered_usd, products carry
 avg_selling_price, and each production supplier has a supplier quality agreement DOCUMENT in
 supplier_agreements/ (recovery terms are extracted from text, they are not ERP fields). All v4 values come
 from a separate RNG so every v3 value stays identical; only claims not yet reported by data_as_of drop out.
@@ -46,6 +46,8 @@ def write(name, rows):
         w.writerows(rows)
 
 
+# avg_selling_price (21a / contract v4): realistic prices, same values as Brandon's v4 sample. The sample BOM only lists 8 of each vehicle's parts, so this is
+# NOT build cost x markup like the generator; it only has to be plausible for the sample's revenue math.
 products = [
     {"product_id": "UV-400", "product_name": "Utility vehicle 400", "family": "utility_vehicle", "avg_selling_price": 14500.0},
     {"product_id": "UV-600", "product_name": "Utility vehicle 600", "family": "utility_vehicle", "avg_selling_price": 18900.0},
@@ -222,13 +224,16 @@ texts = {
 code_for = {"200-1180-01": "HYD-ELP", "500-7731-01": "HYD-ELP", "100-4471-02": "DRV-NOI", "400-2205-03": "DRV-VIB",
             "600-3310-00": "ELE-FTS", "800-1004-00": "ELE-FTS", "700-5520-02": "BRK-NOI", "300-0912-00": "ENG-ELP"}
 BASE = 0.004  # claims per unit built per BOM line (sample-sized)
+# seal kits are wear parts: 3x the base rate, so the planted spike has enough claims to survive detect.py's
+# multiple-testing correction (Asher's PR #4 review, finding 2: the spike part needs more volume)
+PART_RATE = {SEAL: 3.0}
 
 AS_OF = dt.date.fromisoformat(COMMON["data_as_of"])
 claims, k, unreported = [], 0, 0
 for b in builds:
     for p, q in bom_map[b["product_id"]]:
         mult = 1 + (SPIKE_X - 1) * spike_share.get((b["product_id"], b["build_month"]), 0) if p == SEAL else 1
-        expected = b["units_built"] * BASE * mult * (1 if q <= 2 else 1.5)
+        expected = b["units_built"] * BASE * PART_RATE.get(p, 1.0) * mult * (1 if q <= 2 else 1.5)
         count = int(expected) + (1 if rng.random() < expected % 1 else 0)
         for _ in range(count):
             k += 1
@@ -248,8 +253,10 @@ for b in builds:
             claim_date = dt.date.fromisoformat(failure_date) + dt.timedelta(days=rng4.randint(2, 40))
             paid = claim_date + dt.timedelta(days=rng4.randint(7, 45))
             other_cost = round(rng4.uniform(8, 40), 2)
+            ct_roll = rng4.random()  # 21c: goodwill and campaign claims are never recovered from the supplier
+            claim_type = "goodwill" if ct_roll < 0.05 else "campaign" if ct_roll < 0.07 else "warranty"
             status, recovered = "none", 0.0
-            if paid <= AS_OF:
+            if paid <= AS_OF and claim_type == "warranty":
                 sid, _ = main_supplier[(b["product_id"], b["build_month"], p)]
                 pct, labor_ok, cap, window, _, _ = TERMS[sid]
                 in_window = (fail_mo - int(mo)) + 12 * (int(failure_date[:4]) - int(y)) <= window
@@ -266,7 +273,7 @@ for b in builds:
                 "claim_id": cid, "product_id": b["product_id"],
                 "serial_no": serial, "build_month": b["build_month"], "failure_date": failure_date,
                 "claim_date": claim_date.isoformat(), "paid_date": paid.isoformat() if paid <= AS_OF else "",
-                "failure_code": code_for[p], "claim_text": text, "causal_part_no": causal,
+                "claim_type": claim_type, "failure_code": code_for[p], "claim_text": text, "causal_part_no": causal,
                 "labor_hrs": labor, "parts_cost": parts_cost, "labor_cost": labor_cost, "other_cost": other_cost,
                 "dealer_id": dealer, "recovery_status": status, "recovered_usd": recovered})
             truth_links.append({"source_table": "warranty_claims", "source_id": cid, "part_no": p})

@@ -1,10 +1,17 @@
-# Git workflow (keep it simple)
+# Git workflow: batch reviews at checkpoints (decided Sat AM)
 
-- `main` must always run. Work on short branches named by thread: `warranty/claims-gen`, `spend/match`, and so on.
-- Commit early and push often. Merge to `main` with a quick PR, or straight away if the other person is mid-task. Just say so in chat.
-- Never commit `data/generated/`, `.env`, or API keys (they're gitignored).
-- API keys go in `.env` (`ANTHROPIC_API_KEY=...`), copied from `.env.example`, and are loaded by `brief.py`. The web app reads `web/.env.local` (from `web/.env.example`).
-- `temp/` (local scratch notes) and `.worktrees/` are gitignored.
+Two people and about 30 hours, so **no PR for every file.** Each thread works on one long-running branch, and review happens in batches at checkpoints.
+
+## The rules
+1. **One long-running branch per thread:** `spend/<topic>` (Asher) and `warranty/<topic>` (Brandon). Commit and push as often as you like.
+2. **Before every push: `./scripts/checkpoint.sh` must be green.** GitHub also runs the same checks on every push (`.github/workflows/checks.yml`, ✅/❌ next to each commit). A ❌ on your branch is yours to fix before anything else.
+3. **One PR per thread at each review checkpoint**, reviewed and merged together:
+   - **CP3 (Sat 12:30)**, **CP5 (Sat 6 PM)**, **CP6 (Sat 9:30 PM, before feature freeze)**
+   - The reviewer skims the whole diff. Then both run `./scripts/checkpoint.sh` on the merged `main`.
+   - Merge with **"Create a merge commit"**. After merging, start a fresh branch from `main`.
+4. **Shared files: tell the other person the moment you push.** Changes to `io.py`, `match.py`, `check.py`, `taxonomy.py`, `profiles.py`, `generate.py`, `make_sample.py`, `data-contract.md`, or `api.md` get a line in the other person's inbox **when you push**, not at the next checkpoint. If the change affects their code *now*, message them as well. Branch from the latest `main`, and merge `main` into your branch often.
+5. **Contract changes** (new or renamed columns/tables) get agreed *before* building: a quick message, then the change. Two people adding the same field under different names costs an hour of merging.
+6. Never commit `data/generated/`, `.env`, or API keys (gitignored). API keys go in `.env`.
 
 ## Setup (once)
 ```bash

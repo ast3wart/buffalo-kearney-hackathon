@@ -1,6 +1,6 @@
 # Data contract
 
-**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs.md](../team/handoffs.md)).
+**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs/](../team/handoffs/README.md) (the other person's inbox)).
 
 **Multiple companies:** every company is its own folder, `data/generated/<company_id>/`, containing *all* the tables below with the same columns. Profiles are in `afterlife/profiles.py`. `afterlife.run` adds a `company_id` column when it loads them into `results.duckdb`. `data/sample/` is a single small company (`company_id = sample`).
 
@@ -14,7 +14,7 @@ Column names follow common SAP tables (noted in brackets) so Kearney judges reco
 - **Acquired plant (Ironridge):** a second plant with no part numbers. It's a profile knob, with no column change.
 
 **v4 (Sat Nov 14), accounting fields (PROPOSED by Brandon, Asher to confirm).** Changes from v3:
-- **Claims:** `claim_date` (reporting lag), `paid_date` (blank = unpaid), `other_cost` (handling, freight, sublet), `recovered_usd`. Claims not yet reported by `data_as_of` are simply absent.
+- **Claims:** `claim_date` (reporting lag), `paid_date` (blank = unpaid), `claim_type` (21c), `other_cost` (handling, freight, sublet), `recovered_usd`. Claims not yet reported by `data_as_of` are simply absent.
 - **Products:** `avg_selling_price`, so warranty cost can be shown as % of revenue next to the SEC benchmarks.
 - **Supplier agreements are documents, not columns:** new `supplier_agreements/` folder (one text file per production supplier). Recovery terms are *extracted* by `afterlife/extract_terms.py` (regex + Claude) into the `supplier_terms` output, scored against the new `truth_terms.csv` answer key.
 - No change to the SAP adapter: none of these fields are in the EKKO/EKPO/MARA/EINA extract (see "Stored or extracted?").
@@ -135,13 +135,14 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | failure_date | date | `2026-07-19`: between build month and `data_as_of`. **Months in service (MIS)** = months from build_month to failure_date |
 | claim_date | date | `2026-08-02`: dealer submitted the claim, between failure_date and `data_as_of`. The gap is the **reporting lag**; recent build months are under-reported until it closes (v4) |
 | paid_date | date | `2026-08-20`: we paid the dealer. **Blank = not yet paid.** Supplier recovery filing deadlines count from here (v4) |
+| claim_type | str | `warranty` / `goodwill` / `campaign` (21c, v4). Only `warranty` is recoverable from the supplier; campaigns are reserved separately |
 | failure_code | str | `HYD-ELP` |
 | claim_text | str | `hyd leak boom cyl, replaced seal kit` |
 | causal_part_no | str | often **blank** or wrong. This is what we infer |
 | labor_hrs | float | `2.5` |
 | parts_cost | float | `38.00` |
 | labor_cost | float | `212.50` |
-| other_cost | float | `24.00`: handling, freight, sublet. Usually **not** recoverable from the supplier (v4). Total claim cost = parts + labor + other |
+| other_cost | float | `24.00`: handling, freight, sublet (v4). Part of warranty cost, but **not** recoverable under the sample agreements |
 | dealer_id | str | `D-118` |
 | recovery_status | str | `none` / `submitted` / `recovered`. Only paid claims are submitted |
 | recovered_usd | float | `152.80`: credit received from the supplier, `0` unless `recovered` (v4) |
@@ -209,6 +210,23 @@ The `truth_terms` columns plus `method` (`regex` / `llm` / `human`), `confidence
 | baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only; v4: "mature" also allows for the reporting lag) |
 | ratio | float |
 | exposure_usd | float |
+| p_value | float: one-sided significance of the step, corrected for picking the best split (detect v1) |
+| q_value | float: Benjamini–Hochberg q over every (part, supplier) series tested in the company. Alert needs q < 0.05 |
+| claims | int: claims linked + attributed to this part/supplier since `start_build_month` |
+| excess_cost_usd | float: share of exposure above what the baseline predicts = exposure × (1 − 1/ratio) |
+| open_exposure_usd | float: exposure from claims with `recovery_status = none` (and `claim_type = warranty` once 21c lands) |
+| from_po_line_id | str: first affected supplier lot |
+| attribution | str: weakest evidence after the start: `clean` / `deconvolved` / `ambiguous` |
+| spike_claims | int: claims within the MIS window after the start (the numerator of `current_rate`) |
+
+All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Accounting changes are tracked in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed): the selling price (`products.avg_selling_price`, 21a) and the double-count rule (21b, "Cost rules" below) are applied; `claim_type` (21c) and supplier terms as documents (21g) are in contract v4.
+
+## Cost rules (accounting)
+**Double-count rule (21b, accepted Sat Nov 14).** For `cost.lifecycle_cost` and anything else that adds up cost:
+- **Warranty cost = `warranty_claims.parts_cost + labor_cost + other_cost`** (v4 adds `other_cost`). The supplier-recovery basis is narrower: parts + covered labor per `supplier_terms`, `claim_type = warranty` only.
+- `service_spend` with **`channel = warranty_repair`** is the purchasing side of those same repairs. It's used **only to reconcile** (e.g. "claims parts cost vs. warranty-repair purchases") and **never added** to cost.
+- Only `service_spend` with **`channel = spares`** is added, as spare-part cost.
+- All `$` from `detect.py` and `cost.py` are analytics estimates, not accruals or receivables.
 
 ## Stored or extracted? (v4)
 Rule: if a real manufacturer has it as a **field in a system**, we model it as a column and assume it arrives in the extract. If it lives in **contract text**, we model it as a document and extract it with the AI step. That keeps the AI where it earns its place and keeps the numbers auditable.

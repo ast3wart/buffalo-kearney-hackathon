@@ -2,6 +2,7 @@
 
     python -m afterlife.check            # checks every company in data/generated/ (or data/sample/ fallback)
     python -m afterlife.check sample     # force data/sample/
+    python -m afterlife.check spend      # generated companies, spend side only (before the claims generator exists)
 
 Checks the data against docs/build/data-contract.md, cross-table consistency
 (the things that silently break the other person's code), and whether the
@@ -29,7 +30,7 @@ CONTRACT = {
     "dataset_info": ["key", "value"],
     "failure_codes": ["failure_code", "system", "description", "likely_categories"],
     "warranty_claims": ["claim_id", "product_id", "serial_no", "build_month", "failure_date", "claim_date",
-                        "paid_date", "failure_code", "claim_text", "causal_part_no", "labor_hrs", "parts_cost",
+                        "paid_date", "claim_type", "failure_code", "claim_text", "causal_part_no", "labor_hrs", "parts_cost",
                         "labor_cost", "other_cost", "dealer_id", "recovery_status", "recovered_usd"],
     "truth_links": ["source_table", "source_id", "part_no"],
     "truth_spikes": ["part_no", "supplier_id", "start_build_month", "from_po_line_id", "multiplier"],
@@ -37,6 +38,7 @@ CONTRACT = {
                     "recovery_window_months", "filing_deadline_days"],
 }
 RECOVERY_STATUSES = {"none", "submitted", "recovered"}
+CLAIM_TYPES = {"warranty", "goodwill", "campaign"}
 
 results: list[tuple[str, str]] = []
 
@@ -64,6 +66,14 @@ def check(t, is_sample: bool = False):
         return
 
     parts = set(t["part_master"].part_no)
+    asp = pd.to_numeric(t["products"].avg_selling_price, errors="coerce")
+    (ok if (asp > 0).all() else fail)("products.avg_selling_price is positive (warranty % of revenue needs it)")
+    if not is_sample:   # generated prices are build cost x markup; the sample BOM is only 8 parts
+        pm_cost = pd.to_numeric(t["part_master"].set_index("part_no").std_cost)
+        b = t["bom"].assign(c=lambda d: pd.to_numeric(d.qty_per) * d.part_no.map(pm_cost))
+        build = b.groupby("product_id").c.sum()
+        margin = t["products"].set_index("product_id").avg_selling_price.astype(float) / build
+        (ok if (margin > 1).all() else fail)(f"avg_selling_price above build cost for every product (markup {margin.min():.2f}–{margin.max():.2f}x)")
     info = dict(zip(t["dataset_info"].key, t["dataset_info"].value))
     need = {"company_id", "company_name", "industry", "data_as_of", "first_build_month", "last_build_month", "currency", "warranty_months", "mis_window"}
     (ok if need <= set(info) else fail)("dataset_info has all keys" if need <= set(info) else f"dataset_info missing {sorted(need - set(info))}")
@@ -143,6 +153,9 @@ def check(t, is_sample: bool = False):
         status = wc.recovery_status
         (ok if set(status) <= RECOVERY_STATUSES else fail)(f"recovery_status in {sorted(RECOVERY_STATUSES)}")
         (ok if not (pd_.isna() & (status != "none")).any() else fail)("only paid claims are submitted for recovery")
+        (ok if set(wc.claim_type) <= CLAIM_TYPES else fail)(f"claim_type in {sorted(CLAIM_TYPES)} (21c)")
+        (ok if not ((wc.claim_type != "warranty") & (status != "none")).any() else fail)(
+            "goodwill and campaign claims are never submitted for supplier recovery")
         rec = pd.to_numeric(wc.recovered_usd)
         cost = pd.to_numeric(wc.parts_cost) + pd.to_numeric(wc.labor_cost) + pd.to_numeric(wc.other_cost)
         (ok if ((rec == 0) | (status == "recovered")).all() and (rec <= cost + 0.01).all() else fail)(
@@ -167,9 +180,12 @@ def check(t, is_sample: bool = False):
     cats = set(t["part_master"].category)
     fc_cats = {c for s in t["failure_codes"].likely_categories for c in str(s).split(";")}
     if not is_sample:  # the tiny sample only uses 8 categories, so this only matters for generated data
-        (ok if fc_cats <= cats else warn)(
-            "failure-code categories all exist in part_master" if fc_cats <= cats
-            else f"failure-code categories with no parts generated: {sorted(fc_cats - cats)}")
+        # a code may list categories this company doesn't make (e.g. ELE-FTS -> fuel at an HVAC maker);
+        # what matters is that every code can point at SOME part
+        dead = [r.failure_code for r in t["failure_codes"].itertuples()
+                if not set(str(r.likely_categories).split(";")) & cats]
+        (ok if not dead else fail)("every failure code has at least one category with parts" if not dead
+                                   else f"failure codes with no matching parts at all: {dead}")
 
     # 3. answer key covers everything and points at real parts
     tl = t["truth_links"]
@@ -195,8 +211,9 @@ def check(t, is_sample: bool = False):
         warn("spike part is used in only 1 product, so the cross-product story won't show")
 
     # 4. realism sanity (warnings, not failures)
-    blank = t["warranty_claims"].causal_part_no.isna().mean()
-    (ok if 0.4 <= blank <= 0.8 else warn)(f"claims with blank causal_part_no: {blank:.0%} (target ~60%)")
+    if len(t["warranty_claims"]):
+        blank = t["warranty_claims"].causal_part_no.isna().mean()
+        (ok if 0.4 <= blank <= 0.8 else warn)(f"claims with blank causal_part_no: {blank:.0%} (target ~60%)")
     if not is_sample:  # sample is too small for realism stats
         share = (shared >= 2).mean()
         (ok if 0.25 <= share <= 0.6 else warn)(f"parts shared across products: {share:.0%} (target ~40%)")
@@ -217,10 +234,17 @@ def check_api_types():
 
 
 def main():
-    targets = [("sample", SAMPLE)] if "sample" in sys.argv[1:] else companies()
+    targets = [("sample", SAMPLE)] if "sample" in sys.argv[1:] else companies(require_claims=False)
+    spend_only = "spend" in sys.argv[1:]   # claims generator not built yet: check the spend side only
     for cid, d in targets:
         before = len(results)
-        check(load(d), is_sample=(d == SAMPLE))
+        tables = load(d)
+        if spend_only or "warranty_claims" not in tables:
+            if "warranty_claims" not in tables:
+                warn(f"no claims yet (claims generator not built): checking the spend side only")
+            for name in ["warranty_claims", "truth_spikes", "truth_terms"]:
+                tables.setdefault(name, pd.DataFrame(columns=CONTRACT[name]))
+        check(tables, is_sample=(d == SAMPLE))
         for i in range(before, len(results)):
             results[i] = (results[i][0], f"[{cid}] {results[i][1]}")
     check_api_types()

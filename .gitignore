@@ -13,3 +13,4 @@ results.duckdb
 # local scratch notes and git worktrees (keep out of the repo)
 temp/
 .worktrees/
+archive/

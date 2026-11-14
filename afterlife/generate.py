@@ -35,7 +35,10 @@ def write(tables: dict[str, list[dict]], out_dir=GENERATED, extract_format: str 
             sap.from_contract(name, pd.DataFrame(rows)).to_csv(out_dir / f"{name}.csv", index=False)
             continue
         with open(out_dir / f"{name}.csv", "w", newline="") as f:
-            fields = list(rows[0].keys()) if rows else []
+            # an empty table (e.g. Northwind's truth_spikes: no spike planted) still gets its header row,
+            # otherwise io.load() fails with "No columns to parse"
+            from afterlife.check import CONTRACT
+            fields = list(rows[0].keys()) if rows else CONTRACT.get(name, [])
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(rows)
@@ -75,7 +78,12 @@ def generate(seed: int = 7, out_dir=GENERATED) -> None:
     for i, profile in enumerate(PROFILES):
         s = seed + i  # different but reproducible per company
         spend = generate_spend.generate(s, profile)               # includes truth_links for spend rows
-        claims = generate_claims.generate(s, spend, profile)      # includes truth_links for claim rows
+        try:
+            claims = generate_claims.generate(s, spend, profile)  # includes truth_links for claim rows
+        except NotImplementedError:
+            claims = {"truth_links": []}                           # claims generator not built yet: spend only
+            print(f"  {profile['company_id']}: claims generator not built yet, writing spend tables only")
+        spend = {k: v for k, v in spend.items() if not k.startswith("_")}   # e.g. _spike_plan: for 🛠, not a CSV
         truth = spend.pop("truth_links") + claims.pop("truth_links")
         info = [{"key": k, "value": v} for k, v in dataset_info(profile).items()]
         vocab = {"abbreviations": abbreviations_rows(profile), "failure_codes": failure_code_rows(profile)}
