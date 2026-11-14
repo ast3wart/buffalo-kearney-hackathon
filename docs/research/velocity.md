@@ -6,6 +6,15 @@ Log new research here, newest first. Ideas to run:
 - How do plants source discontinued industrial parts (controllers, drives, HMIs), and what goes wrong (counterfeits, lead times)?
 - Equipment diligence and post-deal CapEx surprises: how often do they happen, and how big are they?
 
+### Sat Nov 14, evening · 7 deep-dive Research chats (summary + model in [deep-dive-numbers.md](deep-dive-numbers.md), `scripts/market_model.py`)
+1. **On-site M&E appraisal cost structure**: ~64 h / ~$12.8k mid-market; capture 19%, research 38%; photo ID saves only 2–5 h (~$400–1,000). Pushback: research + report dominate.
+2. **US deal volume**: 1,667 US manufacturing deals (2024, measured); modeled ~385 appraisals + ~445 controls reviews → ~670 distinct deals (450–900); no published appraisal count.
+3. **Own-plant market sizing**: Velocity could not complete it ("unable to complete the market estimate"); we pulled Census CBP 2022 directly: 25,799 plants with 100+ employees.
+4. **Value per plant**: $10k / $30k / $60k recurring auditable + $100–400k one-time inventory release; downtime deliberately excluded; strong pushback on vendor ROI (identified ≠ verified).
+5. **Consulting-firm investment**: conditional GO for a narrow expert-reviewed accelerator ($400–800k build), NO-GO for a broad platform; breakeven ~45 engagements/yr at $15k uplift; photo-only would need 450–1,125.
+6. **Controls/obsolescence assessment cost structure**: ~104 person-h / ~$20k; physical inventory 31%; photo ID + lifecycle lookup saves 9/21/34 h ($1.4k/$3.4k/$5.5k); firmware not readable from labels.
+7. **Feasibility + liability of photo ID** (accuracy benchmarks, lifecycle-database access, USPAP reliance): still running at time of writing.
+
 ### Sat Nov 14, afternoon · 3 Research chats for market validation (summary in [market-validation.md](market-validation.md))
 1. **"Manufacturing Equipment Risk Costs"**: cost of not knowing equipment condition/obsolescence. Found: downtime is large (Siemens $1.4T / 11% revenue F500; 52% of smaller US firms ≥ $50k/h), one plant audit had 83% of automation assets discontinued or end-of-life, **no measured rate of surprise post-close CapEx**, no defensible emergency-parts premium.
 2. **"Manufacturing Equipment Acquisition Diligence"**: how diligence is done and where it falls short. Found: appraisal $2–15k+, operational diligence $15–25k; specialist controls diligence (Joltek, 5–7 days) and OEM installed-base audits already exist; gap = fast, vendor-neutral, evidence-backed component + 3–5-yr CapEx that feeds advisers' reports; no published market size; sell as add-on through advisers.
