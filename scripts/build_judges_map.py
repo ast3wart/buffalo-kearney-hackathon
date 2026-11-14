@@ -17,7 +17,8 @@ def r(a, b):
 
 
 CSS = open(sys.argv[3]).read()
-r("</style>\n", "</style>\n<style>\n" + CSS + "\n</style>\n")
+# ONE <style> block: Velocity's source viewer keeps a single style block and drops the rest
+r("</style>\n", "\n/* ---- judges' edition visual layer ---- */\n" + CSS + "\n</style>\n")
 r("<h1>Afterlife Data Map</h1>", '<h1>Afterlife Data Map<span class="ed">Judges’ edition</span></h1>')
 r("<span>contract <b>v4</b> (PR #6, in review)</span>", "<span>contract <b>v4</b> (merged)</span>")
 r("contract v4 (PR #6) ·", "contract v4 ·")
