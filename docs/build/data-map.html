@@ -1,0 +1,707 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Afterlife Data Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column of spec sheets; wide tables and the flow diagram scroll inside their own frames. */
+:root {
+  --bg: #f3f5f7; --surface: #ffffff; --ink: #16202b; --muted: #5a6673; --rule: #d6dce2; --rule-soft: #e7ebef;
+  --spend: #0e7a7e; --warranty: #b5600a; --shared: #4b5a6b; --ai: #8a3b8e; --ok: #2f7d32; --hl: #fff1b8;
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161c; --surface: #19212a; --ink: #e5eaef; --muted: #98a5b2; --rule: #2d3742; --rule-soft: #232c36;
+  --spend: #45bcbf; --warranty: #f0a647; --shared: #a3b3c4; --ai: #d58fd8; --ok: #6cc070; --hl: #5a4a12; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11161c; --surface: #19212a; --ink: #e5eaef; --muted: #98a5b2; --rule: #2d3742; --rule-soft: #232c36;
+  --spend: #45bcbf; --warranty: #f0a647; --shared: #a3b3c4; --ai: #d58fd8; --ok: #6cc070; --hl: #5a4a12; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 64px }
+.wrap { max-width: 1180px; margin: 0 auto }
+h1, h2, h3 { font-family: var(--display); font-stretch: 85%; text-wrap: balance; margin: 0; line-height: 1.12 }
+h1 { font-size: clamp(2rem, 5vw, 3.1rem); font-weight: 800; letter-spacing: -0.01em }
+h2 { font-size: clamp(1.45rem, 3vw, 1.9rem); font-weight: 700 }
+h3 { font-size: 1.12rem; font-weight: 700 }
+p { margin: 0; max-width: 68ch }
+code, .mono { font-family: var(--mono); font-size: 0.86em }
+.muted { color: var(--muted) }
+.eyebrow { font: 600 0.72rem/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted) }
+
+/* header */
+header.top { padding-block: 40px 28px; border-bottom: 2px solid var(--ink); display: grid; gap: 14px }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 400 0.82rem/1.4 var(--mono); color: var(--muted) }
+.meta b { color: var(--ink); font-weight: 600 }
+.legend { display: flex; flex-wrap: wrap; gap: 8px }
+.pill { display: inline-flex; align-items: center; gap: 6px; font: 600 0.72rem/1 var(--mono); letter-spacing: 0.03em;
+  padding: 5px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap }
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor }
+.t-spend { color: var(--spend) } .t-warranty { color: var(--warranty) } .t-shared { color: var(--shared) } .t-ai { color: var(--ai) }
+.status { font: 600 0.68rem/1 var(--mono); letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 7px; border-radius: 4px; white-space: nowrap }
+.s-decided { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok) }
+.s-proposed { background: color-mix(in srgb, var(--warranty) 18%, transparent); color: var(--warranty) }
+.s-simpl { background: color-mix(in srgb, var(--shared) 16%, transparent); color: var(--shared) }
+
+section { padding-block: 44px 8px; display: grid; gap: 18px }
+.sec-head { display: grid; gap: 8px }
+.sec-head p { color: var(--muted) }
+nav.toc { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.92rem }
+nav.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule) }
+nav.toc a:hover, nav.toc a:focus-visible { border-color: var(--ink) }
+a:focus-visible, input:focus-visible { outline: 2px solid var(--spend); outline-offset: 2px }
+
+
+/* system map */
+.sysmap { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px }
+.sys { background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--c, var(--shared)); padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.sys h3 { font-size: 1rem }
+.sys .tables { font: 400 0.78rem/1.5 var(--mono); color: var(--muted) }
+.sys .arrow { font: 600 0.8rem/1.4 var(--mono); color: var(--ink) }
+.sys .arrow::before { content: "→ " ; color: var(--muted) }
+.sys .note { font-size: 0.86rem; color: var(--muted) }
+
+.ingest { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; border: 1px solid var(--rule); background: var(--surface) }
+.ingest > div { flex: 1 1 180px; padding: 14px; border-right: 1px solid var(--rule); display: grid; gap: 6px; align-content: start; min-width: 0; position: relative }
+.ingest > div:last-child { border-right: 0 }
+.ingest .step { font: 600 0.7rem/1 var(--mono); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase }
+.ingest p { font-size: 0.9rem }
+
+.scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--rule); background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; font-variant-numeric: tabular-nums }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule-soft); vertical-align: top; white-space: nowrap }
+thead th { background: color-mix(in srgb, var(--ink) 4%, var(--surface)); border-bottom: 1px solid var(--rule); font-weight: 600 }
+tbody tr:last-child td { border-bottom: 0 }
+td.num { text-align: right }
+.saptbl td:first-child, .saptbl th:first-child { font-family: var(--mono) }
+.arrowcell { color: var(--muted) }
+
+/* data fields */
+.group { display: grid; gap: 14px; padding-top: 8px }
+.group > h3 { font-size: 0.78rem; font-family: var(--mono); font-stretch: 100%; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--rule); padding-bottom: 6px }
+.tbl { display: grid; gap: 8px }
+.tbl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px }
+.tbl-head h4 { margin: 0; font: 600 1rem/1.2 var(--mono) }
+.tbl-head .rows { font: 400 0.78rem/1 var(--mono); color: var(--muted) }
+.tbl-head .src { font-size: 0.86rem; color: var(--muted) }
+.tbl-desc { font-size: 0.92rem; color: var(--muted) }
+.fields th { white-space: nowrap }
+.fields th .col { font-family: var(--mono); font-size: 0.8rem; display: block }
+.fields th .sap { font: 400 0.68rem/1.3 var(--mono); color: var(--spend); display: block }
+.fields th .sap.none { color: var(--muted) }
+.fields td { font-family: var(--mono); font-size: 0.8rem }
+.fields td.blank { color: var(--muted); font-style: italic }
+.v4 { display: inline-block; font: 700 0.6rem/1 var(--mono); padding: 2px 4px; border-radius: 3px; margin-left: 4px;
+  color: var(--warranty); border: 1px solid var(--warranty); vertical-align: 1px }
+th.is-v4, td.is-v4 { background: color-mix(in srgb, var(--warranty) 7%, transparent) }
+.keynote { font-size: 0.86rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 16px }
+
+/* documents */
+.docgrid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; align-items: start }
+@media (max-width: 860px) { .docgrid { grid-template-columns: minmax(0, 1fr) } }
+.doc { background: var(--surface); border: 1px solid var(--rule); box-shadow: 0 1px 0 var(--rule), 0 8px 24px -16px color-mix(in srgb, var(--ink) 40%, transparent);
+  padding: 22px 22px 18px; font: 400 0.9rem/1.6 var(--body); display: grid; gap: 10px; min-width: 0 }
+.doc .file { font: 600 0.72rem/1 var(--mono); color: var(--muted); letter-spacing: 0.04em }
+.doc h5 { margin: 6px 0 0; font: 700 0.95rem/1.2 var(--display); font-stretch: 90% }
+.doc p { max-width: none }
+.doc mark { background: var(--hl); color: inherit; padding: 0 2px; border-radius: 2px }
+.doc .gone { text-decoration: line-through; text-decoration-color: var(--warranty); color: var(--muted) }
+.doc .tag { font: 600 0.62rem/1 var(--mono); color: var(--ai); border: 1px solid var(--ai); border-radius: 3px; padding: 2px 4px; margin-left: 4px; vertical-align: 1px; white-space: nowrap }
+.extract { background: var(--surface); border: 1px solid var(--ai); display: grid; min-width: 0 }
+.extract .xh { padding: 12px 14px; border-bottom: 1px solid var(--rule); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between }
+.extract .xh h3 { font-size: 1rem }
+.xrow { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); gap: 2px 12px; padding: 9px 14px; border-bottom: 1px solid var(--rule-soft) }
+.xrow:last-child { border-bottom: 0 }
+.xrow .k { font: 600 0.78rem/1.4 var(--mono) }
+.xrow .v { font: 600 0.86rem/1.4 var(--mono); color: var(--ai) }
+.xrow .q { grid-column: 2; font-size: 0.82rem; color: var(--muted); font-style: italic }
+.xrow .ok { color: var(--ok); font: 600 0.72rem/1 var(--mono); margin-left: 6px; font-style: normal }
+.styles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px }
+.style { background: var(--surface); border: 1px solid var(--rule); padding: 14px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.style pre { margin: 0; font: 400 0.74rem/1.5 var(--mono); white-space: pre-wrap; color: var(--muted); background: color-mix(in srgb, var(--ink) 3%, var(--surface)); padding: 10px; border: 1px solid var(--rule-soft); overflow-wrap: anywhere }
+.style p { font-size: 0.9rem }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0; border-top: 1px solid var(--rule) }
+.rules > div { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 4px; min-width: 0 }
+.rules b { font-family: var(--display); font-stretch: 90%; font-size: 1rem }
+.rules span { color: var(--muted); font-size: 0.92rem }
+
+.calc { background: var(--surface); border: 1px solid var(--rule); display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-width: 0 }
+@media (max-width: 760px) { .calc { grid-template-columns: minmax(0, 1fr) } }
+.calc > div { padding: 16px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.calc > div + div { border-left: 1px solid var(--rule) }
+@media (max-width: 760px) { .calc > div + div { border-left: 0; border-top: 1px solid var(--rule) } }
+.timeline { display: grid; gap: 0; font-size: 0.9rem }
+.timeline div { display: grid; grid-template-columns: 6.6em minmax(0, 1fr); gap: 10px; padding: 5px 0; border-bottom: 1px dashed var(--rule) }
+.timeline div:last-child { border-bottom: 0 }
+.timeline .d { font-family: var(--mono); font-size: 0.82rem }
+.eq { font: 400 0.86rem/1.9 var(--mono) }
+.eq .res { font-weight: 600; color: var(--ok) }
+.aibox { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px }
+.aibox > div { background: var(--surface); border: 1px solid var(--rule); padding: 14px; display: grid; gap: 6px; align-content: start }
+.aibox ul { margin: 0; padding-left: 18px; font-size: 0.92rem; display: grid; gap: 4px }
+
+/* flow */
+.flow-frame { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--rule); background: var(--surface) }
+.flow { position: relative; min-width: 1080px; display: grid; grid-template-columns: 1.05fr 1fr 1fr 1fr 1.05fr; gap: 0 56px; padding: 18px 20px 22px }
+.flow svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible }
+.col { display: flex; flex-direction: column; gap: 10px; justify-content: space-around; position: relative; z-index: 1 }
+.col > .ch { font: 600 0.68rem/1.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-bottom: 4px; border-bottom: 1px solid var(--rule); margin-bottom: 4px }
+.node { background: var(--surface); border: 1.5px solid var(--c); border-left-width: 5px; padding: 8px 10px; display: grid; gap: 2px; cursor: default; transition: box-shadow .15s, opacity .15s }
+.node b { font: 600 0.84rem/1.25 var(--mono) }
+.node span { font-size: 0.76rem; line-height: 1.35; color: var(--muted) }
+.node[data-t="spend"] { --c: var(--spend) } .node[data-t="warranty"] { --c: var(--warranty) } .node[data-t="shared"] { --c: var(--shared) } .node[data-t="ai"] { --c: var(--ai) }
+.node[data-t="ai"] { border-style: dashed }
+.flow.focus .node { opacity: .35 } .flow.focus .node.on { opacity: 1; box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 25%, transparent) }
+.edges path { fill: none; stroke-width: 1.6; opacity: .75; transition: opacity .15s }
+.edges circle { transition: opacity .15s }
+.flow.focus .edges path, .flow.focus .edges circle { opacity: .08 } .flow.focus .edges .on { opacity: 1; stroke-width: 2.2 }
+.e-spend { stroke: var(--spend) } .e-warranty { stroke: var(--warranty) } .e-shared { stroke: var(--shared) } .e-ai { stroke: var(--ai) }
+circle.e-spend { fill: var(--spend); stroke: none } circle.e-warranty { fill: var(--warranty); stroke: none } circle.e-shared { fill: var(--shared); stroke: none } circle.e-ai { fill: var(--ai); stroke: none }
+.flowhint { font-size: 0.86rem; color: var(--muted) }
+.lanes { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px }
+.lane { background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--c); padding: 14px; display: grid; gap: 6px; align-content: start }
+.lane ul { margin: 0; padding-left: 18px; font-size: 0.92rem; display: grid; gap: 3px }
+
+footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: 0.86rem; color: var(--muted); display: grid; gap: 4px }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+
+/* v2 additions */
+.callout { border-left: 4px solid var(--ink); background: var(--surface); padding: 14px 16px; display: grid; gap: 4px }
+.callout b { font-family: var(--display); font-stretch: 90%; font-size: 1.08rem }
+.dec { display: grid; border-top: 2px solid var(--ink) }
+.dec > div { display: grid; grid-template-columns: minmax(0, 10.5em) minmax(0, 1fr) minmax(0, 13em); gap: 6px 20px; padding: 14px 0; border-bottom: 1px solid var(--rule) }
+@media (max-width: 760px) { .dec > div { grid-template-columns: minmax(0, 1fr) } }
+.dec .area { font: 700 1rem/1.25 var(--display); font-stretch: 90% }
+.dec .rule { display: grid; gap: 4px }
+.dec .rule p { font-size: 0.95rem }
+.dec .rule .why { color: var(--muted); font-size: 0.88rem }
+.dec .own { font-size: 0.86rem; color: var(--muted) }
+.dec .own b { display: block; color: var(--ink); font: 600 0.72rem/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 28px }
+.facts > div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); align-items: start; font-size: 0.95rem }
+.mix { display: grid; gap: 10px }
+.mixrow { display: grid; grid-template-columns: 5.5em minmax(0, 1fr) minmax(0, 15em); gap: 14px; align-items: center }
+@media (max-width: 700px) { .mixrow { grid-template-columns: 4.5em minmax(0, 1fr) } .mixrow .res { grid-column: 1 / -1 } }
+.mixrow .p { font: 600 0.9rem/1 var(--mono) }
+.bar { display: flex; height: 30px; border: 1px solid var(--rule); background: var(--surface) }
+.bar span { display: flex; align-items: center; padding: 0 8px; font: 600 0.74rem/1 var(--mono); color: var(--surface); white-space: nowrap; overflow: hidden }
+.bar .k { background: var(--warranty) } .bar .b { background: var(--shared) }
+.mixrow .res { font-size: 0.88rem }
+.mixrow .res b { font-family: var(--mono); font-size: 0.82rem }
+.tagok { color: var(--ok); font-weight: 700 } .tagno { color: var(--warranty); font-weight: 700 }
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px }
+.two > div { background: var(--surface); border: 1px solid var(--rule); padding: 14px; display: grid; gap: 6px; align-content: start }
+.two ul { margin: 0; padding-left: 18px; font-size: 0.92rem; display: grid; gap: 3px }
+.stages { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--rule); background: var(--surface) }
+@media (max-width: 900px) { .stages { grid-template-columns: minmax(0, 1fr) } }
+.stage { padding: 14px; border-right: 1px solid var(--rule); display: grid; gap: 6px; align-content: start; min-width: 0 }
+.stage:last-child { border-right: 0 }
+@media (max-width: 900px) { .stage { border-right: 0; border-bottom: 1px solid var(--rule) } .stage:last-child { border-bottom: 0 } }
+.stage .n { font: 600 0.7rem/1 var(--mono); color: var(--muted); letter-spacing: 0.06em }
+.stage h3 { font-size: 1.02rem }
+.stage p { font-size: 0.88rem }
+.stage ul { margin: 0; padding-left: 16px; font-size: 0.84rem; display: grid; gap: 2px }
+.stage .who { font-size: 0.8rem; color: var(--muted); border-top: 1px dashed var(--rule); padding-top: 6px }
+.stage.app { background: color-mix(in srgb, var(--spend) 5%, var(--surface)) }
+.stage.person { background: color-mix(in srgb, var(--warranty) 6%, var(--surface)) }
+.gates { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px }
+.gatecard { background: var(--surface); border: 1px solid var(--rule); display: grid }
+.gatecard .gh { padding: 12px 14px; border-bottom: 1px solid var(--rule); display: grid; gap: 2px }
+.gatecard .gh b { font: 600 0.9rem/1.3 var(--mono) }
+.gatecard .gh span { font-size: 0.84rem; color: var(--muted) }
+.gate { display: grid; grid-template-columns: 1.4em minmax(0, 1fr) auto; gap: 8px; padding: 7px 14px; border-bottom: 1px solid var(--rule-soft); font-size: 0.88rem; align-items: baseline }
+.gate:last-child { border-bottom: 0 }
+.gate .m { font-weight: 700 } .gate.pass .m { color: var(--ok) } .gate.fail .m { color: var(--warranty) }
+.gate .d { font: 400 0.76rem/1.3 var(--mono); color: var(--muted); text-align: right }
+.gatecard .out { padding: 10px 14px; font-weight: 600; font-size: 0.92rem; border-top: 1px solid var(--rule) }
+.st-ok { color: var(--ok) } .st-pend { color: var(--muted) } .st-part { color: var(--warranty) }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Team Buffalo · Kearney × PERLab · Track 3: BOM Cost Linkage</div>
+  <h1>Afterlife Data Map</h1>
+  <p>The data Afterlife runs on, where each piece lives at a real manufacturer, and the rules for turning warranty claims into a supplier conversation. Version 2 settles the open questions from the review of version 1.</p>
+  <div class="meta">
+    <span>sample company <b>Prairie Utility Vehicles</b></span>
+    <span>data cut-off <b>2026-10-31</b></span>
+    <span>contract <b>v4</b> (PR #6, in review)</span>
+    <span>sample: <b>188</b> claims · <b>18</b> production PO lines · <b>9</b> supplier agreements</span>
+  </div>
+  <div class="legend">
+    <span class="pill t-spend">Spend thread · Asher</span>
+    <span class="pill t-warranty">Warranty thread · Brandon</span>
+    <span class="pill t-shared">Shared</span>
+    <span class="pill t-ai">Extracted from documents</span>
+  </div>
+  <nav class="toc" aria-label="Sections">
+    <a href="#decisions">Decisions</a><a href="#assumptions">Assumptions</a><a href="#systems">Systems &amp; SAP</a>
+    <a href="#fields">Fields</a><a href="#attribution">Supplier attribution</a><a href="#documents">Supplier documents</a>
+    <a href="#recovery">Alert to recovery</a><a href="#evaluation">Evaluation gate</a><a href="#flow">Data flow</a>
+  </nav>
+</header>
+
+<section id="decisions">
+  <div class="sec-head">
+    <div class="eyebrow">Settled Nov 14</div>
+    <h2>Decisions</h2>
+  </div>
+  <div class="callout">
+    <b>What the demo claims</b>
+    <p>Afterlife finds a part-and-lot cohort whose claim rate jumped, shows the data behind it, and drafts a supplier brief for a person to review. It does not claim that monthly supplier shares prove a supplier is liable for each individual claim.</p>
+  </div>
+  <div class="dec">
+    <div><span class="area">Ingestion</span>
+      <div class="rule"><p>CSV extracts plus the SAP adapter. No live connectors. <code>check.py</code> is a hard stop: any failed check blocks the run.</p>
+        <p class="why">Row-level quarantine (load the good rows, hold the bad ones) is a production feature, not a demo one. Adapter tests already cover PO-line IDs, zero-padded numbers, decimal commas and price units.</p></div>
+      <div class="own"><b>Owner</b>Spend thread</div></div>
+    <div><span class="area">Claim → part links</span>
+      <div class="rule"><p>A link is a suggestion with evidence and a confidence score. Alerts use links at confidence 0.5 and above. Recovery uses only links at the recovery threshold or confirmed by a person.</p>
+        <p class="why">Recovery threshold = the lowest confidence that reaches 99% precision on holdout data. On spend links that is 0.8 today; claim links get their own number once <code>match_claims</code> is built.</p></div>
+      <div class="own"><b>Owner</b>Warranty thread</div></div>
+    <div><span class="area">Supplier attribution</span>
+      <div class="rule"><p>Supplier shares estimate a cohort's exposure. A single claim is assigned to a supplier only when its product-month used one supplier's lot. Claims from mixed months are labeled <b>supplier unresolved</b> and shown with their count and cost.</p>
+        <p class="why">Production use needs serial-to-batch records (which lot went into which unit). We name that as a data requirement.</p></div>
+      <div class="own"><b>Owner</b>Warranty thread</div></div>
+    <div><span class="area">Early warning</span>
+      <div class="rule"><p>An alert triggers an investigation; it doesn't accuse anyone. Rule: mature build months only, at least 2 baseline months, rate ratio ≥ 1.5, at least 10 claims after the step, and Benjamini–Hochberg q &lt; 0.05 across every part-supplier series tested. Each alert shows its denominators and q-value.</p>
+        <p class="why">A build month counts as mature once its 3 months in service plus the typical reporting lag have passed.</p></div>
+      <div class="own"><b>Reviews before a supplier is named</b>Supplier quality engineer</div></div>
+    <div><span class="area">Cost</span>
+      <div class="rule"><p>Warranty cost = parts + labor + other cost, counted once. Service purchases for warranty repairs reconcile against claims and are never added. Lifecycle cost on the Overview = build cost + spare-part purchases + gross warranty cost. Net warranty cost (gross minus settled recoveries) is shown beside it, not instead of it.</p></div>
+      <div class="own"><b>Signs off reconciliation</b>Finance</div></div>
+    <div><span class="area">Agreement terms</span>
+      <div class="rule"><p>A person reviews every agreement once before its terms value any recovery. Amended clauses, missing fields and low-confidence values are flagged for that review.</p>
+        <p class="why">Stricter than reviewing only flagged fields, and still cheap: a supplier has one agreement, and it's reused for every claim.</p></div>
+      <div class="own"><b>Reviews</b>Procurement</div></div>
+    <div><span class="area">Supplier brief</span>
+      <div class="rule"><p>Always a draft. It keeps four levels of evidence apart: observed claims, inferred part links, cohort exposure for the supplier, and claims individually attributable to the supplier. Only the last level can enter a recovery submission.</p></div>
+      <div class="own"><b>Owners</b>Supplier quality (technical), procurement (negotiation), warranty recovery manager (submission), finance (books)</div></div>
+    <div><span class="area">Dates</span>
+      <div class="rule"><p>Time in service counts from the build month. That's a stated demo limitation; production needs the retail sale or registration date. Filing deadlines count from <code>paid_date</code>, which v4 provides.</p></div>
+      <div class="own"><b>Owner</b>Warranty thread</div></div>
+  </div>
+</section>
+
+<section id="assumptions">
+  <div class="sec-head">
+    <div class="eyebrow">What the data assumes</div>
+    <h2>Assumptions</h2>
+    <p><span class="status s-decided">Decided</span> agreed at a checkpoint · <span class="status s-proposed">Proposed</span> in contract v4 · <span class="status s-simpl">Demo limit</span> stated in Q&amp;A</p>
+  </div>
+  <div class="facts">
+    <div><span>Three fictional companies: Prairie (tuning), Ironridge (holdout, raw SAP extract, acquired plant), Northwind (HVAC, no spike)</span><span class="status s-decided">Decided</span></div>
+    <div><span>Builds Jan 2025 – Sep 2026, data cut-off 2026-10-31, 24-month warranty</span><span class="status s-decided">Decided</span></div>
+    <div><span>About 60% of claims have no causal part number; about 10% name the wrong part</span><span class="status s-decided">Decided</span></div>
+    <div><span>Planted spike: seal kit 200-1180-01, Keystone lot PO-450005-010, from April 2026, 3×</span><span class="status s-decided">Decided</span></div>
+    <div><span>Claim volume calibrated to SEC filers' warranty cost as % of revenue</span><span class="status s-decided">Decided</span></div>
+    <div><span>Every dollar figure is an estimate for review, never an accrual or receivable</span><span class="status s-decided">Decided</span></div>
+    <div><span>Claims reach us 2–40 days after the failure; unreported claims are absent</span><span class="status s-proposed">Proposed</span></div>
+    <div><span>Recovery terms live in agreement documents, not ERP fields</span><span class="status s-proposed">Proposed</span></div>
+    <div><span>Time in service counted from build month, not retail sale</span><span class="status s-simpl">Demo limit</span></div>
+    <div><span>Supplier lots are known per product-month, not per serial number</span><span class="status s-simpl">Demo limit</span></div>
+  </div>
+</section>
+
+<section id="systems">
+  <div class="sec-head">
+    <div class="eyebrow">Structured data · software compatibility</div>
+    <h2>Where each table lives at a real manufacturer</h2>
+    <p>A field in a system becomes a column we expect in an extract. Bracketed names are the SAP tables.</p>
+  </div>
+  <div class="sysmap">
+    <div class="sys" style="--c: var(--spend)"><h3>Purchasing (SAP MM)</h3><div class="tables">EKKO/EKPO · EINA/EINE · LFA1 · MARA/MAKT/MBEW</div>
+      <div class="arrow">production_spend</div><div class="arrow">service_spend</div><div class="arrow">info_records</div><div class="arrow">part_master</div>
+      <div class="note">Ironridge sends these with raw SAP field names.</div></div>
+    <div class="sys" style="--c: var(--spend)"><h3>Engineering &amp; production</h3><div class="tables">STKO/STPO · production confirmations · goods receipts / batches</div>
+      <div class="arrow">bom</div><div class="arrow">builds</div><div class="arrow">build_supply</div>
+      <div class="note">Lots per product-month. Serial-level batch records would replace this in production.</div></div>
+    <div class="sys" style="--c: var(--spend)"><h3>Sales billing (SAP SD)</h3><div class="tables">VBRK/VBRP</div>
+      <div class="arrow">products.avg_selling_price</div>
+      <div class="note">Average net price per unit.</div></div>
+    <div class="sys" style="--c: var(--warranty)"><h3>Warranty claims</h3><div class="tables">SAP Warranty Claim Processing or a dealer portal</div>
+      <div class="arrow">warranty_claims</div><div class="arrow">failure_codes</div>
+      <div class="note">Dates, cost split, claim type, recovery status and credit.</div></div>
+    <div class="sys" style="--c: var(--ai)"><h3>Contracts</h3><div class="tables">Supplier quality agreements and amendments (PDF or text)</div>
+      <div class="arrow">supplier_agreements/</div>
+      <div class="note">Documents, not fields. Extracted into supplier_terms.</div></div>
+  </div>
+
+  <h3>How an extract is loaded</h3>
+  <div class="ingest">
+    <div><span class="step">Client extract</span><p>One CSV per table, one folder per company.</p></div>
+    <div><span class="step">io.load()</span><p>Reads every ID column as text, so numeric and text IDs still join.</p></div>
+    <div><span class="step">adapters/sap.py</span><p>Runs only when it sees SAP headers. Renames fields and fixes SAP formatting.</p></div>
+    <div><span class="step">check.py</span><p>Columns, cross-thread keys and dates. Any failure stops the run.</p></div>
+  </div>
+  <div class="scroll">
+    <table class="saptbl">
+      <thead><tr><th>SAP field</th><th>Raw value (illustrative)</th><th></th><th>Contract column</th><th>After load</th><th>What the adapter fixes</th></tr></thead>
+      <tbody>
+        <tr><td>EBELN + EBELP</td><td class="mono">0000450001 · 00010</td><td class="arrowcell">→</td><td class="mono">po_line_id</td><td class="mono">0000450001-00010</td><td>PO number and item joined; every table that points at a PO line uses this form</td></tr>
+        <tr><td>MATNR</td><td class="mono">000000000000123456</td><td class="arrowcell">→</td><td class="mono">part_no</td><td class="mono">123456</td><td>numeric material numbers padded to 18 characters</td></tr>
+        <tr><td>LIFNR</td><td class="mono">0000100011</td><td class="arrowcell">→</td><td class="mono">supplier_id</td><td class="mono">100011</td><td>numeric vendor numbers padded to 10 characters</td></tr>
+        <tr><td>BEDAT</td><td class="mono">20260211</td><td class="arrowcell">→</td><td class="mono">po_date</td><td class="mono">2026-02-11</td><td>YYYYMMDD dates</td></tr>
+        <tr><td>NETPR · PEINH</td><td class="mono">404,93 · 100</td><td class="arrowcell">→</td><td class="mono">unit_price · price_unit</td><td class="mono">404.93 · 100</td><td>decimal comma; price is per 100 units, so $4.05 each</td></tr>
+        <tr><td>TXZ01 · MEINS · WERKS</td><td class="mono">Seal kit… · EA · P-IA1</td><td class="arrowcell">→</td><td class="mono">description · uom · plant</td><td class="mono">same</td><td>renamed only</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="fields">
+  <div class="sec-head">
+    <div class="eyebrow">Data contract v4 · rows from data/sample</div>
+    <h2>Fields and example rows</h2>
+    <p>Columns, the SAP field behind each one where the adapter maps it, and three real sample rows per table. <span class="v4">v4</span> marks columns added in PR #6.</p>
+  </div>
+  <div class="group"><h3>Product structure</h3>
+<div class="tbl"><div class="tbl-head"><h4>products</h4><span class="pill t-spend">Spend</span><span class="rows">3 rows in sample</span><span class="src">Material master + SD billing</span></div>
+<p class="tbl-desc">Products we sell. avg_selling_price turns warranty cost into % of revenue.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">product_id</span></th><th class=""><span class="col">product_name</span></th><th class=""><span class="col">family</span></th><th class="is-v4"><span class="col">avg_selling_price<span class=v4>v4</span></span></th></tr></thead><tbody><tr><td class="">UV-400</td><td class="">Utility vehicle 400</td><td class="">utility_vehicle</td><td class="num is-v4">14500.0</td></tr><tr><td class="">UV-600</td><td class="">Utility vehicle 600</td><td class="">utility_vehicle</td><td class="num is-v4">18900.0</td></tr><tr><td class="">TR-250</td><td class="">Compact tractor 250</td><td class="">tractor</td><td class="num is-v4">22500.0</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>part_master</h4><span class="pill t-spend">Spend</span><span class="rows">8 rows in sample</span><span class="src">[MARA / MAKT / MBEW]</span></div>
+<p class="tbl-desc">One row per internal part number, with our ERP description, category and standard cost.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">part_no</span><span class="sap">MATNR</span></th><th class=""><span class="col">description</span><span class="sap">MAKTX</span></th><th class=""><span class="col">category</span><span class="sap">MATKL</span></th><th class=""><span class="col">std_cost</span><span class="sap">STPRS</span></th></tr></thead><tbody><tr><td class="">100-4471-02</td><td class="">BRG,BALL,6204-2RS,20MM</td><td class="">bearing</td><td class="num">4.1</td></tr><tr><td class="">200-1180-01</td><td class="">SEAL KIT,HYD CYL,40MM BORE</td><td class="">seal</td><td class="num">11.5</td></tr><tr><td class="">300-0912-00</td><td class="">FLTR,OIL,SPIN-ON,M20X1.5</td><td class="">filter</td><td class="num">3.2</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>bom</h4><span class="pill t-spend">Spend</span><span class="rows">19 rows in sample</span><span class="src">[STKO / STPO], single level</span></div>
+<p class="tbl-desc">Which parts go into which product, and how many.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">product_id</span></th><th class=""><span class="col">part_no</span></th><th class=""><span class="col">qty_per</span></th><th class=""><span class="col">position</span></th></tr></thead><tbody><tr><td class="">UV-400</td><td class="">100-4471-02</td><td class="num">4</td><td class="">axle</td></tr><tr><td class="">UV-400</td><td class="">200-1180-01</td><td class="num">2</td><td class="">hydraulic_cylinder</td></tr><tr><td class="">UV-400</td><td class="">300-0912-00</td><td class="num">1</td><td class="">engine</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>builds</h4><span class="pill t-spend">Spend</span><span class="rows">18 rows in sample</span><span class="src">production confirmations</span></div>
+<p class="tbl-desc">Units built per product per month: the denominator for every claim rate.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">product_id</span></th><th class=""><span class="col">build_month</span></th><th class=""><span class="col">units_built</span></th></tr></thead><tbody><tr><td class="">UV-400</td><td class="">2026-01</td><td class="num">194</td></tr><tr><td class="">UV-400</td><td class="">2026-02</td><td class="num">183</td></tr><tr><td class="">UV-400</td><td class="">2026-03</td><td class="num">215</td></tr></tbody></table></div></div>
+</div>
+<div class="group"><h3>Spend</h3>
+<div class="tbl"><div class="tbl-head"><h4>production_spend</h4><span class="pill t-spend">Spend</span><span class="rows">18 rows in sample</span><span class="src">[EKKO / EKPO]</span></div>
+<p class="tbl-desc">Production purchase lines. Rows 2–3: a price per 100 units (price_unit 100), and the Keystone lot the spike is planted on.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">po_line_id</span><span class="sap">EBELN+EBELP</span></th><th class=""><span class="col">part_no</span><span class="sap">MATNR</span></th><th class=""><span class="col">supplier_id</span><span class="sap">LIFNR</span></th><th class=""><span class="col">supplier_name</span><span class="sap">NAME1</span></th><th class=""><span class="col">supplier_pn</span><span class="sap">IDNLF</span></th><th class=""><span class="col">description</span><span class="sap">TXZ01</span></th><th class=""><span class="col">qty</span><span class="sap">MENGE</span></th><th class=""><span class="col">uom</span><span class="sap">MEINS</span></th><th class=""><span class="col">unit_price</span><span class="sap">NETPR</span></th><th class=""><span class="col">price_unit</span><span class="sap">PEINH</span></th><th class=""><span class="col">po_date</span><span class="sap">BEDAT</span></th><th class=""><span class="col">plant</span><span class="sap">WERKS</span></th><th class=""><span class="col">country</span><span class="sap">LAND1</span></th></tr></thead><tbody><tr><td class="">PO-450001-010</td><td class="">100-4471-02</td><td class="">S-011</td><td class="">Great Lakes Bearing Co</td><td class="">6204-2RSH</td><td class="">Deep groove ball bearing 20x47x14 sealed</td><td class="num">500</td><td class="">EA</td><td class="num">4.21</td><td class="num">1</td><td class="">2026-01-15</td><td class="">P-IA1</td><td class="">US</td></tr><tr><td class="">PO-450002-010</td><td class="">100-4471-02</td><td class="">S-011</td><td class="">Great Lakes Bearing Co</td><td class="">6204-2RSH</td><td class="">Deep groove ball bearing 20x47x14 sealed</td><td class="num">1000</td><td class="">EA</td><td class="num">404.93</td><td class="num">100</td><td class="">2026-04-15</td><td class="">P-IA1</td><td class="">US</td></tr><tr><td class="">PO-450005-010</td><td class="">200-1180-01</td><td class="">S-022</td><td class="">Keystone Seal Works</td><td class="">KSW-HC40-K</td><td class="">Hydraulic cylinder seal kit 40 mm bore</td><td class="num">500</td><td class="">EA</td><td class="num">11.5</td><td class="num">1</td><td class="">2026-04-15</td><td class="">P-IA1</td><td class="">MX</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>service_spend</h4><span class="pill t-spend">Spend</span><span class="rows">8 rows in sample</span><span class="src">[EKKO / EKPO], service plant</span></div>
+<p class="tbl-desc">Spares and repair parts bought from a distributor at a markup, mostly without a part number.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">po_line_id</span><span class="sap">EBELN+EBELP</span></th><th class=""><span class="col">part_no</span><span class="sap">MATNR</span></th><th class=""><span class="col">supplier_id</span><span class="sap">LIFNR</span></th><th class=""><span class="col">supplier_name</span><span class="sap">NAME1</span></th><th class=""><span class="col">supplier_pn</span><span class="sap">IDNLF</span></th><th class=""><span class="col">description</span><span class="sap">TXZ01</span></th><th class=""><span class="col">qty</span><span class="sap">MENGE</span></th><th class=""><span class="col">uom</span><span class="sap">MEINS</span></th><th class=""><span class="col">unit_price</span><span class="sap">NETPR</span></th><th class=""><span class="col">price_unit</span><span class="sap">PEINH</span></th><th class=""><span class="col">po_date</span><span class="sap">BEDAT</span></th><th class=""><span class="col">plant</span><span class="sap">WERKS</span></th><th class=""><span class="col">country</span><span class="sap">LAND1</span></th><th class=""><span class="col">channel</span><span class="sap none">·</span></th></tr></thead><tbody><tr><td class="">PO-770003-010</td><td class="blank">blank</td><td class="">S-090</td><td class="">QuickServe Parts Distribution</td><td class="">QS-10851</td><td class="">DEEP GROOVE BALL BEARING 20X47X14 SEALED</td><td class="num">20</td><td class="">EA</td><td class="num">14.86</td><td class="num">1</td><td class="">2026-05-02</td><td class="">SVC-1</td><td class="">US</td><td class="">warranty_repair</td></tr><tr><td class="">PO-770008-010</td><td class="">200-1180-01</td><td class="">S-090</td><td class="">QuickServe Parts Distribution</td><td class="">QS-59615</td><td class="">HYDRAULIC CYLINDER SEAL KIT 40 MM BORE</td><td class="num">20</td><td class="">EA</td><td class="num">36.81</td><td class="num">1</td><td class="">2026-05-02</td><td class="">SVC-1</td><td class="">US</td><td class="">warranty_repair</td></tr><tr><td class="">PO-770011-010</td><td class="blank">blank</td><td class="">S-090</td><td class="">QuickServe Parts Distribution</td><td class="">QS-23238</td><td class="">SPIN-ON OIL FILTER M20X1.5</td><td class="num">40</td><td class="">EA</td><td class="num">7.7</td><td class="num">1</td><td class="">2026-05-02</td><td class="">SVC-1</td><td class="">US</td><td class="">warranty_repair</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>info_records</h4><span class="pill t-spend">Spend</span><span class="rows">9 rows in sample</span><span class="src">[EINA / EINE]</span></div>
+<p class="tbl-desc">Crosswalk from supplier part number to ours. The seal kit has two suppliers.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">part_no</span><span class="sap">MATNR</span></th><th class=""><span class="col">supplier_id</span><span class="sap">LIFNR</span></th><th class=""><span class="col">supplier_pn</span><span class="sap">IDNLF</span></th></tr></thead><tbody><tr><td class="">200-1180-01</td><td class="">S-022</td><td class="">KSW-HC40-K</td></tr><tr><td class="">200-1180-01</td><td class="">S-023</td><td class="">BW-SK40H</td></tr><tr><td class="">100-4471-02</td><td class="">S-011</td><td class="">6204-2RSH</td></tr></tbody></table></div></div>
+</div>
+<div class="group"><h3>Traceability (where the threads meet)</h3>
+<div class="tbl"><div class="tbl-head"><h4>build_supply</h4><span class="pill t-spend">Spend</span><span class="rows">117 rows in sample</span><span class="src">goods receipt / batch records</span></div>
+<p class="tbl-desc">Which supplier lot each product-month consumed. April 2026: UV-400 is all Keystone, UV-600 is half Keystone, half Bluewater.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">product_id</span></th><th class=""><span class="col">build_month</span></th><th class=""><span class="col">part_no</span></th><th class=""><span class="col">supplier_id</span></th><th class=""><span class="col">po_line_id</span></th><th class=""><span class="col">share</span></th></tr></thead><tbody><tr><td class="">UV-400</td><td class="">2026-04</td><td class="">200-1180-01</td><td class="">S-022</td><td class="">PO-450005-010</td><td class="num">1.0</td></tr><tr><td class="">UV-600</td><td class="">2026-04</td><td class="">200-1180-01</td><td class="">S-022</td><td class="">PO-450005-010</td><td class="num">0.5</td></tr><tr><td class="">UV-600</td><td class="">2026-04</td><td class="">200-1180-01</td><td class="">S-023</td><td class="">PO-450007-010</td><td class="num">0.5</td></tr></tbody></table></div></div>
+</div>
+<div class="group"><h3>Warranty</h3>
+<div class="tbl"><div class="tbl-head"><h4>failure_codes</h4><span class="pill t-warranty">Warranty</span><span class="rows">12 rows in sample</span><span class="src">company failure-code catalog (ISO 14224 modes)</span></div>
+<p class="tbl-desc">The symptom on a claim, and which part categories usually cause it.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">failure_code</span></th><th class=""><span class="col">system</span></th><th class=""><span class="col">description</span></th><th class=""><span class="col">likely_categories</span></th></tr></thead><tbody><tr><td class="">HYD-ELP</td><td class="">hydraulic</td><td class="">External leakage</td><td class="">seal;hose;fitting;hydraulic_component</td></tr><tr><td class="">HYD-LOP</td><td class="">hydraulic</td><td class="">Low output / pressure</td><td class="">hydraulic_component;seal;filter</td></tr><tr><td class="">DRV-VIB</td><td class="">drivetrain</td><td class="">Vibration</td><td class="">bearing;belt;gear;wheel_tire</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>warranty_claims</h4><span class="pill t-warranty">Warranty</span><span class="rows">188 rows in sample</span><span class="src">warranty claim system</span></div>
+<p class="tbl-desc">Dealer claims. The three rows show recovery status none, submitted and recovered; the causal part is often blank.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">claim_id</span></th><th class=""><span class="col">product_id</span></th><th class=""><span class="col">serial_no</span></th><th class=""><span class="col">build_month</span></th><th class=""><span class="col">failure_date</span></th><th class="is-v4"><span class="col">claim_date<span class=v4>v4</span></span></th><th class="is-v4"><span class="col">paid_date<span class=v4>v4</span></span></th><th class="is-v4"><span class="col">claim_type<span class=v4>v4</span></span></th><th class=""><span class="col">failure_code</span></th><th class=""><span class="col">claim_text</span></th><th class=""><span class="col">causal_part_no</span></th><th class=""><span class="col">labor_hrs</span></th><th class=""><span class="col">parts_cost</span></th><th class=""><span class="col">labor_cost</span></th><th class="is-v4"><span class="col">other_cost<span class=v4>v4</span></span></th><th class=""><span class="col">dealer_id</span></th><th class=""><span class="col">recovery_status</span></th><th class="is-v4"><span class="col">recovered_usd<span class=v4>v4</span></span></th></tr></thead><tbody><tr><td class="">WC-2026-00001</td><td class="">UV-400</td><td class="">UV400-26-01-00882</td><td class="">2026-01</td><td class="">2026-05-01</td><td class="is-v4">2026-05-29</td><td class="is-v4">2026-06-13</td><td class="is-v4">warranty</td><td class="">DRV-NOI</td><td class="">grinding noise rr axle, repl brg</td><td class="blank">blank</td><td class="num">3.4</td><td class="num">13.79</td><td class="num">289.0</td><td class="num is-v4">8.91</td><td class="">D-134</td><td class="">none</td><td class="num is-v4">0.0</td></tr><tr><td class="">WC-2026-00002</td><td class="">UV-400</td><td class="">UV400-26-01-00465</td><td class="">2026-01</td><td class="">2026-04-01</td><td class="is-v4">2026-04-14</td><td class="is-v4">2026-05-23</td><td class="is-v4">warranty</td><td class="">HYD-ELP</td><td class="">lift cyl weeping, resealed</td><td class="">200-1180-01</td><td class="num">2.0</td><td class="num">43.14</td><td class="num">170.0</td><td class="num is-v4">23.8</td><td class="">D-116</td><td class="">submitted</td><td class="num is-v4">0.0</td></tr><tr><td class="">WC-2026-00024</td><td class="">UV-400</td><td class="">UV400-26-04-00271</td><td class="">2026-04</td><td class="">2026-07-17</td><td class="is-v4">2026-07-25</td><td class="is-v4">2026-08-12</td><td class="is-v4">warranty</td><td class="">HYD-ELP</td><td class="">cust reports fluid under unit, cyl seals worn</td><td class="">200-1180-01</td><td class="num">2.5</td><td class="num">28.78</td><td class="num">212.5</td><td class="num is-v4">29.57</td><td class="">D-103</td><td class="">recovered</td><td class="num is-v4">193.02</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>abbreviations</h4><span class="pill t-shared">Shared</span><span class="rows">33 rows in sample</span><span class="src">company shorthand list</span></div>
+<p class="tbl-desc">Dealer and ERP shorthand, read by match.normalize().</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">abbr</span></th><th class=""><span class="col">expansion</span></th></tr></thead><tbody><tr><td class="">ASSY</td><td class="">ASSEMBLY</td></tr><tr><td class="">BRG</td><td class="">BEARING</td></tr><tr><td class="">BRKT</td><td class="">BRACKET</td></tr></tbody></table></div></div>
+</div>
+<div class="group"><h3>Answer keys (generated only, never read by matching)</h3>
+<div class="tbl"><div class="tbl-head"><h4>truth_terms</h4><span class="pill t-ai">Answer key</span><span class="rows">9 rows in sample</span><span class="src">written by the generator</span></div>
+<p class="tbl-desc">What each agreement document really says. Scores extract_terms.py.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">doc_file</span></th><th class=""><span class="col">supplier_id</span></th><th class=""><span class="col">recovery_pct</span></th><th class=""><span class="col">labor_covered</span></th><th class=""><span class="col">labor_rate_cap</span></th><th class=""><span class="col">recovery_window_months</span></th><th class=""><span class="col">filing_deadline_days</span></th></tr></thead><tbody><tr><td class="">sqa_great-lakes-bearing-co.md</td><td class="">S-011</td><td class="num">1.0</td><td class="">True</td><td class="num">95</td><td class="num">24</td><td class="num">60</td></tr><tr><td class="">sqa_keystone-seal-works.md</td><td class="">S-022</td><td class="num">0.8</td><td class="">True</td><td class="num">90</td><td class="num">18</td><td class="num">45</td></tr><tr><td class="">sqa_bluewater-seal-co.md</td><td class="">S-023</td><td class="num">1.0</td><td class="">False</td><td class="num blank">blank</td><td class="num">24</td><td class="num">90</td></tr></tbody></table></div></div>
+<div class="tbl"><div class="tbl-head"><h4>truth_spikes</h4><span class="pill t-ai">Answer key</span><span class="rows">1 rows in sample</span><span class="src">written by the generator</span></div>
+<p class="tbl-desc">The planted spike. Scores detect.py.</p><div class="scroll"><table class="fields"><thead><tr><th class=""><span class="col">part_no</span></th><th class=""><span class="col">supplier_id</span></th><th class=""><span class="col">start_build_month</span></th><th class=""><span class="col">from_po_line_id</span></th><th class=""><span class="col">multiplier</span></th></tr></thead><tbody><tr><td class="">200-1180-01</td><td class="">S-022</td><td class="">2026-04</td><td class="">PO-450005-010</td><td class="num">3.0</td></tr></tbody></table></div></div>
+</div>
+<p class="keynote"><span><span class="mono" style="color:var(--spend)">MATNR</span> under a column name = the SAP field the adapter maps it from (Ironridge).</span><span><i>blank</i> = empty in the data, on purpose.</span></p>
+</section>
+
+<section id="attribution">
+  <div class="sec-head">
+    <div class="eyebrow">Seal kit 200-1180-01 · builds April–June 2026</div>
+    <h2>Which supplier made the failed part?</h2>
+    <p>build_supply records supplier shares per product and month, not per unit. That's enough to measure a cohort's claim rate. It identifies the supplier of one failed part only when the product-month used a single supplier's lot.</p>
+  </div>
+  <div class="mix">
+    <div class="mixrow"><span class="p">UV-400</span><div class="bar"><span class="k" style="width:100%">Keystone 100%</span></div>
+      <span class="res"><b>20 claims · $5,158.94</b><br><span class="tagok">Attributable to Keystone</span></span></div>
+    <div class="mixrow"><span class="p">TR-250</span><div class="bar"><span class="k" style="width:100%">Keystone 100%</span></div>
+      <span class="res"><b>38 claims · $9,505.84</b><br><span class="tagok">Attributable to Keystone</span></span></div>
+    <div class="mixrow"><span class="p">UV-600</span><div class="bar"><span class="k" style="width:50%">Keystone 50%</span><span class="b" style="width:50%">Bluewater 50%</span></div>
+      <span class="res"><b>16 claims · $3,970.28</b><br><span class="tagno">Supplier unresolved</span></span></div>
+  </div>
+  <p>58 of the 74 seal-kit claims from these builds (78%, $14,664.78) can be tied to Keystone. All 74 count toward the cohort claim rate.</p>
+  <div class="two">
+    <div><span class="pill t-warranty">Alerts: cohort level</span><ul>
+      <li>Claim rate per supplier uses single-supplier months first</li>
+      <li>Mixed months are separated by subtracting the other supplier's known rate</li>
+      <li>Exposure is labeled as a cohort estimate</li></ul></div>
+    <div><span class="pill t-shared">Recovery: claim level</span><ul>
+      <li>Only claims from single-supplier product-months</li>
+      <li>Mixed-month claims stay supplier unresolved, with count and cost shown</li>
+      <li>Production fix: serial-to-batch records</li></ul></div>
+  </div>
+</section>
+
+<section id="documents">
+  <div class="sec-head">
+    <div class="eyebrow">Unstructured data · AI extraction</div>
+    <h2>Supplier documents and the terms we extract</h2>
+    <p>Each production supplier has one agreement in <code>supplier_agreements/</code>. The extractor turns each document into one row of terms, and every value quotes the clause it came from.</p>
+  </div>
+
+  <div class="docgrid">
+    <article class="doc" aria-label="Example supplier agreement">
+      <div class="file">supplier_agreements/sqa_keystone-seal-works.md</div>
+      <h5>Supplier Quality Agreement</h5>
+      <p>Prairie Utility Vehicles ("Buyer") and Keystone Seal Works, <mark>supplier no. S-022</mark><span class="tag">supplier_id</span> ("Supplier"), MX. Effective 2025-01-01.</p>
+      <h5>4. Quality</h5>
+      <p>4.1 Supplier maintains IATF 16949 certification and ships with a certificate of conformance per lot.</p>
+      <h5>7. Warranty</h5>
+      <p>7.1 Supplier warrants each part for <mark>18 months from the date of manufacture</mark><span class="tag">window</span> of the end unit in which it is installed.</p>
+      <p class="gone">7.2 For field failures attributable to Supplier's parts, Supplier reimburses 100% of parts and dealer labor, labor at the hours actually claimed and capped at USD 90 per hour.</p>
+      <p class="gone">7.3 Recovery claims are submitted within 90 days after Buyer pays the dealer claim.</p>
+      <p>7.4 Freight, handling and administrative fees are not recoverable.</p>
+      <h5>Amendment No. 1 (effective 2025-06-01)</h5>
+      <p>Sections 7.2 and 7.3 are replaced as follows. Supplier reimburses <mark>80%</mark><span class="tag">recovery_pct</span> of <mark>parts and dealer labor</mark><span class="tag">labor_covered</span>, labor at the hours actually claimed and <mark>capped at USD 90 per hour</mark><span class="tag">labor_rate_cap</span>. Recovery claims must be submitted <mark>within 45 days after Buyer pays the dealer claim</mark><span class="tag">filing_deadline</span>; late claims are void. All other terms are unchanged.</p>
+    </article>
+
+    <div class="extract">
+      <div class="xh"><h3>supplier_terms row</h3><span class="pill t-ai">target output</span></div>
+      <div class="xrow"><span class="k">doc_file</span><span class="v">sqa_keystone-seal-works.md</span></div>
+      <div class="xrow"><span class="k">supplier_id</span><span class="v">S-022 <span class="ok">✓</span></span><span class="q">"supplier no. S-022" (from the text, not the file name)</span></div>
+      <div class="xrow"><span class="k">recovery_pct</span><span class="v">0.80 <span class="ok">✓</span> <span class="tag">amended</span></span><span class="q">"Amendment No. 1 … reimburses 80%" replaces 7.2 (100%)</span></div>
+      <div class="xrow"><span class="k">labor_covered</span><span class="v">true <span class="ok">✓</span></span><span class="q">"of parts and dealer labor"</span></div>
+      <div class="xrow"><span class="k">labor_rate_cap</span><span class="v">90 <span class="ok">✓</span></span><span class="q">"capped at USD 90 per hour"</span></div>
+      <div class="xrow"><span class="k">recovery_window_months</span><span class="v">18 <span class="ok">✓</span></span><span class="q">"7.1 … 18 months from the date of manufacture"</span></div>
+      <div class="xrow"><span class="k">filing_deadline_days</span><span class="v">45 <span class="ok">✓</span> <span class="tag">amended</span></span><span class="q">"within 45 days after Buyer pays" replaces 7.3 (90 days)</span></div>
+      <div class="xrow"><span class="k">review</span><span class="v">needs review</span><span class="q">two amended fields flagged; a person confirms the agreement before its terms value any claim</span></div>
+    </div>
+  </div>
+  <p class="muted" style="font-size:.9rem">The extractor is still a stub. The card shows the output it must produce, scored field by field against <code>truth_terms.csv</code>.</p>
+
+  <h3>Three wording styles in the sample</h3>
+  <div class="styles">
+    <div class="style"><span class="eyebrow">Prose clauses · 4 suppliers</span>
+      <pre>7.2 For field failures attributable to Supplier's parts, Supplier reimburses 100% of parts and dealer labor, labor … capped at USD 95 per hour.
+7.3 Recovery claims are submitted within 60 days after Buyer pays the dealer claim.</pre>
+      <p>Great Lakes Bearing, Northfield, Delta Fluid Power, Harbor Fuel.</p></div>
+    <div class="style"><span class="eyebrow">Amended · 2 suppliers</span>
+      <pre>Amendment No. 1 (effective 2025-06-01)
+Sections 7.2 and 7.3 are replaced as follows. Supplier reimburses 80% …</pre>
+      <p>Keystone Seal Works, Midland Brake. Reading only section 7.2 gives the wrong answer.</p></div>
+    <div class="style"><span class="eyebrow">Terms table · 3 suppliers</span>
+      <pre>| Recovery share   | 100%                |
+| Labor reimbursed | no                  |
+| Claim filing     | 90 days after paid  |</pre>
+      <p>Bluewater Seal, Ridgeway Drive, Summit Electric. A regex pass handles these.</p></div>
+  </div>
+
+  <h3>Extraction rules</h3>
+  <div class="rules">
+    <div><b>Every value quotes its clause</b><span>Stored as evidence JSON.</span></div>
+    <div><b>The latest amendment wins</b><span>An amendment replaces the clause it names.</span></div>
+    <div><b>Supplier comes from the text</b><span>The file name isn't trusted.</span></div>
+    <div><b>Regex first, then Claude</b><span>Without an API key, regex only. Model: claude-sonnet-5-5.</span></div>
+    <div><b>Blank over a guess</b><span>Unclear fields stay empty for the reviewer.</span></div>
+    <div><b>One review per agreement</b><span>Required before its terms value any claim.</span></div>
+  </div>
+</section>
+
+<section id="recovery">
+  <div class="sec-head">
+    <div class="eyebrow">Workflow states</div>
+    <h2>From alert to recovered money</h2>
+    <p>Afterlife computes the first three stages. People own the last two. Finance books the money outside the app.</p>
+  </div>
+  <div class="stages">
+    <div class="stage app"><span class="n">1 · APP</span><h3>Alert</h3><p>A part-and-lot cohort's claim rate stepped up.</p><span class="who">Supplier quality engineer reviews before the supplier is named</span></div>
+    <div class="stage app"><span class="n">2 · APP</span><h3>Opportunity</h3><p>Linked claim cost in the cohort, shown as a range. Never booked.</p><span class="who">Shown in the brief draft</span></div>
+    <div class="stage app"><span class="n">3 · APP</span><h3>Eligible</h3><ul>
+      <li>warranty claim, already paid</li><li>link ≥ recovery threshold, or confirmed</li><li>single-supplier lot</li><li>agreement reviewed</li><li>inside warranty window</li><li>before filing deadline</li></ul><span class="who">Computed per claim</span></div>
+    <div class="stage person"><span class="n">4 · PERSON</span><h3>Submitted</h3><p>Filed with the supplier. <code>recovery_status = submitted</code></p><span class="who">Warranty recovery manager</span></div>
+    <div class="stage person"><span class="n">5 · PERSON</span><h3>Settled</h3><p>Supplier credit received. <code>recovered_usd</code> &gt; 0</p><span class="who">Finance books it</span></div>
+  </div>
+
+  <h3>Two real claims through the eligibility gate</h3>
+  <div class="gates">
+    <div class="gatecard">
+      <div class="gh"><b>WC-2026-00024 · UV-400 · built 2026-04</b><span>"cust reports fluid under unit, cyl seals worn"</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Warranty claim, paid</span><span class="d">paid 2026-08-12</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Part link</span><span class="d">causal part named</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Single-supplier lot</span><span class="d">Keystone 100%</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Agreement reviewed</span><span class="d">Keystone, amended</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Inside 18-month window</span><span class="d">3 months in service</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Before filing deadline</span><span class="d">file by 2026-09-26</span></div>
+      <div class="out st-ok">Eligible: (28.78 + 212.50 labor) × 80% = $193.02</div>
+    </div>
+    <div class="gatecard">
+      <div class="gh"><b>WC-2026-00089 · UV-600 · built 2026-04</b><span>"hyd leak boom cyl, repl seal kit"</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Warranty claim, paid</span><span class="d">paid 2026-10-30</span></div>
+      <div class="gate pass"><span class="m">✓</span><span>Part link</span><span class="d">causal part named</span></div>
+      <div class="gate fail"><span class="m">✗</span><span>Single-supplier lot</span><span class="d">Keystone 50% · Bluewater 50%</span></div>
+      <div class="gate"><span class="m">·</span><span>Agreement reviewed</span><span class="d">supplier unknown</span></div>
+      <div class="gate"><span class="m">·</span><span>Inside window</span><span class="d">not evaluated</span></div>
+      <div class="gate"><span class="m">·</span><span>Before filing deadline</span><span class="d">not evaluated</span></div>
+      <div class="out st-part">Supplier unresolved: counts in the cohort rate ($360.49), not in a recovery claim</div>
+    </div>
+  </div>
+</section>
+
+<section id="evaluation">
+  <div class="sec-head">
+    <div class="eyebrow">Ready for demo when every row passes</div>
+    <h2>Evaluation gate</h2>
+    <p>Each step is scored on its own against the generated answer keys, so a strong match rate can't hide a weak attribution or a false alert.</p>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Check</th><th>Target</th><th>Today</th></tr></thead>
+      <tbody>
+        <tr><td>Purchase line → part, holdout companies</td><td>precision and recall ≥ 97%</td><td class="st-ok">97.8–100% (PR #5)</td></tr>
+        <tr><td>Claim → part, holdout companies</td><td>≥ 99% precision at the recovery threshold; recall reported</td><td class="st-pend">match_claims not built</td></tr>
+        <tr><td>Alert names the right supplier and first lot</td><td>Prairie and Ironridge, 3 seeds each</td><td class="st-part">sample passes (Keystone, PO-450005-010); generated data waits on generate_claims</td></tr>
+        <tr><td>Negatives stay quiet</td><td>Bluewater never flagged; Northwind 0 alerts</td><td class="st-part">Bluewater passes on sample; Northwind pending</td></tr>
+        <tr><td>False alerts on clean data</td><td>0 across 300 clean series and 3 seeds per company</td><td class="st-part">0 on 300 synthetic series; per company pending</td></tr>
+        <tr><td>Supplier-unresolved share</td><td>reported, with count and cost</td><td class="st-part">sample: 16 of 74 seal-kit claims (22%)</td></tr>
+        <tr><td>Agreement terms, field by field</td><td>100% on the 9 sample agreements, amendments included</td><td class="st-pend">extract_terms not built</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="sec-head">
+    <div class="eyebrow">Threads · functions · application</div>
+    <h2>How data flows to each thread and into the app</h2>
+    <p>Inputs on the left, then the functions that link and analyze them, the tables saved to results.duckdb, and the screens that read them. Hover or tap a box to trace what it feeds.</p>
+  </div>
+  <div class="flow-frame">
+    <div class="flow" id="flowgraph">
+      <svg class="edges" id="edges" aria-hidden="true"></svg>
+      <div class="col"><div class="ch">Inputs</div>
+        <div class="node" data-t="spend" id="in-spend" tabindex="0"><b>Spend cube</b><span>production_spend · service_spend · info_records</span></div>
+        <div class="node" data-t="spend" id="in-struct" tabindex="0"><b>Product structure</b><span>products · part_master · bom · builds</span></div>
+        <div class="node" data-t="spend" id="in-trace" tabindex="0"><b>build_supply</b><span>supplier lot per product-month</span></div>
+        <div class="node" data-t="shared" id="in-vocab" tabindex="0"><b>Vocabulary</b><span>abbreviations · failure_codes · dataset_info</span></div>
+        <div class="node" data-t="warranty" id="in-claims" tabindex="0"><b>warranty_claims</b><span>free text, ~60% without a part number</span></div>
+        <div class="node" data-t="ai" id="in-docs" tabindex="0"><b>supplier_agreements/</b><span>documents</span></div>
+      </div>
+      <div class="col"><div class="ch">Link &amp; extract</div>
+        <div class="node" data-t="spend" id="l-spend" tabindex="0"><b>match_spend.py</b><span>PO line → part</span></div>
+        <div class="node" data-t="shared" id="l-norm" tabindex="0"><b>match.normalize()</b><span>text cleanup, company shorthand</span></div>
+        <div class="node" data-t="warranty" id="l-claims" tabindex="0"><b>match_claims.py</b><span>claim → causal part</span></div>
+        <div class="node" data-t="ai" id="l-extract" tabindex="0"><b>extract_terms.py</b><span>agreement → recovery terms</span></div>
+      </div>
+      <div class="col"><div class="ch">Analyze</div>
+        <div class="node" data-t="spend" id="a-cost" tabindex="0"><b>cost.py</b><span>lifecycle cost, spare-part markups</span></div>
+        <div class="node" data-t="warranty" id="a-detect" tabindex="0"><b>detect.py</b><span>claim rates, alerts by supplier and lot</span></div>
+        <div class="node" data-t="shared" id="a-eval" tabindex="0"><b>evaluate.py</b><span>scores against answer keys</span></div>
+      </div>
+      <div class="col"><div class="ch">results.duckdb</div>
+        <div class="node" data-t="shared" id="o-links" tabindex="0"><b>links</b><span>record → part, method, confidence, evidence</span></div>
+        <div class="node" data-t="spend" id="o-cost" tabindex="0"><b>lifecycle_cost · spare_markups</b><span>$ per product; $ each, production vs service</span></div>
+        <div class="node" data-t="warranty" id="o-alerts" tabindex="0"><b>claim_rates · alerts</b><span>part, supplier, lot, ratio, q-value, exposure</span></div>
+        <div class="node" data-t="ai" id="o-terms" tabindex="0"><b>supplier_terms</b><span>terms, quotes, review status</span></div>
+        <div class="node" data-t="shared" id="o-acc" tabindex="0"><b>accuracy · runs</b><span>scores; run_id, model, inputs</span></div>
+      </div>
+      <div class="col"><div class="ch">App: API → screen</div>
+        <div class="node" data-t="spend" id="s-over" tabindex="0"><b>Overview</b><span>/overview · /markups · /accuracy</span></div>
+        <div class="node" data-t="shared" id="s-links" tabindex="0"><b>Linking explorer</b><span>/links · review queue</span></div>
+        <div class="node" data-t="warranty" id="s-alerts" tabindex="0"><b>Early warning</b><span>/alerts · /claim-rates/{part}</span></div>
+        <div class="node" data-t="shared" id="s-brief" tabindex="0"><b>Supplier brief (draft)</b><span>POST /brief/{supplier}</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="flowhint">On a phone, scroll the diagram sideways.</p>
+
+  <div class="lanes">
+    <div class="lane" style="--c: var(--spend)"><span class="pill t-spend">Spend thread · Asher</span><ul>
+      <li>Generates products, BOMs, builds, purchases, build_supply</li>
+      <li>Links purchase lines to parts</li>
+      <li>Lifecycle cost and spare-part markups → Overview</li>
+      <li>Brief: price-harmonization ask</li></ul></div>
+    <div class="lane" style="--c: var(--warranty)"><span class="pill t-warranty">Warranty thread · Brandon</span><ul>
+      <li>Generates claims, the planted spike, agreements</li>
+      <li>Links claims to the failed part</li>
+      <li>Alerts by supplier and lot → Early warning</li>
+      <li>Extracts terms; brief: warranty recovery ask</li></ul></div>
+    <div class="lane" style="--c: var(--shared)"><span class="pill t-shared">Where they meet</span><ul>
+      <li><b>build_supply</b>: spend data that tells warranty which lot was used</li>
+      <li><b>links</b>: one table for both threads' matches</li>
+      <li><b>Cost rule</b>: claim cost counted once, in warranty</li>
+      <li><b>Supplier brief</b>: alert, terms and markups for one supplier</li></ul></div>
+  </div>
+</section>
+
+<footer>
+  <span>Version 2 · Nov 14, 2026 · repo ast3wart/buffalo-kearney-hackathon · contract v4 (PR #6) · rows from data/sample (scripts/make_sample.py).</span>
+  <span>All companies and rows are fictional sample data. SAP raw values in the adapter table are illustrative.</span>
+</footer>
+</div>
+
+<script>
+(function () {
+  // flow graph connectors
+  var EDGES = [
+    ["in-spend", "l-spend"], ["in-struct", "l-spend"], ["in-vocab", "l-norm"], ["l-norm", "l-spend"], ["l-norm", "l-claims"],
+    ["in-claims", "l-claims"], ["in-struct", "l-claims"], ["in-docs", "l-extract"],
+    ["l-spend", "a-cost"], ["in-spend", "a-cost"], ["l-claims", "a-detect"], ["in-trace", "a-detect"], ["in-struct", "a-detect"],
+    ["l-spend", "a-eval"], ["l-claims", "a-eval"], ["l-extract", "a-eval"],
+    ["l-spend", "o-links"], ["l-claims", "o-links"], ["a-cost", "o-cost"], ["a-detect", "o-alerts"], ["l-extract", "o-terms"], ["a-eval", "o-acc"],
+    ["o-cost", "s-over"], ["o-acc", "s-over"], ["o-links", "s-links"], ["o-alerts", "s-alerts"],
+    ["o-alerts", "s-brief"], ["o-cost", "s-brief"], ["o-terms", "s-brief"]
+  ];
+  var flow = document.getElementById("flowgraph");
+  var svg = document.getElementById("edges");
+  var NS = "http://www.w3.org/2000/svg";
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var box = flow.getBoundingClientRect();
+    EDGES.forEach(function (e) {
+      var a = document.getElementById(e[0]), b = document.getElementById(e[1]);
+      if (!a || !b) return;
+      var ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      var sameCol = Math.abs(ra.left - rb.left) < 4;
+      var t = "e-" + a.getAttribute("data-t");
+      var x1, y1, x2, y2, d;
+      if (sameCol) { // vertical hop inside one column (normalize → matchers)
+        x1 = ra.right - box.left; y1 = ra.top + ra.height / 2 - box.top;
+        x2 = rb.right - box.left; y2 = rb.top + rb.height / 2 - box.top;
+        d = "M" + x1 + "," + y1 + " C" + (x1 + 26) + "," + y1 + " " + (x2 + 26) + "," + y2 + " " + x2 + "," + y2;
+      } else {
+        x1 = ra.right - box.left; y1 = ra.top + ra.height / 2 - box.top;
+        x2 = rb.left - box.left; y2 = rb.top + rb.height / 2 - box.top;
+        var dx = Math.max(30, (x2 - x1) / 2);
+        d = "M" + x1 + "," + y1 + " C" + (x1 + dx) + "," + y1 + " " + (x2 - dx) + "," + y2 + " " + x2 + "," + y2;
+      }
+      var p = document.createElementNS(NS, "path");
+      p.setAttribute("d", d); p.setAttribute("class", t);
+      p.dataset.a = e[0]; p.dataset.b = e[1];
+      if (a.getAttribute("data-t") === "ai") p.setAttribute("stroke-dasharray", "5 4");
+      svg.appendChild(p);
+      var c = document.createElementNS(NS, "circle");
+      c.setAttribute("cx", x2); c.setAttribute("cy", y2); c.setAttribute("r", 3.2); c.setAttribute("class", t);
+      c.dataset.a = e[0]; c.dataset.b = e[1];
+      svg.appendChild(c);
+    });
+  }
+  function focus(id) {
+    var linked = {}; linked[id] = true;
+    // follow edges both ways, one hop upstream and all the way downstream
+    var changed = true, down = {}; down[id] = true;
+    while (changed) { changed = false;
+      EDGES.forEach(function (e) { if (down[e[0]] && !down[e[1]]) { down[e[1]] = true; changed = true; } }); }
+    EDGES.forEach(function (e) { if (e[1] === id) linked[e[0]] = true; });
+    Object.keys(down).forEach(function (k) { linked[k] = true; });
+    flow.classList.add("focus");
+    flow.querySelectorAll(".node").forEach(function (n) { n.classList.toggle("on", !!linked[n.id]); });
+    svg.querySelectorAll("path, circle").forEach(function (p) {
+      var on = (down[p.dataset.a] && down[p.dataset.b]) || p.dataset.b === id;
+      p.classList.toggle("on", !!on);
+    });
+  }
+  function clear() { flow.classList.remove("focus"); }
+  flow.querySelectorAll(".node").forEach(function (n) {
+    n.addEventListener("mouseenter", function () { focus(n.id); });
+    n.addEventListener("mouseleave", clear);
+    n.addEventListener("focus", function () { focus(n.id); });
+    n.addEventListener("blur", clear);
+    n.addEventListener("click", function () { focus(n.id); });
+  });
+  draw();
+  if (window.ResizeObserver) new ResizeObserver(draw).observe(flow);
+  else window.addEventListener("resize", draw);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+})();
+</script>
+
+</body>
+</html>

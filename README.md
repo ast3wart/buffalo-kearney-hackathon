@@ -27,6 +27,7 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 | Handoffs between us (two inboxes) | [docs/team/handoffs/](docs/team/handoffs/README.md): [to Brandon](docs/team/handoffs/to-brandon.md) · [to Asher](docs/team/handoffs/to-asher.md) |
 | **Git workflow (batch reviews at checkpoints) and setup** | [docs/team/workflow.md](docs/team/workflow.md) |
 | **The data formats (the contract between us)** | [docs/build/data-contract.md](docs/build/data-contract.md) |
+| **Data map: sources, SAP fields, example rows, attribution, recovery workflow, data flow** (download and open in a browser) | [docs/build/data-map.html](docs/build/data-map.html) |
 | How the pieces fit | [docs/build/architecture.md](docs/build/architecture.md) |
 | Real-world numbers (SEC, NHTSA) | [docs/research/data-sources.md](docs/research/data-sources.md) |
 | **Warranty accounting rules (exposure vs. accrual, who decides what)** | [docs/research/warranty-accounting.md](docs/research/warranty-accounting.md) |
