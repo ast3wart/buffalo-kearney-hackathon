@@ -15,10 +15,10 @@ Use this when you hand something to the other person or change something they de
 | When | From → To | What |
 |---|---|---|
 | Fri night | both | Data contract agreed (`docs/build/data-contract.md`) |
-| Sat ~12:30 | A → B | First `data/generated/` run plus `links.csv` from exact and failure-code matching |
-| Sat ~6 PM | A → B | Final `links.csv` + accuracy numbers for the deck |
-| Sat ~6 PM | B → A | App running end to end, so A can sanity-check the numbers |
-| Sat ~10 PM | B → A | Deck draft for review |
+| Fri night | both | API contract agreed (`docs/build/api.md`), app layout committed |
+| Sat ~12:30 | 💲 → 🛠 | `generate_spend` output (bom, builds) so the claims generator can use the real BOM |
+| Sat ~6 PM | both | Full `afterlife.run` on generated data, both screens live, accuracy numbers |
+| Sat ~10 PM | 💲 → 🛠 | Deck draft for review |
 
 ## Log
 _(nothing yet)_

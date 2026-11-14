@@ -1,34 +1,48 @@
-# Roles: who does what
+# Roles: split by thread, not by layer
 
-> **Decide tonight:** put a name next to each role. Then each of you reads your section and the [data contract](../build/data-contract.md).
+Each person owns **one complete thread**: fake data → matching → insight → API endpoint → screen → their half of the brief → their part of the pitch. Both write Python *and* TypeScript from hour one, and neither waits on the other.
 
-## Role A: Data & Matching (owner: **TBD**)
-*Builds the "is it real and does it work" half. Best fit: whoever is stronger at Python and data wrangling.*
-- [ ] `afterlife/generate.py`: realistic data with planted links and a failure spike (M1)
-- [ ] `afterlife/match.py`: exact → failure code + BOM → fuzzy (M2)
-- [ ] `afterlife/evaluate.py`: accuracy numbers (M3)
-- [ ] `scripts/fetch_sec_warranty.py` → calibration numbers for the generator and the SEC slide
-- [ ] README "how to run" section
-- [ ] Pitch: presents the **"how it works + accuracy"** part
+> **Decide tonight:** who takes which thread. See "How to choose" at the bottom.
 
-## Role B: Signals, Brief & App (owner: **TBD**)
-*Builds the "so what" half people see. Best fit: whoever is stronger at UI, storytelling, and LLM prompting.*
-- [ ] `afterlife/detect.py`: early-warning alerts (M4)
-- [ ] `afterlife/cost.py`: build vs. lifecycle cost (M5)
-- [ ] `afterlife/brief.py`: supplier brief (M6)
-- [ ] `app/streamlit_app.py`: 3 screens (M7)
-- [ ] Deck
-- [ ] Pitch: presents the **hook, demo, and $ impact**
+## 🛠 Warranty thread (owner: **TBD**)
+*The novel part: claims with no part number, and the early-warning spike. Higher risk, bigger demo moment.*
+- [ ] `afterlife/generate_claims.py`: failure codes, messy claims, planted spike
+- [ ] `afterlife/match_claims.py`: claim → causal part
+- [ ] `afterlife/detect.py`: claim rates and spike alerts
+- [ ] `brief.warranty_section()`: warranty recovery ask
+- [ ] API: `/alerts`, `/claim-rates/{part_no}`
+- [ ] Screen: `/alerts` (Early warning, with the claim-rate chart)
+- [ ] Pitch: **the alert moment**
+- [ ] Velocity prompts: 2, 4, 5
 
-## Shared
-- [ ] Agree on the data contract (Fri night, together, 30 min)
-- [ ] Integration #1 (Sat 12:30) and #2 (Sat 6 PM)
-- [ ] Velocity: split the prompts in [../research/velocity.md](../research/velocity.md)
-- [ ] Mentor questions (see [../research/open-questions.md](../research/open-questions.md))
-- [ ] Two full practice runs of the pitch
-- [ ] Submission (Sun 8:30 AM)
+## 💲 Spend thread (owner: **TBD**)
+*The track's core: BOM ↔ spend linking, true cost, spare-part markups. Lower risk, the base everything sits on.*
+- [ ] `afterlife/generate_spend.py`: products, BOMs, builds, production and service purchase lines
+- [ ] `afterlife/match_spend.py`: purchase line → part, plus unit conversion
+- [ ] `afterlife/cost.py`: build vs. lifecycle cost, spare-part markups
+- [ ] `brief.pricing_section()`: price harmonization ask
+- [ ] API: `/overview`, `/markups`
+- [ ] Screen: `/` (Overview)
+- [ ] Pitch: **the hook + $ impact**
+- [ ] Velocity prompts: 3, 6, 7
+
+## Shared (split as you go)
+- [ ] App layout, navigation, visual style (tonight, together, 30 min)
+- [ ] `match.normalize` + abbreviation list
+- [ ] `evaluate.py` + `/accuracy` (each scores their own source_table)
+- [ ] `/links` + Linking explorer screen
+- [ ] `brief.make_brief` + `POST /brief` + Brief screen
+- [ ] Velocity prompts 1 and 8, deck, two practice runs, submission
+
+## Why the threads are balanced
+The warranty thread has the harder matching and the flashiest result. The spend thread has more data to generate (spend has to exist before claims can reference the BOM) and owns the screen people see first. **Dependency:** the claims generator needs `bom` + `builds` from the spend generator. Until then, the warranty thread uses `data/sample/`, which has the same columns.
+
+## How to choose
+- Whoever is more excited about **messy text + statistics**, and wants the "wow" demo beat → 🛠 Warranty.
+- Whoever is more excited about **data modeling + money**, and wants to open the pitch → 💲 Spend.
+- Whoever is stronger at **frontend** should also take the lead on the shared app layout, whichever thread they own.
 
 ## Rules of thumb
-- If you're blocked for more than 20 min, say so in chat. Don't grind silently.
-- Anything that changes the data contract gets logged in [handoffs.md](handoffs.md).
-- Code against `data/sample/` until the generator is ready.
+- If you're blocked for more than 20 min, say so in chat.
+- A change to the data contract or the API contract gets logged in [handoffs.md](handoffs.md).
+- Before pushing: `pytest -q`, and `npx tsc --noEmit` in `web/`.

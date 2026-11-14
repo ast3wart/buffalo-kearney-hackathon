@@ -1,6 +1,6 @@
 # Data contract
 
-**This file is the agreement between Role A and Role B.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs.md](../team/handoffs.md)).
+**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs.md](../team/handoffs.md)).
 
 All files are CSV and UTF-8. Dates are `YYYY-MM-DD`, months are `YYYY-MM`, money is USD.
 Column names follow common SAP tables (noted in brackets) so Kearney judges recognize them.
@@ -98,8 +98,8 @@ Column names follow common SAP tables (noted in brackets) so Kearney judges reco
 | start_build_month | str | `2026-03` |
 | multiplier | float | `3.0` |
 
-## Outputs (what our pipeline produces)
-### `links.csv`: Role A → Role B
+## Outputs (tables in results.duckdb)
+### `links`: both threads (spend rows from match_spend, claim rows from match_claims)
 | column | type | notes |
 |---|---|---|
 | source_table | str | as above |
@@ -108,7 +108,7 @@ Column names follow common SAP tables (noted in brackets) so Kearney judges reco
 | method | str | `exact_pn` / `failure_code_bom` / `fuzzy_text` / `llm` |
 | confidence | float | 0–1 |
 
-### `alerts.csv`: Role B
+### `alerts`: 🛠 Warranty thread
 | column | type |
 |---|---|
 | part_no, supplier_id | str |

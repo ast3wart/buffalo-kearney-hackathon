@@ -11,7 +11,7 @@ Two people, about 20 working hours each, submission due **Sun 8:30 AM**.
 | M4 | Early warning | `alerts.csv`: parts whose claims per 1,000 units jump vs. baseline, across products, by build month |
 | M5 | Cost | Build cost vs. lifecycle cost (spares + warranty) per product |
 | M6 | Brief | Markdown supplier brief: spike, $ exposure, spare-part markup line |
-| M7 | App | Streamlit, 3 screens: Linking summary → Alert → Brief |
+| M7 | App | Next.js, 4 screens (Overview, Linking explorer, Early warning, Brief) over FastAPI. See `docs/build/api.md` |
 
 ## Stretch (only after M1–M7 work end to end)
 - LLM tie-breaker for low-confidence claim matches
@@ -20,7 +20,7 @@ Two people, about 20 working hours each, submission due **Sun 8:30 AM**.
 - Better charts (claim rate over build months with the spike highlighted)
 
 ## Cut (don't build)
-Embeddings, review UI, Sankey, tariff simulator, multi-level BOM explosion, auth, a database.
+Streamlit, embeddings, review UI, Sankey, auth, deploying (unless the submission requires a URL), tariff simulator, multi-level BOM explosion, a database server (DuckDB file only).
 
 ## Timeboxes
 - Claim matching: **stop tuning at Sat 5 PM**, and ship whatever accuracy we have.

@@ -1,30 +1,25 @@
-"""Linking engine. Owner: Role A. Milestone M2.
+"""Linking engine (orchestrator + shared text helpers). Milestone M2.
 
-Output: links.csv (source_table, source_id, part_no, method, confidence).
-Strategy: docs/build/architecture.md ("How the claim matching works").
+  match_spend.py  [SPEND]    purchase lines -> part_no
+  match_claims.py [WARRANTY] claims -> causal part_no
+Output: links (source_table, source_id, part_no, method, confidence).
 """
+import re
 import pandas as pd
 
-ABBREVIATIONS = {  # expand before fuzzy matching; grow this list from the data
+ABBREVIATIONS = {  # shared: both threads grow this list
     "BRG": "BEARING", "HYD": "HYDRAULIC", "CYL": "CYLINDER", "REPL": "REPLACED",
-    "ASSY": "ASSEMBLY", "FLTR": "FILTER", "GSKT": "GASKET",
+    "ASSY": "ASSEMBLY", "FLTR": "FILTER", "GSKT": "GASKET", "IGN": "IGNITION", "FRT": "FRONT",
 }
 
 
 def normalize(text: str) -> str:
-    """Uppercase, split punctuation, expand abbreviations."""
-    raise NotImplementedError  # TODO(A)
-
-
-def link_spend(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
-    """production_spend + service_spend lines -> part_no."""
-    raise NotImplementedError  # TODO(A)
-
-
-def link_claims(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
-    """warranty_claims -> causal part_no via causal_part_no / failure code + BOM / fuzzy text."""
-    raise NotImplementedError  # TODO(A)
+    """Uppercase, split on punctuation, expand abbreviations. Shared by both matchers."""
+    tokens = re.split(r"[^A-Z0-9.]+", str(text).upper())
+    return " ".join(ABBREVIATIONS.get(t, t) for t in tokens if t)
 
 
 def link_all(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:
+    from afterlife.match_spend import link_spend
+    from afterlife.match_claims import link_claims
     return pd.concat([link_spend(tables), link_claims(tables)], ignore_index=True)

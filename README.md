@@ -32,30 +32,38 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 | Demo script / judge Q&A | [docs/pitch/](docs/pitch/) |
 | How we picked the track | [docs/archive/track-decision.md](docs/archive/track-decision.md) |
 
-## 📁 Code layout
+## 🧱 Stack
+Python (pandas, DuckDB, rapidfuzz) → `results.duckdb` → FastAPI → Next.js 15 + Tailwind + Recharts · Claude API for the brief.
+Details: [docs/build/architecture.md](docs/build/architecture.md) · endpoints and screens: [docs/build/api.md](docs/build/api.md)
+
+## 📁 Code layout (🛠 = Warranty thread, 💲 = Spend thread)
 ```
-afterlife/            the pipeline (a Python package)
-  io.py               shared loader: uses data/generated/, falls back to data/sample/
-  generate.py   [A]   synthetic data with planted links and a failure spike
-  match.py      [A]   linking engine
-  evaluate.py   [A]   precision / recall vs planted answers
-  detect.py     [B]   early-warning spikes
-  cost.py       [B]   build vs lifecycle cost, spare-part markups
-  brief.py      [B]   supplier brief
-app/streamlit_app.py [B]  demo UI
-data/
-  sample/             small hand-shaped dataset (commit), to build against now
-  generated/          output of generate.py (gitignored)
-  reference/          real public data (SEC warranty 2024)
-scripts/              make_sample.py, fetch_sec_warranty.py
+afterlife/                  Python pipeline
+  io.py                     shared loader (data/generated/ → falls back to data/sample/)
+  run.py                    runs everything → results.duckdb
+  generate.py               orchestrates the two generators below
+  generate_spend.py    💲   products, BOMs, builds, purchase lines
+  generate_claims.py   🛠   failure codes, warranty claims, planted spike
+  match.py                  shared normalize() + link_all()
+  match_spend.py       💲   purchase line → part
+  match_claims.py      🛠   claim → causal part
+  detect.py            🛠   spike detection
+  cost.py              💲   build vs lifecycle cost, spare-part markups
+  evaluate.py               accuracy vs planted answers (shared)
+  brief.py                  supplier brief (🛠 warranty section, 💲 pricing section)
+api/main.py                 FastAPI (reads results.duckdb)
+web/                        Next.js app (types generated from the API)
+data/sample/                small dataset to build against now
+data/reference/             real SEC warranty data
+scripts/                    make_sample.py, fetch_sec_warranty.py, export_openapi.py
 tests/
 ```
 
 ## ▶️ Run
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python scripts/make_sample.py        # (already committed) rebuild data/sample/
-pytest -q
-streamlit run app/streamlit_app.py
+python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+(cd web && npm install)
+python -m afterlife.run                      # → results.duckdb
+uvicorn api.main:app --reload --port 8000    # API: localhost:8000/docs
+cd web && npm run dev                        # app: localhost:3000
 ```

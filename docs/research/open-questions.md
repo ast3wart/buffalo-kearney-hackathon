@@ -8,6 +8,8 @@
 - [ ] Does the submission need a public repo?
 
 ## For us (decide tonight)
-- [ ] Who is Role A and who is Role B?
+- [ ] Who owns 🛠 Warranty and who owns 💲 Spend?
+- [ ] Visual style for the app (colors, font, component set)
+- [ ] Does the submission need a live URL? (If so, deploy: Vercel for web/, Railway or Render for api/)
 - [ ] Which LLM API for the brief, and who has a key?
 - [ ] Fictional company name and the 3 products

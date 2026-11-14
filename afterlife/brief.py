@@ -1,4 +1,7 @@
-"""Supplier brief. Owner: Role B. Milestone M6.
+"""Supplier brief. Milestone M6. Shared file, split by section:
+  Ask 1 (warranty recovery)  -> [WARRANTY thread] warranty_section()
+  Ask 2 (price harmonization) -> [SPEND thread] pricing_section()
+
 
 Fill TEMPLATE from numbers first (works with no API key); optionally
 polish with an LLM (ANTHROPIC_API_KEY in .env). Never let the LLM invent numbers.
@@ -18,5 +21,14 @@ Estimated exposure: **${exposure_usd:,.0f}**.
 """
 
 
+def warranty_section(supplier_id: str, alerts, tables) -> dict:
+    raise NotImplementedError  # TODO(WARRANTY)
+
+
+def pricing_section(supplier_id: str, markups, tables) -> dict:
+    raise NotImplementedError  # TODO(SPEND)
+
+
 def make_brief(supplier_id: str, alerts, markups, tables) -> str:
-    raise NotImplementedError  # TODO(B)
+    """Template first (no API key needed); optional Claude polish streams via POST /brief."""
+    raise NotImplementedError  # TODO(shared)

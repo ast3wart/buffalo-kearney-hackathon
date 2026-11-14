@@ -1,7 +1,7 @@
 """Write the SMALL hand-shaped sample dataset to data/sample/.
 
-This is NOT the real generator (that's afterlife/generate.py, Role A).
-It exists so Role B can build alerts / cost / brief / app from hour 0.
+This is NOT the real generator (that's afterlife/generate.py).
+It exists so both threads can build detection, cost, brief, and screens from hour 0.
 Fictional company: Prairie Utility Vehicles. Everything follows docs/build/data-contract.md.
 
 Run: python scripts/make_sample.py

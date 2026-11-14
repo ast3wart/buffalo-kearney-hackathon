@@ -1,4 +1,4 @@
-"""Accuracy vs planted truth. Owner: Role A. Milestone M3.
+"""Accuracy vs planted truth. Owner: shared (each thread scores its own source_table). Milestone M3.
 
 Run: python -m afterlife.evaluate
 Prints precision / recall per source_table and per method.
@@ -7,7 +7,7 @@ import pandas as pd
 
 
 def score(links: pd.DataFrame, truth: pd.DataFrame) -> pd.DataFrame:
-    raise NotImplementedError  # TODO(A)
+    raise NotImplementedError  # TODO(shared)
 
 
 if __name__ == "__main__":

@@ -25,7 +25,7 @@ No dataset was provided, so we **generate** one and calibrate it to real public 
 - Use: shape the **mix of failure systems** in generated claims so it isn't uniform random.
 - Note: some make/model strings return 0 results (e.g. FORD F-150), so try variants.
 
-## To check by hand (Role A, about 20 min)
+## To check by hand (💲 Spend thread, about 20 min)
 - **Spare-part markups:** pick 5–10 common parts (bearing, seal kit, filter, belt). Compare an OEM parts-store price to a general distributor price. Record them in `data/reference/spare_markups.csv` (part, oem_price, distributor_price, source_url). This backs up the 2–5× claim.
 
 ## Realism checklist for the generator
