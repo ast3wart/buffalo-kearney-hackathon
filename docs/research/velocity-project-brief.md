@@ -33,22 +33,25 @@ A manufacturer's **BOMs** (engineering), **production purchases** (procurement),
 **What Afterlife does NOT do:** it doesn't determine supplier fault or liability. A failure code is a symptom, not a cause, and recovery depends on returned-part analysis, engineering review, and contract terms. Dollar figures are **recovery opportunities** (linked claim cost × a 25–50% *scenario* capture rate), not money owed.
 
 ## Three synthetic companies (to show it generalizes)
-| Company | Industry | Warranty % of revenue (calibrated to 2024 SEC filer) | Role |
-|---|---|---|---|
-| Prairie Utility Vehicles | Utility vehicles, compact tractors | 2.5% (Polaris 2.56%) | Tune matching here, main demo spike |
-| Ironridge Compact Equipment | Skid steers, mini excavators | 2.9% (CNH Industrial 2.87%) | Holdout test, different spike |
-| Northwind Climate Systems | Commercial rooftop HVAC | 1.5% (Carrier 1.54%) | Holdout test, **no spike** (false-alarm control) |
+| Company | Industry | Warranty % of revenue (calibrated to 2024 SEC filer) | Role | What makes it different |
+|---|---|---|---|---|
+| Prairie Utility Vehicles | Utility vehicles, compact tractors | 2.5% (Polaris 2.56%) | Tune matching here, main demo spike | ERP shorthand (`BRG,BALL,6204-2RS`), `100-4471-02` part numbers |
+| Ironridge Compact Equipment | Skid steers, mini excavators | 2.9% (CNH Industrial 2.87%) | Holdout test, different spike | Arrives as a **raw SAP extract** (EKPO/EKKO/LFA1/MARA field names). Has an **acquired plant** on a legacy ERP with no internal part numbers. `IR-04471` part numbers |
+| Northwind Climate Systems | Commercial rooftop HVAC | 1.5% (Carrier 1.54%) | Holdout test, **no spike** (false-alarm control) | HVAC vocabulary: failure codes `REF-ELP`, `CMP-FTS`, `CMP-NOI`, `FAN-VIB`, shorthand `CMPR`/`TXV`/`RTU`, `NW4471A` part numbers |
 
 Builds run Jan 2025 – Sep 2026, data as of Oct 31 2026, 24-month warranty.
 
-## Key design decisions (locked at our first checkpoint)
+## Key design decisions (data contract v3, Sat Nov 14)
 - **Months in service (MIS):** spikes are measured as claims within the first 3 months in service per 1,000 units built, using only build months old enough to have 3 months of data. Raw claims-by-build-month is also shown, to illustrate why it misleads: recent builds look artificially healthy.
 - **SAP-realistic spend data:**
   - an internal part number (SAP material number) on ~85% of production lines but only ~15% of service lines
   - a supplier-part-number crosswalk (SAP purchasing info records) for production suppliers only
   - prices "per N units" (SAP price unit)
 - **Failure codes** follow ISO 14224-style failure modes (`SYSTEM-MODE`, e.g. `HYD-ELP` = hydraulic external leakage). The mode is the observed symptom, not the cause.
-- **21 part categories:** bearing, seal, gasket, hose, fitting, hydraulic_component, filter, belt, gear, wheel_tire, brake, cooling, fuel, electrical, harness, sensor, battery, lighting, fastener, structural, plastic.
+- **24 part categories:** bearing, seal, gasket, hose, fitting, hydraulic_component, filter, belt, gear, wheel_tire, brake, cooling, fuel, electrical, harness, sensor, battery, lighting, fastener, structural, plastic, compressor, refrigerant_component, motor. **16 failure codes** in the union, and each company uses a subset.
+- **Real supplier attribution:** key parts are **dual-sourced**, and lot records (`build_supply`) show which supplier's purchase order each product/month consumed. The planted spike sits on **one supplier's lots from a specific PO onward**, so the alert names the supplier *and* the lot. In the sample data, seal-kit claims jump about 3× on builds using only Keystone's April lot, and about 2× on a product using it half the time.
+- **Evidence on every link:** each link records its method (exact part number, supplier part-number crosswalk, spec code, failure code + BOM, fuzzy text, LLM tie-break, human), a confidence, the source system, a JSON of the signals that agreed, and the pipeline run that produced it.
+- **Not overfit, enforced:** each company has its own abbreviations and failure-code subset as *data*, and a test fails if the matching code mentions any company, part or supplier ID.
 - **Accuracy is measured:** the generator plants the correct links, so we report precision and recall. We tune on Prairie and report holdout accuracy on the other two.
 - **Stack:** Python (pandas, DuckDB, rapidfuzz) → FastAPI → Next.js app with 4 screens (Overview, Linking explorer, Early warning, Supplier brief). Claude API writes the brief.
 
