@@ -6,7 +6,10 @@ Log new research here, newest first. Ideas to run:
 - How do plants source discontinued industrial parts (controllers, drives, HMIs), and what goes wrong (counterfeits, lead times)?
 - Equipment diligence and post-deal CapEx surprises: how often do they happen, and how big are they?
 
-*(no entries yet)*
+### Sat Nov 14, afternoon · 3 Research chats for market validation (summary in [market-validation.md](market-validation.md))
+1. **"Manufacturing Equipment Risk Costs"**: cost of not knowing equipment condition/obsolescence. Found: downtime is large (Siemens $1.4T / 11% revenue F500; 52% of smaller US firms ≥ $50k/h), one plant audit had 83% of automation assets discontinued or end-of-life, **no measured rate of surprise post-close CapEx**, no defensible emergency-parts premium.
+2. **"Manufacturing Equipment Acquisition Diligence"**: how diligence is done and where it falls short. Found: appraisal $2–15k+, operational diligence $15–25k; specialist controls diligence (Joltek, 5–7 days) and OEM installed-base audits already exist; gap = fast, vendor-neutral, evidence-backed component + 3–5-yr CapEx that feeds advisers' reports; no published market size; sell as add-on through advisers.
+3. **"Installed-Base Audits Market Opportunity"**: own-plant / PE-portfolio market. Found: US MRO ~$93B; 22% of MRO stock unused 5+ yrs; PLC lead times 10–24 wks; Section 232 machinery talks with tariffs in reserve; PE roll-up savings cases ($8.5M/yr spares, €10M/yr procurement). Verdict: recurring own-plant problem is bigger than one-off diligence.
 
 ---
 ## Afterlife (previous project): our earlier Velocity use, kept as a record

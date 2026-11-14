@@ -27,6 +27,7 @@ The evidence sits behind every number. After the deal, the same scan becomes a *
 | **How the system works + roadmap**: registry, sourcing, PE portfolio, phases | [docs/plan/roadmap-equipment-xray.md](docs/plan/roadmap-equipment-xray.md) |
 | Handoffs between us (two inboxes) | [docs/team/handoffs/](docs/team/handoffs/README.md): [to Brandon](docs/team/handoffs/to-brandon.md) · [to Asher](docs/team/handoffs/to-asher.md) |
 | Git workflow | [docs/team/workflow.md](docs/team/workflow.md) |
+| **Is the problem big enough? Market validation + recommendation** | [docs/research/market-validation.md](docs/research/market-validation.md) |
 | Velocity research log (required) | [docs/research/velocity.md](docs/research/velocity.md) |
 
 ## 🧭 Status
