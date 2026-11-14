@@ -25,6 +25,13 @@
     - Add the **own-plant number**: **25,799 US plants with 100+ employees** (Census 2022) → **$13–32M ARR at 5% adoption**, with a $258–645M ceiling.
     - Pick **one deal add-on price** ($10–20k fits the consulting breakeven; "low thousands" doesn't).
   - **Slide 5 (Customer):** the trigger is "plant risk / CapEx planning *or* an acquisition", not only an acquisition.
+- **KEEP the liquidity angle (Asher: it's important).** Keep it in doc 03, doc 08 and appendix A3, and give it a main-deck mention (e.g. on the business-model or why-now slide), not only the appendix:
+  - faster, cleaner exits (a seller scans before a sale)
+  - cash tied up in idle spares
+  - targeted instead of blanket CapEx
+  - verified collateral (stretch)
+
+  It works for both doors: owners free up cash from their own plants, and PE frees up cash across the portfolio and at exit. Keep the ⚠️ "hypothesis" label until research backs it. **Running doc 08 (the deep-research prompt) is yours** (money thread). It's what turns the hypothesis into numbers. I also added a liquidity section to the roadmap.
 
 ### Sat Nov 14, ~4:45 PM · Merged your pivot plan (#13) + adopted your schema; one change to the split
 **Status:** 🆕 new · PR #12

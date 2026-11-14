@@ -40,6 +40,21 @@
 | Value to each plant | **$10k / $30k / $60k a year** that can be audited (less spares carrying cost, fewer rush buys), plus **$100–400k one-time** spares released. **Downtime avoided not counted** (upside). | Velocity scenario; vendor cases |
 | Upside beyond that | Downtime avoided, a sourcing take-rate on **~$93B US MRO spend**, PE portfolio licenses, smaller plants, international | Not yet sized |
 
+## Freeing up cash (liquidity): a core value, still a hypothesis ⚠️
+PE is in a low-liquidity period: exits are slow and LPs want cash back. Manufacturers want cash out of working capital. The registry frees up cash in four ways (from Brandon's [pivot-plan/03](pivot-plan/03-flywheel-growth.md); sizing in [pivot-plan/08](pivot-plan/08-deep-research-prompt.md)):
+1. **Faster, cleaner exits:** a verified equipment record with an evidence trail cuts the buyer's diligence time and the "unknown CapEx" discount on price. **A seller scan before a sale is another way in.**
+2. **Cash tied up in idle spares:** 22% of MRO stock hasn't moved in 5+ years. A cross-plant view moves or sells surplus spares and avoids duplicate buys (the $100–400k one-time release per plant).
+3. **Targeted CapEx instead of blanket replacement:** replace / repair / stock-a-spare per asset, so cash goes only where the risk is.
+4. **Verified collateral (stretch):** a current, evidence-backed equipment register could support asset-based or NAV lending.
+
+**Doors in, in order:**
+1. own-plant evaluation (main)
+2. portfolio-wide rollout for PE
+3. a seller scan before an exit
+4. a buyer scan at an acquisition
+
+Liquidity sells all four. **Status:** hypothesis until the doc 08 research backs it with numbers.
+
 ## The platform in one picture
 ```
  CAPTURE                 UNDERSTAND                    REGISTRY (the core asset)             ACT
