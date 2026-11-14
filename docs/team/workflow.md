@@ -18,5 +18,6 @@ python -m afterlife.run                      # rebuild results.duckdb
 uvicorn api.main:app --reload --port 8000    # API → localhost:8000/docs
 cd web && npm run dev                        # app → localhost:3000
 pytest -q                                    # before pushing
+./scripts/checkpoint.sh                      # at every checkpoint (docs/team/checkpoints.md)
 ```
 After changing an API response model: `python scripts/export_openapi.py && (cd web && npm run types:api)`

@@ -14,4 +14,7 @@ if __name__ == "__main__":
     from afterlife.io import load
     from afterlife.match import link_all
     t = load()
-    print(score(link_all(t), t["truth_links"]))
+    try:
+        print(score(link_all(t), t["truth_links"]))
+    except NotImplementedError:
+        print("accuracy: matching or scoring not built yet")

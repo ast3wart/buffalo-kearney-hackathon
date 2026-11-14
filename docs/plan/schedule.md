@@ -1,6 +1,6 @@
 # Schedule
 
-Threads: 🛠 Warranty / 💲 Spend. Owners are in [../team/roles.md](../team/roles.md).
+Threads: 🛠 Warranty (Brandon) / 💲 Spend (Asher). Review and sync points: **[../team/checkpoints.md](../team/checkpoints.md)**.
 
 | When | 🛠 Warranty (Brandon) | 💲 Spend (Asher) |
 |---|---|---|
