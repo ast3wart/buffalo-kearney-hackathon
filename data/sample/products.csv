@@ -1,4 +1,4 @@
-product_id,product_name,family
-UV-400,Utility vehicle 400,utility_vehicle
-UV-600,Utility vehicle 600,utility_vehicle
-TR-250,Compact tractor 250,tractor
+product_id,product_name,family,avg_selling_price
+UV-400,Utility vehicle 400,utility_vehicle,14500.0
+UV-600,Utility vehicle 600,utility_vehicle,18900.0
+TR-250,Compact tractor 250,tractor,22500.0
