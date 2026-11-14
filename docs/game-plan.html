@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kearney Hackathon Game Plan</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: single reading column, a "parts ledger" feel — mono part numbers, ruled tables, one teal accent */
+:root{
+  --bg:#f5f6f4; --surface:#ffffff; --ink:#18201d; --muted:#5b6862; --line:#d9dfdb;
+  --accent:#0f766e; --accent-soft:#e0f0ee; --warn:#b45309; --warn-soft:#fbefe1; --bad:#b42318; --good:#15803d;
+  --display:"Space Grotesk",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111614; --surface:#18201d; --ink:#e7ece9; --muted:#9aa8a1; --line:#2c3632;
+  --accent:#2dd4bf; --accent-soft:#123430; --warn:#f59e0b; --warn-soft:#33260f; --bad:#f87171; --good:#4ade80; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111614; --surface:#18201d; --ink:#e7ece9; --muted:#9aa8a1; --line:#2c3632;
+  --accent:#2dd4bf; --accent-soft:#123430; --warn:#f59e0b; --warn-soft:#33260f; --bad:#f87171; --good:#4ade80; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:860px;margin:0 auto;padding-block:48px 96px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,5vw,2.9rem);letter-spacing:-.02em}
+h2{font-size:1.6rem;letter-spacing:-.01em}
+h3{font-size:1.1rem}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:18px}
+.eyebrow{font:600 .75rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.muted{color:var(--muted)}
+code,.mono{font-family:var(--mono);font-size:.88em}
+a{color:var(--accent)}
+.verdict{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);padding:22px 24px;display:flex;flex-direction:column;gap:12px;border-radius:4px}
+.verdict strong{font-family:var(--display);font-size:1.25rem}
+.callout{background:var(--warn-soft);padding:16px 18px;border-radius:4px;display:flex;flex-direction:column;gap:6px}
+.callout b{color:var(--warn)}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 .72rem/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--bg)}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:center}
+.weights{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 24px}
+.weights label{display:flex;flex-direction:column;gap:4px;font-size:.88rem}
+.weights .row{display:flex;justify-content:space-between;gap:8px}
+.weights output{font-family:var(--mono);color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:minmax(120px,190px) 1fr 52px;gap:12px;align-items:center;font-size:.92rem}
+.track{height:14px;background:var(--line);border-radius:2px;overflow:hidden}
+.fill{height:100%;background:var(--muted);transition:width .3s}
+.bar.top .fill{background:var(--accent)}
+.bar.top .name{font-weight:600}
+.bar .val{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;font:500 .72rem/1 var(--mono);padding:4px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:18px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.card.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+ol.steps,ul.list{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px;max-width:72ch}
+.pipeline{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.stage{flex:1 1 140px;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:4px;font-size:.88rem;min-width:0}
+.stage b{font-family:var(--mono);font-size:.78rem;color:var(--accent)}
+.timeline{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);margin-left:6px}
+.slot{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:10px 0 14px 18px;position:relative}
+.slot::before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.slot.hard::before{background:var(--bad);border-color:var(--bad)}
+.slot .when{font:500 .82rem/1.4 var(--mono);color:var(--muted);padding-top:2px}
+.slot .what{display:flex;flex-direction:column;gap:4px;min-width:0}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.9rem}
+.split div{min-width:0}
+.split span{font:600 .7rem/1 var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:2px}
+pre{margin:0;font:13px/1.55 var(--mono);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:16px;overflow-x:auto}
+.checks{display:flex;flex-direction:column;gap:8px}
+.checks label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.checks input{margin-top:5px;accent-color:var(--accent)}
+.checks input:checked + span{color:var(--muted);text-decoration:line-through}
+input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:560px){.slot{grid-template-columns:1fr;gap:4px}.split{grid-template-columns:1fr}.bar{grid-template-columns:110px 1fr 44px}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+
+<main>
+
+<header style="display:flex;flex-direction:column;gap:14px">
+  <div class="eyebrow">Kearney × PERLab · Nov 13–15 · ~35 build hours left</div>
+  <h1>Pick the track, then win it</h1>
+  <p class="muted">A decision page for Asher and Brandon. It covers which track to pick and why, what the BOM problem actually is underneath, a build plan that fits before the 8:30 AM Sunday deadline, and the stuff most teams won't think to prepare.</p>
+</header>
+
+<section>
+  <div class="verdict">
+    <span class="eyebrow">Recommendation</span>
+    <strong>Do Corporate Track 3, BOM Cost Linkage.</strong>
+    <p>The "do hardware" rule you heard was about the <b>Startup</b> track. BOM Cost Linkage is a <b>Corporate</b> track, and the slide literally asks you to "build a tool". Software is exactly what they want there. It's also the track closest to what Kearney sells (procurement and cost transformation), and it scares most teams off because "spend cube" sounds boring. That means fewer competitors and judges who care a lot.</p>
+  </div>
+  <div class="callout">
+    <b>Confirm with a mentor tonight</b>
+    <p>Ask whether the "hardware focus" comment applies only to the Startup track. If a mentor says the corporate tracks are fine as software (they almost certainly are), you're clear.</p>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Scorecard</div>
+  <h2>How the four options stack up</h2>
+  <p class="muted">These scores (1–5) are my read, not gospel. Drag the weights to match what you two care about and the ranking updates.</p>
+  <div class="weights" id="weights"></div>
+  <div class="bars" id="bars"></div>
+  <div class="scroll"><table id="scoretable"></table></div>
+</section>
+
+<section>
+  <div class="eyebrow">The real problem</div>
+  <h2>It's a matching problem dressed up as a finance problem</h2>
+  <p>Engineering owns the BOM and procurement owns the spend cube. They describe the same physical part in different ways, so a VLOOKUP gets maybe 30% of the way. Here is what the "same part" looks like in real data:</p>
+  <div class="scroll"><table>
+    <tr><th>Source</th><th>Part ID</th><th>Description</th><th>UoM</th><th>Price</th></tr>
+    <tr><td>BOM · Pump P-200</td><td class="mono">100-4471-02</td><td class="mono">BRG,BALL,6204-2RS,20MM</td><td class="mono">EA</td><td class="muted">none</td></tr>
+    <tr><td>Spend · SKF Dist.</td><td class="mono">6204-2RSH</td><td class="mono">Deep groove ball bearing 20x47x14 sealed</td><td class="mono">EA</td><td class="mono">$4.12</td></tr>
+    <tr><td>Spend · Grainger</td><td class="mono">1ZGU7</td><td class="mono">BEARING 6204 2RS C3</td><td class="mono">BX/10</td><td class="mono">$58.90</td></tr>
+    <tr><td>Spend · Aftermarket</td><td class="mono">SP-100-4471</td><td class="mono">SPARE BRG KIT P-200 (WARRANTY)</td><td class="mono">KIT</td><td class="mono">$31.00</td></tr>
+  </table></div>
+  <p>Those four rows are one bearing bought at roughly <b>$4.12, $5.89, and ~$15</b> per unit (after unit and kit conversion). The BOM tells you it goes into the P-200 and, as it turns out, 11 other products. Once that link exists, three things open up:</p>
+  <div class="grid2">
+    <div class="card"><h3>True cost per BOM</h3><p class="muted">Roll up what you <i>actually paid</i> for every component, weighted by volume, including spare and warranty spend that today is invisible to product P&amp;L.</p></div>
+    <div class="card"><h3>Price variance</h3><p class="muted">The same part from different suppliers or plants at different prices. "Pay everyone the best price" is a dollar figure you can put on a slide.</p></div>
+    <div class="card"><h3>Shared-part leverage</h3><p class="muted">A part used in 12 BOMs and bought from 3 suppliers can be bundled into one contract. This also hands you Track 1 (platforming) for free in the pitch.</p></div>
+    <div class="card"><h3>Shock simulation</h3><p class="muted">"Tariff on country X goes up 25%. Which products get hit, and by how much?" You can only answer that with the link in place, and it's timely.</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">What makes you different</div>
+  <h2>Five moves most teams won't make</h2>
+  <ol class="steps">
+    <li><b>Ground truth you can measure.</b> Write a synthetic data generator that plants known BOM↔spend links and then corrupts them on purpose: abbreviations, supplier part numbers, box-of-10 units, typos, currency, missing crosswalks. Then report <b>precision and recall</b> on the slide ("we recover 93% of links at 98% precision"). Judges almost never see a hackathon team measure its own accuracy.</li>
+    <li><b>Confidence tiers plus a review queue.</b> Auto-accept the high-confidence matches, send the gray zone to a human with one-click accept or reject, and drop the rest. That's how a real Kearney engagement would use the tool, and it answers "what if the AI is wrong?" before anyone asks.</li>
+    <li><b>Lead with "spend coverage".</b> The headline metric is "% of spend tied to a BOM" (for example, going from 31% to 88%). Consultants think in coverage. Put it in the top-left corner of the app.</li>
+    <li><b>Talk in Kearney lever language.</b> Label your savings as price harmonization, volume bundling, supplier consolidation, spec standardization, and aftermarket pricing. Show a $ range for each, not just one number.</li>
+    <li><b>Pitch it as a week-1 diagnostic.</b> "In the first two weeks of a cost engagement, analysts stitch this together in Excel. We do it in 10 minutes." That puts the value in their own workflow and their own billable time.</li>
+  </ol>
+</section>
+
+<section>
+  <div class="eyebrow">Mandatory · Velocity (Growth Signals)</div>
+  <h2>Make Velocity part of the story</h2>
+  <p>I looked through your Buffalo workspace. Velocity is a research and idea-pipeline tool: <b>Research</b> chat (explore a topic, compare approaches, find supporting evidence, explore patents), a <b>Source</b> library for uploads, <b>Concepts</b>, and <b>Pipelines</b> that rank concepts for a team. It also has four Guides: assess a market opportunity, find white space, make a concept decision-ready, and brainstorm into your pipeline. Right now everything is empty. The judges built it, so show it doing real work in your pitch and not just a checkbox.</p>
+  <div class="scroll"><table>
+    <tr><th>When</th><th>Velocity feature</th><th>What to ask or do</th></tr>
+    <tr><td>Tonight</td><td>Pipeline + Concepts</td><td>Add the four track options as Concepts, then ask the pipeline which one is strongest. Use its answer to back up (or challenge) the scorecard above. That's your "how we chose" slide.</td></tr>
+    <tr><td>Tonight</td><td>Research · Compare approaches</td><td>"Compare approaches for matching engineering BOM part numbers to procurement spend line items: rules, fuzzy matching, embeddings, LLM adjudication."</td></tr>
+    <tr><td>Sat AM</td><td>Research · Explore patents</td><td>Prior art on BOM-to-spend linkage and part classification. Use it for a "what's new about ours" slide.</td></tr>
+    <tr><td>Sat AM</td><td>Guide · Assess a market opportunity</td><td>The spend-analytics market and who already plays there (Coupa, Sievo, SpendHQ, SAP Ariba). This sets up your answer to "why wouldn't SAP do this?"</td></tr>
+    <tr><td>Sat PM</td><td>Research · Find supporting evidence</td><td>Typical savings from price harmonization, supplier consolidation, and aftermarket pricing. These numbers become the capture rates in your savings ranges.</td></tr>
+    <tr><td>Sat night</td><td>Guide · Make a Concept decision-ready</td><td>Upload your README and deck to Sources and run the final concept through the guide. Put a screenshot in the pitch.</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <div class="eyebrow">Architecture</div>
+  <h2>The matching pipeline</h2>
+  <p class="muted">Use cheap and certain checks first and save the expensive or fuzzy ones for the leftovers. Every link keeps the reason it matched, so you can show your work.</p>
+  <div class="pipeline">
+    <div class="stage"><b>1 · Normalize</b>Uppercase, expand abbreviations (BRG→BEARING), parse units (BX/10→10 EA), convert currency</div>
+    <div class="stage"><b>2 · Exact keys</b>Internal PN, crosswalk table, manufacturer PN (MPN) after stripping suffixes</div>
+    <div class="stage"><b>3 · Attributes</b>Extract size, thread, material, and spec codes such as 6204 or M8x1.25 and compare them</div>
+    <div class="stage"><b>4 · Fuzzy + embed</b>rapidfuzz token score plus embedding similarity, blocked by category</div>
+    <div class="stage"><b>5 · LLM judge</b>Only the gray zone. Returns match / no-match plus a reason</div>
+    <div class="stage"><b>6 · Review</b>Human queue, and decisions feed back into the crosswalk</div>
+  </div>
+  <div class="grid2">
+    <div class="card"><h3>Data model (keep it this small)</h3>
+<pre>bom(product, parent, part_no, qty_per, uom, level)
+spend(po_line, supplier, supplier_pn, desc, qty,
+      uom, unit_price, ccy, date, plant, country,
+      spend_type: production|spare|warranty)
+link(part_no, po_line, method, confidence, status)</pre></div>
+    <div class="card"><h3>Stack for 35 hours</h3>
+      <ul class="list">
+        <li><b>Python</b>: pandas, rapidfuzz, an embedding model, and an LLM API for the judge step</li>
+        <li><b>Streamlit</b> for the UI. It's fast, and Plotly works inside it</li>
+        <li>One standout visual: a <b>Sankey</b> from supplier → part → product</li>
+        <li>SQLite or plain parquet. No database server</li>
+      </ul></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Plan</div>
+  <h2>Build schedule</h2>
+  <p class="muted">"A" owns data and matching, "B" owns analytics, UI, and the pitch. You can decide who is who. A red dot marks a hard deadline.</p>
+  <div class="timeline">
+    <div class="slot"><div class="when">Fri · now–11 PM</div><div class="what"><b>Lock the track, set up the repo, talk to a mentor</b><div class="split"><div><span>A</span>Write the schema, then start the generator: 5 products, ~400 parts, ~5k spend lines</div><div><span>B</span>Ask the mentor the questions below and scaffold the Streamlit shell</div></div></div></div>
+    <div class="slot"><div class="when">Sat · 9–12:30</div><div class="what"><b>First version that runs end to end</b><div class="split"><div><span>A</span>Noise injection in the generator, then matcher stages 1–3, then an eval script that prints precision and recall</div><div><span>B</span>BOM cost rollup and coverage metric working on the exact-match links</div></div></div></div>
+    <div class="slot"><div class="when">Sat · 1:30–7</div><div class="what"><b>Make it smart</b><div class="split"><div><span>A</span>Stages 4–5 (fuzzy, embeddings, LLM judge). Tune thresholds against the eval</div><div><span>B</span>Savings levers with $ ranges, the price-variance view, and the Sankey</div></div></div></div>
+    <div class="slot"><div class="when">Sat · 7–11 PM</div><div class="what"><b>The wow features</b><div class="split"><div><span>A</span>Review queue with accept/reject that writes back to the crosswalk</div><div><span>B</span>Tariff/shock simulator, then freeze features at 10 PM</div></div></div></div>
+    <div class="slot"><div class="when">Sat night</div><div class="what"><b>Pitch, not code</b><div class="split"><div><span>A</span>README, cleanup, a backup demo video recording</div><div><span>B</span>Deck (problem, demo, accuracy, $ impact, next steps) and two run-throughs</div></div></div></div>
+    <div class="slot hard"><div class="when">Sun · 8:30 AM</div><div class="what"><b>Submissions due.</b> <span class="muted">Judging at 9:30, finalist pitches at 3:30.</span></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">Demo</div>
+  <h2>A 4-minute demo script</h2>
+  <ol class="steps">
+    <li><b>Hook (30s).</b> "This company spends $180M a year. Today they can tie 31% of it to a product. So what does the P-200 pump really cost?"</li>
+    <li><b>Run the link (45s).</b> Hit one button. Coverage climbs to 88%, and the confidence tiers fill in.</li>
+    <li><b>The bearing (45s).</b> Click one part. It's bought from 3 suppliers at 3 prices, used in 12 products, and has a spare kit at a 4× markup.</li>
+    <li><b>Savings (60s).</b> Show the lever table with $ ranges and the Sankey.</li>
+    <li><b>Shock (30s).</b> Move a tariff slider and watch which products turn red.</li>
+    <li><b>Trust (30s).</b> "93% recall at 98% precision on planted data, and humans review the gray zone." Then close.</li>
+  </ol>
+</section>
+
+<div class="grid2">
+  <section class="card">
+    <div class="eyebrow">Ask a mentor tonight</div>
+    <ul class="list">
+      <li>Is there a sample BOM or spend dataset, or should we bring our own?</li>
+      <li>Does "hardware focus" apply to the corporate tracks?</li>
+      <li>What are the judging criteria and weights?</li>
+      <li>How long is the pitch, and does the demo have to be live?</li>
+      <li>Are multi-level BOMs in scope?</li>
+      <li>Are LLM APIs allowed?</li>
+    </ul>
+  </section>
+  <section class="card">
+    <div class="eyebrow">Judge questions to prep</div>
+    <ul class="list">
+      <li>What happens to spend that never matches?</li>
+      <li>How does this scale to 2M spend lines? (Answer: blocking by category, and the LLM only sees the gray zone.)</li>
+      <li>Where does real data come from? (Answer: ERP exports, which are flat files that every client has.)</li>
+      <li>How confident are those savings? (Answer: they're ranges plus a capture rate.)</li>
+      <li>Why wouldn't SAP or Coupa already do this?</li>
+    </ul>
+  </section>
+</div>
+
+<section>
+  <div class="eyebrow">Repo</div>
+  <h2>Starting layout</h2>
+<pre>bomlink/
+├── data/generate.py        # synthetic BOMs + spend with planted links and noise
+├── bomlink/
+│   ├── normalize.py        # abbreviations, UoM, currency
+│   ├── match.py            # staged matcher → link table with method + confidence
+│   ├── rollup.py           # true cost per BOM, coverage
+│   ├── levers.py           # savings levers + shock simulator
+│   └── evaluate.py         # precision / recall against planted truth
+├── app/streamlit_app.py
+├── tests/
+└── README.md               # problem, screenshot, accuracy numbers, how to run</pre>
+</section>
+
+<section>
+  <div class="eyebrow">Tonight's checklist</div>
+  <div class="checks" id="checks"></div>
+</section>
+
+</main>
+
+<script>
+const crit=[
+  {k:"fit",n:"What Kearney judges care about",w:5},
+  {k:"feas",n:"Doable by 2 people in 35h",w:4},
+  {k:"wow",n:"Demo wow factor",w:3},
+  {k:"comp",n:"Few teams competing",w:3},
+  {k:"int",n:"You two are excited",w:4},
+  {k:"data",n:"Data / parts available",w:2}
+];
+const opts=[
+  {n:"BOM Cost Linkage",s:{fit:5,feas:4,wow:4,comp:5,int:5,data:3},note:"Core Kearney business, and intimidating to other teams. Synthetic data is fine and actually helps you measure accuracy."},
+  {n:"Rapid Platforming",s:{fit:5,feas:3,wow:4,comp:4,int:3,data:2},note:"Strong fit, but clustering assemblies without real CAD or BOM data is hard to make convincing."},
+  {n:"Consumer Insights",s:{fit:3,feas:5,wow:3,comp:1,int:2,data:5},note:"Easiest to build, so every team will do a review scraper plus an LLM summary. Very hard to stand out."},
+  {n:"Startup (hardware)",s:{fit:3,feas:2,wow:4,comp:3,int:3,data:2},note:"Parts lead time and debugging over one weekend is risky without a kit you already own."}
+];
+const W={};crit.forEach(c=>W[c.k]=c.w);
+const wEl=document.getElementById("weights");
+crit.forEach(c=>{
+  const l=document.createElement("label");
+  l.innerHTML=`<span class="row"><span>${c.n}</span><output id="o-${c.k}">${c.w}</output></span><input type="range" id="w-${c.k}" min="0" max="5" step="1" value="${c.w}">`;
+  wEl.appendChild(l);
+  l.querySelector("input").addEventListener("input",e=>{W[c.k]=+e.target.value;document.getElementById("o-"+c.k).textContent=e.target.value;render()});
+});
+function render(){
+  const tw=Object.values(W).reduce((a,b)=>a+b,0)||1;
+  const sc=opts.map(o=>({...o,t:crit.reduce((a,c)=>a+o.s[c.k]*W[c.k],0)/tw}));
+  const sorted=[...sc].sort((a,b)=>b.t-a.t);
+  document.getElementById("bars").innerHTML=sorted.map((o,i)=>`<div class="bar ${i===0?"top":""}"><span class="name">${o.n}</span><div class="track"><div class="fill" style="width:${o.t/5*100}%"></div></div><span class="val">${o.t.toFixed(2)}</span></div>`).join("");
+  document.getElementById("scoretable").innerHTML=`<tr><th>Option</th>${crit.map(c=>`<th>${c.n}</th>`).join("")}<th>Why</th></tr>`+
+    opts.map(o=>`<tr><td><b>${o.n}</b></td>${crit.map(c=>`<td class="num">${o.s[c.k]}</td>`).join("")}<td style="min-width:240px" class="muted">${o.note}</td></tr>`).join("");
+}
+render();
+const items=["Confirm with a mentor that the hardware rule is Startup-only","Ask a mentor what counts as 'using' Velocity for judging","Put the four options into a Velocity Pipeline and ask which is strongest","Ask whether Kearney is providing sample data","Create the GitHub repo and add Brandon as a collaborator","Agree on the data schema (the three tables above)","Decide who is A and who is B","Commit the generator skeleton before the venue closes at 11 PM"];
+let done={};try{done=JSON.parse(localStorage.getItem("kh-checks")||"{}")}catch(e){}
+document.getElementById("checks").innerHTML=items.map((t,i)=>`<label><input type="checkbox" id="c${i}" ${done[i]?"checked":""}><span>${t}</span></label>`).join("");
+document.getElementById("checks").addEventListener("change",e=>{const i=e.target.id.slice(1);done[i]=e.target.checked;try{localStorage.setItem("kh-checks",JSON.stringify(done))}catch(_){}});
+</script>
+</body>
+</html>
