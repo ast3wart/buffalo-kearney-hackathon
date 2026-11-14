@@ -7,8 +7,9 @@ FastAPI at `:8000`, interactive docs at `/docs`. **Every data endpoint takes `?c
 |---|---|---|---|---|
 | GET | `/health` | shared | run time, companies, table row counts | ✅ done |
 | GET | `/companies` | shared | company_id, name, industry, data_as_of | ✅ done |
-| GET | `/overview` | 💲 spend | % linked (spend, claims), build vs. lifecycle cost per product | todo |
-| GET | `/markups` | 💲 spend | part, production $/EA, service $/EA, ratio, annual overspend | todo |
+| GET | `/overview` | 💲 spend | coverage (all / high-confidence), build vs. lifecycle cost per product, spare overspend, harmonization (incl. acquired plant), warranty % of revenue | ✅ done |
+| GET | `/markups` | 💲 spend | part, production $/EA, service $/EA, ratio, overspend (period + per year); high-confidence links only | ✅ done |
+| GET | `/harmonization` | 💲 spend | lines paid above the best supplier × plant price: part, supplier, plant, price, best price, savings | ✅ done |
 | GET | `/alerts` | 🛠 warranty | alert rows (see data contract) | todo |
 | GET | `/claim-rates/{part_no}` | 🛠 warranty | **both views:** raw claims per 1,000 by build month, *and* MIS-window rates (mature months only) + heatmap | todo |
 | GET | `/links?source=&q=&min_conf=` | shared | linking explorer rows: raw record + part + method + confidence | todo |

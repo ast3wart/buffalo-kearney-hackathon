@@ -44,6 +44,160 @@
           }
         }
       }
+    },
+    "/overview": {
+      "get": {
+        "summary": "Overview",
+        "description": "\ud83d\udcb2 Coverage, build vs lifecycle cost per product, and the headline savings figures.",
+        "operationId": "overview_overview_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "company_id from GET /companies",
+              "title": "Company"
+            },
+            "description": "company_id from GET /companies"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Overview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/markups": {
+      "get": {
+        "summary": "Markups",
+        "description": "\ud83d\udcb2 Same part, service price vs production price (high-confidence links only), biggest overspend first.",
+        "operationId": "markups_markups_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Company"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 25,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Markup"
+                  },
+                  "title": "Response Markups Markups Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/harmonization": {
+      "get": {
+        "summary": "Harmonization",
+        "description": "\ud83d\udcb2 Production lines paid above the best supplier x plant price for the same part.",
+        "operationId": "harmonization_harmonization_get",
+        "parameters": [
+          {
+            "name": "company",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Company"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 25,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Harmonization"
+                  },
+                  "title": "Response Harmonization Harmonization Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -75,6 +229,111 @@
           "data_as_of"
         ],
         "title": "Company"
+      },
+      "Coverage": {
+        "properties": {
+          "production_spend_pct": {
+            "type": "number",
+            "title": "Production Spend Pct"
+          },
+          "service_spend_pct": {
+            "type": "number",
+            "title": "Service Spend Pct"
+          },
+          "production_high_conf_pct": {
+            "type": "number",
+            "title": "Production High Conf Pct"
+          },
+          "service_high_conf_pct": {
+            "type": "number",
+            "title": "Service High Conf Pct"
+          },
+          "claims_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Claims Pct"
+          }
+        },
+        "type": "object",
+        "required": [
+          "production_spend_pct",
+          "service_spend_pct",
+          "production_high_conf_pct",
+          "service_high_conf_pct"
+        ],
+        "title": "Coverage"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Harmonization": {
+        "properties": {
+          "part_no": {
+            "type": "string",
+            "title": "Part No"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "supplier_id": {
+            "type": "string",
+            "title": "Supplier Id"
+          },
+          "supplier_name": {
+            "type": "string",
+            "title": "Supplier Name"
+          },
+          "plant": {
+            "type": "string",
+            "title": "Plant"
+          },
+          "price_ea": {
+            "type": "number",
+            "title": "Price Ea"
+          },
+          "best_price_ea": {
+            "type": "number",
+            "title": "Best Price Ea"
+          },
+          "qty_ea": {
+            "type": "number",
+            "title": "Qty Ea"
+          },
+          "savings_usd": {
+            "type": "number",
+            "title": "Savings Usd"
+          }
+        },
+        "type": "object",
+        "required": [
+          "part_no",
+          "description",
+          "supplier_id",
+          "supplier_name",
+          "plant",
+          "price_ea",
+          "best_price_ea",
+          "qty_ea",
+          "savings_usd"
+        ],
+        "title": "Harmonization"
       },
       "Health": {
         "properties": {
@@ -110,6 +369,177 @@
         ],
         "title": "Health"
       },
+      "Markup": {
+        "properties": {
+          "part_no": {
+            "type": "string",
+            "title": "Part No"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "prod_price_ea": {
+            "type": "number",
+            "title": "Prod Price Ea"
+          },
+          "svc_price_ea": {
+            "type": "number",
+            "title": "Svc Price Ea"
+          },
+          "ratio": {
+            "type": "number",
+            "title": "Ratio"
+          },
+          "svc_qty_ea": {
+            "type": "number",
+            "title": "Svc Qty Ea"
+          },
+          "overspend_usd": {
+            "type": "number",
+            "title": "Overspend Usd"
+          },
+          "overspend_usd_per_year": {
+            "type": "number",
+            "title": "Overspend Usd Per Year"
+          }
+        },
+        "type": "object",
+        "required": [
+          "part_no",
+          "description",
+          "prod_price_ea",
+          "svc_price_ea",
+          "ratio",
+          "svc_qty_ea",
+          "overspend_usd",
+          "overspend_usd_per_year"
+        ],
+        "title": "Markup"
+      },
+      "Overview": {
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "title": "Company Id"
+          },
+          "company": {
+            "type": "string",
+            "title": "Company"
+          },
+          "industry": {
+            "type": "string",
+            "title": "Industry"
+          },
+          "data_as_of": {
+            "type": "string",
+            "title": "Data As Of"
+          },
+          "coverage": {
+            "$ref": "#/components/schemas/Coverage"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/ProductCost"
+            },
+            "type": "array",
+            "title": "Products"
+          },
+          "spare_overspend_usd": {
+            "type": "number",
+            "title": "Spare Overspend Usd"
+          },
+          "spare_overspend_usd_per_year": {
+            "type": "number",
+            "title": "Spare Overspend Usd Per Year"
+          },
+          "harmonization_usd": {
+            "type": "number",
+            "title": "Harmonization Usd"
+          },
+          "acquired_plant_harmonization_usd": {
+            "type": "number",
+            "title": "Acquired Plant Harmonization Usd"
+          },
+          "warranty_pct_revenue": {
+            "type": "number",
+            "title": "Warranty Pct Revenue"
+          },
+          "has_claims": {
+            "type": "boolean",
+            "title": "Has Claims"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_id",
+          "company",
+          "industry",
+          "data_as_of",
+          "coverage",
+          "products",
+          "spare_overspend_usd",
+          "spare_overspend_usd_per_year",
+          "harmonization_usd",
+          "acquired_plant_harmonization_usd",
+          "warranty_pct_revenue",
+          "has_claims"
+        ],
+        "title": "Overview"
+      },
+      "ProductCost": {
+        "properties": {
+          "product_id": {
+            "type": "string",
+            "title": "Product Id"
+          },
+          "product_name": {
+            "type": "string",
+            "title": "Product Name"
+          },
+          "units_built": {
+            "type": "integer",
+            "title": "Units Built"
+          },
+          "revenue": {
+            "type": "number",
+            "title": "Revenue"
+          },
+          "build_cost": {
+            "type": "number",
+            "title": "Build Cost"
+          },
+          "spares_per_unit": {
+            "type": "number",
+            "title": "Spares Per Unit"
+          },
+          "warranty_per_unit": {
+            "type": "number",
+            "title": "Warranty Per Unit"
+          },
+          "lifecycle_cost": {
+            "type": "number",
+            "title": "Lifecycle Cost"
+          },
+          "warranty_pct_revenue": {
+            "type": "number",
+            "title": "Warranty Pct Revenue"
+          }
+        },
+        "type": "object",
+        "required": [
+          "product_id",
+          "product_name",
+          "units_built",
+          "revenue",
+          "build_cost",
+          "spares_per_unit",
+          "warranty_per_unit",
+          "lifecycle_cost",
+          "warranty_pct_revenue"
+        ],
+        "title": "ProductCost"
+      },
       "TableCount": {
         "properties": {
           "name": {
@@ -127,6 +557,46 @@
           "rows"
         ],
         "title": "TableCount"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     }
   }

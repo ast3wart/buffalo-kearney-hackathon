@@ -2,6 +2,16 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~11 AM · Overview screen + spend endpoints live · shared-file changes you'll touch
+**Status:** 🆕 new · branch `spend/cost` (batch PR at CP3)
+- **What's ready:** `GET /overview`, `GET /markups`, `GET /harmonization` (all `?company=`), and the **Overview screen** (`web/src/app/page.tsx`): headline savings, after-sale cost chart, coverage bars, markup and harmonization tables. Tested in `tests/test_api.py` (44 tests pass).
+- **Shared-file changes:**
+  1. `afterlife/run.py` now runs **spend-only companies** too (`companies(require_claims=False)`) and **skips detection when a company has no claims**. Once your `generate_claims` writes claims, detection runs automatically.
+  2. `run.py` also saves `price_harmonization`.
+  3. `api/main.py` has `_has_table()` and `_company_or_404()` helpers. Reuse them for `/alerts` and `/claim-rates`, and follow the same pattern (Pydantic model, `?company=`, filter on `company_id`).
+  4. `web/src/lib/api.ts` has **`resolveCompany(searchParams.company)`** plus `Overview` / `Markup` / `Harmonization` types. Copy the top of `page.tsx` for your Early-warning screen; it's the same company handling.
+- **Reminder:** after adding endpoints, run `python scripts/export_openapi.py && (cd web && npm run types:api)`, otherwise the CI check "frontend API types match the API" fails.
+
 ### Sat Nov 14, late morning · cost.py done · shared-file change · PROPOSAL: agreements for generated companies + price schedule
 **Status:** 🆕 new · branch `spend/cost` (batch PR at CP3)
 - **What's ready:** `afterlife/cost.py` (build vs lifecycle cost, spare markups, price harmonization). 43 tests pass. On the default seed:

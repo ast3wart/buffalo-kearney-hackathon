@@ -38,6 +38,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/overview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Overview
+         * @description 💲 Coverage, build vs lifecycle cost per product, and the headline savings figures.
+         */
+        get: operations["overview_overview_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/markups": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Markups
+         * @description 💲 Same part, service price vs production price (high-confidence links only), biggest overspend first.
+         */
+        get: operations["markups_markups_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/harmonization": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Harmonization
+         * @description 💲 Production lines paid above the best supplier x plant price for the same part.
+         */
+        get: operations["harmonization_harmonization_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -53,6 +113,45 @@ export interface components {
             /** Data As Of */
             data_as_of: string;
         };
+        /** Coverage */
+        Coverage: {
+            /** Production Spend Pct */
+            production_spend_pct: number;
+            /** Service Spend Pct */
+            service_spend_pct: number;
+            /** Production High Conf Pct */
+            production_high_conf_pct: number;
+            /** Service High Conf Pct */
+            service_high_conf_pct: number;
+            /** Claims Pct */
+            claims_pct?: number | null;
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
+        /** Harmonization */
+        Harmonization: {
+            /** Part No */
+            part_no: string;
+            /** Description */
+            description: string;
+            /** Supplier Id */
+            supplier_id: string;
+            /** Supplier Name */
+            supplier_name: string;
+            /** Plant */
+            plant: string;
+            /** Price Ea */
+            price_ea: number;
+            /** Best Price Ea */
+            best_price_ea: number;
+            /** Qty Ea */
+            qty_ea: number;
+            /** Savings Usd */
+            savings_usd: number;
+        };
         /** Health */
         Health: {
             /** Ok */
@@ -64,12 +163,91 @@ export interface components {
             /** Tables */
             tables: components["schemas"]["TableCount"][];
         };
+        /** Markup */
+        Markup: {
+            /** Part No */
+            part_no: string;
+            /** Description */
+            description: string;
+            /** Prod Price Ea */
+            prod_price_ea: number;
+            /** Svc Price Ea */
+            svc_price_ea: number;
+            /** Ratio */
+            ratio: number;
+            /** Svc Qty Ea */
+            svc_qty_ea: number;
+            /** Overspend Usd */
+            overspend_usd: number;
+            /** Overspend Usd Per Year */
+            overspend_usd_per_year: number;
+        };
+        /** Overview */
+        Overview: {
+            /** Company Id */
+            company_id: string;
+            /** Company */
+            company: string;
+            /** Industry */
+            industry: string;
+            /** Data As Of */
+            data_as_of: string;
+            coverage: components["schemas"]["Coverage"];
+            /** Products */
+            products: components["schemas"]["ProductCost"][];
+            /** Spare Overspend Usd */
+            spare_overspend_usd: number;
+            /** Spare Overspend Usd Per Year */
+            spare_overspend_usd_per_year: number;
+            /** Harmonization Usd */
+            harmonization_usd: number;
+            /** Acquired Plant Harmonization Usd */
+            acquired_plant_harmonization_usd: number;
+            /** Warranty Pct Revenue */
+            warranty_pct_revenue: number;
+            /** Has Claims */
+            has_claims: boolean;
+        };
+        /** ProductCost */
+        ProductCost: {
+            /** Product Id */
+            product_id: string;
+            /** Product Name */
+            product_name: string;
+            /** Units Built */
+            units_built: number;
+            /** Revenue */
+            revenue: number;
+            /** Build Cost */
+            build_cost: number;
+            /** Spares Per Unit */
+            spares_per_unit: number;
+            /** Warranty Per Unit */
+            warranty_per_unit: number;
+            /** Lifecycle Cost */
+            lifecycle_cost: number;
+            /** Warranty Pct Revenue */
+            warranty_pct_revenue: number;
+        };
         /** TableCount */
         TableCount: {
             /** Name */
             name: string;
             /** Rows */
             rows: number;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
     };
     responses: never;
@@ -116,6 +294,102 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Health"];
+                };
+            };
+        };
+    };
+    overview_overview_get: {
+        parameters: {
+            query: {
+                /** @description company_id from GET /companies */
+                company: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Overview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    markups_markups_get: {
+        parameters: {
+            query: {
+                company: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Markup"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    harmonization_harmonization_get: {
+        parameters: {
+            query: {
+                company: string;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Harmonization"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
