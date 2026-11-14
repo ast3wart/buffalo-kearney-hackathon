@@ -3,7 +3,7 @@
 v2 locked at CP0 (Fri Nov 13). v3 (Sat Nov 14, from Brandon's CP0 review, item #10):
 each company uses a SUBSET of these codes/categories plus its own abbreviations,
 chosen in afterlife/profiles.py. Change only with both people's OK + a line in
-docs/team/handoffs.md.
+the other person's inbox in docs/team/handoffs/.
 """
 
 # part_master.category values. Every company's parts must use only these.

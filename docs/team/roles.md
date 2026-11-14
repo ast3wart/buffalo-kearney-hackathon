@@ -44,5 +44,5 @@ The warranty thread has the harder matching and the flashiest result. The spend 
 
 ## Rules of thumb
 - If you're blocked for more than 20 min, say so in chat.
-- A change to the data contract or the API contract gets logged in [handoffs.md](handoffs.md).
+- A change to the data contract or the API contract gets logged in [handoffs/](handoffs/README.md) (log it in the other person's inbox).
 - Before pushing: `pytest -q`, and `npx tsc --noEmit` in `web/`.

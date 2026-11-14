@@ -37,7 +37,7 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 ## CP1 · Morning resync + confirm contract v3 (Sat 9:00 AM, 30 min)
 - [ ] Brandon confirms or pushes back on **data contract v3** (`docs/plan/plan-updates.md`, Update 4). Decide when `test-data-batch` merges to main. Pin the LLM model ID
 - [ ] Each person: what's done, what's next, anything blocking (2 min each)
-- [ ] Any contract changes overnight? If yes, read them out loud and check `docs/team/handoffs.md`
+- [ ] Any contract changes overnight? Each person reads **their own inbox** (`docs/team/handoffs/to-asher.md` / `to-brandon.md`) out loud
 - [ ] Confirm the times for CP2 and CP3
 
 **Exit:** today's targets restated.
@@ -114,7 +114,7 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 
 ## Between checkpoints (lightweight)
 - **Shared files need the other person's 👍 before merging:** `match.py`, `brief.py`, `io.py`, `check.py`, `api/main.py` models, both contract docs. A quick PR or a chat message is enough.
-- **Anything that changes a contract** gets a line in `docs/team/handoffs.md` *and* `afterlife/check.py`'s `CONTRACT`, in the same commit.
+- **Anything that changes a contract** gets a line in the other person's inbox in `docs/team/handoffs/` *and* `afterlife/check.py`'s `CONTRACT`, in the same commit.
 - **Stuck for more than 20 min** → message the other person, don't wait for the next checkpoint.
 
 ## Notes log

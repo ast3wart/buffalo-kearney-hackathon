@@ -1,6 +1,6 @@
 # Data contract
 
-**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs.md](../team/handoffs.md)).
+**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs/](../team/handoffs/README.md) (the other person's inbox)).
 
 **Multiple companies:** every company is its own folder, `data/generated/<company_id>/`, containing *all* the tables below with the same columns. Profiles are in `afterlife/profiles.py`. `afterlife.run` adds a `company_id` column when it loads them into `results.duckdb`. `data/sample/` is a single small company (`company_id = sample`).
 
