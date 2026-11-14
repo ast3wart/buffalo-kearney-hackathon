@@ -36,6 +36,8 @@ Live marketplace search · sensors · login · mobile field app · trained compo
 6. Live photo → it appears in the registry.
 
 ## Rough split (adjust to who's ahead)
+> **Superseded (Sat ~4:30 PM):** see [docs/team/roles.md](../../team/roles.md). Asher (CS + stats) takes data, vision, matching, accuracy and the app. Brandon (finance + accounting) takes valuation, cost data, sourcing, the estimates and the pitch numbers.
+
 | Asher | Brandon |
 |---|---|
 | 1 Synthetic portfolio + answer key, 2 KB | 3 Vision, 4 matching, 5 accuracy |

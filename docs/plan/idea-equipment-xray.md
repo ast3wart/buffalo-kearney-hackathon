@@ -90,7 +90,7 @@ The AI model is **not** the differentiator; anyone can send a photo to Claude. J
 
 **Simplified / roadmap (say so on stage):** sensors, live market valuations, a trained component detector, maintenance-log reading at scale.
 
-**What carries over from Afterlife:** app shell (Next.js + FastAPI + DuckDB), CI + `checkpoint.sh`, the synthetic generator + answer-key approach, normalize/matching, document reading, the Velocity research habit.
+**What carries over from Afterlife:** app shell (Next.js + FastAPI; SQLite for the demo, see pivot-plan/06-tech-stack.md), CI + `checkpoint.sh`, the synthetic generator + answer-key approach, normalize/matching, document reading, the Velocity research habit.
 
 ## 10. Pitch outline (Startup track)
 1. **Hook:** "Buyers pay for a factory's production capacity, and can't see the equipment cliff coming."

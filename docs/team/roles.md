@@ -1,25 +1,25 @@
 # Roles and checkpoints (Equipment X-Ray)
 
-**Agreed Sat Nov 14, ~4 PM.** Submission is due **Sun 8:30 AM**.
+**Agreed Sat Nov 14, ~4 PM.** This split **replaces the "Rough split" table in [pivot-plan/05-poc-scope.md](../plan/pivot-plan/05-poc-scope.md)**, which was written before we split the work by strength. The scope, build order and demo script in doc 05 still apply. Submission is due **Sun 8:30 AM**.
 
 The work is split by strength. Both threads build part of the live demo, and both run in parallel.
 
 ## 🛠 Asher (CS + stats): "the machine" thread: photo → parts → registry → app
 | Task | Output |
 |---|---|
-| Fake target factory + answer key: ~3 lines, ~15 machines, ~40 components, with end-of-life single points of failure planted | `data/factory/` + `truth_components.csv` |
-| Knowledge base: ~30 component types (lifecycle status, lifespan, successor). Brandon fills the cost columns. | `data/kb/kb.csv` |
+| **2-plant synthetic portfolio** + answer key (Brandon's plan, doc 05): ~3 lines per plant, ~25–40 machines. Planted: obsolete controllers, a line-stopping single point of failure, a duplicate part under another name, **a Plant B spare that Plant A needs** | `data/seed/` + `scripts/seed.py` → SQLite |
+| Knowledge base: ~30 component types (lifecycle status, lifespan, successor). Brandon fills the cost columns. | `kb_entry` seed |
 | Vision extraction: Claude reads nameplate and cabinet photos → `xray/matching.py` → knowledge base | `xray/extract.py` |
 | Accuracy: precision/recall with confidence intervals against the answer key | `xray/evaluate.py` |
-| App: registry screen, CapEx cliff chart, sourcing panel, API | `api/`, `web/` |
+| App: registry tree, evidence drawer, CapEx cliff chart, sourcing panel, accuracy tile, API (SQLite via SQLModel) | `api/`, `web/` |
 | Live photo demo of a real machine | rehearsed |
 
 ## 💲 Brandon (finance + accounting): "the money" thread: the numbers in the demo and the pitch
 | Task | Output |
 |---|---|
 | Valuation: CapEx cliff by year, "pay $X less" / holdback, deferred CapEx as a hidden liability, discounting | `xray/valuation.py` |
-| Cost columns in the knowledge base (replacement and migration cost) and lines (revenue per day, downtime $/hour) | `data/kb/kb.csv`, `lines.csv` |
-| Sourcing: 2–3 discontinued parts with offers from OEM, refurbisher and eBay (price, lead time, condition, trust) + the buy / migrate / monitor rule | `data/sourcing/offers.csv` + `xray/sourcing.py` |
+| Cost columns in the knowledge base (replacement and migration cost) and lines (revenue per day, downtime $/hour) | `kb_entry`, `line` seeds |
+| Sourcing: 2–3 discontinued parts with offers from OEM, refurbisher and eBay (price, lead time, condition, trust) + the buy / migrate / monitor rule | `sourcing_offer` seed + `xray/sourcing.py` |
 | Refine the estimates with Velocity: willingness to pay, downtime value, sourcing take-rate, PE portfolio size | `docs/research/deep-dive-numbers.md`, `scripts/market_model.py` |
 | Pitch numbers + judge Q&A: problem, market, business model, consulting-firm breakeven | `docs/pitch/` |
 
@@ -27,7 +27,7 @@ The work is split by strength. Both threads build part of the live demo, and bot
 - **The registry data format** ([docs/build/registry-format.md](../build/registry-format.md)): agree it at CP0. Asher fills in *what's installed*, Brandon fills in *what it costs*.
 - **The deck:** Brandon owns the problem, market and business-model slides. Asher owns the how-it-works, demo and accuracy slides.
 - **Staying unblocked:**
-  - Brandon builds against `data/factory/sample/`, a hand-made registry in the agreed format.
+  - Brandon builds against `data/seed/sample/`, a hand-made registry in the agreed format.
   - Asher's app shows placeholder numbers until `valuation.py` lands.
 
 ## Checkpoints
