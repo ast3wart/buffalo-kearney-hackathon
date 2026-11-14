@@ -2,6 +2,20 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~4 PM · Roles for Equipment X-Ray + registry format to sign off (CP0)
+**Status:** 🆕 new · branch `plan/roles-and-registry`
+- **Roles** (`docs/team/roles.md`): you take **💲 the money thread**:
+  - `xray/valuation.py`: CapEx cliff, "pay $X less" / holdback, deferred CapEx as a hidden liability
+  - the cost columns in the knowledge base and lines
+  - sourcing offers + the buy / migrate / monitor rule (`xray/sourcing.py`)
+  - refining the estimates with Velocity
+  - pitch numbers + judge Q&A
+
+  I take **🛠 the machine thread**: fake factory + answer key, knowledge base identity/lifecycle, vision extraction, accuracy, the app, and the live photo demo.
+- **Checkpoints:** CP0 ~4:30 (format), CP1 ~7:30 (slices work alone), CP2 ~10:30 (end to end), CP3 ~1 AM (freeze), CP4 ~7 AM (rehearse). Submit by 8:30.
+- **What you need to do now:** read `docs/build/registry-format.md` (draft), especially the 💲 columns and the outputs you'd produce, and edit anything you'd model differently (e.g. how the holdback is computed). Then we mark it ✅ agreed.
+- **Context for your numbers:** `docs/research/deep-dive-numbers.md` + `scripts/market_model.py` (PR #11).
+
 ### Sat Nov 14, afternoon · `main` cleaned up for Equipment X-Ray
 **Status:** 🆕 new
 - **What changed:** Afterlife-only code, data and docs are gone from `main`. These reusable pieces stay:

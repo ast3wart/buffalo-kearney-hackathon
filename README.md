@@ -25,6 +25,8 @@ The evidence sits behind every number. After the deal, the same scan becomes a *
 |---|---|
 | **The idea**: problem, user, workflow, competition, why us, weekend plan | [docs/plan/idea-equipment-xray.md](docs/plan/idea-equipment-xray.md) |
 | **How the system works + roadmap**: registry, sourcing, PE portfolio, phases | [docs/plan/roadmap-equipment-xray.md](docs/plan/roadmap-equipment-xray.md) |
+| **Who does what + checkpoints** | [docs/team/roles.md](docs/team/roles.md) |
+| **Registry data format (CP0 sign-off)** | [docs/build/registry-format.md](docs/build/registry-format.md) |
 | Handoffs between us (two inboxes) | [docs/team/handoffs/](docs/team/handoffs/README.md): [to Brandon](docs/team/handoffs/to-brandon.md) · [to Asher](docs/team/handoffs/to-asher.md) |
 | Git workflow | [docs/team/workflow.md](docs/team/workflow.md) |
 | Velocity research log (required) | [docs/research/velocity.md](docs/research/velocity.md) |
