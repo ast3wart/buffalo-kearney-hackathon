@@ -32,6 +32,7 @@
   - **Market roll-up:** price × 25,799 plants × adoption (replace the hard-coded `PRICES` in `scripts/market_model.py` with your model's output).
   - **Where:** e.g. `xray/pricing.py` (runs on the registry) + a sensitivity table in `docs/research/`. Every input labeled measured / survey / vendor / assumption.
   - **Starting point:** the $10k / $30k / $60k per-plant scenario and the case studies in `docs/research/deep-dive-numbers.md` §D.
+  - **Research backlog:** `docs/research/brandon-research-backlog.md` has 13 prioritized Velocity prompts, one per model input. **P1 (#1–6) by CP1 ~7:30 PM.** Build the model with placeholder ranges first and swap in sourced numbers as they land.
 - **KEEP the liquidity angle (Asher: it's important).** Keep it in doc 03, doc 08 and appendix A3, and give it a main-deck mention (e.g. on the business-model or why-now slide), not only the appendix:
   - faster, cleaner exits (a seller scans before a sale)
   - cash tied up in idle spares
