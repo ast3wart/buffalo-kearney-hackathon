@@ -2,6 +2,13 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~11:45 AM · 🔄 PROPOSED PIVOT after the judge review: please read and decide
+**Status:** 🆕 new · branch `idea/equipment-xray`
+- **What:** the judge said our scope is too wide, half the room is doing "consultancy efficiency", nobody is on the Startup track, and old acquisition-heavy companies have the biggest holes. Asher proposes pivoting to **Equipment X-Ray**: pre-deal equipment diligence (CapEx cliff, "pay $X less", single points of failure from discontinued components), Startup track.
+- **Where:** `docs/plan/idea-equipment-xray.md` (workflow, competition, why-us, what we build this weekend, ~20 h plan, questions for you).
+- **What you need to do:** read it and answer §13 (yes / no / modify, split, anything the judge said that it misses).
+- **Update ~12:30 PM:** a mentor liked it, said keep digging, and wants a **roadmap + clear MVP plan, not a full build**, with **parts sourcing** as a key feature and a **PE portfolio** angle. See `docs/plan/roadmap-equipment-xray.md`.
+
 ### Sat Nov 14, morning · New process (batch reviews) + your contract-v4 branch overlaps mine
 **Status:** 🆕 new · PR #5
 - **New process (agreed by Asher, see `docs/team/workflow.md`):**
