@@ -5,6 +5,11 @@ Pool claims across ALL products sharing a part. Two views (decided at CP0):
   mis  : claims within MIS_WINDOW months in service per 1,000 built, MATURE build months only
          (build_month + MIS_WINDOW <= data_as_of). Alerts use THIS view.
 Flag mis rate / baseline >= RATIO_MIN with >= MIN_CLAIMS.
+
+v3 #13 supplier attribution: claims don't say which supplier's part was fitted. Use build_supply:
+exposure for (part, supplier) = sum(units_built x qty_per x share). Compare rates where a supplier's
+share is high vs low (cells with a single supplier are clean; mixed cells = "ambiguous").
+The alert should name the supplier and the first affected PO line (lot).
 Output columns: see alerts.csv in docs/build/data-contract.md.
 """
 import pandas as pd

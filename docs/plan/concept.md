@@ -13,11 +13,16 @@ A manufacturer's parts lists (BOMs), production purchases, spare-part purchases,
 
 ## What Afterlife does
 1. **Links** BOM parts ↔ production spend ↔ service spend ↔ warranty claims, including claims with no reliable part number (inferred from failure codes plus claim text plus the product's BOM).
-2. **Early warning:** because claims are linked across products through shared parts, it spots one supplier's part failing across many products after a specific build month.
+2. **Early warning:** because claims are linked across products through shared parts, it spots one supplier's part failing across many products after a specific build month. When a part is **dual-sourced**, it uses which supplier lot each build consumed to say *which supplier and which PO*, not just which part.
 3. **Lifecycle cost:** build cost vs. true cost including spares and warranty, per product.
 4. **Supplier brief:** a one-page, deal-ready document per supplier with the two levers:
    - **Warranty recovery review:** "N claims since the March build are linked to your seal kit, with this evidence and confidence. We request a returned-part review." It's a lead with evidence, not an accusation.
    - **Spare-part price harmonization:** "We pay $4.12 in production and $15 as a spare for the same part."
+
+## Why this holds up in front of an SAP-savvy judge
+- **"POs already carry the material number, so why match?"** Production POs at the main plant mostly do. The hard cases are an **acquired plant** on a legacy ERP (Ironridge), **service text items**, and **warranty claims**. That's where Afterlife works.
+- **"Is it overfit to your own fake data?"** Three companies with different vocabularies, part-number styles and data formats (one arrives as a raw SAP extract). A test fails if the matching code mentions any company, part or supplier.
+- **"How do you know it's that supplier?"** Lot-level supply records: the spike appears on one supplier's lots from a specific PO onward, and not on the other supplier's.
 
 ## What Afterlife does NOT do (say this out loud)
 - **It doesn't decide fault or liability.** A failure code describes the symptom, not the cause. Whether a supplier pays depends on returned-part analysis, engineering review, and the supply contract, none of which are in our data.

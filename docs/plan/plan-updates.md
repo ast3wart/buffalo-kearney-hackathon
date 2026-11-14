@@ -6,6 +6,26 @@ Running log of plan changes after the original plan (`docs/archive/track-decisio
 
 ---
 
+## Update 4 · Sat Nov 14, early AM · Contract v3 applied (DECIDED by Asher, Brandon to confirm at CP1)
+Brandon's branch `plan/cp0-additions` was merged into `test-data-batch`, and Tier 1 (#10–14), #15, #17 and the #19 schema were applied as **data contract v3** (status table at the top of the addendum in `docs/research/cp0-proposal.md`).
+
+**What changed in the data** (sample rebuilt, all checks green, 7 tests):
+- **Attribution is now real.** The sample seal kit is dual-sourced (Keystone / Bluewater) and `build_supply` records which lot each product/month used. The spike sits only on Keystone's April lot. Seal claims per 1,000 jump about 3× on Keystone-only builds (UV-400, TR-250) and about 2× on UV-600 (50% Keystone), so the alert can name the supplier *and the PO*.
+- **Companies are genuinely different:**
+  - Northwind uses HVAC codes (`REF-ELP`, `CMP-FTS`, `CMP-NOI`, `FAN-VIB`), HVAC shorthand (`CMPR`, `TXV`, `RTU`), and `NW4471A` part numbers
+  - Ironridge uses `IR-04471` part numbers, arrives as a **raw SAP extract**, and has an acquired plant with no part numbers
+- **Every link carries evidence.** `links` gains `source_system`, `evidence`, `run_id`, and every pipeline run is recorded in `runs`.
+- **Overfitting is tested.** `test_no_literals.py` fails if the logic mentions any company, part, product or supplier ID.
+
+**Strategy changes:**
+- The core loop judges remember is now: *a shared part fails across products → traced to one supplier's lot → evidence-backed recovery review + price harmonization*.
+- Pitch claims added: "Our matching code has never seen a company name; a test fails if it does", "Ironridge arrives as a raw SAP extract", "the alert names the supplier and the lot".
+- Still Tier 2 (inside each thread on Saturday): #16 AI in three places, #18 pytest evals. Tier 3 unchanged.
+
+**CP1 now:** confirm v3 (not design it), decide when `test-data-batch` merges to main, and pin the model ID.
+
+---
+
 ## Update 3 · Sat Nov 14, ~00:30 · CP0 addendum (PROPOSED, decide at CP1)
 Detail and per-item specs: [../research/cp0-proposal.md, addendum items 10–20](../research/cp0-proposal.md#cp0-addendum-items-1020-proposed-decide-at-cp1-sat-900-am).
 

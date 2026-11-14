@@ -2,21 +2,31 @@
 
   match_spend.py  [SPEND]    purchase lines -> part_no
   match_claims.py [WARRANTY] claims -> causal part_no
-Output: links (source_table, source_id, part_no, method, confidence).
+Output: links with taxonomy.LINK_COLUMNS
+  (source_table, source_id, part_no, method, confidence, source_system, evidence, run_id).
+`evidence` is a JSON string of the signals that agreed, e.g.
+  {"spec_code": "6204", "category": "bearing", "info_record": false, "fuzzy": 0.91}
+
+v3 #10/#11: abbreviations come from each company's abbreviations.csv (client data, not code),
+and nothing in the matching code may mention a specific company, part or supplier
+(tests/test_no_literals.py).
 """
 import re
 import pandas as pd
 
-ABBREVIATIONS = {  # shared: both threads grow this list
-    "BRG": "BEARING", "HYD": "HYDRAULIC", "CYL": "CYLINDER", "REPL": "REPLACED",
-    "ASSY": "ASSEMBLY", "FLTR": "FILTER", "GSKT": "GASKET", "IGN": "IGNITION", "FRT": "FRONT",
-}
+
+def abbreviation_map(tables: dict[str, pd.DataFrame]) -> dict[str, str]:
+    """This company's shorthand -> expansion, from abbreviations.csv."""
+    ab = tables.get("abbreviations")
+    if ab is None or ab.empty:
+        return {}
+    return {str(a).upper(): str(e).upper() for a, e in zip(ab.abbr, ab.expansion)}
 
 
-def normalize(text: str) -> str:
-    """Uppercase, split on punctuation, expand abbreviations. Shared by both matchers."""
+def normalize(text: str, abbreviations: dict[str, str]) -> str:
+    """Uppercase, split on punctuation, expand this company's abbreviations. Shared by both matchers."""
     tokens = re.split(r"[^A-Z0-9.]+", str(text).upper())
-    return " ".join(ABBREVIATIONS.get(t, t) for t in tokens if t)
+    return " ".join(abbreviations.get(t, t) for t in tokens if t)
 
 
 def link_all(tables: dict[str, pd.DataFrame]) -> pd.DataFrame:

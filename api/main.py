@@ -62,7 +62,7 @@ def health() -> Health:
     with db() as con:
         run_at = con.execute("SELECT CAST(run_at AS VARCHAR) FROM meta").fetchone()[0]
         names = [r[0] for r in con.execute(
-            "SELECT table_name FROM information_schema.tables WHERE table_name NOT IN ('meta','companies') ORDER BY 1").fetchall()]
+            "SELECT table_name FROM information_schema.tables WHERE table_name NOT IN ('meta','companies','runs') ORDER BY 1").fetchall()]
         tables = [TableCount(name=n, rows=con.execute(f'SELECT count(*) FROM "{n}"').fetchone()[0]) for n in names]
         return Health(ok=True, run_at=run_at, companies=_companies(con), tables=tables)
 

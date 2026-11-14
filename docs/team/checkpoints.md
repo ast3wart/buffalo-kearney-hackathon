@@ -34,7 +34,8 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 
 **Exit:** contracts committed, layout committed, each person knows their first task.
 
-## CP1 · Morning resync (Sat 9:00 AM, 15 min, standing)
+## CP1 · Morning resync + confirm contract v3 (Sat 9:00 AM, 30 min)
+- [ ] Brandon confirms or pushes back on **data contract v3** (`docs/plan/plan-updates.md`, Update 4). Decide when `test-data-batch` merges to main. Pin the LLM model ID
 - [ ] Each person: what's done, what's next, anything blocking (2 min each)
 - [ ] Any contract changes overnight? If yes, read them out loud and check `docs/team/handoffs.md`
 - [ ] Confirm the times for CP2 and CP3

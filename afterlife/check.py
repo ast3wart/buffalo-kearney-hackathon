@@ -24,13 +24,15 @@ CONTRACT = {
     "service_spend": ["po_line_id", "part_no", "supplier_id", "supplier_name", "supplier_pn", "description",
                       "qty", "uom", "unit_price", "price_unit", "po_date", "plant", "country", "channel"],
     "info_records": ["part_no", "supplier_id", "supplier_pn"],
+    "build_supply": ["product_id", "build_month", "part_no", "supplier_id", "po_line_id", "share"],
+    "abbreviations": ["abbr", "expansion"],
     "dataset_info": ["key", "value"],
     "failure_codes": ["failure_code", "system", "description", "likely_categories"],
     "warranty_claims": ["claim_id", "product_id", "serial_no", "build_month", "failure_date", "failure_code",
                         "claim_text", "causal_part_no", "labor_hrs", "parts_cost", "labor_cost", "dealer_id",
                         "recovery_status"],
     "truth_links": ["source_table", "source_id", "part_no"],
-    "truth_spikes": ["part_no", "supplier_id", "start_build_month", "multiplier"],
+    "truth_spikes": ["part_no", "supplier_id", "start_build_month", "from_po_line_id", "multiplier"],
 }
 
 results: list[tuple[str, str]] = []
@@ -68,7 +70,9 @@ def check(t, is_sample: bool = False):
     (ok if not bad_cat else fail)("part categories all in the CP0 list" if not bad_cat else f"categories not in CP0 list: {sorted(bad_cat)}")
     allowed_codes = {f["failure_code"] for f in FAILURE_CODES}
     bad_code = set(t["failure_codes"].failure_code) - allowed_codes
-    (ok if not bad_code else fail)("failure codes all in the CP0 list" if not bad_code else f"failure codes not in CP0 list: {sorted(bad_code)}")
+    (ok if not bad_code else fail)("failure codes are a subset of the taxonomy union" if not bad_code else f"failure codes not in taxonomy: {sorted(bad_code)}")
+    ab = t["abbreviations"]
+    (ok if len(ab) and ab.abbr.is_unique else fail)(f"abbreviations: {len(ab)} unique entries (company shorthand, v3 #10)")
 
     # 1c. spend-side SAP fields (💲)
     for src in ["production_spend", "service_spend"]:
@@ -82,6 +86,23 @@ def check(t, is_sample: bool = False):
     (ok if fill_p > fill_s else warn)(f"part_no filled: production {fill_p:.0%} vs service {fill_s:.0%} (target ~85% vs ~15%)")
     ir = t["info_records"]
     (ok if set(ir.part_no) <= parts else fail)("info_records parts exist in part_master")
+
+    # 1d. build_supply: lots consumed per product/month (v3 #13)
+    bs = t["build_supply"]
+    ps = t["production_spend"]
+    bom_pairs = set(zip(t["bom"].product_id, t["bom"].part_no))
+    (ok if set(zip(bs.product_id, bs.part_no)) <= bom_pairs else fail)("build_supply (product, part) pairs are all in the BOM")
+    built_keys = set(zip(t["builds"].product_id, t["builds"].build_month))
+    (ok if set(zip(bs.product_id, bs.build_month)) <= built_keys else fail)("build_supply months all exist in builds")
+    po_sup = dict(zip(ps.po_line_id, ps.supplier_id))
+    bad_po = [(po, s) for po, s in zip(bs.po_line_id, bs.supplier_id) if po_sup.get(po) != s]
+    (ok if not bad_po else fail)("build_supply lots are production PO lines from the same supplier" if not bad_po
+                                 else f"{len(bad_po)} build_supply rows point at a PO line from another supplier or none, e.g. {bad_po[:2]}")
+    sums = pd.to_numeric(bs.share).groupby([bs.product_id, bs.build_month, bs.part_no]).sum()
+    (ok if ((sums - 1).abs() < 1e-6).all() else fail)("build_supply shares sum to 1 per (product, month, part)")
+    covered = set(zip(bs.product_id, bs.part_no))
+    (ok if bom_pairs <= covered else warn)("every BOM line has build_supply rows" if bom_pairs <= covered
+                                           else f"{len(bom_pairs - covered)} BOM lines have no build_supply rows")
     (ok if not (set(ir.supplier_id) & set(t["service_spend"].supplier_id) - set(t["production_spend"].supplier_id)) else warn)(
         "service-only distributors have no info records (that's the point)")
     prods = set(t["products"].product_id)
@@ -120,6 +141,16 @@ def check(t, is_sample: bool = False):
     (ok if set(tl.part_no) <= parts else fail)("truth_links parts all exist in part_master")
     sp = t["truth_spikes"]
     (ok if set(sp.part_no) <= set(t["bom"].part_no) else fail)("spike part is in a BOM")
+    for row in sp.itertuples():
+        (ok if po_sup.get(row.from_po_line_id) == row.supplier_id else fail)(
+            f"spike lot {row.from_po_line_id} is a production PO line from {row.supplier_id}")
+        sup_rows = bs[bs.part_no == row.part_no]
+        n_sup = sup_rows.supplier_id.nunique()
+        (ok if n_sup >= 2 else warn)(f"spike part has {n_sup} suppliers (needs 2+ so 'which supplier' is a real question)")
+        if n_sup >= 2:
+            share = sup_rows[sup_rows.supplier_id == row.supplier_id].set_index(["product_id", "build_month"]).share
+            varies = pd.to_numeric(share).nunique() > 1 or len(share) < len(sup_rows.groupby(["product_id", "build_month"]))
+            (ok if varies else fail)("spiking supplier's share varies across products/months (else attribution is impossible)")
     shared = t["bom"].groupby("part_no").product_id.nunique()
     if len(sp) and shared.get(sp.part_no.iloc[0], 0) < 2:
         warn("spike part is used in only 1 product, so the cross-product story won't show")

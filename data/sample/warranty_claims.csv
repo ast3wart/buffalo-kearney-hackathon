@@ -1,129 +1,127 @@
 claim_id,product_id,serial_no,build_month,failure_date,failure_code,claim_text,causal_part_no,labor_hrs,parts_cost,labor_cost,dealer_id,recovery_status
-WC-2026-00001,UV-400,UV400-26-01-00164,2026-01,2026-02-26,DRV-NOI,"wheel brg play, replaced",,1.2,13.09,102.0,D-124,none
-WC-2026-00002,UV-400,UV400-26-01-00258,2026-01,2026-05-18,DRV-NOI,"grinding noise rear axle, repl brg",,2.1,13.78,178.5,D-107,none
-WC-2026-00003,UV-400,UV400-26-01-00301,2026-01,2026-04-14,HYD-ELP,"hyd leak boom cyl, repl seal kit",,1.7,33.44,144.5,D-116,none
-WC-2026-00004,UV-400,UV400-26-01-00655,2026-01,2026-02-17,DRV-VIB,"belt slipping under load, repl cvt belt",,1.6,62.25,136.0,D-110,none
-WC-2026-00005,UV-400,UV400-26-01-00115,2026-01,2026-02-12,ELE-FTS,"intermittent no start, ign switch replaced",,2.1,24.17,178.5,D-115,none
-WC-2026-00006,UV-400,UV400-26-02-00546,2026-02,2026-06-25,DRV-NOI,"grinding noise rear axle, repl brg",,3.4,9.25,289.0,D-130,none
-WC-2026-00007,UV-400,UV400-26-02-00434,2026-02,2026-04-07,DRV-NOI,"grinding noise rear axle, repl brg",100-4471-02,3.2,14.05,272.0,D-125,none
-WC-2026-00008,UV-400,UV400-26-02-00254,2026-02,2026-06-08,ENG-ELP,"oil leak at filter, filter gasket torn",,2.0,8.56,170.0,D-137,none
-WC-2026-00009,UV-400,UV400-26-02-00061,2026-02,2026-04-08,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,2.7,102.89,229.5,D-121,none
-WC-2026-00010,UV-400,UV400-26-02-00553,2026-02,2026-04-05,ELE-FTS,"intermittent no start, ign switch replaced",600-3310-00,2.1,24.24,178.5,D-130,none
-WC-2026-00011,UV-400,UV400-26-02-00421,2026-02,2026-03-15,ELE-FTS,"no start, no fuel pressure, repl pump",,1.8,153.95,153.0,D-106,none
-WC-2026-00012,UV-400,UV400-26-03-00197,2026-03,2026-06-07,DRV-NOI,"wheel brg play, replaced",,1.1,9.35,93.5,D-111,none
-WC-2026-00013,UV-400,UV400-26-03-00078,2026-03,2026-06-15,DRV-NOI,"grinding noise rear axle, repl brg",,3.2,8.61,272.0,D-134,none
-WC-2026-00014,UV-400,UV400-26-03-00498,2026-03,2026-04-16,HYD-ELP,"hyd leak boom cyl, repl seal kit",400-2205-03,1.2,42.89,102.0,D-103,none
-WC-2026-00015,UV-400,UV400-26-03-00804,2026-03,2026-04-15,ENG-ELP,"oil leak at filter, filter gasket torn",500-7731-01,3.3,9.11,280.5,D-135,none
-WC-2026-00016,UV-400,UV400-26-03-00992,2026-03,2026-07-02,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.6,94.39,136.0,D-103,none
-WC-2026-00017,UV-400,UV400-26-03-00162,2026-03,2026-07-02,ELE-FTS,"intermittent no start, ign switch replaced",,3.1,36.1,263.5,D-104,none
-WC-2026-00018,UV-400,UV400-26-03-00584,2026-03,2026-05-08,BRK-NOI,"front brake squeal, pads replaced",,3.3,45.99,280.5,D-126,none
-WC-2026-00019,UV-400,UV400-26-03-00322,2026-03,2026-06-08,ELE-FTS,"no start, no fuel pressure, repl pump",400-2205-03,2.6,128.41,221.0,D-119,none
-WC-2026-00020,UV-400,UV400-26-04-00577,2026-04,2026-05-04,DRV-NOI,"grinding noise rear axle, repl brg",100-4471-02,2.5,12.61,212.5,D-132,none
-WC-2026-00021,UV-400,UV400-26-04-00379,2026-04,2026-07-10,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.2,33.08,272.0,D-134,none
-WC-2026-00022,UV-400,UV400-26-04-00670,2026-04,2026-07-17,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.5,38.36,297.5,D-135,none
-WC-2026-00023,UV-400,UV400-26-04-00138,2026-04,2026-07-09,HYD-ELP,"hyd leak boom cyl, repl seal kit",200-1180-01,3.3,43.46,280.5,D-135,none
-WC-2026-00024,UV-400,UV400-26-04-00209,2026-04,2026-07-22,ENG-ELP,"oil leak at filter, filter gasket torn",,2.7,9.63,229.5,D-116,none
-WC-2026-00025,UV-400,UV400-26-04-00342,2026-04,2026-08-25,BRK-NOI,"front brake squeal, pads replaced",,0.9,46.49,76.5,D-116,none
-WC-2026-00026,UV-400,UV400-26-04-00010,2026-04,2026-08-04,ELE-FTS,"no start, no fuel pressure, repl pump",,2.0,178.94,170.0,D-109,none
-WC-2026-00027,UV-400,UV400-26-05-00131,2026-05,2026-08-02,DRV-NOI,"wheel brg play, replaced",,1.2,11.19,102.0,D-102,none
-WC-2026-00028,UV-400,UV400-26-05-00363,2026-05,2026-07-25,HYD-ELP,"lift cyl weeping, resealed",,2.6,43.34,221.0,D-126,none
-WC-2026-00029,UV-400,UV400-26-05-00820,2026-05,2026-07-26,HYD-ELP,"hyd leak boom cyl, repl seal kit",400-2205-03,3.1,43.27,263.5,D-101,none
-WC-2026-00030,UV-400,UV400-26-05-00686,2026-05,2026-08-28,ENG-ELP,"oil leak at filter, filter gasket torn",,1.9,8.11,161.5,D-106,none
-WC-2026-00031,UV-400,UV400-26-05-00837,2026-05,2026-06-15,DRV-VIB,drive belt glazed,,1.4,70.48,119.0,D-114,none
-WC-2026-00032,UV-400,UV400-26-05-00072,2026-05,2026-07-25,ELE-FTS,"intermittent no start, ign switch replaced",,1.6,26.35,136.0,D-132,none
-WC-2026-00033,UV-400,UV400-26-05-00268,2026-05,2026-08-06,BRK-NOI,"front brake squeal, pads replaced",200-1180-01,3.2,29.49,272.0,D-138,none
-WC-2026-00034,UV-400,UV400-26-05-00119,2026-05,2026-08-13,ELE-FTS,"no start, no fuel pressure, repl pump",,3.5,115.43,297.5,D-127,none
-WC-2026-00035,UV-400,UV400-26-06-00681,2026-06,2026-08-11,DRV-NOI,"wheel brg play, replaced",,1.0,13.64,85.0,D-107,none
-WC-2026-00036,UV-400,UV400-26-06-00335,2026-06,2026-09-13,DRV-NOI,"wheel brg play, replaced",,2.6,12.75,221.0,D-112,none
-WC-2026-00037,UV-400,UV400-26-06-00631,2026-06,2026-10-19,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,3.2,32.34,272.0,D-100,none
-WC-2026-00038,UV-400,UV400-26-06-00594,2026-06,2026-09-20,HYD-ELP,"lift cyl weeping, resealed",200-1180-01,2.0,30.41,170.0,D-128,none
-WC-2026-00039,UV-400,UV400-26-06-00983,2026-06,2026-08-26,ENG-ELP,"oil leak at filter, filter gasket torn",,2.9,10.62,246.5,D-118,none
-WC-2026-00040,UV-400,UV400-26-06-00241,2026-06,2026-09-22,DRV-VIB,drive belt glazed,400-2205-03,3.4,66.13,289.0,D-112,none
-WC-2026-00041,UV-400,UV400-26-06-00871,2026-06,2026-07-25,ELE-FTS,"intermittent no start, ign switch replaced",600-3310-00,2.1,28.38,178.5,D-140,none
-WC-2026-00042,UV-400,UV400-26-06-00672,2026-06,2026-10-23,BRK-NOI,"front brake squeal, pads replaced",,1.5,53.75,127.5,D-106,none
-WC-2026-00043,UV-400,UV400-26-06-00531,2026-06,2026-08-15,ELE-FTS,"no start, no fuel pressure, repl pump",800-1004-00,3.4,143.28,289.0,D-107,none
-WC-2026-00044,UV-600,UV600-26-01-00610,2026-01,2026-05-11,DRV-NOI,"wheel brg play, replaced",,3.5,13.22,297.5,D-132,none
-WC-2026-00045,UV-600,UV600-26-01-00487,2026-01,2026-05-15,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,2.8,40.29,238.0,D-140,none
-WC-2026-00046,UV-600,UV600-26-01-00080,2026-01,2026-05-23,ENG-ELP,"oil leak at filter, filter gasket torn",,1.5,7.9,127.5,D-121,none
-WC-2026-00047,UV-600,UV600-26-01-00711,2026-01,2026-02-05,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.4,57.47,119.0,D-126,none
-WC-2026-00048,UV-600,UV600-26-01-00431,2026-01,2026-05-13,HYD-ELP,"hyd hose chafed and leaking, repl hose",,1.4,68.33,119.0,D-136,none
-WC-2026-00049,UV-600,UV600-26-01-00874,2026-01,2026-02-27,BRK-NOI,"front brake squeal, pads replaced",500-7731-01,2.8,43.69,238.0,D-134,none
-WC-2026-00050,UV-600,UV600-26-02-00030,2026-02,2026-06-13,DRV-NOI,"wheel brg play, replaced",100-4471-02,2.0,13.68,170.0,D-125,none
-WC-2026-00051,UV-600,UV600-26-02-00607,2026-02,2026-06-19,HYD-ELP,"lift cyl weeping, resealed",100-4471-02,3.2,23.62,272.0,D-127,none
-WC-2026-00052,UV-600,UV600-26-02-00336,2026-02,2026-06-07,ENG-ELP,"oil leak at filter, filter gasket torn",300-0912-00,1.5,8.49,127.5,D-124,none
-WC-2026-00053,UV-600,UV600-26-02-00020,2026-02,2026-06-24,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.0,108.0,85.0,D-122,none
-WC-2026-00054,UV-600,UV600-26-02-00773,2026-02,2026-03-01,HYD-ELP,"hyd hose chafed and leaking, repl hose",,2.6,44.14,221.0,D-101,none
-WC-2026-00055,UV-600,UV600-26-02-00578,2026-02,2026-04-07,BRK-NOI,"front brake squeal, pads replaced",700-5520-02,2.6,48.26,221.0,D-123,none
-WC-2026-00056,UV-600,UV600-26-02-00319,2026-02,2026-03-04,ELE-FTS,"no start, no fuel pressure, repl pump",,1.2,177.46,102.0,D-136,none
-WC-2026-00057,UV-600,UV600-26-03-00078,2026-03,2026-07-19,DRV-NOI,"grinding noise rear axle, repl brg",,2.7,9.04,229.5,D-119,none
-WC-2026-00058,UV-600,UV600-26-03-00043,2026-03,2026-04-12,ENG-ELP,"oil leak at filter, filter gasket torn",,2.3,10.63,195.5,D-104,none
-WC-2026-00059,UV-600,UV600-26-03-00502,2026-03,2026-06-04,DRV-VIB,drive belt glazed,400-2205-03,1.9,105.88,161.5,D-140,none
-WC-2026-00060,UV-600,UV600-26-03-00989,2026-03,2026-05-21,BRK-NOI,"front brake squeal, pads replaced",,2.8,45.89,238.0,D-134,none
-WC-2026-00061,UV-600,UV600-26-04-00958,2026-04,2026-07-03,DRV-NOI,"wheel brg play, replaced",,1.5,15.43,127.5,D-115,none
-WC-2026-00062,UV-600,UV600-26-04-00345,2026-04,2026-08-01,DRV-NOI,"wheel brg play, replaced",,2.6,15.18,221.0,D-111,none
-WC-2026-00063,UV-600,UV600-26-04-00902,2026-04,2026-07-20,HYD-ELP,"lift cyl weeping, resealed",,1.7,43.24,144.5,D-135,none
-WC-2026-00064,UV-600,UV600-26-04-00248,2026-04,2026-05-24,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,1.3,34.24,110.5,D-115,none
-WC-2026-00065,UV-600,UV600-26-04-00812,2026-04,2026-08-01,HYD-ELP,"hyd leak boom cyl, repl seal kit",,2.1,29.77,178.5,D-125,none
-WC-2026-00066,UV-600,UV600-26-04-00567,2026-04,2026-07-17,ENG-ELP,"oil leak at filter, filter gasket torn",,1.8,9.12,153.0,D-135,none
-WC-2026-00067,UV-600,UV600-26-04-00124,2026-04,2026-08-24,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.5,71.04,127.5,D-134,none
-WC-2026-00068,UV-600,UV600-26-04-00284,2026-04,2026-06-24,HYD-ELP,burst hose at loader valve,500-7731-01,2.8,72.88,238.0,D-112,none
-WC-2026-00069,UV-600,UV600-26-04-00547,2026-04,2026-07-05,BRK-NOI,"front brake squeal, pads replaced",700-5520-02,0.8,29.69,68.0,D-103,none
-WC-2026-00070,UV-600,UV600-26-04-00106,2026-04,2026-06-28,ELE-FTS,"no start, no fuel pressure, repl pump",,2.8,144.81,238.0,D-130,none
-WC-2026-00071,UV-600,UV600-26-05-00964,2026-05,2026-08-28,DRV-NOI,"wheel brg play, replaced",100-4471-02,0.9,9.14,76.5,D-104,none
-WC-2026-00072,UV-600,UV600-26-05-00156,2026-05,2026-06-05,HYD-ELP,"lift cyl weeping, resealed",,2.7,44.83,229.5,D-105,none
-WC-2026-00073,UV-600,UV600-26-05-00621,2026-05,2026-07-20,HYD-ELP,"lift cyl weeping, resealed",200-1180-01,2.9,28.19,246.5,D-133,none
-WC-2026-00074,UV-600,UV600-26-05-00881,2026-05,2026-09-19,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,2.0,30.02,170.0,D-139,none
-WC-2026-00075,UV-600,UV600-26-05-00271,2026-05,2026-06-22,ENG-ELP,"oil leak at filter, filter gasket torn",400-2205-03,2.5,7.41,212.5,D-111,none
-WC-2026-00076,UV-600,UV600-26-05-00609,2026-05,2026-07-16,DRV-VIB,drive belt glazed,400-2205-03,2.0,55.76,170.0,D-118,none
-WC-2026-00077,UV-600,UV600-26-05-00271,2026-05,2026-09-26,HYD-ELP,"hyd hose chafed and leaking, repl hose",500-7731-01,1.4,52.45,119.0,D-134,none
-WC-2026-00078,UV-600,UV600-26-05-00170,2026-05,2026-07-26,BRK-NOI,"front brake squeal, pads replaced",300-0912-00,1.0,45.3,85.0,D-136,none
-WC-2026-00079,UV-600,UV600-26-05-00717,2026-05,2026-09-13,ELE-FTS,"no start, no fuel pressure, repl pump",800-1004-00,2.7,138.04,229.5,D-131,none
-WC-2026-00080,UV-600,UV600-26-06-00619,2026-06,2026-07-09,DRV-NOI,"grinding noise rear axle, repl brg",,2.8,8.95,238.0,D-136,none
-WC-2026-00081,UV-600,UV600-26-06-00782,2026-06,2026-07-25,HYD-ELP,"hyd leak boom cyl, repl seal kit",500-7731-01,2.4,33.82,204.0,D-128,none
-WC-2026-00082,UV-600,UV600-26-06-00651,2026-06,2026-09-27,HYD-ELP,"cust reports fluid under unit, cyl seals worn",200-1180-01,2.4,45.29,204.0,D-130,none
-WC-2026-00083,UV-600,UV600-26-06-00165,2026-06,2026-09-11,ENG-ELP,"oil leak at filter, filter gasket torn",,1.1,10.84,93.5,D-118,none
-WC-2026-00084,UV-600,UV600-26-06-00466,2026-06,2026-10-03,DRV-VIB,drive belt glazed,,2.3,67.63,195.5,D-107,none
-WC-2026-00085,UV-600,UV600-26-06-00424,2026-06,2026-07-02,BRK-NOI,"front brake squeal, pads replaced",,2.3,43.12,195.5,D-139,none
-WC-2026-00086,TR-250,TR250-26-01-00950,2026-01,2026-02-10,DRV-NOI,"wheel brg play, replaced",100-4471-02,2.3,15.42,195.5,D-131,none
-WC-2026-00087,TR-250,TR250-26-01-00015,2026-01,2026-03-18,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,1.6,25.14,136.0,D-107,none
-WC-2026-00088,TR-250,TR250-26-01-00956,2026-01,2026-02-23,ENG-ELP,"oil leak at filter, filter gasket torn",,1.2,9.66,102.0,D-117,none
-WC-2026-00089,TR-250,TR250-26-01-00149,2026-01,2026-05-13,HYD-ELP,"hyd hose chafed and leaking, repl hose",400-2205-03,2.0,70.72,170.0,D-132,none
-WC-2026-00090,TR-250,TR250-26-02-00425,2026-02,2026-03-11,DRV-NOI,"wheel brg play, replaced",100-4471-02,2.9,14.93,246.5,D-118,none
-WC-2026-00091,TR-250,TR250-26-02-00676,2026-02,2026-05-16,DRV-NOI,"grinding noise rear axle, repl brg",,2.4,11.86,204.0,D-130,none
-WC-2026-00092,TR-250,TR250-26-02-00194,2026-02,2026-06-23,HYD-ELP,"hyd leak boom cyl, repl seal kit",,1.7,36.15,144.5,D-114,none
-WC-2026-00093,TR-250,TR250-26-02-00831,2026-02,2026-05-13,HYD-ELP,burst hose at loader valve,,2.7,73.17,229.5,D-109,none
-WC-2026-00094,TR-250,TR250-26-02-00340,2026-02,2026-03-28,ELE-FTS,"intermittent no start, ign switch replaced",600-3310-00,3.4,36.55,289.0,D-128,none
-WC-2026-00095,TR-250,TR250-26-03-00892,2026-03,2026-07-21,DRV-NOI,"grinding noise rear axle, repl brg",100-4471-02,1.2,8.81,102.0,D-116,none
-WC-2026-00096,TR-250,TR250-26-03-00083,2026-03,2026-06-28,DRV-NOI,"wheel brg play, replaced",,1.9,15.19,161.5,D-134,none
-WC-2026-00097,TR-250,TR250-26-03-00500,2026-03,2026-06-28,HYD-ELP,"lift cyl weeping, resealed",,3.2,23.83,272.0,D-104,none
-WC-2026-00098,TR-250,TR250-26-03-00101,2026-03,2026-06-25,ENG-ELP,"oil leak at filter, filter gasket torn",200-1180-01,2.0,9.24,170.0,D-119,none
-WC-2026-00099,TR-250,TR250-26-03-00368,2026-03,2026-04-12,HYD-ELP,burst hose at loader valve,,1.0,42.16,85.0,D-133,none
-WC-2026-00100,TR-250,TR250-26-03-00892,2026-03,2026-05-13,ELE-FTS,"intermittent no start, ign switch replaced",600-3310-00,1.0,29.2,85.0,D-137,none
-WC-2026-00101,TR-250,TR250-26-04-00683,2026-04,2026-08-01,DRV-NOI,"wheel brg play, replaced",,2.0,15.59,170.0,D-134,none
-WC-2026-00102,TR-250,TR250-26-04-00602,2026-04,2026-06-10,DRV-NOI,"wheel brg play, replaced",100-4471-02,3.4,13.86,289.0,D-129,none
-WC-2026-00103,TR-250,TR250-26-04-00391,2026-04,2026-06-19,HYD-ELP,"cust reports fluid under unit, cyl seals worn",800-1004-00,1.1,36.22,93.5,D-118,none
-WC-2026-00104,TR-250,TR250-26-04-00580,2026-04,2026-05-28,HYD-ELP,"lift cyl weeping, resealed",700-5520-02,1.5,40.9,127.5,D-103,none
-WC-2026-00105,TR-250,TR250-26-04-00795,2026-04,2026-08-26,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.2,36.96,272.0,D-122,none
-WC-2026-00106,TR-250,TR250-26-04-00739,2026-04,2026-06-25,ENG-ELP,"oil leak at filter, filter gasket torn",,2.6,10.42,221.0,D-140,none
-WC-2026-00107,TR-250,TR250-26-04-00374,2026-04,2026-07-24,HYD-ELP,"hyd hose chafed and leaking, repl hose",,0.9,40.12,76.5,D-118,none
-WC-2026-00108,TR-250,TR250-26-04-00553,2026-04,2026-08-12,ELE-FTS,"intermittent no start, ign switch replaced",600-3310-00,1.2,35.69,102.0,D-116,none
-WC-2026-00109,TR-250,TR250-26-05-00347,2026-05,2026-09-26,DRV-NOI,"grinding noise rear axle, repl brg",500-7731-01,2.8,12.04,238.0,D-104,none
-WC-2026-00110,TR-250,TR250-26-05-00407,2026-05,2026-07-28,HYD-ELP,"lift cyl weeping, resealed",,2.8,31.41,238.0,D-125,none
-WC-2026-00111,TR-250,TR250-26-05-00378,2026-05,2026-06-22,HYD-ELP,"lift cyl weeping, resealed",200-1180-01,1.1,38.46,93.5,D-137,none
-WC-2026-00112,TR-250,TR250-26-05-00111,2026-05,2026-09-22,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.3,33.84,280.5,D-139,none
-WC-2026-00113,TR-250,TR250-26-05-00651,2026-05,2026-08-27,HYD-ELP,"cust reports fluid under unit, cyl seals worn",400-2205-03,2.5,43.92,212.5,D-119,none
-WC-2026-00114,TR-250,TR250-26-05-00039,2026-05,2026-09-10,HYD-ELP,"cust reports fluid under unit, cyl seals worn",200-1180-01,0.9,25.67,76.5,D-115,none
-WC-2026-00115,TR-250,TR250-26-05-00973,2026-05,2026-07-24,ENG-ELP,"oil leak at filter, filter gasket torn",,1.8,10.16,153.0,D-109,none
-WC-2026-00116,TR-250,TR250-26-05-00962,2026-05,2026-06-09,HYD-ELP,"hyd hose chafed and leaking, repl hose",,2.5,62.2,212.5,D-113,none
-WC-2026-00117,TR-250,TR250-26-05-00703,2026-05,2026-07-12,ELE-FTS,"intermittent no start, ign switch replaced",,1.1,20.68,93.5,D-117,none
-WC-2026-00118,TR-250,TR250-26-06-00218,2026-06,2026-07-21,DRV-NOI,"grinding noise rear axle, repl brg",800-1004-00,1.0,8.61,85.0,D-121,none
-WC-2026-00119,TR-250,TR250-26-06-00784,2026-06,2026-08-18,DRV-NOI,"grinding noise rear axle, repl brg",400-2205-03,1.0,13.01,85.0,D-114,none
-WC-2026-00120,TR-250,TR250-26-06-00284,2026-06,2026-08-28,HYD-ELP,"hyd leak boom cyl, repl seal kit",,2.4,45.71,204.0,D-134,none
-WC-2026-00121,TR-250,TR250-26-06-00888,2026-06,2026-09-01,HYD-ELP,"hyd leak boom cyl, repl seal kit",,1.1,23.34,93.5,D-115,none
-WC-2026-00122,TR-250,TR250-26-06-00130,2026-06,2026-09-24,HYD-ELP,"cust reports fluid under unit, cyl seals worn",200-1180-01,1.5,35.1,127.5,D-104,none
-WC-2026-00123,TR-250,TR250-26-06-00608,2026-06,2026-10-04,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,1.8,34.59,153.0,D-139,none
-WC-2026-00124,TR-250,TR250-26-06-00675,2026-06,2026-07-17,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,3.3,33.53,280.5,D-101,none
-WC-2026-00125,TR-250,TR250-26-06-00111,2026-06,2026-10-16,ENG-ELP,"oil leak at filter, filter gasket torn",,2.0,6.87,170.0,D-105,none
-WC-2026-00126,TR-250,TR250-26-06-00649,2026-06,2026-08-19,HYD-ELP,burst hose at loader valve,500-7731-01,1.5,50.82,127.5,D-138,none
-WC-2026-00127,TR-250,TR250-26-06-00102,2026-06,2026-09-26,HYD-ELP,"hyd hose chafed and leaking, repl hose",,2.4,68.18,204.0,D-135,none
-WC-2026-00128,TR-250,TR250-26-06-00424,2026-06,2026-08-11,ELE-FTS,"intermittent no start, ign switch replaced",,3.2,27.28,272.0,D-106,none
+WC-2026-00001,UV-400,UV400-26-01-00882,2026-01,2026-05-01,DRV-NOI,"grinding noise rr axle, repl brg",,3.4,13.79,289.0,D-134,none
+WC-2026-00002,UV-400,UV400-26-01-00465,2026-01,2026-04-01,HYD-ELP,"lift cyl weeping, resealed",200-1180-01,2.0,43.14,170.0,D-116,none
+WC-2026-00003,UV-400,UV400-26-01-00655,2026-01,2026-02-17,DRV-VIB,"belt slipping under load, repl cvt belt",,1.6,62.25,136.0,D-110,none
+WC-2026-00004,UV-400,UV400-26-01-00115,2026-01,2026-02-12,ELE-FTS,"intermittent no start, ign sw replaced",,2.1,24.17,178.5,D-115,none
+WC-2026-00005,UV-400,UV400-26-02-00546,2026-02,2026-06-25,DRV-NOI,"grinding noise rr axle, repl brg",,3.4,9.25,289.0,D-130,none
+WC-2026-00006,UV-400,UV400-26-02-00434,2026-02,2026-04-07,DRV-NOI,"grinding noise rr axle, repl brg",100-4471-02,3.2,14.05,272.0,D-125,none
+WC-2026-00007,UV-400,UV400-26-02-00254,2026-02,2026-06-08,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.0,8.56,170.0,D-137,none
+WC-2026-00008,UV-400,UV400-26-02-00061,2026-02,2026-04-08,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,2.7,102.89,229.5,D-121,none
+WC-2026-00009,UV-400,UV400-26-02-00553,2026-02,2026-04-05,ELE-FTS,"intermittent no start, ign sw replaced",600-3310-00,2.1,24.24,178.5,D-130,none
+WC-2026-00010,UV-400,UV400-26-02-00421,2026-02,2026-03-15,ELE-FTS,"no start, no fuel pressure, repl pump",,1.8,153.95,153.0,D-106,none
+WC-2026-00011,UV-400,UV400-26-03-00197,2026-03,2026-06-07,DRV-NOI,"wheel brg play, replaced",,1.1,9.35,93.5,D-111,none
+WC-2026-00012,UV-400,UV400-26-03-00078,2026-03,2026-06-15,DRV-NOI,"grinding noise rr axle, repl brg",,3.2,8.61,272.0,D-134,none
+WC-2026-00013,UV-400,UV400-26-03-00498,2026-03,2026-04-16,HYD-ELP,"hyd leak boom cyl, repl seal kit",400-2205-03,1.2,42.89,102.0,D-103,none
+WC-2026-00014,UV-400,UV400-26-03-00804,2026-03,2026-04-15,ENG-ELP,"oil leak at fltr, fltr gskt torn",500-7731-01,3.3,9.11,280.5,D-135,none
+WC-2026-00015,UV-400,UV400-26-03-00992,2026-03,2026-07-02,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.6,94.39,136.0,D-103,none
+WC-2026-00016,UV-400,UV400-26-03-00162,2026-03,2026-07-02,ELE-FTS,"intermittent no start, ign sw replaced",,3.1,36.1,263.5,D-104,none
+WC-2026-00017,UV-400,UV400-26-03-00584,2026-03,2026-05-08,BRK-NOI,"frt brake squeal, pads replaced",,3.3,45.99,280.5,D-126,none
+WC-2026-00018,UV-400,UV400-26-03-00322,2026-03,2026-06-08,ELE-FTS,"no start, no fuel pressure, repl pump",400-2205-03,2.6,128.41,221.0,D-119,none
+WC-2026-00019,UV-400,UV400-26-04-00577,2026-04,2026-05-04,DRV-NOI,"grinding noise rr axle, repl brg",100-4471-02,2.5,12.61,212.5,D-132,none
+WC-2026-00020,UV-400,UV400-26-04-00379,2026-04,2026-07-10,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.2,33.08,272.0,D-134,none
+WC-2026-00021,UV-400,UV400-26-04-00670,2026-04,2026-07-17,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.5,38.36,297.5,D-135,none
+WC-2026-00022,UV-400,UV400-26-04-00138,2026-04,2026-07-09,HYD-ELP,"hyd leak boom cyl, repl seal kit",200-1180-01,3.3,43.46,280.5,D-135,none
+WC-2026-00023,UV-400,UV400-26-04-00209,2026-04,2026-07-22,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.7,9.63,229.5,D-116,none
+WC-2026-00024,UV-400,UV400-26-04-00342,2026-04,2026-08-25,BRK-NOI,"frt brake squeal, pads replaced",,0.9,46.49,76.5,D-116,none
+WC-2026-00025,UV-400,UV400-26-04-00010,2026-04,2026-08-04,ELE-FTS,"no start, no fuel pressure, repl pump",,2.0,178.94,170.0,D-109,none
+WC-2026-00026,UV-400,UV400-26-05-00131,2026-05,2026-08-02,DRV-NOI,"wheel brg play, replaced",,1.2,11.19,102.0,D-102,none
+WC-2026-00027,UV-400,UV400-26-05-00363,2026-05,2026-07-25,HYD-ELP,"lift cyl weeping, resealed",,2.6,43.34,221.0,D-126,none
+WC-2026-00028,UV-400,UV400-26-05-00820,2026-05,2026-07-26,HYD-ELP,"hyd leak boom cyl, repl seal kit",400-2205-03,3.1,43.27,263.5,D-101,none
+WC-2026-00029,UV-400,UV400-26-05-00686,2026-05,2026-08-28,ENG-ELP,"oil leak at fltr, fltr gskt torn",,1.9,8.11,161.5,D-106,none
+WC-2026-00030,UV-400,UV400-26-05-00837,2026-05,2026-06-15,DRV-VIB,drive belt glazed,,1.4,70.48,119.0,D-114,none
+WC-2026-00031,UV-400,UV400-26-05-00072,2026-05,2026-07-25,ELE-FTS,"intermittent no start, ign sw replaced",,1.6,26.35,136.0,D-132,none
+WC-2026-00032,UV-400,UV400-26-05-00268,2026-05,2026-08-06,BRK-NOI,"frt brake squeal, pads replaced",200-1180-01,3.2,29.49,272.0,D-138,none
+WC-2026-00033,UV-400,UV400-26-05-00119,2026-05,2026-08-13,ELE-FTS,"no start, no fuel pressure, repl pump",,3.5,115.43,297.5,D-127,none
+WC-2026-00034,UV-400,UV400-26-06-00681,2026-06,2026-08-11,DRV-NOI,"wheel brg play, replaced",,1.0,13.64,85.0,D-107,none
+WC-2026-00035,UV-400,UV400-26-06-00335,2026-06,2026-09-13,DRV-NOI,"wheel brg play, replaced",,2.6,12.75,221.0,D-112,none
+WC-2026-00036,UV-400,UV400-26-06-00631,2026-06,2026-10-19,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,3.2,32.34,272.0,D-100,none
+WC-2026-00037,UV-400,UV400-26-06-00594,2026-06,2026-09-20,HYD-ELP,"lift cyl weeping, resealed",200-1180-01,2.0,30.41,170.0,D-128,none
+WC-2026-00038,UV-400,UV400-26-06-00983,2026-06,2026-08-26,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.9,10.62,246.5,D-118,none
+WC-2026-00039,UV-400,UV400-26-06-00241,2026-06,2026-09-22,DRV-VIB,drive belt glazed,400-2205-03,3.4,66.13,289.0,D-112,none
+WC-2026-00040,UV-400,UV400-26-06-00871,2026-06,2026-07-25,ELE-FTS,"intermittent no start, ign sw replaced",600-3310-00,2.1,28.38,178.5,D-140,none
+WC-2026-00041,UV-400,UV400-26-06-00672,2026-06,2026-10-23,BRK-NOI,"frt brake squeal, pads replaced",,1.5,53.75,127.5,D-106,none
+WC-2026-00042,UV-400,UV400-26-06-00531,2026-06,2026-08-15,ELE-FTS,"no start, no fuel pressure, repl pump",800-1004-00,3.4,143.28,289.0,D-107,none
+WC-2026-00043,UV-600,UV600-26-01-00610,2026-01,2026-05-11,DRV-NOI,"wheel brg play, replaced",,3.5,13.22,297.5,D-132,none
+WC-2026-00044,UV-600,UV600-26-01-00487,2026-01,2026-05-15,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,2.8,40.29,238.0,D-140,none
+WC-2026-00045,UV-600,UV600-26-01-00080,2026-01,2026-05-23,ENG-ELP,"oil leak at fltr, fltr gskt torn",,1.5,7.9,127.5,D-121,none
+WC-2026-00046,UV-600,UV600-26-01-00711,2026-01,2026-02-05,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.4,57.47,119.0,D-126,none
+WC-2026-00047,UV-600,UV600-26-01-00431,2026-01,2026-05-13,HYD-ELP,"hyd hose chafed and lkg, repl hose",,1.4,68.33,119.0,D-136,none
+WC-2026-00048,UV-600,UV600-26-01-00874,2026-01,2026-02-27,BRK-NOI,"frt brake squeal, pads replaced",500-7731-01,2.8,43.69,238.0,D-134,none
+WC-2026-00049,UV-600,UV600-26-02-00030,2026-02,2026-06-13,DRV-NOI,"wheel brg play, replaced",100-4471-02,2.0,13.68,170.0,D-125,none
+WC-2026-00050,UV-600,UV600-26-02-00607,2026-02,2026-06-19,HYD-ELP,"lift cyl weeping, resealed",100-4471-02,3.2,23.62,272.0,D-127,none
+WC-2026-00051,UV-600,UV600-26-02-00336,2026-02,2026-06-07,ENG-ELP,"oil leak at fltr, fltr gskt torn",300-0912-00,1.5,8.49,127.5,D-124,none
+WC-2026-00052,UV-600,UV600-26-02-00020,2026-02,2026-06-24,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,1.0,108.0,85.0,D-122,none
+WC-2026-00053,UV-600,UV600-26-02-00773,2026-02,2026-03-01,HYD-ELP,"hyd hose chafed and lkg, repl hose",,2.6,44.14,221.0,D-101,none
+WC-2026-00054,UV-600,UV600-26-02-00578,2026-02,2026-04-07,BRK-NOI,"frt brake squeal, pads replaced",700-5520-02,2.6,48.26,221.0,D-123,none
+WC-2026-00055,UV-600,UV600-26-02-00319,2026-02,2026-03-04,ELE-FTS,"no start, no fuel pressure, repl pump",,1.2,177.46,102.0,D-136,none
+WC-2026-00056,UV-600,UV600-26-03-00078,2026-03,2026-07-19,DRV-NOI,"grinding noise rr axle, repl brg",,2.7,9.04,229.5,D-119,none
+WC-2026-00057,UV-600,UV600-26-03-00043,2026-03,2026-04-12,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.3,10.63,195.5,D-104,none
+WC-2026-00058,UV-600,UV600-26-03-00502,2026-03,2026-06-04,DRV-VIB,drive belt glazed,400-2205-03,1.9,105.88,161.5,D-140,none
+WC-2026-00059,UV-600,UV600-26-03-00989,2026-03,2026-05-21,BRK-NOI,"frt brake squeal, pads replaced",,2.8,45.89,238.0,D-134,none
+WC-2026-00060,UV-600,UV600-26-04-00958,2026-04,2026-07-03,DRV-NOI,"wheel brg play, replaced",,1.5,15.43,127.5,D-115,none
+WC-2026-00061,UV-600,UV600-26-04-00345,2026-04,2026-08-01,DRV-NOI,"wheel brg play, replaced",,2.6,15.18,221.0,D-111,none
+WC-2026-00062,UV-600,UV600-26-04-00902,2026-04,2026-07-20,HYD-ELP,"lift cyl weeping, resealed",,1.7,43.24,144.5,D-135,none
+WC-2026-00063,UV-600,UV600-26-04-00248,2026-04,2026-05-24,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,1.3,34.24,110.5,D-115,none
+WC-2026-00064,UV-600,UV600-26-04-00302,2026-04,2026-08-08,ENG-ELP,"oil leak at fltr, fltr gskt torn",,0.8,10.83,68.0,D-119,none
+WC-2026-00065,UV-600,UV600-26-04-00436,2026-04,2026-07-24,DRV-VIB,drive belt glazed,,2.2,73.0,187.0,D-129,none
+WC-2026-00066,UV-600,UV600-26-04-00324,2026-04,2026-07-04,HYD-ELP,"hyd hose chafed and lkg, repl hose",500-7731-01,2.7,43.85,229.5,D-130,none
+WC-2026-00067,UV-600,UV600-26-04-00370,2026-04,2026-07-06,BRK-NOI,"frt brake squeal, pads replaced",400-2205-03,1.6,28.8,136.0,D-134,none
+WC-2026-00068,UV-600,UV600-26-04-00130,2026-04,2026-05-21,ELE-FTS,"no start, no fuel pressure, repl pump",500-7731-01,2.7,101.44,229.5,D-100,none
+WC-2026-00069,UV-600,UV600-26-05-00989,2026-05,2026-09-02,DRV-NOI,"wheel brg play, replaced",,1.7,15.92,144.5,D-130,none
+WC-2026-00070,UV-600,UV600-26-05-00645,2026-05,2026-06-22,HYD-ELP,"hyd leak boom cyl, repl seal kit",,1.0,26.49,85.0,D-136,none
+WC-2026-00071,UV-600,UV600-26-05-00572,2026-05,2026-08-25,HYD-ELP,"cust reports fluid under unit, cyl seals worn",200-1180-01,1.5,36.95,127.5,D-139,none
+WC-2026-00072,UV-600,UV600-26-05-00881,2026-05,2026-09-19,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.0,8.35,170.0,D-139,none
+WC-2026-00073,UV-600,UV600-26-05-00271,2026-05,2026-06-22,DRV-VIB,"belt slipping under load, repl cvt belt",400-2205-03,2.5,62.48,212.5,D-111,none
+WC-2026-00074,UV-600,UV600-26-05-00609,2026-05,2026-07-16,HYD-ELP,burst hose at loader valve,500-7731-01,2.0,38.0,170.0,D-118,none
+WC-2026-00075,UV-600,UV600-26-05-00271,2026-05,2026-09-26,BRK-NOI,"frt brake squeal, pads replaced",700-5520-02,1.4,40.47,119.0,D-134,none
+WC-2026-00076,UV-600,UV600-26-05-00170,2026-05,2026-07-26,ELE-FTS,"no start, no fuel pressure, repl pump",300-0912-00,1.0,146.74,85.0,D-136,none
+WC-2026-00077,UV-600,UV600-26-06-00717,2026-06,2026-10-13,DRV-NOI,"wheel brg play, replaced",100-4471-02,2.7,12.3,229.5,D-131,none
+WC-2026-00078,UV-600,UV600-26-06-00619,2026-06,2026-07-09,HYD-ELP,"hyd leak boom cyl, repl seal kit",,2.8,25.1,238.0,D-136,none
+WC-2026-00079,UV-600,UV600-26-06-00782,2026-06,2026-07-25,HYD-ELP,"hyd leak boom cyl, repl seal kit",500-7731-01,2.4,33.82,204.0,D-128,none
+WC-2026-00080,UV-600,UV600-26-06-00094,2026-06,2026-10-16,DRV-VIB,drive belt glazed,,2.1,76.05,178.5,D-120,none
+WC-2026-00081,UV-600,UV600-26-06-00296,2026-06,2026-08-22,HYD-ELP,burst hose at loader valve,,2.7,66.74,229.5,D-135,none
+WC-2026-00082,UV-600,UV600-26-06-00994,2026-06,2026-07-25,BRK-NOI,"frt brake squeal, pads replaced",,1.7,52.96,144.5,D-100,none
+WC-2026-00083,UV-600,UV600-26-06-00371,2026-06,2026-10-20,ELE-FTS,"no start, no fuel pressure, repl pump",,1.3,149.54,110.5,D-103,none
+WC-2026-00084,TR-250,TR250-26-01-00497,2026-01,2026-03-04,DRV-NOI,"grinding noise rr axle, repl brg",800-1004-00,3.2,16.18,272.0,D-138,none
+WC-2026-00085,TR-250,TR250-26-01-00418,2026-01,2026-03-03,HYD-ELP,"hyd leak boom cyl, repl seal kit",,0.8,45.82,68.0,D-107,none
+WC-2026-00086,TR-250,TR250-26-01-00956,2026-01,2026-02-23,ENG-ELP,"oil leak at fltr, fltr gskt torn",,1.2,9.66,102.0,D-117,none
+WC-2026-00087,TR-250,TR250-26-01-00149,2026-01,2026-05-13,HYD-ELP,"hyd hose chafed and lkg, repl hose",400-2205-03,2.0,70.72,170.0,D-132,none
+WC-2026-00088,TR-250,TR250-26-02-00425,2026-02,2026-03-11,DRV-NOI,"wheel brg play, replaced",100-4471-02,2.9,14.93,246.5,D-118,none
+WC-2026-00089,TR-250,TR250-26-02-00676,2026-02,2026-05-16,DRV-NOI,"grinding noise rr axle, repl brg",,2.4,11.86,204.0,D-130,none
+WC-2026-00090,TR-250,TR250-26-02-00194,2026-02,2026-06-23,HYD-ELP,"hyd leak boom cyl, repl seal kit",,1.7,36.15,144.5,D-114,none
+WC-2026-00091,TR-250,TR250-26-02-00831,2026-02,2026-05-13,HYD-ELP,burst hose at loader valve,,2.7,73.17,229.5,D-109,none
+WC-2026-00092,TR-250,TR250-26-02-00340,2026-02,2026-03-28,ELE-FTS,"intermittent no start, ign sw replaced",600-3310-00,3.4,36.55,289.0,D-128,none
+WC-2026-00093,TR-250,TR250-26-03-00892,2026-03,2026-07-21,DRV-NOI,"grinding noise rr axle, repl brg",100-4471-02,1.2,8.81,102.0,D-116,none
+WC-2026-00094,TR-250,TR250-26-03-00083,2026-03,2026-06-28,DRV-NOI,"wheel brg play, replaced",,1.9,15.19,161.5,D-134,none
+WC-2026-00095,TR-250,TR250-26-03-00500,2026-03,2026-06-28,HYD-ELP,"lift cyl weeping, resealed",,3.2,23.83,272.0,D-104,none
+WC-2026-00096,TR-250,TR250-26-03-00101,2026-03,2026-06-25,ENG-ELP,"oil leak at fltr, fltr gskt torn",200-1180-01,2.0,9.24,170.0,D-119,none
+WC-2026-00097,TR-250,TR250-26-03-00368,2026-03,2026-04-12,HYD-ELP,burst hose at loader valve,,1.0,42.16,85.0,D-133,none
+WC-2026-00098,TR-250,TR250-26-03-00892,2026-03,2026-05-13,ELE-FTS,"intermittent no start, ign sw replaced",600-3310-00,1.0,29.2,85.0,D-137,none
+WC-2026-00099,TR-250,TR250-26-04-00683,2026-04,2026-08-01,DRV-NOI,"wheel brg play, replaced",,2.0,15.59,170.0,D-134,none
+WC-2026-00100,TR-250,TR250-26-04-00602,2026-04,2026-06-10,DRV-NOI,"wheel brg play, replaced",100-4471-02,3.4,13.86,289.0,D-129,none
+WC-2026-00101,TR-250,TR250-26-04-00391,2026-04,2026-06-19,HYD-ELP,"cust reports fluid under unit, cyl seals worn",800-1004-00,1.1,36.22,93.5,D-118,none
+WC-2026-00102,TR-250,TR250-26-04-00580,2026-04,2026-05-28,HYD-ELP,"lift cyl weeping, resealed",700-5520-02,1.5,40.9,127.5,D-103,none
+WC-2026-00103,TR-250,TR250-26-04-00795,2026-04,2026-08-26,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.2,36.96,272.0,D-122,none
+WC-2026-00104,TR-250,TR250-26-04-00739,2026-04,2026-06-25,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.6,10.42,221.0,D-140,none
+WC-2026-00105,TR-250,TR250-26-04-00374,2026-04,2026-07-24,HYD-ELP,"hyd hose chafed and lkg, repl hose",,0.9,40.12,76.5,D-118,none
+WC-2026-00106,TR-250,TR250-26-04-00553,2026-04,2026-08-12,ELE-FTS,"intermittent no start, ign sw replaced",600-3310-00,1.2,35.69,102.0,D-116,none
+WC-2026-00107,TR-250,TR250-26-05-00347,2026-05,2026-09-26,DRV-NOI,"grinding noise rr axle, repl brg",500-7731-01,2.8,12.04,238.0,D-104,none
+WC-2026-00108,TR-250,TR250-26-05-00407,2026-05,2026-07-28,HYD-ELP,"lift cyl weeping, resealed",,2.8,31.41,238.0,D-125,none
+WC-2026-00109,TR-250,TR250-26-05-00378,2026-05,2026-06-22,HYD-ELP,"lift cyl weeping, resealed",200-1180-01,1.1,38.46,93.5,D-137,none
+WC-2026-00110,TR-250,TR250-26-05-00111,2026-05,2026-09-22,HYD-ELP,"hyd leak boom cyl, repl seal kit",,3.3,33.84,280.5,D-139,none
+WC-2026-00111,TR-250,TR250-26-05-00651,2026-05,2026-08-27,HYD-ELP,"cust reports fluid under unit, cyl seals worn",400-2205-03,2.5,43.92,212.5,D-119,none
+WC-2026-00112,TR-250,TR250-26-05-00039,2026-05,2026-09-10,HYD-ELP,"cust reports fluid under unit, cyl seals worn",200-1180-01,0.9,25.67,76.5,D-115,none
+WC-2026-00113,TR-250,TR250-26-05-00973,2026-05,2026-07-24,ENG-ELP,"oil leak at fltr, fltr gskt torn",,1.8,10.16,153.0,D-109,none
+WC-2026-00114,TR-250,TR250-26-05-00962,2026-05,2026-06-09,HYD-ELP,"hyd hose chafed and lkg, repl hose",,2.5,62.2,212.5,D-113,none
+WC-2026-00115,TR-250,TR250-26-05-00703,2026-05,2026-07-12,ELE-FTS,"intermittent no start, ign sw replaced",,1.1,20.68,93.5,D-117,none
+WC-2026-00116,TR-250,TR250-26-06-00218,2026-06,2026-07-21,DRV-NOI,"grinding noise rr axle, repl brg",800-1004-00,1.0,8.61,85.0,D-121,none
+WC-2026-00117,TR-250,TR250-26-06-00784,2026-06,2026-08-18,DRV-NOI,"grinding noise rr axle, repl brg",400-2205-03,1.0,13.01,85.0,D-114,none
+WC-2026-00118,TR-250,TR250-26-06-00284,2026-06,2026-08-28,HYD-ELP,"hyd leak boom cyl, repl seal kit",,2.4,45.71,204.0,D-134,none
+WC-2026-00119,TR-250,TR250-26-06-00888,2026-06,2026-09-01,HYD-ELP,"hyd leak boom cyl, repl seal kit",,1.1,23.34,93.5,D-115,none
+WC-2026-00120,TR-250,TR250-26-06-00130,2026-06,2026-09-24,HYD-ELP,"cust reports fluid under unit, cyl seals worn",200-1180-01,1.5,35.1,127.5,D-104,none
+WC-2026-00121,TR-250,TR250-26-06-00608,2026-06,2026-10-04,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,1.8,34.59,153.0,D-139,none
+WC-2026-00122,TR-250,TR250-26-06-00675,2026-06,2026-07-17,HYD-ELP,"cust reports fluid under unit, cyl seals worn",,3.3,33.53,280.5,D-101,none
+WC-2026-00123,TR-250,TR250-26-06-00111,2026-06,2026-10-16,ENG-ELP,"oil leak at fltr, fltr gskt torn",,2.0,6.87,170.0,D-105,none
+WC-2026-00124,TR-250,TR250-26-06-00649,2026-06,2026-08-19,HYD-ELP,burst hose at loader valve,500-7731-01,1.5,50.82,127.5,D-138,none
+WC-2026-00125,TR-250,TR250-26-06-00102,2026-06,2026-09-26,HYD-ELP,"hyd hose chafed and lkg, repl hose",,2.4,68.18,204.0,D-135,none
+WC-2026-00126,TR-250,TR250-26-06-00424,2026-06,2026-08-11,ELE-FTS,"intermittent no start, ign sw replaced",,3.2,27.28,272.0,D-106,none

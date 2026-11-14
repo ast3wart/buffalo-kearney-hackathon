@@ -145,7 +145,23 @@ From Warranty Week's analyses of US companies. Treat them as indicative, since t
 
 ## CP0 addendum: items 10–20 (PROPOSED, decide at CP1, Sat 9:00 AM)
 
-**Status: PROPOSAL.** Nothing here is applied yet. Mark each item ✅ / ❌ at CP1. Anything that changes the contract (items 10, 12, 13, 14) goes into `data-contract.md`, `check.py` `CONTRACT`, and `make_sample.py` in **one commit**, the same way as CP0.
+**Status (Sat Nov 14): Tier 1 + parts of Tier 2 APPLIED by Asher on `test-data-batch` as data contract v3. Brandon to confirm at CP1.**
+
+| # | Status | How it was applied |
+|---|---|---|
+| 10 | ✅ applied (full) | 3 HVAC categories + 4 HVAC failure codes in `taxonomy.py`. Each profile has its own failure-code subset, `abbreviations.csv`, `pn_format`, `desc_style`, `typo_rate`, `causal_blank_share`. `match.normalize()` reads abbreviations from data. Open question answered: **add** `compressor`, `refrigerant_component`, `motor` (24 categories) |
+| 11 | ✅ applied | `tests/test_no_literals.py` (tokenize-based, IDs + company names; verified it catches a planted part number) |
+| 12 | ✅ applied (profile) | Ironridge `acquired_plant`: P-TX2, `part_no` fill 0, plain-words descriptions, 1.05–1.25× price level, `LEGACY-P-TX2` |
+| 13 | ✅ applied | `build_supply.csv`, `truth_spikes.from_po_line_id`, dual-sourced spike part; check fails if the spiking supplier's share never varies. Sample rebuilt with Keystone/Bluewater |
+| 14 | ✅ applied (contract) | `links` columns in `taxonomy.LINK_COLUMNS`; matchers fill them |
+| 15 | ✅ applied | `afterlife/adapters/sap.py` + loader hook + `tests/test_sap_adapter.py`. Ironridge = SAP-format company |
+| 16 | ⏳ Tier 2, in each thread | unchanged |
+| 17 | ✅ applied (`runs` table) | thresholds still picked at CP3 |
+| 18 | ⏳ Tier 2 | unchanged |
+| 19 | ✅ schema reserved | `decisions.csv` in contract; buttons only after CP5 |
+| 20 | ⏳ deck only | unchanged |
+
+Original proposal text below. Anything that changes the contract (items 10, 12, 13, 14) goes into `data-contract.md`, `check.py` `CONTRACT`, and `make_sample.py` in **one commit**, the same way as CP0.
 **Inputs:** a review of the CP0 v2 branch, plus two research notes (`Afterlife Connectors, AI Approach & Plan Fixes`, `other-differentiating-notes`). Why each item exists and what it costs: [../plan/plan-updates.md](../plan/plan-updates.md).
 
 ### TL;DR

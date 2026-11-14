@@ -6,7 +6,14 @@
 
 All files are CSV and UTF-8. Dates are `YYYY-MM-DD`, months are `YYYY-MM`, money is USD.
 Column names follow common SAP tables (noted in brackets) so Kearney judges recognize them.
-**Locked at CP0 (Fri Nov 13).** Categories and failure codes live in `afterlife/taxonomy.py`, the single source of truth. `python -m afterlife.check` enforces this file.
+**v3 (Sat Nov 14), from Brandon's CP0 review.** Applied by Asher, Brandon to confirm at CP1. Changes from v2:
+- **Per-company vocabulary:** new `abbreviations.csv`. `failure_codes.csv` is the company's *subset* of `taxonomy.FAILURE_CODES`. 3 HVAC categories and 4 HVAC failure codes added.
+- **Supplier attribution:** new `build_supply.csv` (which supplier lot each product/month consumed). The spike part is dual-sourced, and `truth_spikes` gains `from_po_line_id`.
+- **Links v2:** `source_system`, `evidence`, `run_id` (see Outputs).
+- **SAP extracts:** a company can arrive with raw SAP field names, which `afterlife/adapters/sap.py` maps on load (see "SAP extract format").
+- **Acquired plant (Ironridge):** a second plant with no part numbers. It's a profile knob, with no column change.
+
+Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each company's subset and abbreviations are in `afterlife/profiles.py`. `python -m afterlife.check` enforces this file.
 
 ## Inputs (what a client would give us)
 
@@ -83,10 +90,30 @@ Column names follow common SAP tables (noted in brackets) so Kearney judges reco
 
 Present for **production suppliers only**. The service distributor has none, which is why service spend is hard to link.
 
-### `failure_codes.csv` (= `taxonomy.FAILURE_CODES`, 12 codes, `SYSTEM-MODE`, modes after ISO 14224)
+### `build_supply.csv`: which supplier lot each build consumed [modeled on goods-receipt / batch records] (v3)
 | column | type | example |
 |---|---|---|
-| failure_code | str | `HYD-ELP` |
+| product_id | str | `UV-400` |
+| build_month | str | `2026-04` |
+| part_no | str | `200-1180-01` |
+| supplier_id | str | `S-022` |
+| po_line_id | str | `PO-450005-010`, the production PO line (lot) consumed |
+| share | float | `0.5`. Shares sum to 1 per (product, month, part) |
+
+One row per BOM line × build month × supplier. **The mix must vary** across products and/or months, or a spike can't be attributed to a supplier (claims never say which supplier's part was fitted). In real data this comes from serial ↔ batch traceability.
+
+### `abbreviations.csv`: the company's shorthand (v3)
+| column | type | example |
+|---|---|---|
+| abbr | str | `BRG` / `CMPR` |
+| expansion | str | `BEARING` / `COMPRESSOR` |
+
+Client data, not code. `match.normalize()` reads it, so no company's shorthand is hardcoded.
+
+### `failure_codes.csv`: this company's subset of `taxonomy.FAILURE_CODES` (`SYSTEM-MODE`, modes after ISO 14224)
+| column | type | example |
+|---|---|---|
+| failure_code | str | `HYD-ELP` (Northwind: `REF-ELP`, `CMP-FTS`, …) |
 | system | str | `hydraulic` |
 | description | str | `External leakage` (the observed symptom, not the cause) |
 | likely_categories | str | `seal;hose;fitting;hydraulic_component` (semicolon list) |
@@ -121,7 +148,8 @@ Present for **production suppliers only**. The service distributor has none, whi
 |---|---|---|
 | part_no | str | `200-1180-01` |
 | supplier_id | str | `S-022` |
-| start_build_month | str | `2026-03` |
+| start_build_month | str | `2026-04` |
+| from_po_line_id | str | `PO-450005-010`: the first affected lot of that supplier (v3) |
 | multiplier | float | `3.0` |
 
 ## Outputs (tables in results.duckdb)
@@ -131,8 +159,17 @@ Present for **production suppliers only**. The service distributor has none, whi
 | source_table | str | as above |
 | source_id | str | |
 | part_no | str | best match |
-| method | str | `exact_pn` / `failure_code_bom` / `fuzzy_text` / `llm` |
-| confidence | float | 0–1 |
+| method | str | `exact_pn` / `info_record` / `spec_code` / `failure_code_bom` / `fuzzy_text` / `llm` / `human` (`taxonomy.LINK_METHODS`) |
+| confidence | float | 0–1 (heuristic, not a probability; thresholds picked at CP3 by target precision) |
+| source_system | str | `SAP-P-IA1` / `LEGACY-P-TX2` / `SERVICE-PORTAL` / `WTY` (v3) |
+| evidence | str | JSON of the signals that agreed, e.g. `{"spec_code":"6204","category":"bearing","info_record":false,"fuzzy":0.91}` (v3) |
+| run_id | str | ties the row to `runs` (v3) |
+
+### `runs` (v3 #17): one row per `python -m afterlife.run`
+`run_id, started_at, git_commit, input_hashes, model_id, prompt_version, metrics_json`
+
+### `decisions.csv` (v3 #19, schema reserved, stretch)
+`source_table, source_id, part_no, verdict, reviewer, at`: human accept/reject, applied as overrides (`method = human`).
 
 ### `alerts`: 🛠 Warranty thread
 | column | type |
@@ -144,3 +181,27 @@ Present for **production suppliers only**. The service distributor has none, whi
 | baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only) |
 | ratio | float |
 | exposure_usd | float |
+
+## SAP extract format (v3 #15, Ironridge)
+A company with `extract_format: "sap"` in its profile ships `production_spend`, `service_spend`, `part_master` and `info_records` with **SAP technical field names and quirks**. `io.load()` detects the headers and `afterlife/adapters/sap.py` converts them to the columns above, so nothing downstream changes.
+
+| SAP field | Our column | Table (SAP) | Quirk handled |
+|---|---|---|---|
+| EBELN + EBELP | `po_line_id` | EKKO/EKPO | joined `EBELN-EBELP` (EBELP 5 digits, steps of 10) |
+| MATNR | `part_no` | EKPO / MARA | numeric values zero-padded to 18, stripped |
+| TXZ01 | `description` | EKPO | short text on PO line |
+| LIFNR | `supplier_id` | EKKO / LFA1 | numeric values zero-padded to 10, stripped |
+| NAME1 | `supplier_name` | LFA1 | |
+| LAND1 | `country` | LFA1 | |
+| IDNLF | `supplier_pn` | EKPO / EINA | |
+| MENGE | `qty` | EKPO | |
+| MEINS | `uom` | EKPO | |
+| NETPR | `unit_price` | EKPO | decimal comma accepted (`4,12`) |
+| PEINH | `price_unit` | EKPO | |
+| BEDAT | `po_date` | EKKO | `YYYYMMDD` → `YYYY-MM-DD` |
+| WERKS | `plant` | EKPO | |
+| MAKTX | `description` (part_master) | MAKT | |
+| MATKL | `category` (part_master) | MARA | material group = our category |
+| STPRS | `std_cost` (part_master) | MBEW | |
+
+Descriptive labels (`Material`, `Vendor`, `Net Price`, …) are accepted on input too. The generator writes technical names only. Tested in `tests/test_sap_adapter.py`.

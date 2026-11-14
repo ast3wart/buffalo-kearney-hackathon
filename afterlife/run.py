@@ -6,6 +6,12 @@ Every table gets a `company_id` column, so the API filters with ?company=<id>.
 The API only READS results.duckdb, so the demo never runs heavy work live.
 Steps that aren't built yet are skipped with a message, so this works from hour 0.
 """
+import hashlib
+import json
+import os
+import subprocess
+import uuid
+from datetime import datetime, timezone
 from pathlib import Path
 import duckdb
 import pandas as pd
@@ -38,7 +44,28 @@ def run_company(tables: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     return {k: v for k, v in outputs.items() if v is not None}
 
 
+def _git_commit() -> str:
+    try:
+        return subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
+    except Exception:  # noqa: BLE001
+        return ""
+
+
+def _hash_inputs(folders: list[Path]) -> dict[str, str]:
+    out = {}
+    for d in folders:
+        h = hashlib.sha256()
+        for f in sorted(d.glob("*.csv")):
+            h.update(f.name.encode()); h.update(f.read_bytes())
+        out[str(d.relative_to(ROOT))] = h.hexdigest()[:12]
+    return out
+
+
 def run(db_path: Path = DB_PATH) -> None:
+    """v3 #17: every run gets a run_id recorded in the `runs` table, so any number traces back to
+    the code commit, inputs and model settings that produced it."""
+    run_id = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-") + uuid.uuid4().hex[:6]
+    os.environ["AFTERLIFE_RUN_ID"] = run_id  # matchers write this into links.run_id
     combined: dict[str, list[pd.DataFrame]] = {}
     company_rows = []
     for cid, folder in companies():
@@ -59,7 +86,12 @@ def run(db_path: Path = DB_PATH) -> None:
     con.register("tmp", pd.DataFrame(company_rows))
     con.execute("CREATE OR REPLACE TABLE companies AS SELECT * FROM tmp")
     con.unregister("tmp")
-    con.execute("CREATE OR REPLACE TABLE meta AS SELECT now() AS run_at")
+    con.execute("CREATE OR REPLACE TABLE meta AS SELECT now() AS run_at, ? AS run_id", [run_id])
+    con.execute("""CREATE TABLE IF NOT EXISTS runs (run_id VARCHAR, started_at TIMESTAMP, git_commit VARCHAR,
+                   input_hashes VARCHAR, model_id VARCHAR, prompt_version VARCHAR, metrics_json VARCHAR)""")
+    con.execute("INSERT INTO runs VALUES (?, now(), ?, ?, ?, ?, ?)", [
+        run_id, _git_commit(), json.dumps(_hash_inputs([d for _, d in companies()])),
+        os.environ.get("AFTERLIFE_LLM_MODEL", ""), os.environ.get("AFTERLIFE_PROMPT_VERSION", ""), "{}"])
     con.close()
     print(f"wrote {db_path} ({len(company_rows)} companies)")
 
