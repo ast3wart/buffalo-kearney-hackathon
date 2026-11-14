@@ -1,4 +1,4 @@
-"""Early-warning spike detection. [WARRANTY thread] Milestone M4.
+"""Early-warning spike detection. [WARRANTY thread · Brandon] Milestone M4.
 
 Pool claims across ALL products sharing a part; rate = claims per 1,000 units built
 by build_month. Flag rate / baseline >= RATIO_MIN with >= MIN_CLAIMS.

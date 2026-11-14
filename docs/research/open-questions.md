@@ -8,7 +8,7 @@
 - [ ] Does the submission need a public repo?
 
 ## For us (decide tonight)
-- [ ] Who owns 🛠 Warranty and who owns 💲 Spend?
+- [x] Who owns 🛠 Warranty and who owns 💲 Spend? → Brandon / Asher
 - [ ] Visual style for the app (colors, font, component set)
 - [ ] Does the submission need a live URL? (If so, deploy: Vercel for web/, Railway or Render for api/)
 - [ ] Which LLM API for the brief, and who has a key?

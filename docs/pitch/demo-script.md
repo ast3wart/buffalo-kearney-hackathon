@@ -1,6 +1,6 @@
 # Demo script (about 4 min)
 
-| Time | Who (🛠 Warranty / 💲 Spend) | Beat |
+| Time | Who (🛠 Brandon / 💲 Asher) | Beat |
 |---|---|---|
 | 0:00 | 💲 | **Hook:** "This company thinks the UV-400 costs $X to build. Over its life it costs $Y. And one supplier is about to make that a lot worse." |
 | 0:30 | 💲 | **The mess:** show 3 raw rows: a BOM line, a spare-part PO, a claim with no part number. "Three teams, three systems, no links." |

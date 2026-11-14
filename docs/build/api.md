@@ -3,7 +3,7 @@
 FastAPI at `:8000`, interactive docs at `/docs`. Handlers stay thin: the logic lives in `afterlife/`.
 **Every response gets a Pydantic model**, so the frontend gets generated types (`npm run types:api`).
 
-| Method | Path | Thread | Returns | Status |
+| Method | Path | Thread (🛠 Brandon / 💲 Asher) | Returns | Status |
 |---|---|---|---|---|
 | GET | `/health` | shared | source, run time, table row counts | ✅ done |
 | GET | `/overview` | 💲 spend | % linked (spend, claims), build vs. lifecycle cost per product | todo |

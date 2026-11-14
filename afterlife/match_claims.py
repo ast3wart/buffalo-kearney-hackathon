@@ -1,4 +1,4 @@
-"""[WARRANTY thread] warranty_claims -> causal part_no.
+"""[WARRANTY thread · Brandon] warranty_claims -> causal part_no.
 
 1. causal_part_no present AND in that product's BOM -> accept (high confidence)
 2. else candidates = that product's BOM parts whose category is in failure code's likely_categories

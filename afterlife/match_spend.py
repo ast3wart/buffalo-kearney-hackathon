@@ -1,4 +1,4 @@
-"""[SPEND thread] production_spend + service_spend lines -> part_no.
+"""[SPEND thread · Asher] production_spend + service_spend lines -> part_no.
 
 Suggested order: supplier PN crosswalk -> spec codes in text (e.g. 6204, M20X1.5) ->
 fuzzy description (rapidfuzz) within category. Convert UoM so prices compare per EA.

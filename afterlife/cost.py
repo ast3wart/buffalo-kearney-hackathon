@@ -1,4 +1,4 @@
-"""Build vs lifecycle cost per product. [SPEND thread] Milestone M5."""
+"""Build vs lifecycle cost per product. [SPEND thread · Asher] Milestone M5."""
 import pandas as pd
 
 

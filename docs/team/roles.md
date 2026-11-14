@@ -2,9 +2,9 @@
 
 Each person owns **one complete thread**: fake data → matching → insight → API endpoint → screen → their half of the brief → their part of the pitch. Both write Python *and* TypeScript from hour one, and neither waits on the other.
 
-> **Decide tonight:** who takes which thread. See "How to choose" at the bottom.
+> **Decided Fri night:** 🛠 Warranty = **Brandon** · 💲 Spend = **Asher**
 
-## 🛠 Warranty thread (owner: **TBD**)
+## 🛠 Warranty thread (owner: **Brandon**)
 *The novel part: claims with no part number, and the early-warning spike. Higher risk, bigger demo moment.*
 - [ ] `afterlife/generate_claims.py`: failure codes, messy claims, planted spike
 - [ ] `afterlife/match_claims.py`: claim → causal part
@@ -15,7 +15,7 @@ Each person owns **one complete thread**: fake data → matching → insight →
 - [ ] Pitch: **the alert moment**
 - [ ] Velocity prompts: 2, 4, 5
 
-## 💲 Spend thread (owner: **TBD**)
+## 💲 Spend thread (owner: **Asher**)
 *The track's core: BOM ↔ spend linking, true cost, spare-part markups. Lower risk, the base everything sits on.*
 - [ ] `afterlife/generate_spend.py`: products, BOMs, builds, production and service purchase lines
 - [ ] `afterlife/match_spend.py`: purchase line → part, plus unit conversion

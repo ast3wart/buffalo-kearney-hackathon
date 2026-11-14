@@ -1,4 +1,4 @@
-"""[WARRANTY thread] Failure codes, warranty claims, planted spike."""
+"""[WARRANTY thread · Brandon] Failure codes, warranty claims, planted spike."""
 
 
 def generate(seed: int, spend: dict[str, list[dict]]) -> dict[str, list[dict]]:

@@ -2,7 +2,7 @@
 
 Threads: 🛠 Warranty / 💲 Spend. Owners are in [../team/roles.md](../team/roles.md).
 
-| When | 🛠 Warranty | 💲 Spend |
+| When | 🛠 Warranty (Brandon) | 💲 Spend (Asher) |
 |---|---|---|
 | **Fri night** | Together: primer, data contract, API contract, app layout and style (≈1 h). Then start `match_claims` on `data/sample/` | Together (same). Then start `generate_spend` |
 | **Sat 9–12:30** | `match_claims` + `detect` on sample data. `/alerts` endpoint | `generate_spend` done. `match_spend` + unit conversion. `/overview` endpoint |

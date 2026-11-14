@@ -1,4 +1,4 @@
-"""[SPEND thread] Products, BOMs, builds, production + service purchase lines."""
+"""[SPEND thread · Asher] Products, BOMs, builds, production + service purchase lines."""
 
 
 def generate(seed: int) -> dict[str, list[dict]]:

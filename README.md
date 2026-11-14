@@ -36,7 +36,7 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 Python (pandas, DuckDB, rapidfuzz) → `results.duckdb` → FastAPI → Next.js 15 + Tailwind + Recharts · Claude API for the brief.
 Details: [docs/build/architecture.md](docs/build/architecture.md) · endpoints and screens: [docs/build/api.md](docs/build/api.md)
 
-## 📁 Code layout (🛠 = Warranty thread, 💲 = Spend thread)
+## 📁 Code layout (🛠 = Warranty thread · Brandon, 💲 = Spend thread · Asher)
 ```
 afterlife/                  Python pipeline
   io.py                     shared loader (data/generated/ → falls back to data/sample/)

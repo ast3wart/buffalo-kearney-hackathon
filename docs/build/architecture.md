@@ -19,7 +19,7 @@ afterlife/  ── python -m afterlife.run ──►  results.duckdb
 ```
 
 ## Ownership by thread
-| Piece | 🛠 WARRANTY thread | 💲 SPEND thread |
+| Piece | 🛠 WARRANTY thread (Brandon) | 💲 SPEND thread (Asher) |
 |---|---|---|
 | Data | `generate_claims.py` | `generate_spend.py` |
 | Matching | `match_claims.py` | `match_spend.py` |
