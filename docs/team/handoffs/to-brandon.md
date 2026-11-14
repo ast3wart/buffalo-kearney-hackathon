@@ -2,6 +2,17 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, early AM · Spend matcher + evaluate.py ready, and an offer to take match_claims
+**Status:** 🆕 new · PR #5 (stacked on PR #3)
+- **What's ready:** `afterlife/match_spend.py` links every purchase line to a part (exact part number → supplier part-number crosswalk → shared numbers/spec codes → fuzzy text), with `evidence` JSON, `source_system`, `run_id`. `afterlife/evaluate.py` (shared) is implemented: `python -m afterlife.evaluate` prints precision/recall per company × table × method.
+- **Accuracy on companies never used for tuning** (3 fresh seeds × 3 companies): precision and recall **≥ 97.8% everywhere** (production 99.7–100%, service 97.8–100%). Links with confidence ≥ 0.8 are **99.9–100% correct**, so recovery should use only those. Weak-but-clear matches are linked at confidence 0.4 for human review.
+- **Shared code you'll want for `match_claims`:**
+  - `match.normalize()` + `abbreviation_map()` (now with generic shop shorthand: `STL`, `ZP`, `HD`, … in every company's `abbreviations.csv`)
+  - `match_spend.canon()`: also joins units/dimensions (`20 mm` → `20MM`, `35 x 47` → `35X47`)
+  - `match_spend.numbers()`: unit-free numbers; comparing these beat comparing spec strings by a lot
+- **Offer for CP1:** your list is long (PR #4 fixes → **`generate_claims` (critical path)** → `match_claims` → `/alerts` → screen). The matching approach is fresh in my head, so **I can take `match_claims.py`** and you focus on `generate_claims` and detection. Your call. Tell me at CP1 or in `to-asher.md`.
+- **Merge order:** PR #3 first, then PR #5 (it contains PR #3's commits until #3 merges).
+
 ### Sat Nov 14, early AM · Your PR #4: review posted + 21a / 21b accepted
 **Status:** 🆕 new · PR #4 (review comment) · PR #3 (21a, 21b)
 - **Review of PR #4** is a comment on the PR. Compatible with the generated data. Two things to fix:

@@ -27,11 +27,21 @@ _MOBILE_ABBR = {
     "FLTR": "FILTER", "GSKT": "GASKET", "IGN": "IGNITION", "FRT": "FRONT", "RR": "REAR", "TRANS": "TRANSMISSION",
     "SW": "SWITCH", "HRNS": "HARNESS", "BRKT": "BRACKET", "CUST": "CUSTOMER", "LKG": "LEAKING",
 }
+# generic shop shorthand (materials, variants) that appears in every company's part master
+_COMMON_ABBR = {
+    "STL": "STEEL", "ZP": "ZINC PLATED", "HD": "HEAVY DUTY", "SS": "STAINLESS STEEL", "HT": "HIGH TEMP",
+    "LH": "LEFT HAND", "RH": "RIGHT HAND", "XL": "EXTRA LARGE", "ELEC": "ELECTRIC", "MTG": "MOUNTING",
+    "ENG": "ENGINE", "FTG": "FITTING", "PRESS": "PRESSURE", "TEMP": "TEMPERATURE", "MIC": "MICRON",
+    "RECIP": "RECIPROCATING", "POLY": "POLYETHYLENE", "FRT": "FRONT", "RR": "REAR",
+}
+_MOBILE_ABBR.update(_COMMON_ABBR)
+
 # HVAC shorthand (Northwind)
 _HVAC_ABBR = {
     "CMPR": "COMPRESSOR", "COND": "CONDENSER", "EVAP": "EVAPORATOR", "TXV": "EXPANSION VALVE",
     "CAP": "CAPACITOR", "RTU": "ROOFTOP UNIT", "REFRIG": "REFRIGERANT", "CTRL": "CONTROL", "MTR": "MOTOR",
     "BRG": "BEARING", "REPL": "REPLACED", "LKG": "LEAKING", "SENS": "SENSOR", "HRNS": "HARNESS",
+    **_COMMON_ABBR,
 }
 
 PROFILES = [

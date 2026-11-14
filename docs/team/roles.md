@@ -18,7 +18,7 @@ Each person owns **one complete thread**: fake data → matching → insight →
 ## 💲 Spend thread (owner: **Asher**)
 *The track's core: BOM ↔ spend linking, true cost, spare-part markups. Lower risk, the base everything sits on.*
 - [x] `afterlife/generate_spend.py` (Sat early AM, PR #3): products, BOMs, builds, production and service purchase lines, info records, **`build_supply` with dual-sourced parts and varying mix**, Ironridge's **acquired plant**, all driven by each company profile (`afterlife/profiles.py`). Ironridge is written as a raw SAP extract automatically by `generate.py`
-- [ ] `afterlife/match_spend.py`: purchase line → part (exact → info_record → spec_code → fuzzy), unit and price-unit conversion, `evidence` JSON. Hard cases: service text items and Ironridge's acquired plant
+- [x] `afterlife/match_spend.py` (Sat early AM, PR #5): purchase line → part (exact → info_record → spec_code → fuzzy), unit and price-unit conversion, `evidence` JSON. Hard cases: service text items and Ironridge's acquired plant
 - [ ] `afterlife/cost.py`: build vs. lifecycle cost, spare-part markups
 - [ ] `brief.pricing_section()`: price harmonization ask
 - [ ] API: `/overview`, `/markups`
