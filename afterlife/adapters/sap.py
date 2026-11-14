@@ -48,12 +48,34 @@ def _num(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s.astype("string").str.replace(",", ".", regex=False), errors="coerce")
 
 
+def _po_parts(ids: pd.Series) -> tuple[pd.Series, pd.Series]:
+    """Split any PO line id ('PO-450001-010', '4500000012-00010') into SAP EBELN (10) + EBELP (5)."""
+    parts = ids.astype(str).str.extract(r"(\d+)\D*(\d+)?$")
+    return parts[0].str.zfill(10), parts[1].fillna("10").str.zfill(5)
+
+
+def canonical_po_id(ids: pd.Series) -> pd.Series:
+    """The po_line_id a PO line has AFTER an SAP round trip ('PO-450001-010' -> '0000450001-00010').
+    For SAP-format companies, every table that references a PO line (build_supply, truth_links,
+    truth_spikes) must use this form, or joins break (found by Brandon in the CP1 review).
+    Ids with no digits (e.g. '') are returned unchanged rather than becoming NaN.
+    NOTE: non-numeric prefixes are dropped, so 'PO-450001-010' and 'TX2-450001-010' collide.
+    Generators for SAP companies must mint distinct numeric PO numbers (callers check for collisions)."""
+    ebeln, ebelp = _po_parts(ids)
+    canon = ebeln + "-" + ebelp
+    return canon.where(ebeln.notna(), ids.astype(str))
+
+
 def to_contract(table: str, df: pd.DataFrame) -> pd.DataFrame:
     """Rename SAP fields to our contract columns and undo SAP formatting quirks."""
     df = df.rename(columns=LABELS)
     out = df.rename(columns=MAPS.get(table, {}))
     if "EBELN" in out.columns and "EBELP" in out.columns:
-        out.insert(0, "po_line_id", out["EBELN"].astype(str) + "-" + out["EBELP"].astype(str).str.zfill(5))
+        # same normalization as canonical_po_id, so an extract that lost its zero padding
+        # (e.g. re-saved through Excel: EBELN '450001') still joins
+        ebeln = out["EBELN"].astype(str).str.extract(r"(\d+)")[0].str.zfill(10)
+        ebelp = out["EBELP"].astype(str).str.extract(r"(\d+)")[0].fillna("10").str.zfill(5)
+        out.insert(0, "po_line_id", ebeln + "-" + ebelp)
         out = out.drop(columns=["EBELN", "EBELP"])
     for col in ["part_no", "supplier_id"]:
         if col in out.columns:
@@ -72,9 +94,9 @@ def from_contract(table: str, df: pd.DataFrame, pad: bool = True) -> pd.DataFram
     inv = {v: k for k, v in MAPS[table].items()}
     out = df.copy()
     if "po_line_id" in out.columns:
-        parts = out["po_line_id"].astype(str).str.extract(r"(\d+)\D*(\d+)?$")
-        out.insert(0, "EBELN", parts[0].str.zfill(10))
-        out.insert(1, "EBELP", parts[1].fillna("10").str.zfill(5))
+        ebeln, ebelp = _po_parts(out["po_line_id"])
+        out.insert(0, "EBELN", ebeln)
+        out.insert(1, "EBELP", ebelp)
         out = out.drop(columns=["po_line_id"])
     if pad:
         for col, width in [("part_no", 18), ("supplier_id", 10)]:

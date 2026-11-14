@@ -1,7 +1,9 @@
 # Checkpoints: when we stop, review each other, and resync
 
 Each checkpoint sits where a **dependency changes hands** or a **decision has to be made**, so a pause never wastes time.
-Every one starts the same way: **merge to main → both run `./scripts/checkpoint.sh` → only then look at features.** If the script is red, fixing it *is* the checkpoint.
+Every one starts the same way: **merge to main → both run `./scripts/checkpoint.sh` → each reads their own inbox in `docs/team/handoffs/` → only then look at features.**
+
+**Code review happens in batches** at CP3, CP5 and CP6: one PR per thread, reviewed and merged together (see `docs/team/workflow.md`). Between those, the safety net is `./scripts/checkpoint.sh` before every push, plus the GitHub checks on every commit. If the script is red, fixing it *is* the checkpoint.
 
 🛠 = Brandon (Warranty) · 💲 = Asher (Spend)
 
@@ -37,7 +39,7 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 ## CP1 · Morning resync + confirm contract v3 (Sat 9:00 AM, 30 min)
 - [ ] Brandon confirms or pushes back on **data contract v3** (`docs/plan/plan-updates.md`, Update 4). Decide when `test-data-batch` merges to main. Pin the LLM model ID
 - [ ] Each person: what's done, what's next, anything blocking (2 min each)
-- [ ] Any contract changes overnight? If yes, read them out loud and check `docs/team/handoffs.md`
+- [ ] Any contract changes overnight? Each person reads **their own inbox** (`docs/team/handoffs/to-asher.md` / `to-brandon.md`) out loud
 - [ ] Confirm the times for CP2 and CP3
 
 **Exit:** today's targets restated.
@@ -114,14 +116,14 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 
 ## Between checkpoints (lightweight)
 - **Shared files need the other person's 👍 before merging:** `match.py`, `brief.py`, `io.py`, `check.py`, `api/main.py` models, both contract docs. A quick PR or a chat message is enough.
-- **Anything that changes a contract** gets a line in `docs/team/handoffs.md` *and* `afterlife/check.py`'s `CONTRACT`, in the same commit.
+- **Anything that changes a contract** gets a line in the other person's inbox in `docs/team/handoffs/` *and* `afterlife/check.py`'s `CONTRACT`, in the same commit.
 - **Stuck for more than 20 min** → message the other person, don't wait for the next checkpoint.
 
 ## Notes log
 _Write 2–3 lines after each checkpoint: decisions, numbers, cuts._
 
 - CP0 (Fri Nov 13, done): **3 companies, not 1** (Prairie = tune, Ironridge + Northwind = holdout, Northwind = no-spike control). all research proposals accepted except claim line items and BOM uom. Spikes shown both ways, alerts use the MIS window (3). Window Jan 2025–Sep 2026, as of Oct 31 2026. Clean industrial style. See docs/research/cp0-proposal.md.
-- CP1:
+- CP1 (Sat ~00:40, done async via PR #1): Brandon approved contract v3 and merged to main. Model pinned: `claude-sonnet-5-5`. Brandon holds the API key. Follow-ups: SAP po_line_id round trip (fixed on `spend/sap-po-ids`), doc says 21 categories (fixed), Windows console/venv paths (Brandon fixing).
 - CP2:
 - CP3:
 - CP4:

@@ -1,6 +1,6 @@
 # Data contract
 
-**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs.md](../team/handoffs.md)).
+**This file is the agreement between the 🛠 Warranty and 💲 Spend threads.** Both sides code against it. Changing a column means updating this file *and* telling the other person (log it in [../team/handoffs/](../team/handoffs/README.md) (the other person's inbox)).
 
 **Multiple companies:** every company is its own folder, `data/generated/<company_id>/`, containing *all* the tables below with the same columns. Profiles are in `afterlife/profiles.py`. `afterlife.run` adds a `company_id` column when it loads them into `results.duckdb`. `data/sample/` is a single small company (`company_id = sample`).
 
@@ -35,6 +35,7 @@ Categories and failure codes live in `afterlife/taxonomy.py` (the union). Each c
 | product_id | str | `UV-400` |
 | product_name | str | `Ranger-style utility vehicle 400` |
 | family | str | `utility_vehicle` |
+| avg_selling_price | float | `14500.00`: average net selling price per unit [VBRP-NETWR / FKIMG] (v4) |
 
 ### `part_master.csv` [MARA]
 | column | type | example |
@@ -191,12 +192,19 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 
 All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Proposed accounting changes to this contract (`net_price`, `claim_type`, the double-count rule, supplier warranty terms) are listed in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed) and are not applied yet.
 
+## Cost rules (accounting)
+**Double-count rule (21b, accepted Sat Nov 14).** For `cost.lifecycle_cost` and anything else that adds up cost:
+- **Warranty cost = `warranty_claims.parts_cost + labor_cost`.**
+- `service_spend` with **`channel = warranty_repair`** is the purchasing side of those same repairs. It's used **only to reconcile** (e.g. "claims parts cost vs. warranty-repair purchases") and **never added** to cost.
+- Only `service_spend` with **`channel = spares`** is added, as spare-part cost.
+- All `$` from `detect.py` and `cost.py` are analytics estimates, not accruals or receivables.
+
 ## SAP extract format (v3 #15, Ironridge)
 A company with `extract_format: "sap"` in its profile ships `production_spend`, `service_spend`, `part_master` and `info_records` with **SAP technical field names and quirks**. `io.load()` detects the headers and `afterlife/adapters/sap.py` converts them to the columns above, so nothing downstream changes.
 
 | SAP field | Our column | Table (SAP) | Quirk handled |
 |---|---|---|---|
-| EBELN + EBELP | `po_line_id` | EKKO/EKPO | joined `EBELN-EBELP` (EBELP 5 digits, steps of 10) |
+| EBELN + EBELP | `po_line_id` | EKKO/EKPO | joined `EBELN-EBELP` (EBELP 5 digits, steps of 10). For SAP-format companies **every** PO-line reference (`build_supply`, `truth_links`, `truth_spikes`) uses this form (`sap.canonical_po_id`), written by `generate.write()` |
 | MATNR | `part_no` | EKPO / MARA | numeric values zero-padded to 18, stripped |
 | TXZ01 | `description` | EKPO | short text on PO line |
 | LIFNR | `supplier_id` | EKKO / LFA1 | numeric values zero-padded to 10, stripped |

@@ -27,11 +27,21 @@ _MOBILE_ABBR = {
     "FLTR": "FILTER", "GSKT": "GASKET", "IGN": "IGNITION", "FRT": "FRONT", "RR": "REAR", "TRANS": "TRANSMISSION",
     "SW": "SWITCH", "HRNS": "HARNESS", "BRKT": "BRACKET", "CUST": "CUSTOMER", "LKG": "LEAKING",
 }
+# generic shop shorthand (materials, variants) that appears in every company's part master
+_COMMON_ABBR = {
+    "STL": "STEEL", "ZP": "ZINC PLATED", "HD": "HEAVY DUTY", "SS": "STAINLESS STEEL", "HT": "HIGH TEMP",
+    "LH": "LEFT HAND", "RH": "RIGHT HAND", "XL": "EXTRA LARGE", "ELEC": "ELECTRIC", "MTG": "MOUNTING",
+    "ENG": "ENGINE", "FTG": "FITTING", "PRESS": "PRESSURE", "TEMP": "TEMPERATURE", "MIC": "MICRON",
+    "RECIP": "RECIPROCATING", "POLY": "POLYETHYLENE", "FRT": "FRONT", "RR": "REAR",
+}
+_MOBILE_ABBR.update(_COMMON_ABBR)
+
 # HVAC shorthand (Northwind)
 _HVAC_ABBR = {
     "CMPR": "COMPRESSOR", "COND": "CONDENSER", "EVAP": "EVAPORATOR", "TXV": "EXPANSION VALVE",
     "CAP": "CAPACITOR", "RTU": "ROOFTOP UNIT", "REFRIG": "REFRIGERANT", "CTRL": "CONTROL", "MTR": "MOTOR",
     "BRG": "BEARING", "REPL": "REPLACED", "LKG": "LEAKING", "SENS": "SENSOR", "HRNS": "HARNESS",
+    **_COMMON_ABBR,
 }
 
 PROFILES = [
@@ -58,7 +68,10 @@ PROFILES = [
         "abbreviations": _MOBILE_ABBR,
         # claims (🛠)
         "causal_blank_share": 0.60, "causal_wrong_share": 0.10, "typo_rate": 0.05,
-        "spike": {"category": "seal", "start_build_month": "2026-03", "multiplier": 3.0,
+        "products": [("UV-400", "Utility vehicle 400", "utility_vehicle", 700), ("UV-600", "Utility vehicle 600", "utility_vehicle", 450),
+                     ("TR-250", "Compact tractor 250", "tractor", 300)],   # (id, name, family, typical units/month)
+        # spike starts at a quarter boundary: production lots are bought quarterly (Jan/Apr/Jul/Oct)
+        "spike": {"category": "seal", "start_build_month": "2026-04", "multiplier": 3.0,
                   "dual_sourced": True},                    # the demo story: one supplier's lots only
     },
     {
@@ -84,7 +97,9 @@ PROFILES = [
                           "ELE-FTS", "ELE-INT", "BRK-NOI", "BRK-DEG", "BDY-STR"],
         "abbreviations": _MOBILE_ABBR,
         "causal_blank_share": 0.65, "causal_wrong_share": 0.08, "typo_rate": 0.07,
-        "spike": {"category": "bearing", "start_build_month": "2025-11", "multiplier": 2.5,
+        "products": [("SS-70", "Skid steer 70", "skid_steer", 220), ("SS-90", "Skid steer 90", "skid_steer", 160),
+                     ("EX-35", "Mini excavator 3.5t", "excavator", 180), ("EX-55", "Mini excavator 5.5t", "excavator", 120)],
+        "spike": {"category": "bearing", "start_build_month": "2025-10", "multiplier": 2.5,
                   "dual_sourced": True},
     },
     {
@@ -107,6 +122,8 @@ PROFILES = [
         "failure_codes": ["REF-ELP", "CMP-FTS", "CMP-NOI", "FAN-VIB", "ELE-FTS", "ELE-INT", "BDY-STR"],
         "abbreviations": _HVAC_ABBR,
         "causal_blank_share": 0.50, "causal_wrong_share": 0.12, "typo_rate": 0.04,
+        "products": [("RTU-05", "Rooftop unit 5 ton", "rooftop_unit", 260), ("RTU-10", "Rooftop unit 10 ton", "rooftop_unit", 180),
+                     ("RTU-15", "Rooftop unit 15 ton", "rooftop_unit", 110)],
         "spike": None,  # control company: alerts should come back EMPTY
     },
 ]
