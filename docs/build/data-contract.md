@@ -182,7 +182,8 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | baseline_rate, current_rate | float: claims within `mis_window` MIS per 1,000 built (mature build months only) |
 | ratio | float |
 | exposure_usd | float |
-| p_value | float: one-sided significance of the step (detect v1) |
+| p_value | float: one-sided significance of the step, corrected for picking the best split (detect v1) |
+| q_value | float: Benjamini–Hochberg q over every (part, supplier) series tested in the company. Alert needs q < 0.05 |
 | claims | int: claims linked + attributed to this part/supplier since `start_build_month` |
 | excess_cost_usd | float: share of exposure above what the baseline predicts = exposure × (1 − 1/ratio) |
 | open_exposure_usd | float: exposure from claims with `recovery_status = none` (and `claim_type = warranty` once 21c lands) |
@@ -190,7 +191,7 @@ Client data, not code. `match.normalize()` reads it, so no company's shorthand i
 | attribution | str: weakest evidence after the start: `clean` / `deconvolved` / `ambiguous` |
 | spike_claims | int: claims within the MIS window after the start (the numerator of `current_rate`) |
 
-All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Proposed accounting changes to this contract (`net_price`, `claim_type`, the double-count rule, supplier warranty terms) are listed in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed) and are not applied yet.
+All `$` here are **analytics estimates, not accruals or receivables** ([../research/warranty-accounting.md](../research/warranty-accounting.md)). Accounting changes are tracked in [cp0-proposal.md item 21](../research/cp0-proposal.md#21-warranty-accounting-fit-proposed): the selling price (`products.avg_selling_price`, 21a) and the double-count rule (21b, "Cost rules" below) are applied; `claim_type` and supplier warranty terms are still proposed.
 
 ## Cost rules (accounting)
 **Double-count rule (21b, accepted Sat Nov 14).** For `cost.lifecycle_cost` and anything else that adds up cost:

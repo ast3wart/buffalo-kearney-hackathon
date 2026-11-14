@@ -158,12 +158,15 @@ texts = {
 code_for = {"200-1180-01": "HYD-ELP", "500-7731-01": "HYD-ELP", "100-4471-02": "DRV-NOI", "400-2205-03": "DRV-VIB",
             "600-3310-00": "ELE-FTS", "800-1004-00": "ELE-FTS", "700-5520-02": "BRK-NOI", "300-0912-00": "ENG-ELP"}
 BASE = 0.004  # claims per unit built per BOM line (sample-sized)
+# seal kits are wear parts: 3x the base rate, so the planted spike has enough claims to survive detect.py's
+# multiple-testing correction (Asher's PR #4 review, finding 2: the spike part needs more volume)
+PART_RATE = {SEAL: 3.0}
 
 claims, k = [], 0
 for b in builds:
     for p, q in bom_map[b["product_id"]]:
         mult = 1 + (SPIKE_X - 1) * spike_share.get((b["product_id"], b["build_month"]), 0) if p == SEAL else 1
-        expected = b["units_built"] * BASE * mult * (1 if q <= 2 else 1.5)
+        expected = b["units_built"] * BASE * PART_RATE.get(p, 1.0) * mult * (1 if q <= 2 else 1.5)
         count = int(expected) + (1 if rng.random() < expected % 1 else 0)
         for _ in range(count):
             k += 1

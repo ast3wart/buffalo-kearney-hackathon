@@ -71,19 +71,23 @@ import numpy as np
 
 
 def _synthetic(seed: int, spike_from: int | None, months: int = 12, units: int = 500,
-               base_per_1000: float = 4.0, multiplier: float = 3.0):
-    """3 products share one part from one supplier; claims ~ Poisson within the MIS window."""
+               base_per_1000: float = 4.0, multiplier: float = 3.0, n_parts: int = 1):
+    """3 products share n_parts parts (one supplier each); claims ~ Poisson within the MIS window.
+    Only part X-1 can carry the spike."""
     rng = np.random.default_rng(seed)
     ms = [f"2025-{m:02d}" for m in range(1, 13)][:months]
     prods = ["P1", "P2", "P3"]
     builds = pd.DataFrame([{"product_id": p, "build_month": m, "units_built": units} for p in prods for m in ms])
-    supply = pd.DataFrame([{"product_id": p, "build_month": m, "part_no": "X-1", "supplier_id": "SUP-A",
-                            "po_line_id": f"PO-{i // 3:03d}", "share": 1.0}
-                           for p in prods for i, m in enumerate(ms)])
+    parts = [f"X-{j + 1}" for j in range(n_parts)]
+    supply = pd.DataFrame([{"product_id": p, "build_month": m, "part_no": x, "supplier_id": f"SUP-{x}",
+                            "po_line_id": f"PO-{x}-{i // 3:03d}", "share": 1.0}
+                           for x in parts for p in prods for i, m in enumerate(ms)])
     claims, links = [], []
-    for p in prods:
+    for x in parts:
+      for p in prods:
         for i, m in enumerate(ms):
-            rate = base_per_1000 * (multiplier if spike_from is not None and i >= spike_from else 1)
+            spiking = x == "X-1" and spike_from is not None and i >= spike_from
+            rate = base_per_1000 * (multiplier if spiking else 1)
             for _ in range(rng.poisson(rate * units / 1000)):
                 mis = int(rng.integers(0, 4))
                 y, mo = divmod(int(m[5:]) - 1 + mis, 12)
@@ -91,7 +95,7 @@ def _synthetic(seed: int, spike_from: int | None, months: int = 12, units: int =
                 claims.append({"claim_id": cid, "product_id": p, "build_month": m,
                                "failure_date": f"{2025 + y}-{mo + 1:02d}-15", "parts_cost": 40.0,
                                "labor_cost": 160.0, "recovery_status": "none"})
-                links.append({"source_table": "warranty_claims", "source_id": cid, "part_no": "X-1"})
+                links.append({"source_table": "warranty_claims", "source_id": cid, "part_no": x})
     t = {"builds": builds, "build_supply": supply, "bom": supply[["product_id", "part_no"]].drop_duplicates(),
          "warranty_claims": pd.DataFrame(claims),
          "dataset_info": pd.DataFrame({"key": ["data_as_of", "mis_window"], "value": ["2026-06-30", "3"]})}
@@ -113,6 +117,24 @@ def test_no_false_alarms_without_a_spike():
         t, links = _synthetic(seed, spike_from=None, units=1500)
         false_alarms += len(detect.find_spikes(detect.claim_rates(t, links), t))
     assert false_alarms == 0, false_alarms
+
+
+def test_no_false_alarms_across_many_series():
+    """Asher's PR #4 review: a real company tests ~300 series; p < 0.05 alone gave 13-16 false alarms.
+    With BH over all tested series: 300 clean series -> 0 alerts."""
+    t, links = _synthetic(11, spike_from=None, n_parts=300)
+    assert detect.find_spikes(detect.claim_rates(t, links), t).empty
+
+
+def test_spike_still_caught_among_many_series():
+    t, links = _synthetic(12, spike_from=6, n_parts=300, units=1500)
+    alerts = detect.find_spikes(detect.claim_rates(t, links), t)
+    assert list(alerts.part_no) == ["X-1"], alerts
+
+
+def test_bh_q_values():
+    assert detect.bh_q_values([0.01, 0.04, 0.03]) == [0.03, 0.04, 0.04]
+    assert detect.bh_q_values([1.0]) == [1.0]
 
 
 def test_open_exposure_excludes_recovered_and_goodwill():

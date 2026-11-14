@@ -21,9 +21,13 @@ chases noisy one-month baselines). Alert only if ALL hold:
   - after/before rate >= RATIO_MIN, with >= MIN_CLAIMS claims after
   - two-sample test: given the total claims before + after, the chance that as few fell before as
     observed, if both periods shared one rate (conditional binomial). This accounts for the
-    baseline being noisy too. p < P_MAX.
-  Tuned on synthetic data (tests/test_detect.py): at realistic volume, 0 false alarms in 50 clean
-  datasets and every 3x spike caught; at low volume (~6 claims/month pooled) ~5-8% false alarms.
+    baseline being noisy too. Because we test the BEST of the candidate splits, that p is multiplied
+    by the number of candidate splits (Bonferroni within the series), else noise passes ~10% of the time.
+  - multiple testing (Asher's PR #4 review): a company tests ~270-450 (part, supplier) series, so
+    p < 0.05 alone passes ~5% of them by chance. Benjamini-Hochberg over EVERY mature series tested
+    (series with no upward step count with p = 1) -> q_value < FDR_Q.
+  Tuned on synthetic data (tests/test_detect.py): 0 alerts on 300 clean series; every 3x spike caught.
+  Asher's full-scale run: ratio >= 1.5 + BH q = .05 -> 1 false alarm in 9 datasets (60 before), spikes caught.
 
 Accounting (docs/research/warranty-accounting.md): $ here are analytics estimates, never accruals
 or receivables.
@@ -39,10 +43,10 @@ import math
 import numpy as np
 import pandas as pd
 
-RATIO_MIN = 2.0
+RATIO_MIN = 1.5  # was 2.0: safe once BH guards against noise (Asher's review: 2.5x planted often measured < 2)
 MIN_CLAIMS = 10
 MIN_BASELINE_MONTHS = 2
-P_MAX = 0.05
+FDR_Q = 0.05  # Benjamini-Hochberg false discovery rate over all tested series (0.01 for a stricter demo)
 MIS_WINDOW = 3  # default; dataset_info.mis_window wins
 CLAIM_SOURCE = "warranty_claims"
 PER = 1000.0  # rates are claims per 1,000 built
@@ -187,7 +191,7 @@ def claim_rates(tables: dict[str, pd.DataFrame], links: pd.DataFrame) -> pd.Data
 
 
 ALERT_COLUMNS = ["part_no", "supplier_id", "products_affected", "start_build_month", "mis_window",
-                 "baseline_rate", "current_rate", "ratio", "p_value", "claims", "exposure_usd",
+                 "baseline_rate", "current_rate", "ratio", "p_value", "q_value", "claims", "exposure_usd",
                  "excess_cost_usd", "open_exposure_usd", "from_po_line_id", "attribution", "spike_claims"]
 
 
@@ -196,10 +200,24 @@ def _loglik(c: float, u: float) -> float:
     return c * math.log(c / u) - c if c > 0 else 0.0
 
 
+def bh_q_values(p: list[float]) -> list[float]:
+    """Benjamini-Hochberg adjusted p-values (q-values), same order as p."""
+    m = len(p)
+    order = sorted(range(m), key=lambda i: p[i])
+    q, running = [1.0] * m, 1.0
+    for rank in range(m, 0, -1):
+        i = order[rank - 1]
+        running = min(running, p[i] * m / rank)
+        q[i] = min(1.0, running)
+    return q
+
+
 def _best_change_point(g: pd.DataFrame):
     """Split a supplier's mature months (sorted) into before/after at the most likely step change.
-    -> (start_index, baseline_rate, current_rate, ratio, after_claims, p_value) or None."""
+    -> (start_index, baseline_rate, current_rate, ratio, after_claims, p_value) or None.
+    p_value is corrected for picking the best split: raw p x number of candidate splits (capped at 1)."""
     u, c = g.rate_units.to_numpy(float), g.rate_mis_claims.to_numpy(float)
+    n_splits = max(1, len(g) - MIN_BASELINE_MONTHS)
     best, best_ll = None, -math.inf
     for k in range(MIN_BASELINE_MONTHS, len(g)):
         bu, bc, au, ac = u[:k].sum(), c[:k].sum(), u[k:].sum(), c[k:].sum()
@@ -209,7 +227,8 @@ def _best_change_point(g: pd.DataFrame):
         if ll > best_ll:
             base = max(bc, ZERO_BASELINE_PSEUDO_CLAIMS) / bu
             best_ll = ll
-            best = (k, PER * bc / bu, PER * ac / au, (ac / au) / base, ac, step_p_value(bc, bu, ac, au))
+            best = (k, PER * bc / bu, PER * ac / au, (ac / au) / base, ac,
+                    min(1.0, step_p_value(bc, bu, ac, au) * n_splits))
     return best
 
 
@@ -218,14 +237,15 @@ def find_spikes(rates: pd.DataFrame, tables: dict[str, pd.DataFrame]) -> pd.Data
     window = mis_window(tables)
     mature = rates[rates.mature].sort_values("build_month")
     sup = _supply(tables)
+    tested = [(key, g.reset_index(drop=True)) for key, g in mature.groupby(["part_no", "supplier_id"])]
+    cps = [_best_change_point(g) for _, g in tested]
+    q_values = bh_q_values([cp[5] if cp else 1.0 for cp in cps])  # m = every series tested
     alerts = []
-    for (part, supplier), g in mature.groupby(["part_no", "supplier_id"]):
-        g = g.reset_index(drop=True)
-        cp = _best_change_point(g)
+    for ((part, supplier), g), cp, q in zip(tested, cps, q_values):
         if cp is None:
             continue
         k, base, cur, ratio, spike_claims, p = cp
-        if ratio < RATIO_MIN or spike_claims < MIN_CLAIMS or p >= P_MAX:
+        if ratio < RATIO_MIN or spike_claims < MIN_CLAIMS or q >= FDR_Q:
             continue
         start = g.build_month[k]
         since = rates[(rates.part_no == part) & (rates.supplier_id == supplier) & (rates.build_month >= start)]
@@ -236,7 +256,7 @@ def find_spikes(rates: pd.DataFrame, tables: dict[str, pd.DataFrame]) -> pd.Data
             "products_affected": used.product_id.nunique(),
             "start_build_month": start, "mis_window": window,
             "baseline_rate": round(base, 2), "current_rate": round(cur, 2), "ratio": round(ratio, 2),
-            "p_value": float(f"{p:.3g}"),
+            "p_value": float(f"{p:.3g}"), "q_value": float(f"{q:.3g}"),
             "claims": int(round(since.raw_claims.sum())),
             "exposure_usd": round(exposure, 2),
             "excess_cost_usd": round(exposure * (1 - 1 / ratio), 2),
