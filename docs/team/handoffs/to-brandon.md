@@ -2,6 +2,19 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, early AM · 📬 How handoffs work now: one inbox each
+**Status:** 🆕 new · PR #3
+- **What changed:** `docs/team/handoffs.md` is gone. There are now **two inboxes** in `docs/team/handoffs/`:
+  - **`to-brandon.md`** (this file): Asher writes, you read
+  - **`to-asher.md`**: **you write**, Asher reads
+  - `README.md`: rules, template, planned handoffs, and history
+- **Why:** we both added entries to the top of one file from different branches, so every pair of PRs conflicted on it. Each inbox now has exactly one writer, so that can't happen.
+- **What you need to do:**
+  1. Put your handoffs in **`to-asher.md`**, newest on top, using the template in `README.md`, and always link the PR.
+  2. In this file, only change the **Status** line (🆕 new → 👀 reviewing → ✅ done).
+  3. Check this inbox at every checkpoint. It's now step 1 of each one in `checkpoints.md`.
+  4. **Your PR #4 still adds to the old `handoffs.md`**, so it conflicts with PR #3 on that one file. When the second of the two PRs merges, move your PR #4 entry into `to-asher.md` and delete `handoffs.md`. I tested this: it's the only conflict, and the combined code passes all 26 tests.
+
 ### Sat Nov 14, early AM · Asher → Brandon · Spend generator ready (CP2 handoff, early)
 **Status:** 🆕 new · PR #3
 - **What's ready:** `afterlife/generate_spend.py` generates all 3 companies in about 2 s. `python -m afterlife.generate` writes `data/generated/<company>/` (spend tables only until your `generate_claims` exists; it prints a note). `python -m afterlife.check spend` checks the spend side: 0 failing.

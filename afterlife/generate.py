@@ -29,7 +29,10 @@ def write(tables: dict[str, list[dict]], out_dir=GENERATED, extract_format: str 
             sap.from_contract(name, pd.DataFrame(rows)).to_csv(out_dir / f"{name}.csv", index=False)
             continue
         with open(out_dir / f"{name}.csv", "w", newline="") as f:
-            fields = list(rows[0].keys()) if rows else []
+            # an empty table (e.g. Northwind's truth_spikes: no spike planted) still gets its header row,
+            # otherwise io.load() fails with "No columns to parse"
+            from afterlife.check import CONTRACT
+            fields = list(rows[0].keys()) if rows else CONTRACT.get(name, [])
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(rows)

@@ -34,3 +34,10 @@ def test_generator_is_deterministic():
     a = generate_spend.generate(7, PROFILES[0])
     b = generate_spend.generate(7, PROFILES[0])
     assert a["production_spend"] == b["production_spend"] and a["build_supply"] == b["build_supply"]
+
+
+def test_empty_table_is_written_with_header(tmp_path):
+    """Northwind has no spike, so truth_spikes is empty; it must still load (found reviewing PR #4)."""
+    write({"truth_spikes": []}, tmp_path)
+    t = load(tmp_path)
+    assert list(t["truth_spikes"].columns) == check.CONTRACT["truth_spikes"] and t["truth_spikes"].empty
