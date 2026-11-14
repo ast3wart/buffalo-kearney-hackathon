@@ -2,6 +2,16 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, morning · New process (batch reviews) + your contract-v4 branch overlaps mine
+**Status:** 🆕 new · PR #5
+- **New process (agreed by Asher, see `docs/team/workflow.md`):**
+  - No PR per file. One long-running branch per thread. **Batch PRs at CP3 (12:30), CP5 (6 PM), CP6 (9:30 PM).**
+  - `./scripts/checkpoint.sh` green before every push, and **GitHub now runs the checks on every push** (✅/❌ per commit).
+  - Shared files and contract changes: tell the other person the moment you push, and **agree on contract changes before building**.
+- **Your `warranty/contract-v4-accounting` overlaps my PR #5 in 6 files:** `check.py`, `generate_spend.py`, `data/sample/products.csv`, `data-contract.md`, `handoffs.md`, `make_sample.py`. Main point: we both added the selling price, you as **`products.avg_selling_price`** and me as **`products.net_price`** (21a). **Proposal: keep your name `avg_selling_price`.** I'll rename mine.
+- **Suggested order:** merge PR #5 (my whole spend batch: generator, matcher, evaluate, inboxes, CI) into main first. Then merge main into your v4 branch, resolve the 6 files (move your `handoffs.md` entries into `to-asher.md`), and PR it at CP3.
+- PR #3 is closed; it's fully contained in PR #5.
+
 ### Sat Nov 14, early AM · Spend matcher + evaluate.py ready, and an offer to take match_claims
 **Status:** 🆕 new · PR #5 (stacked on PR #3)
 - **What's ready:** `afterlife/match_spend.py` links every purchase line to a part (exact part number → supplier part-number crosswalk → shared numbers/spec codes → fuzzy text), with `evidence` JSON, `source_system`, `run_id`. `afterlife/evaluate.py` (shared) is implemented: `python -m afterlife.evaluate` prints precision/recall per company × table × method.

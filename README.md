@@ -25,7 +25,7 @@ Afterlife links a manufacturer's **BOMs ↔ production spend ↔ spare-part spen
 | **Who does what** | [docs/team/roles.md](docs/team/roles.md) |
 | **Checkpoints (when we stop and review each other)** | [docs/team/checkpoints.md](docs/team/checkpoints.md) |
 | Handoffs between us (two inboxes) | [docs/team/handoffs/](docs/team/handoffs/README.md): [to Brandon](docs/team/handoffs/to-brandon.md) · [to Asher](docs/team/handoffs/to-asher.md) |
-| Git and setup | [docs/team/workflow.md](docs/team/workflow.md) |
+| **Git workflow (batch reviews at checkpoints) and setup** | [docs/team/workflow.md](docs/team/workflow.md) |
 | **The data formats (the contract between us)** | [docs/build/data-contract.md](docs/build/data-contract.md) |
 | How the pieces fit | [docs/build/architecture.md](docs/build/architecture.md) |
 | Real-world numbers (SEC, NHTSA) | [docs/research/data-sources.md](docs/research/data-sources.md) |
