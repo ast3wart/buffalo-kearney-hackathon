@@ -1,7 +1,7 @@
 # Checkpoints: when we stop, review each other, and resync
 
 Each checkpoint sits where a **dependency changes hands** or a **decision has to be made**, so a pause never wastes time.
-Every one starts the same way: **merge to main → both run `./scripts/checkpoint.sh` → only then look at features.** If the script is red, fixing it *is* the checkpoint.
+Every one starts the same way: **merge to main → both run `./scripts/checkpoint.sh` → each reads their own inbox in `docs/team/handoffs/` → only then look at features.** If the script is red, fixing it *is* the checkpoint.
 
 🛠 = Brandon (Warranty) · 💲 = Asher (Spend)
 
