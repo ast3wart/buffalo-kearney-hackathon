@@ -121,7 +121,7 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 _Write 2–3 lines after each checkpoint: decisions, numbers, cuts._
 
 - CP0 (Fri Nov 13, done): **3 companies, not 1** (Prairie = tune, Ironridge + Northwind = holdout, Northwind = no-spike control). all research proposals accepted except claim line items and BOM uom. Spikes shown both ways, alerts use the MIS window (3). Window Jan 2025–Sep 2026, as of Oct 31 2026. Clean industrial style. See docs/research/cp0-proposal.md.
-- CP1:
+- CP1 (Sat ~00:40, done async via PR #1): Brandon approved contract v3 and merged to main. Model pinned: `claude-sonnet-5-5`. Brandon holds the API key. Follow-ups: SAP po_line_id round trip (fixed on `spend/sap-po-ids`), doc says 21 categories (fixed), Windows console/venv paths (Brandon fixing).
 - CP2:
 - CP3:
 - CP4:

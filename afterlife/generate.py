@@ -22,6 +22,8 @@ def write(tables: dict[str, list[dict]], out_dir=GENERATED, extract_format: str 
     """Write every table as CSV. extract_format='sap' writes the SAP-mappable tables with raw SAP
     field names and quirks (adapters/sap.py), as a real client extract would arrive."""
     out_dir.mkdir(parents=True, exist_ok=True)
+    if extract_format == "sap":
+        tables = _sap_po_ids_everywhere(tables)
     for name, rows in tables.items():
         if extract_format == "sap" and name in sap.MAPS and rows:
             sap.from_contract(name, pd.DataFrame(rows)).to_csv(out_dir / f"{name}.csv", index=False)
@@ -31,6 +33,26 @@ def write(tables: dict[str, list[dict]], out_dir=GENERATED, extract_format: str 
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             w.writerows(rows)
+
+
+SPEND_TABLES = ("production_spend", "service_spend")
+
+
+def _sap_po_ids_everywhere(tables: dict[str, list[dict]]) -> dict[str, list[dict]]:
+    """For SAP-format companies, rewrite every PO-line reference to the id it will have after the
+    SAP round trip, so build_supply / truth_links / truth_spikes still join to the spend tables."""
+    ids = [r["po_line_id"] for t in SPEND_TABLES for r in tables.get(t, [])]
+    if not ids:
+        return tables
+    mapping = dict(zip(ids, sap.canonical_po_id(pd.Series(ids))))
+    out = dict(tables)
+    out["build_supply"] = [{**r, "po_line_id": mapping.get(r["po_line_id"], r["po_line_id"])}
+                           for r in tables.get("build_supply", [])]
+    out["truth_links"] = [{**r, "source_id": mapping.get(r["source_id"], r["source_id"])}
+                          if r["source_table"] in SPEND_TABLES else r for r in tables.get("truth_links", [])]
+    out["truth_spikes"] = [{**r, "from_po_line_id": mapping.get(r["from_po_line_id"], r["from_po_line_id"])}
+                           for r in tables.get("truth_spikes", [])]
+    return out
 
 
 def generate(seed: int = 7, out_dir=GENERATED) -> None:

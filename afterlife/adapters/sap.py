@@ -48,6 +48,20 @@ def _num(s: pd.Series) -> pd.Series:
     return pd.to_numeric(s.astype("string").str.replace(",", ".", regex=False), errors="coerce")
 
 
+def _po_parts(ids: pd.Series) -> tuple[pd.Series, pd.Series]:
+    """Split any PO line id ('PO-450001-010', '4500000012-00010') into SAP EBELN (10) + EBELP (5)."""
+    parts = ids.astype(str).str.extract(r"(\d+)\D*(\d+)?$")
+    return parts[0].str.zfill(10), parts[1].fillna("10").str.zfill(5)
+
+
+def canonical_po_id(ids: pd.Series) -> pd.Series:
+    """The po_line_id a PO line has AFTER an SAP round trip ('PO-450001-010' -> '0000450001-00010').
+    For SAP-format companies, every table that references a PO line (build_supply, truth_links,
+    truth_spikes) must use this form, or joins break (found by Brandon in the CP1 review)."""
+    ebeln, ebelp = _po_parts(ids)
+    return ebeln + "-" + ebelp
+
+
 def to_contract(table: str, df: pd.DataFrame) -> pd.DataFrame:
     """Rename SAP fields to our contract columns and undo SAP formatting quirks."""
     df = df.rename(columns=LABELS)
@@ -72,9 +86,9 @@ def from_contract(table: str, df: pd.DataFrame, pad: bool = True) -> pd.DataFram
     inv = {v: k for k, v in MAPS[table].items()}
     out = df.copy()
     if "po_line_id" in out.columns:
-        parts = out["po_line_id"].astype(str).str.extract(r"(\d+)\D*(\d+)?$")
-        out.insert(0, "EBELN", parts[0].str.zfill(10))
-        out.insert(1, "EBELP", parts[1].fillna("10").str.zfill(5))
+        ebeln, ebelp = _po_parts(out["po_line_id"])
+        out.insert(0, "EBELN", ebeln)
+        out.insert(1, "EBELP", ebelp)
         out = out.drop(columns=["po_line_id"])
     if pad:
         for col, width in [("part_no", 18), ("supplier_id", 10)]:
