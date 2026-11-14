@@ -23,6 +23,7 @@ Every one starts the same way: **merge to main → both run `./scripts/checkpoin
 
 ## CP0 · Contract lock (Fri ~11:30 PM, 45 min)
 **Why:** the data contract and API contract are what let us work apart. Changing them later costs both of us.
+**Start with [../research/cp0-proposal.md](../research/cp0-proposal.md)** (research-backed changes to accept or reject).
 - [ ] Both have the repo running: `./scripts/checkpoint.sh` is green on both laptops
 - [ ] Walk through `docs/build/data-contract.md` table by table. Each owner says "I can produce/consume this"
 - [ ] 💲 confirms the claims side needs nothing more from spend than `bom`, `builds`, `part_master`, `products`
