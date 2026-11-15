@@ -18,7 +18,7 @@ const k = (v: number) => (v >= 1000 ? `$${(v / 1000).toFixed(v >= 100000 ? 0 : 1
 // One idea per slide: a headline, at most one visual or 3 short lines. Details live in the live demo, not on slides.
 // "V" = found with Velocity research: say how Velocity helped when you reach it.
 function V() {
-  return <span title="Found with Velocity research" className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded bg-accent-soft align-middle text-[11px] font-bold text-accent ring-1 ring-accent/30">V</span>;
+  return <sup title="Found with Velocity research" className="ml-0.5 inline-flex h-3 w-3 items-center justify-center rounded-sm bg-accent-soft align-super text-[7px] font-bold leading-none tracking-normal text-accent">V</sup>;
 }
 
 function Slide({ kicker, title, children, owner, v }: { kicker?: string; title: string; children?: React.ReactNode; owner?: string; v?: boolean }) {
