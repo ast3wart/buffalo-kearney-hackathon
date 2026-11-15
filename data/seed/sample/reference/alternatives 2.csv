@@ -1,6 +1,0 @@
-alt_id,kb_id,alt_part_no,alt_manufacturer,alternative_kind,found_by,fit_notes,engineering_needed,source_url
-ALT-002,KB-002,5069-L320ER,Rockwell Automation,successor,oem_lifecycle,"migration: new firmware/program conversion, wiring and mounting check",yes,https://www.rockwellautomation.com/en-us/products/details.1769-L32E.html
-ALT-006,KB-006,25B-D010N104,Rockwell Automation,successor,oem_lifecycle,"migration: new firmware/program conversion, wiring and mounting check",yes,https://rockwellautomation.com/en-us/products/details.22B-D010N104.html
-ALT-009,KB-009,2198-D006-ERS3,Rockwell Automation,successor,oem_lifecycle,"migration: new firmware/program conversion, wiring and mounting check",yes,https://rockwellautomation.com/en-us/products/hardware/allen-bradley/motion-control/servo-drives/multi-axis-control/2094-kinetix-6000.html
-ALT-017,KB-029,6ES7515-2AM02-0AB0,Siemens,successor,oem_lifecycle,"migration: new firmware/program conversion, wiring and mounting check",yes,
-ALT-018,KB-029,,,similar,similar_part_search,TBD: similar-part search (possible Physna collaboration),yes,

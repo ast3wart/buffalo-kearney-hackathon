@@ -1,4 +1,0 @@
-plant_id,annual_revenue_low,annual_revenue_high,maintenance_budget_low,maintenance_budget_high,spares_inventory_value_low,spares_inventory_value_high,carrying_cost_pct_low,carrying_cost_pct_high,rush_premium_annual_low,rush_premium_annual_high,source
-PA,60000000.0,70000000.0,4500000.0,5500000.0,1800000.0,2200000.0,0.15,0.25,40000.0,80000.0,placeholder (interfaces.md §2); Brandon refines from research
-PB,48000000.0,55000000.0,3500000.0,4200000.0,1400000.0,1700000.0,0.15,0.25,30000.0,60000.0,placeholder (interfaces.md §2); Brandon refines from research
-PE,22000000.0,26000000.0,1600000.0,1900000.0,500000.0,700000.0,0.15,0.25,15000.0,30000.0,placeholder (interfaces.md §2); Brandon refines from research

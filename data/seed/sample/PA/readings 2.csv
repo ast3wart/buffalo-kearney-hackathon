@@ -1,8 +1,0 @@
-reading_id,plant_id,machine_id,component_id,photo_id,raw_text,component_type_hint,method,confidence,date_code
-PA-L1-M01-C1-R1,PA,PA-L1-M01,PA-L1-M01-C1,,1756-L83E,plc,vision_sim,0.88,2002
-PA-L1-M01-C3-R1,PA,PA-L1-M01,PA-L1-M01-C3,,2094BC01MP5S,servo_drive,vision_sim,0.89,2002
-PA-L1-M05-C1-R1,PA,PA-L1-M05,PA-L1-M05-C1,,1769-L32E,plc,list,0.95,2011
-PA-L1-M05-C2-R1,PA,PA-L1-M05,PA-L1-M05-C2,,22B-D010N104 SER B,drive,vision_sim,0.86,2014
-PA-L2-M01-C1-R1,PA,PA-L2-M01,PA-L2-M01-C1,,2094-BC01-MP5-S SER C,servo_drive,vision_sim,0.93,2008
-PA-L2-M01-C2-R1,PA,PA-L2-M01,PA-L2-M01-C2,,2711P-T10C22D9P,hmi,list,0.93,2009
-PA-L2-M04-C1-R1,PA,PA-L2-M04,PA-L2-M04-C1,,CAT 5069-L320ER,plc,vision_sim,0.87,2013
