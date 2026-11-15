@@ -245,10 +245,11 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 |---|---|---|
 | `part_valuation` | kb_id, condition, n_listings, price_low (25th pct), price_mid (median), price_high (75th pct), sold_n, confidence (`high` ≥ 3 listings, `low` 1–2, `none` 0 → see alternatives), as_of | Brandon `xray/sourcing.py` |
 | `sourcing_recommendation` | component_id, action (use_shelf_spare / buy_spare / migrate / monitor), spare_id (if on a shelf at any plant), best_listing_id, alt_id, reason | Brandon `xray/sourcing.py` (**shelf first, then outside**) |
+| `part_valuation` (added) | + n_low_trust (low-trust listings kept out of the range, not dropped) | Brandon |
 | `capex_by_year` | company_id, plant_id, year, capex_type (`growth` only if typed in by the user), capex_low, capex_high, driver_component_ids | Brandon `xray/valuation.py` |
 | `spof` | component_id, line_id, criticality, annual_failure_rate, hours_down_low/high (depends on sourcing: shelf / lead time / migration), downtime_exposure_per_year_low/high (prob × hours × $/h), why | Brandon `xray/valuation.py` (reads `sourcing_recommendation`) |
 | `deal_adjustment` (deal lens only) | company_id, deferred_capex_low/high, suggested_price_reduction_low/high, suggested_holdback, rationale | Brandon `xray/valuation.py` |
-| `plant_savings` + `price` | plant_id, lever, savings_low/base/high, one_time (yes/no), in_price_base (yes/no; one-time release and downtime avoided are shown separately); price_per_plant_low/high, value_capture_pct, customer_payback_months, failed_checks | Brandon `xray/pricing.py` |
+| `plant_savings` + `price` | plant_id, lever, savings_low/base/high, one_time (yes/no), in_price_base (yes/no; one-time release and downtime avoided are shown separately); price_per_plant_low/base/high, recurring_savings_base, value_capture_pct, customer_payback_months, failed_checks; plant_savings also has `basis` | Brandon `xray/pricing.py` |
 | `accuracy` | field, records, predicted, correct, precision, recall, ci_low, ci_high | Asher `xray/evaluate.py` |
 
 ## 8. Answer key (`data/truth/<portfolio_id>/`, read only by evaluate.py)

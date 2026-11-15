@@ -31,7 +31,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:3000"], allo
 def warm_caches():
     try:
         reg(); health_table(); _components_full_cached()
-        _sourcing_tables(); _capex_all(); _spof_all(); _savings_all()
+        _sourcing_tables(); _capex_all(); _spof_all(); _savings_all(True); _savings_all(False)
     except Exception:  # noqa: BLE001 - missing pieces just stay lazy (e.g. no demo.db yet)
         pass
 
@@ -405,10 +405,13 @@ def _spof_all() -> pd.DataFrame:
     return df
 
 
-@lru_cache(maxsize=1)
-def _savings_all() -> tuple[pd.DataFrame, pd.DataFrame]:
+@lru_cache(maxsize=2)
+def _savings_all(full_plant: bool = True) -> tuple[pd.DataFrame, pd.DataFrame]:
     plant_savings, price = _brandon("pricing", "plant_savings", "price")
-    s = plant_savings(reg(), _sourcing_tables()[1])
+    try:
+        s = plant_savings(reg(), _sourcing_tables()[1], full_plant=full_plant)
+    except TypeError:  # older money model without the full-plant quote
+        s = plant_savings(reg(), _sourcing_tables()[1])
     return s, price(s)
 
 
@@ -440,8 +443,11 @@ def plant_spof(plant_id: str) -> dict:
 
 @app.get("/plants/{plant_id}/savings")
 def plant_savings_route(plant_id: str) -> dict:
-    s, p = _savings_all()
-    return {"plant_savings": records(s[s.plant_id == plant_id]), "price": records(p[p.plant_id == plant_id])}
+    s, p = _savings_all(True)
+    ss, sp = _savings_all(False)
+    return {"plant_savings": records(s[s.plant_id == plant_id]), "price": records(p[p.plant_id == plant_id]),
+            "sample_savings": records(ss[ss.plant_id == plant_id]), "sample_price": records(sp[sp.plant_id == plant_id]),
+            "basis": "price extrapolated to a whole-plant scan; sample = only the parts in this registry"}
 
 
 @app.get("/companies/{company_id}/deal")

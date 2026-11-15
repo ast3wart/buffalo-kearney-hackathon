@@ -15,7 +15,9 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 SEED_DIR, TRUTH_DIR, REF = ROOT / "data/seed/demo", ROOT / "data/truth/demo", ROOT / "data/reference"
 R = random.Random(7)
-SRC = "placeholder (interfaces.md §2); Brandon refines from research"
+SRC = ("Velocity #1-3 (100-249 employee band: maintenance $1.05M, spares $0.37M, rush ~$20k base; carrying 12-30% "
+       "economic), scaled by headcount / 170; estimates, see docs/research/velocity.md")
+VEL = {"maint": 1.05e6, "spares": 0.37e6, "rush": 20e3}  # base values for a ~170-person plant
 
 KB = pd.read_csv(REF / "kb.csv", dtype=str).set_index("kb_id")
 
@@ -112,11 +114,13 @@ def main():
     for pid, co, name, city, state, emp, status, rev, spares, maint, rush, line_defs in PLANTS:
         plants.append({"plant_id": pid, "company_id": co, "plant_name": name, "city": city, "state": state,
                        "employees": emp, "status": status})
+        f = emp / 170
         fin.append({"plant_id": pid, "annual_revenue_low": rev[0], "annual_revenue_high": rev[1],
-                    "maintenance_budget_low": maint[0], "maintenance_budget_high": maint[1],
-                    "spares_inventory_value_low": spares[0], "spares_inventory_value_high": spares[1],
-                    "carrying_cost_pct_low": 0.15, "carrying_cost_pct_high": 0.25,
-                    "rush_premium_annual_low": rush[0], "rush_premium_annual_high": rush[1], "source": SRC})
+                    "maintenance_budget_low": round(VEL["maint"] * f * 0.7, -3), "maintenance_budget_high": round(VEL["maint"] * f * 1.4, -3),
+                    "spares_inventory_value_low": round(VEL["spares"] * f * 0.6, -3), "spares_inventory_value_high": round(VEL["spares"] * f * 1.6, -3),
+                    "carrying_cost_pct_low": 0.12, "carrying_cost_pct_high": 0.30,
+                    "rush_premium_annual_low": round(VEL["rush"] * f * 0.5, -2), "rush_premium_annual_high": round(VEL["rush"] * f * 2.5, -2),
+                    "source": SRC})
         machines, readings = [], []
         for li, (lname, (rlo, rhi)) in enumerate(line_defs, start=1):
             lid = f"{pid}-L{li}"

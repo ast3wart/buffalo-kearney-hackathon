@@ -16,7 +16,7 @@ type Lines = {
 type CapexRow = { year: number; capex_low: number; capex_high: number; capex_type: string };
 type Spof = { component_id: string; kb_id: string; hours_down_low: number; hours_down_high: number; downtime_exposure_per_year_low: number; downtime_exposure_per_year_high: number; why: string; action: string };
 type Lever = { lever: string; savings_low: number; savings_base: number; savings_high: number; one_time: string; in_price_base: string; basis: string };
-type Price = { price_per_plant_low: number; price_per_plant_base: number; price_per_plant_high: number; customer_payback_months: number; recurring_savings_base: number; failed_checks: string };
+type Price = { price_per_plant_low: number; price_per_plant_base: number; price_per_plant_high: number; customer_payback_months: number; recurring_savings_base: number; failed_checks: string; value_capture_pct: number };
 type Deal = { deferred_capex_low: number; deferred_capex_high: number; suggested_price_reduction_low: number; suggested_holdback: number; rationale: string };
 
 export default async function PlantPage({ params }: { params: Promise<{ plantId: string }> }) {
@@ -25,13 +25,14 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
     getJSON<Lines>(`/plants/${plantId}/lines`),
     tryJSON<{ capex_by_year: CapexRow[] }>(`/plants/${plantId}/capex`),
     tryJSON<{ spof: Spof[] }>(`/plants/${plantId}/spof`),
-    tryJSON<{ plant_savings: Lever[]; price: Price[] }>(`/plants/${plantId}/savings`),
+    tryJSON<{ plant_savings: Lever[]; price: Price[]; sample_price: Price[] }>(`/plants/${plantId}/savings`),
   ]);
   const deal = p.plant.status === "target" ? await tryJSON<{ deal_adjustment: Deal[] }>(`/companies/${(p.plant as { company_id?: string }).company_id}/deal`) : null;
   const d = deal?.data?.deal_adjustment?.[0];
   const top = [...(spof.data?.spof ?? [])].sort((a, b) => b.downtime_exposure_per_year_high - a.downtime_exposure_per_year_high).slice(0, 5);
   const capexTotal = (capex.data?.capex_by_year ?? []).reduce((a, r) => [a[0] + r.capex_low, a[1] + r.capex_high], [0, 0]);
   const pr = sav.data?.price?.[0];
+  const spr = sav.data?.sample_price?.[0];
   const label = (s: string) => s.replace(/_/g, " ");
   const value = p.lines.reduce((a, l) => [a[0] + l.value_low, a[1] + l.value_high], [0, 0]);
   return (
@@ -68,9 +69,15 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
         <Card title="Savings and price (per year)">
           {pr ? (
             <div className="space-y-3">
-              <Stat label="recurring savings we can audit (base)" value={usd(pr.recurring_savings_base)} tone="ok" />
-              <Stat label={`price per plant (${Math.round(30)}% of savings)`} value={`${usd(pr.price_per_plant_base)}`} />
+              <Stat label="recurring savings we can audit (whole plant, extrapolated)" value={usd(pr.recurring_savings_base)} tone="ok" />
+              <Stat label={`price per plant (${Math.round((pr.value_capture_pct ?? 0.2) * 100)}% of savings, extrapolated)`} value={`${usd(pr.price_per_plant_base)}`} />
               <div className="text-xs text-muted">range {usd(pr.price_per_plant_low)}–{usd(pr.price_per_plant_high)} · customer payback {pr.customer_payback_months} months</div>
+              {spr && (
+                <details className="text-xs text-muted">
+                  <summary className="cursor-pointer">Evidence: only the parts scanned so far</summary>
+                  savings {usd(spr.recurring_savings_base)} / yr → price {usd(spr.price_per_plant_base)} (range {usd(spr.price_per_plant_low)}–{usd(spr.price_per_plant_high)}). The whole-plant number scales this by the share of the plant the register covers.
+                </details>
+              )}
               <ul className="space-y-1 text-xs">
                 {(sav.data?.plant_savings ?? []).map((l) => (
                   <li key={l.lever} className="flex justify-between gap-2">
