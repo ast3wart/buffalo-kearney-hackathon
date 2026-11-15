@@ -1,5 +1,7 @@
 # Final slide deck
 
+> **Current version: [deck-v2.html](deck-v2.html)** (6 slides + 9 appendix, mentor layout). Read **[deck-v2-notes.md](deck-v2-notes.md)** for what was left out, the boxes Asher fills on slide 4, and how the health score and savings are calculated. Everything below describes v1.
+
 **[deck-v1.html](deck-v1.html)** is the v1 final, **shortened Sat ~11 PM: 11 slides + 7 appendix**. Open it in a browser. The longer first cut is kept as [deck-v1-long.html](deck-v1-long.html); the slide table below describes that longer cut.
 
 **Short version, main slides:** 1 Title · 2 Why (case study slot) · 3 Solution · 4 Proof · 5 Bad data · 6 Customer and market · 7 Competition · 8 Value capture · 9 Roadmap vs expansion · 10 Objections · 11 Recommendation. **Appendix:** A1 Go-to-market · A2 Market sensitivity · A3 Condition sensing · A4 Unit economics · A5 Deal view · A6 Liquidity · A7 Sources.
