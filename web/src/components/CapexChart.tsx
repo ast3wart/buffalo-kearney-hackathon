@@ -4,7 +4,7 @@ import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 
 type Row = { year: number; capex_low: number; capex_high: number; capex_type?: string };
 
-export function CapexChart({ rows }: { rows: Row[] }) {
+export function CapexChart({ rows, fill = false }: { rows: Row[]; fill?: boolean }) {
   const byYear = new Map<number, { year: number; low: number; spread: number }>();
   for (const r of rows) {
     const cur = byYear.get(r.year) ?? { year: r.year, low: 0, spread: 0 };
@@ -15,7 +15,7 @@ export function CapexChart({ rows }: { rows: Row[] }) {
   const data = [...byYear.values()].sort((a, b) => a.year - b.year);
   const k = (v: number) => (v >= 1e6 ? `$${(v / 1e6).toFixed(1)}M` : `$${Math.round(v / 1e3)}k`);
   return (
-    <ResponsiveContainer width="100%" height={240}>
+    <ResponsiveContainer width="100%" height={fill ? "100%" : 240} minHeight={240}>
       <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: 8 }}>
         <CartesianGrid vertical={false} stroke="var(--line)" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} fontSize={12} />

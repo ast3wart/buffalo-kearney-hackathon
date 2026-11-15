@@ -66,8 +66,8 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
       )}
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
-          <Card title={`CapEx cliff · next 5 years ${capex.data ? `(${usd(capexTotal[0])}–${usd(capexTotal[1])})` : ""}`}>
-            {capex.data ? <CapexChart rows={capex.data.capex_by_year} /> : <Pending what="The CapEx cliff" detail={capex.pending ?? capex.error} />}
+          <Card className="flex h-full flex-col" title={`CapEx cliff · next 5 years ${capex.data ? `(${usd(capexTotal[0])}–${usd(capexTotal[1])})` : ""}`}>
+            {capex.data ? <div className="min-h-[240px] flex-1"><CapexChart rows={capex.data.capex_by_year} fill /></div> : <Pending what="The CapEx cliff" detail={capex.pending ?? capex.error} />}
             <p className="mt-1 text-xs text-muted">Dark = low estimate, light = up to high estimate. Control-part replacements + migration engineering. How we got this: Sources page.</p>
           </Card>
         </div>
