@@ -36,6 +36,9 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
   const spr = sav.data?.sample_price?.[0];
   const rescues = sav.data?.downtime_rescues ?? [];
   const label = (s: string) => s.replace(/_/g, " ");
+  const mid = (a: number, b: number) => (a + b) / 2;
+  const atStake = rescues.reduce((t, r) => t + r.at_stake_base, 0);
+  const hoursSaved = rescues.reduce((t, r) => t + mid(r.hours_down_without_low, r.hours_down_without_high) - mid(r.hours_down_with_low, r.hours_down_with_high), 0);
   const value = p.lines.reduce((a, l) => [a[0] + l.value_low, a[1] + l.value_high], [0, 0]);
   return (
     <>
@@ -82,9 +85,16 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
               )}
               <ul className="space-y-1 text-xs">
                 {[...(sav.data?.plant_savings ?? [])].sort((a, b) => Number(b.lever === "downtime_avoided") - Number(a.lever === "downtime_avoided")).map((l) => l.lever === "downtime_avoided" ? (
-                  <li key={l.lever} className="flex items-baseline justify-between gap-2 border-b border-line pb-2 text-base font-semibold">
-                    <span>Downtime avoided <span className="text-xs font-normal text-muted">(not priced)</span></span>
-                    <span className="tabular text-xl">{usd(l.savings_base)}</span>
+                  <li key={l.lever} className="border-b border-line pb-2">
+                    <div className="flex items-baseline justify-between gap-2 text-base font-semibold">
+                      <span>Downtime avoided</span>
+                      <span className="tabular text-2xl">{atStake > 0 ? usd(atStake) : usd(l.savings_base)}</span>
+                    </div>
+                    {atStake > 0 && (
+                      <div className="text-xs text-muted">
+                        output protected across {rescues.length} line-stopping failure{rescues.length === 1 ? "" : "s"} ({Math.round(hoursSaved)} h of stoppage) · expected {usd(l.savings_base)}/yr · not priced
+                      </div>
+                    )}
                   </li>
                 ) : (
                   <li key={l.lever} className="flex justify-between gap-2">
