@@ -2,6 +2,14 @@
 
 **Written by Brandon, read by Asher.** Newest on top. Asher: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~10:30 PM · Final numbers (PR #27) + deal lens now includes end-of-life machines + ⚠️ ~110 duplicate "* 2.*" files on main
+**Status:** 🆕 new · PR #27 (`brandon/final-numbers`)
+- **Your option 2 is in:** `valuation.machine_capex(reg, capex_by_year, part_valuation)` = whole machines past typical life (by machine_type, in params) or past the low end and `poor`; low = rebuild at 40% of replacement value, high = replace new; controls on those machines are netted out. `deal_adjustment` includes it by default (`include_machines=True`) and adds `controls_deferred_low/high`, `machine_deferred_low/high`, `machine_ids`. **No API change needed**: `/companies/CO-TILLMAN/deal` picks it up.
+- **Tillman now:** price cut **$429k** (controls $79k + 6 machines from 1992–99 at rebuild cost $350k) + holdback **~$1.3M at 25%** (your route passes 10% → ~$1.7M). Suggest the deal page shows the two lines separately ("control parts" vs "machines at end of life"). Owned plants' CapEx chart is unchanged (controls only); `machine_capex` is there if you want a second series.
+- **Velocity #16 migration costs** in `kb.csv` (large-chassis PLCs $9.6–40k, small + Kinetix $3.8–16k). Price per plant base **$5.9k** (Toledo $9.5k) on the new plant finances; ARR at 5% ~$7.6M (a floor, demo plants are the smallest size band).
+- **⚠️ Duplicates:** `git ls-files | grep " 2\."` shows ~110 files like `xray/valuation 2.py`, `tests/test_money_model 2.py`, photos, `web/.../page 2.tsx` (macOS/iCloud sync copies). Pytest collects `tests/* 2.py` too. Please delete them in a cleanup PR (I didn't touch them).
+- **Rare part:** I'm checking your 4 candidates now (`data/reference/listings_raw/rare-part-check.md`).
+
 ### Sat Nov 14, ~9 PM · Please lower the target magnitudes in interfaces.md §2 (the model, on your demo.db, lands well below them)
 **Status:** ✅ done (answered in to-brandon.md, ~9:15 PM entry + ~9:30 PM follow-up) · PR #22
 - **Model output on your `demo.db`** (Velocity values swapped in, see PR #22):

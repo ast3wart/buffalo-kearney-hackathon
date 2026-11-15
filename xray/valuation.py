@@ -6,7 +6,8 @@ import numpy as np
 import pandas as pd
 
 from xray import params as P
-from xray.sourcing import (AT_RISK_STATUS, component_view, num, recommend_sourcing, scored_listings, unit_cost)
+from xray.sourcing import (AT_RISK_STATUS, component_view, num, recommend_sourcing, scored_listings, unit_cost,
+                           value_parts)
 
 
 def downtime_cost_per_hour(reg: dict) -> pd.DataFrame:
@@ -139,23 +140,74 @@ def capex_by_year(reg: dict, part_valuation: pd.DataFrame, start_year: int = 202
     return out[cols].sort_values(["plant_id", "year", "capex_type"]).reset_index(drop=True)
 
 
+def machine_capex(reg: dict, capex_by_year: pd.DataFrame | None = None, part_valuation: pd.DataFrame | None = None,
+                  start_year: int = 2027, years: int = 5, as_of_year: int = P.AS_OF_YEAR) -> pd.DataFrame:
+    """Whole machines at end of life, kept apart from the controls CapEx (same columns, driver = machine_id).
+    deferred    = past the high end of typical life, or past the low end and in poor condition: years 0-2.
+                  low = rebuild at MACHINE_REBUILD_SHARE x replacement value, high = replace new.
+    maintenance = mid typical life falls inside the window (replace new).
+    With capex_by_year, controls already counted as deferred on a deferred machine are netted out (no double count)."""
+    m = reg["machine"].merge(reg["line"][["line_id", "plant_id"]], on="line_id").merge(
+        reg["plant"][["plant_id", "company_id"]], on="plant_id")
+    netted = {}
+    if capex_by_year is not None:
+        pv_ = part_valuation if part_valuation is not None else value_parts(reg)
+        cv = component_view(reg, as_of_year).set_index("component_id")
+        ids = set(";".join(capex_by_year.loc[capex_by_year.capex_type == "deferred", "driver_component_ids"]).split(";")) - {""}
+        for cid in ids & set(cv.index):
+            lo, hi = replacement_cost(cv.loc[cid].rename(cid), reg, pv_)
+            mid = cv.loc[cid, "machine_id"]
+            netted[mid] = (netted.get(mid, (0, 0))[0] + lo, netted.get(mid, (0, 0))[1] + hi)
+    window = range(start_year, start_year + years)
+    rows = []
+    for r in m.itertuples():
+        built, rlo, rhi = num(pd.Series([r.year_built])).iloc[0], num(pd.Series([r.replacement_value_low])).iloc[0], \
+            num(pd.Series([r.replacement_value_high])).iloc[0]
+        if pd.isna(built) or pd.isna(rlo) or pd.isna(rhi):
+            continue
+        life, age = P.MACHINE_LIFE_YEARS.get(r.machine_type, P.MACHINE_LIFE_DEFAULT), as_of_year - built
+        if age >= life.high or (age >= life.low and r.condition == "poor"):
+            nlo, nhi = netted.get(r.machine_id, (0, 0))
+            lo, hi = max(P.MACHINE_REBUILD_SHARE.base * rlo - nlo, 0), max(rhi - nhi, 0)
+            rows += [(r.company_id, r.plant_id, y, "deferred", lo / 3, hi / 3, r.machine_id) for y in window[:3]]
+        else:
+            due = int(built + life.base)
+            if due in window:
+                rows.append((r.company_id, r.plant_id, due, "maintenance", rlo, rhi, r.machine_id))
+    cols = ["company_id", "plant_id", "year", "capex_type", "capex_low", "capex_high", "driver_component_ids"]
+    out = pd.DataFrame(rows, columns=cols)
+    out = (out.groupby(cols[:4]).agg(capex_low=("capex_low", "sum"), capex_high=("capex_high", "sum"),
+                                     driver_component_ids=("driver_component_ids", lambda s: ";".join(sorted(s))))
+           .reset_index())
+    out[["capex_low", "capex_high"]] = out[["capex_low", "capex_high"]].round(2)
+    return out[cols].sort_values(["plant_id", "year", "capex_type"]).reset_index(drop=True)
+
+
 # ---------------------------------------------------------------- deal lens
 def pv(cash: pd.Series, year: pd.Series, rate: float, as_of_year: int) -> float:
     return float((cash / (1 + rate) ** (year - as_of_year)).sum())
 
 
 def deal_adjustment(reg: dict, capex_by_year: pd.DataFrame, company_id: str | None = None,
-                    discount_rate: float | None = None, as_of_year: int = P.AS_OF_YEAR) -> pd.DataFrame:
+                    discount_rate: float | None = None, as_of_year: int = P.AS_OF_YEAR,
+                    include_machines: bool = True, machine_capex_table: pd.DataFrame | None = None) -> pd.DataFrame:
     """Deal lens, target companies only (a plant with status `target`). Deferred CapEx is a debt-like item:
     price cut = deferred low at face value; holdback = PV(deferred high - low), so nothing is counted twice.
-    No discount_rate -> the holdback uses the base deal rate."""
+    No discount_rate -> the holdback uses the base deal rate.
+    include_machines adds whole machines at end of life (machine_capex) to the cut and holdback; the controls and
+    machine parts are also reported separately (controls_*, machine_*)."""
     targets = set(reg["plant"].loc[reg["plant"].status == "target", "company_id"])
     if company_id is not None:
         targets &= {company_id}
     r_base = discount_rate if discount_rate is not None else P.DEAL_DISCOUNT_RATE.base
+    mc = (machine_capex_table if machine_capex_table is not None
+          else machine_capex(reg, capex_by_year, as_of_year=as_of_year) if include_machines else None)
     rows = []
     for co in sorted(targets):
-        d = capex_by_year[(capex_by_year.company_id == co) & (capex_by_year.capex_type == "deferred")]
+        ctl = capex_by_year[(capex_by_year.company_id == co) & (capex_by_year.capex_type == "deferred")]
+        mac = (mc[(mc.company_id == co) & (mc.capex_type == "deferred")] if mc is not None
+               else ctl.iloc[0:0])
+        d = pd.concat([ctl, mac], ignore_index=True)
         # Deferred CapEx is overdue catch-up spend, so the price cut takes the low case at face value
         # (velocity #15/#17: debt-like items aren't discounted); only the uncertain gap is discounted.
         cut_lo = cut_hi = float(d.capex_low.sum())
@@ -164,10 +216,15 @@ def deal_adjustment(reg: dict, capex_by_year: pd.DataFrame, company_id: str | No
                      "deferred_capex_high": round(d.capex_high.sum(), 2),
                      "suggested_price_reduction_low": round(cut_lo, 2), "suggested_price_reduction_high": round(cut_hi, 2),
                      "suggested_holdback": round(hold, 2),
+                     "controls_deferred_low": round(ctl.capex_low.sum(), 2), "controls_deferred_high": round(ctl.capex_high.sum(), 2),
+                     "machine_deferred_low": round(mac.capex_low.sum(), 2), "machine_deferred_high": round(mac.capex_high.sum(), 2),
+                     "machine_ids": ";".join(sorted(set(";".join(mac.driver_component_ids).split(";")) - {""})),
                      "rationale": (f"deferred CapEx {d.year.min() if len(d) else '-'}-{d.year.max() if len(d) else '-'} "
-                                   f"from {len(set(';'.join(d.driver_component_ids).split(';')) - {''})} component(s); "
+                                   f"from {len(set(';'.join(ctl.driver_component_ids).split(';')) - {''})} control part(s)"
+                                   f" + {len(set(';'.join(mac.driver_component_ids).split(';')) - {''})} machine(s) at end of life; "
                                    f"price cut = low case at face value, holdback = PV of the "
                                    f"high-low gap at {r_base:.1%} ({P.DEAL_DISCOUNT_RATE.source})")})
     cols = ["company_id", "deferred_capex_low", "deferred_capex_high", "suggested_price_reduction_low",
-            "suggested_price_reduction_high", "suggested_holdback", "rationale"]
+            "suggested_price_reduction_high", "suggested_holdback", "rationale", "controls_deferred_low",
+            "controls_deferred_high", "machine_deferred_low", "machine_deferred_high", "machine_ids"]
     return pd.DataFrame(rows, columns=cols)

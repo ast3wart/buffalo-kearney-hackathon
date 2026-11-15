@@ -81,3 +81,19 @@ COST_TO_SERVE = P(300, 910, 1840, "estimate, velocity #18 (Nov 14): sonnet-5-5 A
 ONSITE_CAPTURE = P(1000, 1500, 2000, "assumption, velocity #18: optional add-on, 1-2 days if we take the photos")
 MIN_GROSS_MARGIN = 0.60
 MAX_DEAL_FEE_SHARE = 0.10      # deal fee should be <= 10% of what the scan finds (model-spec §2 check 4)
+
+# --- whole-machine end of life (deal lens, shown as its own line; model-spec option 2)
+MACHINE_LIFE_YEARS = {     # useful life by machine_type (assumption; appraisal practice, verify before slides)
+    "cnc_mill": P(15, 20, 25, "assumption: CNC machining centers"),
+    "cnc_lathe": P(15, 20, 25, "assumption: CNC lathes"),
+    "press": P(25, 32, 40, "assumption: mechanical / servo presses"),
+    "injection_molder": P(15, 20, 25, "assumption"),
+    "robot_cell": P(12, 15, 18, "assumption"),
+    "conveyor": P(15, 20, 25, "assumption"),
+    "packaging": P(12, 16, 20, "assumption"),
+    "compressor": P(15, 18, 20, "assumption"),
+    "oven": P(20, 25, 30, "assumption"),
+    "pump": P(15, 20, 25, "assumption"),
+}
+MACHINE_LIFE_DEFAULT = P(12, 16, 20, "assumption")
+MACHINE_REBUILD_SHARE = P(0.4, 0.4, 0.4, "assumption: rebuild / retrofit at ~40% of new as the low case; replace new as the high")

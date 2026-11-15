@@ -106,3 +106,11 @@ def test_full_plant_quote_scales_up_and_stays_unpriced_for_one_time(reg):
     assert full.basis.str.startswith("full plant").all()
     assert (full.loc[full.one_time == "yes", "in_price_base"] == "no").all()
     assert (full.savings_low <= full.savings_high).all()
+
+
+def test_deal_lens_adds_end_of_life_machines_without_double_count(model, reg):
+    d = model["deal"].iloc[0]
+    assert d.suggested_price_reduction_low == pytest.approx(d.controls_deferred_low + d.machine_deferred_low, abs=1)
+    assert d.machine_deferred_low <= d.machine_deferred_high
+    only_controls = deal_adjustment(reg, model["capex"], include_machines=False).iloc[0]
+    assert only_controls.machine_deferred_low == 0 and only_controls.suggested_price_reduction_low <= d.suggested_price_reduction_low
