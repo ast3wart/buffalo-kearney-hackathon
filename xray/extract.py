@@ -43,14 +43,16 @@ SCHEMA = {
 }
 
 
-def _load_env():
-    env = ROOT / ".env"
+def _env_file() -> dict[str, str]:
+    """Values from the project's .env (these take priority over whatever the shell already has)."""
+    env, out = ROOT / ".env", {}
     if env.exists():
         for line in env.read_text().splitlines():
             if "=" in line and not line.lstrip().startswith("#"):
                 k, v = line.split("=", 1)
                 if v.strip():
-                    os.environ.setdefault(k.strip(), v.strip())
+                    out[k.strip()] = v.strip().strip('"').strip("'")
+    return out
 
 
 def image_hash(path: Path) -> str:
@@ -68,11 +70,12 @@ def read_photo(path, use_api: bool = True) -> dict:
 
     import anthropic
 
-    _load_env()
-    client = anthropic.Anthropic()
+    env = _env_file()
+    client = anthropic.Anthropic(api_key=env["ANTHROPIC_API_KEY"]) if env.get("ANTHROPIC_API_KEY") else anthropic.Anthropic()
+    model = env.get("XRAY_LLM_MODEL", MODEL)
     data = base64.standard_b64encode(path.read_bytes()).decode("utf-8")
     response = client.beta.messages.create(
-        model=MODEL,
+        model=model,
         max_tokens=2000,
         betas=["server-side-fallback-2026-07-01"],
         fallbacks="default",

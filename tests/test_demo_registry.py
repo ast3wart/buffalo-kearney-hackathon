@@ -54,3 +54,14 @@ def test_spare_matching_floor(reg):
     sm = reg["spare_match"]
     r = score(sm[sm.kb_id != ""][["spare_id", "kb_id"]], st, key=["spare_id"], value="kb_id").iloc[0]
     assert r.precision >= 0.95 and r.recall >= 0.9
+
+
+def test_photo_readings_cached_and_exact():
+    """Every demo photo has a cached Claude reading (demo runs offline) that matches the true catalog number."""
+    from xray.extract import read_photo
+
+    truth = pd.read_csv(TRUTH / "components.csv", dtype=str).fillna("").set_index("component_id")
+    for manifest in (ROOT / "data/seed/demo").glob("*/photos.csv"):
+        for p in pd.read_csv(manifest, dtype=str).fillna("").itertuples():
+            r = read_photo(manifest.parent / p.file, use_api=False)
+            assert r["part_no"].replace(" ", "").upper() == truth.loc[p.component_id, "part_no"].upper(), p.photo_id

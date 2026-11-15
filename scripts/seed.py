@@ -28,7 +28,7 @@ def apply_photo_readings(reading: pd.DataFrame, photo: pd.DataFrame, seed_dir: P
             continue  # not read yet: keep the simulated reading
         if p.component_id in reading.index:
             reading.loc[p.component_id, ["raw_text", "confidence", "method", "photo_id"]] = [
-                f"{r['part_no']} {r.get('series', '')}".strip(), r["confidence"], "vision", p.photo_id]
+                f"{r['part_no']} {r.get('series', '')}".strip(), str(r["confidence"]), "vision", p.photo_id]
     return reading.reset_index()
 
 

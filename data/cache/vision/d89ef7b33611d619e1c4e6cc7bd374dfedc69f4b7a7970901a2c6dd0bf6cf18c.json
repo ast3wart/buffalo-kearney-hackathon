@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "C",
+  "serial": "3699209",
+  "date_code": "2017-06",
+  "description": "CompactLogix 5380 controller 2MB",
+  "unclear": [
+    "manufacturer"
+  ],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0010.jpg"
+}
