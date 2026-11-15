@@ -108,6 +108,9 @@ const ASSUMPTIONS: { what: string; value: string; why: string }[] = [
   { what: "Sensor data in the demo", value: "simulated", why: "no hardware built; data is in the exact format the device would send" },
 ];
 
+const W = 1120;
+const H = 630;
+
 export function Deck({ data }: { data: DeckData }) {
   const [imgOk, setImgOk] = useState(true);
   const slides: React.ReactNode[] = [
@@ -133,8 +136,8 @@ export function Deck({ data }: { data: DeckData }) {
 
     <Slide key="problem" kicker="Problem" title="Owners do not know the health of the equipment their plants run on">
       <div className="flex h-full flex-col">
-        <div className="grid min-h-0 flex-1 grid-cols-[1fr_1.15fr] gap-12">
-          <div className="border-l-2 border-accent pl-6 text-base leading-normal">
+        <div className="grid min-h-0 flex-1 grid-cols-[1fr_1.15fr] content-center gap-12">
+          <div className="self-start border-l-2 border-accent pl-6 text-lg leading-relaxed">
             <div className="text-xs font-semibold uppercase tracking-wider text-muted">A typical situation</div>
             <p className="mt-2">The plant follows its maintenance schedule: bearings greased, belts changed, oil sampled.</p>
             <p className="mt-3 text-muted">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
@@ -322,6 +325,21 @@ export function Deck({ data }: { data: DeckData }) {
   const ref = useRef<HTMLDivElement>(null);
   const full = (slides[i] as React.ReactElement).key === "demo";
   const go = useCallback((d: number) => setI((x) => Math.min(slides.length - 1, Math.max(0, x + d))), [slides.length]);
+  // Slides are laid out on a fixed 16:9 canvas and scaled to fit, so full screen enlarges everything (like PowerPoint).
+  const [box, setBox] = useState({ k: 1, x: 0, y: 0 });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      const { width, height } = el.getBoundingClientRect();
+      const k = Math.min(width / W, height / H);
+      setBox({ k, x: (width - W * k) / 2, y: (height - H * k) / 2 });
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [full]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(1); }
@@ -334,8 +352,12 @@ export function Deck({ data }: { data: DeckData }) {
 
   return (
     <div className="relative left-1/2 w-[calc(100vw-2rem)] -translate-x-1/2">
-      <div ref={ref} className={`relative mx-auto overflow-hidden rounded-2xl border border-line bg-surface shadow-sm [&:fullscreen]:rounded-none ${full ? "h-[calc(100vh-130px)] w-full p-3 [&:fullscreen]:p-4" : "aspect-video w-full max-w-[calc((100vh-170px)*16/9)] p-12 [&:fullscreen]:p-20"}`}>
-        {slides[i]}
+      <div ref={ref} className={`relative mx-auto overflow-hidden rounded-2xl border border-line bg-surface shadow-sm [&:fullscreen]:rounded-none ${full ? "h-[calc(100vh-130px)] w-full p-3 [&:fullscreen]:p-4" : "aspect-video w-full max-w-[calc((100vh-170px)*16/9)] "}`}>
+        {full ? slides[i] : (
+          <div className="absolute left-0 top-0 p-12" style={{ width: W, height: H, transform: `translate(${box.x}px, ${box.y}px) scale(${box.k})`, transformOrigin: "top left" }}>
+            {slides[i]}
+          </div>
+        )}
         <div className="absolute bottom-0 left-0 h-1 bg-accent transition-all" style={{ width: `${((i + 1) / slides.length) * 100}%` }} />
       </div>
       <div className={`mx-auto mt-3 flex items-center ${full ? "" : "max-w-[calc((100vh-170px)*16/9)]"} justify-between text-sm text-muted`}>
