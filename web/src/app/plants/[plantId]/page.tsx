@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { STATIC, plantIds } from "@/lib/static";
 import { getJSON, pct, tryJSON, usd } from "@/lib/api";
 import { Card, HealthBadge, PageHeader, Pending, Pill, Stat } from "@/components/ui";
 import { CapexChart } from "@/components/CapexChart";
@@ -19,6 +20,10 @@ type Lever = { lever: string; savings_low: number; savings_base: number; savings
 type Price = { price_per_plant_low: number; price_per_plant_base: number; price_per_plant_high: number; customer_payback_months: number; recurring_savings_base: number; failed_checks: string; value_capture_pct: number };
 type Rescue = { component_id: string; spare_id: string; spare_plant_id: string; hours_down_without_low: number; hours_down_without_high: number; hours_down_with_low: number; hours_down_with_high: number; at_stake_base: number; p_fail_horizon_base: number; expected_pv_base: number; horizon_years: number };
 type Deal = { deferred_capex_low: number; deferred_capex_high: number; suggested_price_reduction_low: number; suggested_holdback: number; rationale: string };
+
+export async function generateStaticParams() {
+  return STATIC ? (await plantIds()).map((plantId) => ({ plantId })) : [];
+}
 
 export default async function PlantPage({ params }: { params: Promise<{ plantId: string }> }) {
   const { plantId } = await params;

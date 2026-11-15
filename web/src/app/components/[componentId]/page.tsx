@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { API_URL, getJSON, tryJSON, usd } from "@/lib/api";
+import { fileUrl, getJSON, tryJSON, usd } from "@/lib/api";
+import { STATIC, componentIds } from "@/lib/static";
 import { Card, HealthBadge, HealthScore, LifeBar, PageHeader, PartNo, Pending, Pill, StatusBadge, sourceLabel } from "@/components/ui";
 
 type Ev = {
@@ -32,6 +33,10 @@ type Health = {
 const fmt = (v: number | null | undefined, d = 1) => (v === null || v === undefined ? null : v.toFixed(d));
 
 const CH: Record<string, string> = { shelf: "Shelf, another plant", successor: "Successor, from manufacturer", oem: "Manufacturer", authorized_distributor: "Authorized distributor", refurbisher: "Refurbisher", surplus: "Surplus dealer", marketplace: "Marketplace", broker: "Broker" };
+
+export async function generateStaticParams() {
+  return STATIC ? (await componentIds()).map((componentId) => ({ componentId })) : [];
+}
 
 export default async function ComponentPage({ params }: { params: Promise<{ componentId: string }> }) {
   const { componentId } = await params;
@@ -175,7 +180,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
               {e.real_photos.map((rp) => (
                 <figure key={rp.file}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={`${API_URL}/refphotos/${rp.file}`} alt={rp.shows} className="w-full rounded border border-line" />
+                  <img src={fileUrl(`/refphotos/${rp.file}`)} alt={rp.shows} className="w-full rounded border border-line" />
                   <figcaption className="mt-1 text-xs text-muted">
                     <b className="text-ink">{rp.shows}</b> · {MATCH[rp.match_level] ?? rp.match_level} · Photo: {rp.author},{" "}
                     <a className="text-accent hover:underline" href={rp.license_url || rp.source_url} target="_blank">{rp.license}</a>, via{" "}
@@ -189,7 +194,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
           {e.photo ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${API_URL}/photos/${e.photo.plant_id}/${e.photo.photo_id}.jpg`} alt="label photo" className="w-full rounded border border-line" />
+              <img src={fileUrl(`/photos/${e.photo.plant_id}/${e.photo.photo_id}.jpg`)} alt="label photo" className="w-full rounded border border-line" />
               <p className="mt-2 text-xs text-muted">{e.photo.photo_id} · {e.photo.rendered === "yes" ? "rendered photo" : "photo"} · quality: {e.photo.quality}</p>
             </>
           ) : (

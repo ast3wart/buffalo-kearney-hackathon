@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { STATIC, machineIds } from "@/lib/static";
 import { getJSON, usd } from "@/lib/api";
 import { Card, HealthBadge, HealthScore, LifeBar, PageHeader, PartNo, Pill, StatusBadge } from "@/components/ui";
 
@@ -17,6 +18,10 @@ type M = {
 
 const when = (p: Part & { covered_by_own_spare?: boolean }) =>
   p.covered_by_own_spare ? "Covered (own spare)" : p.order_now ? "Order now (overdue)" : p.order_by ? new Date(p.order_by).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "-";
+
+export async function generateStaticParams() {
+  return STATIC ? (await machineIds()).map((machineId) => ({ machineId })) : [];
+}
 
 export default async function MachinePage({ params }: { params: Promise<{ machineId: string }> }) {
   const { machineId } = await params;

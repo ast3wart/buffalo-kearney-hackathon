@@ -19,3 +19,5 @@ demo.db
 # macOS/iCloud duplicate copies ("file 2.py")
 * 2.*
 * 2
+web/out/
+web/public/files/
