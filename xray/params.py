@@ -40,13 +40,13 @@ TRANSFER_ADMIN = P(200, 200, 200, "estimate, velocity #20 (Nov 14)")
 EMERGENCY_MULTIPLIER = P(1.1, 1.3, 1.6, "estimate, velocity #5 (Nov 14): emergency vs planned, before downtime")
 EMERGENCY_HAIRCUT = 0.5    # share of planned-vs-emergency savings counted in the price base (model-spec §2)
 MIGRATION_HOURS = {        # engineering hours to migrate to the successor, by component_type (velocity #16)
-    "plc": P(40, 60, 80, "assumption, velocity #16"),
-    "servo_drive": P(20, 40, 60, "assumption, velocity #16"),
-    "drive": P(8, 16, 24, "assumption, velocity #16"),
-    "hmi": P(16, 32, 48, "assumption, velocity #16"),
+    "plc": P(24, 52, 80, "estimate, velocity #16 (Nov 14): small PLC; large chassis set per family in kb.csv"),
+    "servo_drive": P(24, 52, 80, "estimate, velocity #16 (Nov 14)"),
+    "drive": P(8, 16, 24, "estimate, velocity #16 (Nov 14): VFD < 10 HP"),
+    "hmi": P(12, 40, 80, "estimate, velocity #16 (Nov 14): small to large HMI"),
 }
 MIGRATION_HOURS_DEFAULT = P(20, 50, 80, "assumption, velocity #16")
-ENGINEERING_RATE = P(150, 225, 300, "assumption, velocity #16 ($/h)")
+ENGINEERING_RATE = P(160, 180, 200, "vendor, velocity #16 (Nov 14): integrator rate sheet, $/h")
 UNIT_COST_BY_TYPE = {      # hardware fallback when a part has no trusted listings (velocity #16)
     "plc": P(3000, 8000, 15000, "assumption, velocity #16"),
     "plc_io": P(300, 800, 2000, "assumption, velocity #16"),
