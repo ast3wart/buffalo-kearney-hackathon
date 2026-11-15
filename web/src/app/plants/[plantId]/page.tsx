@@ -36,6 +36,10 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
   const spr = sav.data?.sample_price?.[0];
   const rescues = sav.data?.downtime_rescues ?? [];
   const label = (s: string) => s.replace(/_/g, " ");
+  const dt = (sav.data?.plant_savings ?? []).find((l) => l.lever === "downtime_avoided");
+  const mid = (a: number, b: number) => (a + b) / 2;
+  const hoursSaved = rescues.reduce((t, r) => t + mid(r.hours_down_without_low, r.hours_down_without_high) - mid(r.hours_down_with_low, r.hours_down_with_high), 0);
+  const atStake = rescues.reduce((t, r) => t + r.at_stake_base, 0);
   const value = p.lines.reduce((a, l) => [a[0] + l.value_low, a[1] + l.value_high], [0, 0]);
   return (
     <>
@@ -49,6 +53,34 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
         <Card><Stat label="parts working" value={p.health.working ?? 0} tone="ok" /></Card>
         <Card><Stat label="machine replacement value" value={`${usd(value[0])}–${usd(value[1])}`} /></Card>
       </div>
+      {dt && rescues.length > 0 && (
+        <div className="mt-4 rounded-2xl bg-accent p-6 text-surface">
+          <div className="text-sm font-semibold uppercase tracking-wider opacity-80">Downtime avoided</div>
+          <div className="mt-2 grid gap-6 md:grid-cols-[1.2fr_1fr_1fr]">
+            <div>
+              <div className="tabular text-6xl font-semibold tracking-tight">{usd(dt.savings_base)}<span className="text-3xl opacity-80"> / yr</span></div>
+              <div className="mt-1 text-sm opacity-85">expected lost output avoided · range {usd(dt.savings_low)}–{usd(dt.savings_high)}</div>
+            </div>
+            <div>
+              <div className="tabular text-4xl font-semibold">{Math.round(hoursSaved)} h</div>
+              <div className="mt-1 text-sm opacity-85">of line stoppage avoided if these parts fail, because a spare at a sister plant is found in time</div>
+            </div>
+            <div>
+              <div className="tabular text-4xl font-semibold">{usd(atStake)}</div>
+              <div className="mt-1 text-sm opacity-85">of output at stake across {rescues.length} line-stopping failures</div>
+            </div>
+          </div>
+          <ul className="mt-5 grid gap-2 border-t border-surface/25 pt-4 text-sm md:grid-cols-2">
+            {rescues.slice(0, 4).map((r) => (
+              <li key={r.component_id + r.spare_id}>
+                <Link href={`/components/${r.component_id}`} className="font-mono underline-offset-2 hover:underline">{r.component_id}</Link>: spare from {r.spare_plant_id} cuts{" "}
+                <b>{Math.round((r.hours_down_without_low + r.hours_down_without_high) / 2)} h → {Math.round((r.hours_down_with_low + r.hours_down_with_high) / 2)} h</b> down · {usd(r.at_stake_base)} at stake
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-xs opacity-75">Expected value over {rescues[0].horizon_years} years (chance of failure × output at stake), counting only spare rescues we actually found. Not part of our fee.</p>
+        </div>
+      )}
       {d && (
         <div className="mt-4">
           <Card title="Deal view · what this scan means for the purchase price" tone="alert">
