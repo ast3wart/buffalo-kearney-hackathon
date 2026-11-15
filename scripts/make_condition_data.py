@@ -88,12 +88,13 @@ def main():
     lima = next((c for c in df.index if c.startswith("PC") and truth.loc[c, "kb_id"]), None)
     if lima:
         df.loc[lima, "diag_faults_12m"] = 3
-    patterns = {"PA-L2-M01-C1": "step", pb_drive: "drift", press_drive: "current", lima: "spikes"}
+    patterns = {"PA-L2-M01-C1": "step", pb_drive: "drift", press_drive: "current", lima: "spikes", "PA-L1-M01-C4": "step"}
     for cid in patterns:
         if cid:
             df.loc[cid, ["thermal_mode", "days_observed"]] = ["continuous", 90]
     planted = {"PA-L2-M01-C1": "failing fan: temperature steps up ~18°C at day 70 (EWMA shift)", pb_drive: "capacitors 91% used (self-reported) + slow warming (CUSUM drift / trend)",
-               press_drive: "motor current sideband energy rising (Mahalanobis on current features)", lima: "hot connection: intermittent temperature spikes + 3 faults"}
+               press_drive: "motor current sideband energy rising (Mahalanobis on current features)", lima: "hot connection: intermittent temperature spikes + 3 faults",
+               "PA-L1-M01-C4": "discontinued relay, coil overheating: temperature steps up ~18°C at day 70 (EWMA shift)"}
 
     # --- time series from the device (continuous cabinets only): 90 daily summaries per part
     therm, curr = [], []

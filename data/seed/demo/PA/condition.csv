@@ -2,7 +2,7 @@ component_id,plant_id,simulated,install_year_record,install_year_basis,thermal_m
 PA-L1-M01-C1,PA,yes,2021,part record,continuous,80,30.1,38.6,,,,26389,0
 PA-L1-M01-C2,PA,yes,2024,part record,continuous,47,34.3,43.5,,,,,
 PA-L1-M01-C3,PA,yes,2017,part record,continuous,90,35.9,57.4,0.9,0.94,60.3,55322,0
-PA-L1-M01-C4,PA,yes,,,continuous,55,37.5,47.4,,,,,
+PA-L1-M01-C4,PA,yes,,,continuous,90,37.5,65.4,,,,,
 PA-L1-M02-C1,PA,yes,2018,part record,continuous,61,33.1,43.2,,,,44723,1
 PA-L1-M02-C2,PA,yes,,,continuous,36,35.3,46.7,,,,,
 PA-L1-M03-C1,PA,yes,2020,part record,snapshot,1,32.8,41.8,,,,41880,0

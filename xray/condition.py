@@ -142,7 +142,7 @@ def compute(reg: dict[str, pd.DataFrame], as_of_year: int = AS_OF_YEAR) -> pd.Da
         eta = rated * WEIBULL_ETA_SHARE
         m = math.exp(math.log(ANOMALY_HAZARD) * sev) * (1 + FAULT_HAZARD * min(faults or 0, 5))
         surv = math.exp(-m * ((a + 1) ** WEIBULL_BETA - a ** WEIBULL_BETA) / eta ** WEIBULL_BETA)
-        health = 100.0 * surv
+        health = max(1.0, 100.0 * surv)  # never 0: the model can say "almost certain to fail", not "certain"
         # remaining life = conditional median: S(t | survived to a) = 0.5
         remaining = (a ** WEIBULL_BETA + eta ** WEIBULL_BETA * math.log(2) / m) ** (1 / WEIBULL_BETA) - a
         spread = RANGE_BY_CONFIDENCE[conf]
