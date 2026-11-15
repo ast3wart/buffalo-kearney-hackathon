@@ -22,7 +22,9 @@ We also designed the **Cabinet Monitor**, a small DIN-rail box (thermal camera, 
 
 ---
 
-## Option 1: open it in your browser (no setup)
+## Run the Demo
+
+### Option 1: open it in your browser (no setup)
 **https://ast3wart.github.io/buffalo-kearney-hackathon/**
 
 - **Pitch deck:** https://ast3wart.github.io/buffalo-kearney-hackathon/pitch/
@@ -30,7 +32,7 @@ We also designed the **Cabinet Monitor**, a small DIN-rail box (thermal camera, 
 
 This is a read-only snapshot of the app: every page is pre-rendered, so it needs no server. To change the data and see the numbers move, use option 2.
 
-## Option 2: run it on your computer (about 5 minutes)
+### Option 2: run it on your computer (about 5 minutes)
 
 **You need:** [Python 3.11+](https://www.python.org/downloads/) and [Node.js 20+](https://nodejs.org/). No API key is needed: the photo readings are cached, so the demo runs offline.
 
