@@ -281,6 +281,74 @@ async def scan(file: UploadFile = File(...)) -> dict:
             "confidence": round(min(conf, float(reading.get("confidence", 0))), 3) if match else 0.0, "needs_review": review}
 
 
+# ---------------------------------------------------------------- health: plant -> lines -> machines -> parts
+HEALTH_RANK = {"replace_asap": 3, "replace_soon": 2, "working": 1, "unidentified": 0}
+
+
+@lru_cache(maxsize=1)
+def health_table() -> pd.DataFrame:
+    from xray import health
+
+    return health.compute(reg())
+
+
+def parts_with_health() -> pd.DataFrame:
+    return components_full().merge(health_table(), on="component_id", how="left")
+
+
+def _machine_summary(ms: pd.DataFrame, parts: pd.DataFrame) -> list[dict]:
+    out = []
+    for m in records(ms):
+        mp = parts[parts.machine_id == m["machine_id"]]
+        worst = max((HEALTH_RANK.get(h, 0) for h in mp.health), default=0)
+        worst_label = next((k for k, v in HEALTH_RANK.items() if v == worst), "working")
+        out.append({**m, "parts": len(mp), "asap": int((mp.health == "replace_asap").sum()),
+                    "soon": int((mp.health == "replace_soon").sum()), "risk": worst_label if worst else "working",
+                    "value_low": float(m.get("replacement_value_low") or 0), "value_high": float(m.get("replacement_value_high") or 0)})
+    return out
+
+
+@app.get("/plants/{plant_id}/lines")
+def plant_lines(plant_id: str) -> dict:
+    r = reg()
+    plant = r["plant"][r["plant"].plant_id == plant_id]
+    if plant.empty:
+        raise HTTPException(404, f"no plant {plant_id}")
+    parts = parts_with_health()
+    lines = []
+    for ln in r["line"][r["line"].plant_id == plant_id].itertuples():
+        ms = r["machine"][r["machine"].line_id == ln.line_id]
+        machines = _machine_summary(ms, parts)
+        lines.append({"line_id": ln.line_id, "line_name": ln.line_name, "product": ln.product, "machines": machines,
+                      "asap": sum(m["asap"] for m in machines), "soon": sum(m["soon"] for m in machines),
+                      "value_low": sum(m["value_low"] for m in machines), "value_high": sum(m["value_high"] for m in machines)})
+    pp = parts[parts.plant_id == plant_id]
+    return {"plant": records(plant)[0], "lines": lines,
+            "health": pp.health.value_counts().to_dict(), "machines": int(r["machine"].line_id.isin([l["line_id"] for l in lines]).sum())}
+
+
+@app.get("/machines/{machine_id}")
+def machine(machine_id: str) -> dict:
+    r = reg()
+    m = r["machine"][r["machine"].machine_id == machine_id]
+    if m.empty:
+        raise HTTPException(404, f"no machine {machine_id}")
+    line = r["line"][r["line"].line_id == m.line_id.iloc[0]]
+    plant = r["plant"][r["plant"].plant_id == line.plant_id.iloc[0]]
+    parts = parts_with_health()
+    mp = parts[parts.machine_id == machine_id].drop(columns=["options"])
+    return {"machine": _machine_summary(m, parts)[0], "line": records(line)[0], "plant": records(plant)[0], "parts": records(mp)}
+
+
+@app.get("/components/{component_id}/health")
+def component_health(component_id: str) -> dict:
+    h = health_table()
+    row = h[h.component_id == component_id]
+    if row.empty:
+        raise HTTPException(404, f"no component {component_id}")
+    return json.loads(row.to_json(orient="records"))[0]
+
+
 # ---------------------------------------------------------------- Brandon's routes (call his pure functions)
 def _brandon(module: str, *funcs: str):
     try:

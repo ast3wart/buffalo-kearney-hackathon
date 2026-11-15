@@ -2,6 +2,12 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~10 PM · Part health + marketplace in the app; SAMPLE listings until yours land
+**Status:** 🆕 new · branch `asher/app`
+- **Part status** (`xray/health.py`): **Working / Replace soon / Replace ASAP** from life used (age ÷ typical life), lifecycle status, line-stopper, and lead time. Each part gets an **order-by date** (expected end of life − fastest lead time − 14-day buffer) and a rule-based action ("reserve the spare at Fort Wayne", "buy one refurbished spare now and plan migration", "covered by own spare"). **Your money model refines the action** (cost of waiting vs. replacing): the part page has a "Financial view" slot for it.
+- **Marketplace:** `data/reference/listings_sample.csv` has 132 **made-up** listings (3–5 per KB part, generic seller types, `sample=yes`, no URL) so the demo has multiple options per part. **Your real `listings.csv` replaces them part by part automatically** (`seed.py` → `load_listings`). Same columns + a `sample` column (heads-up: small shared-format addition).
+- Your 5 money routes are already wired into the app and show "pending" until `xray/valuation.py`, `sourcing.py`, `pricing.py` exist.
+
 ### Sat Nov 14, ~7:45 PM · Demo registry is ready to build against (`demo.db`)
 **Status:** 🆕 new · branch `asher/demo-data` (PR for CP1)
 - **Run:** `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).

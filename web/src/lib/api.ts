@@ -27,4 +27,4 @@ export async function tryJSON<T>(path: string): Promise<{ data?: T; pending?: st
 
 export const pct = (x: number) => `${Math.round(x * 100)}%`;
 export const usd = (x: number) =>
-  x >= 1e6 ? `$${(x / 1e6).toFixed(1)}M` : x >= 1e3 ? `$${Math.round(x / 1e3)}k` : `$${Math.round(x)}`;
+  x >= 1e6 ? `$${(x / 1e6).toFixed(1)}M` : x >= 1e5 ? `$${Math.round(x / 1e3)}k` : `$${Math.round(x).toLocaleString("en-US")}`;

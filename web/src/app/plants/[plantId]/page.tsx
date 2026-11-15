@@ -1,112 +1,70 @@
 import Link from "next/link";
-import { getJSON, tryJSON, type ShelfMatch } from "@/lib/api";
-import { Card, PageHeader, PartNo, Pending, Pill, StatusBadge } from "@/components/ui";
+import { getJSON, tryJSON, usd } from "@/lib/api";
+import { Card, HealthBadge, PageHeader, Pending, Pill, Stat } from "@/components/ui";
 import { CapexChart } from "@/components/CapexChart";
 
-type Comp = {
-  component_id: string; kb_id: string; part_no: string; part_no_read: string; family: string; manufacturer: string;
-  component_type: string; lifecycle_status: string; date_code: string; confidence: number; method: string;
-  needs_review: string; review_reason: string; successor_part_no: string;
+type MachineRow = {
+  machine_id: string; make: string; model: string; machine_type: string; year_built: number; criticality: string;
+  parts: number; asap: number; soon: number; risk: string; value_low: number; value_high: number;
 };
-type Machine = { machine_id: string; description: string; make: string; model: string; machine_type: string; year_built: number; criticality: string; components: Comp[] };
-type Registry = { plant: { plant_id: string; plant_name: string; state: string; status: string; employees: number }; lines: { line_id: string; line_name: string; product: string; machines: Machine[] }[] };
+type Lines = {
+  plant: { plant_id: string; plant_name: string; state: string; status: string; employees: number };
+  lines: { line_id: string; line_name: string; product: string; machines: MachineRow[]; asap: number; soon: number; value_low: number; value_high: number }[];
+  health: Record<string, number>;
+  machines: number;
+};
 type CapexRow = { year: number; capex_low: number; capex_high: number; capex_type: string };
 
 export default async function PlantPage({ params }: { params: Promise<{ plantId: string }> }) {
   const { plantId } = await params;
-  const [reg, shelf, capex] = await Promise.all([
-    getJSON<Registry>(`/plants/${plantId}/registry`),
-    getJSON<ShelfMatch[]>(`/plants/${plantId}/shelf-matches`),
+  const [p, capex] = await Promise.all([
+    getJSON<Lines>(`/plants/${plantId}/lines`),
     tryJSON<{ capex_by_year: CapexRow[] }>(`/plants/${plantId}/capex`),
   ]);
-  const all = reg.lines.flatMap((l) => l.machines.flatMap((m) => m.components.map((c) => ({ ...c, m, l }))));
-  const lineStop = all.filter((c) => c.m.criticality === "line_stop" && ["discontinued", "end_of_life"].includes(c.lifecycle_status));
-  const shelfBy = Object.fromEntries(shelf.map((s) => [s.component_id, s]));
+  const value = p.lines.reduce((a, l) => [a[0] + l.value_low, a[1] + l.value_high], [0, 0]);
   return (
     <>
       <PageHeader
-        title={`${reg.plant.plant_name}, ${reg.plant.state}`}
-        subtitle={<>{reg.plant.employees} people · {reg.lines.length} lines · {all.length} critical parts identified {reg.plant.status === "target" && <Pill tone="warn">acquisition target</Pill>}</>}
+        title={`${p.plant.plant_name}, ${p.plant.state}`}
+        subtitle={<>{p.plant.employees} employees · {p.lines.length} lines · {p.machines} machines {p.plant.status === "target" && <Pill tone="warn">acquisition target</Pill>}</>}
       />
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-4">
+        <Card><Stat label="parts to replace ASAP" value={p.health.replace_asap ?? 0} tone="alert" /></Card>
+        <Card><Stat label="parts to replace soon" value={p.health.replace_soon ?? 0} tone="warn" /></Card>
+        <Card><Stat label="parts working" value={p.health.working ?? 0} tone="ok" /></Card>
+        <Card><Stat label="machine replacement value" value={`${usd(value[0])}–${usd(value[1])}`} /></Card>
+      </div>
+      <div className="mt-4">
         <Card title="CapEx cliff · equipment spending needed by year">
           {capex.data ? <CapexChart rows={capex.data.capex_by_year} /> : <Pending what="The CapEx cliff" detail={capex.pending ?? capex.error} />}
         </Card>
-        <Card title="Parts that stop a line if they fail" tone={lineStop.length ? "alert" : undefined}>
-          {lineStop.length === 0 && <p className="text-sm text-muted">None at risk.</p>}
-          <ul className="space-y-3 text-sm">
-            {lineStop.map((c) => (
-              <li key={c.component_id} className="border-b border-line pb-2 last:border-0">
-                <div className="flex items-center justify-between gap-2">
-                  <Link href={`/components/${c.component_id}`} className="hover:underline">
-                    {c.l.line_name} · {c.m.make} {c.m.model}
-                  </Link>
-                  <StatusBadge status={c.lifecycle_status} />
-                </div>
-                <div className="text-muted">
-                  <PartNo>{c.part_no}</PartNo> {c.family} · installed {c.date_code}
-                  {c.successor_part_no && <> · successor <PartNo>{c.successor_part_no}</PartNo></>}
-                </div>
-                {shelfBy[c.component_id] ? (
-                  <div className="mt-1 text-ok">
-                    ✓ Spare on the shelf at <b>{shelfBy[c.component_id].spare_plant_name}</b> (qty {shelfBy[c.component_id].spare_qty})
-                    {!shelfBy[c.component_id].same_company && " · other company, same fund"}
-                  </div>
-                ) : (
-                  <div className="mt-1 text-alert">No spare anywhere in the portfolio</div>
-                )}
-              </li>
-            ))}
-          </ul>
-        </Card>
       </div>
-
-      <h2 className="mb-3 mt-8 text-sm font-semibold">Registry: every machine and the parts inside</h2>
-      <div className="space-y-4">
-        {reg.lines.map((l) => (
+      <div className="mt-6 space-y-4">
+        {p.lines.map((l) => (
           <Card key={l.line_id} title={`${l.line_name} · ${l.product}`}>
+            <div className="mb-2 flex gap-2 text-xs">
+              {l.asap > 0 && <Pill tone="alert">{l.asap} replace ASAP</Pill>}
+              {l.soon > 0 && <Pill tone="warn">{l.soon} replace soon</Pill>}
+              <span className="text-muted">machines worth {usd(l.value_low)}–{usd(l.value_high)}</span>
+            </div>
             <table className="w-full text-sm">
               <thead className="text-left text-xs text-muted">
-                <tr><th className="pb-2">Machine</th><th>Part</th><th>Status</th><th>Installed</th><th>How identified</th></tr>
+                <tr><th className="pb-2">Machine</th><th>Parts</th><th>Risk</th><th>Replacement value</th><th></th></tr>
               </thead>
               <tbody>
-                {l.machines.map((m) =>
-                  (m.components.length ? m.components : [null]).map((c, i) => (
-                    <tr key={`${m.machine_id}-${i}`} className="border-t border-line align-top">
-                      <td className="py-2">
-                        {i === 0 && (
-                          <>
-                            {m.make} {m.model}{" "}
-                            {m.criticality === "line_stop" && <Pill tone="alert">stops the line</Pill>}
-                            <div className="text-xs text-muted">{m.machine_type.replace("_", " ")} · built {m.year_built}</div>
-                          </>
-                        )}
-                      </td>
-                      {c ? (
-                        <>
-                          <td>
-                            <Link href={`/components/${c.component_id}`} className="hover:underline">
-                              {c.kb_id ? <PartNo>{c.part_no}</PartNo> : <span className="font-mono text-[0.85em] text-muted">{c.part_no_read}</span>}
-                            </Link>
-                            <div className="text-xs text-muted">{c.family || (c.component_type === "other" || c.component_type === "power_supply" ? "commodity part" : "label unreadable")}</div>
-                          </td>
-                          <td>
-                            {c.kb_id ? <StatusBadge status={c.lifecycle_status} /> : c.component_type === "other" || c.component_type === "power_supply"
-                              ? <span className="text-[11px] text-muted">not tracked</span>
-                              : <Pill tone="warn">re-photograph</Pill>}
-                          </td>
-                          <td className="tabular">{c.date_code}</td>
-                          <td className="text-xs">
-                            {c.method === "vision" ? "📷 Image Recognition" : c.method === "list" ? "equipment list" : "scan"}
-                            {c.needs_review === "yes" && c.kb_id && <div><Pill tone="warn">confirm: {c.review_reason}</Pill></div>}
-                          </td>
-                        </>
-                      ) : (
-                        <td colSpan={4} className="text-xs text-muted">no control parts recorded</td>
-                      )}
-                    </tr>
-                  )),
-                )}
+                {l.machines.map((m) => (
+                  <tr key={m.machine_id} className="border-t border-line">
+                    <td className="py-2">
+                      <Link href={`/machines/${m.machine_id}`} className="font-medium hover:underline">{m.make} {m.model}</Link>{" "}
+                      {m.criticality === "line_stop" && <Pill tone="alert">line stopper</Pill>}
+                      <div className="text-xs text-muted">{m.machine_type.replace("_", " ")} · built {m.year_built}</div>
+                    </td>
+                    <td className="tabular">{m.parts}</td>
+                    <td><HealthBadge health={m.risk} /></td>
+                    <td className="tabular">{usd(m.value_low)}–{usd(m.value_high)}</td>
+                    <td className="text-right"><Link href={`/machines/${m.machine_id}`} className="text-xs text-accent hover:underline">details →</Link></td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </Card>

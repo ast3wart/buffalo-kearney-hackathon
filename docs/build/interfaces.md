@@ -46,6 +46,9 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | `GET /plants/{plant_id}/savings` | savings per lever + price per plant | `plant_savings`, `price` |
 | `GET /companies/{company_id}/deal` | deal lens: "pay $X less" + holdback | `deal_adjustment` |
 | `GET /accuracy` | precision/recall vs answer key | `evaluate` |
+| `GET /plants/{plant_id}/lines` | lines → machines (parts, worst health, replacement value) | `xray/health.py` |
+| `GET /machines/{machine_id}` | machine + its parts with health | `xray/health.py` |
+| `GET /components/{component_id}/health` | Working / Replace soon / Replace ASAP, life used %, order-by date, action, options (shelf first, then listings) | `xray/health.py` (engineering rules; Brandon's money overlay refines the action) |
 | `POST /scan` | upload a photo → reading → KB match → new component row (the live demo) | `extract`, `matching` |
 
 ## 2. Demo portfolio (scale + planted problems)
