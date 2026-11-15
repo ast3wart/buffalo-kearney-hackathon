@@ -36,23 +36,44 @@ function Big({ n, label }: { n: string; label: string }) {
   );
 }
 
+// Data collection workflow (three sources): each source, when it happens, what we collect, and what it changes in the health score.
 function Ladder() {
   const steps = [
-    { n: "1", t: "The plant's own records", d: "maintenance system, purchase orders", c: "best, but usually machine-level only" },
-    { n: "2", t: "Label photo", d: "identifies every part in a cabinet", c: "what it is, not how healthy" },
-    { n: "3", t: "X-Ray Monitor", d: "heat, motor current, built-in diagnostics", c: "how healthy, continuously" },
-    { n: "4", t: "Inspection service", d: "only where the risk justifies it", c: "the expert still signs off" },
+    { n: "1", t: "Label photos", when: "day 1 · every cabinet", got: "part number, maker, date code", feeds: <>what the part is → <b>rated life</b> from its manual, discontinued or not; date code = <b>minimum age</b></> },
+    { n: "2", t: "Plant records", when: "week 1 · where they exist (~28%)", got: "install dates from the maintenance system and purchase orders", feeds: <>true <b>age</b> → how far along its wear-out curve the part is</> },
+    { n: "3", t: "X-Ray Monitor", when: "continuous · line-stopper cabinets", got: "temperature, motor current, drive fault logs, fan + capacitor life", feeds: <><b>heat</b> ages parts faster (2× per +10 °C); <b>anomalies</b> raise failure risk up to 20×; each <b>fault</b> +30%</> },
   ];
   return (
-    <div className="grid h-full grid-cols-4 gap-4">
-      {steps.map((s) => (
-        <div key={s.n} className="flex flex-col rounded-xl border border-line bg-bg p-5">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-lg font-semibold text-surface">{s.n}</div>
-          <div className="mt-4 text-xl font-semibold">{s.t}</div>
-          <div className="mt-2 text-base">{s.d}</div>
-          <div className="mt-auto pt-4 text-sm text-muted">{s.c}</div>
+    <div className="grid h-full grid-cols-[1fr_220px] gap-6">
+      <div className="flex flex-col">
+        <div className="grid grid-cols-[220px_1fr_1.4fr] gap-5 pb-2 text-xs font-semibold uppercase tracking-wider text-muted">
+          <span>Source · when</span><span>What we collect</span><span>What it changes in the score</span>
         </div>
-      ))}
+        {steps.map((s) => (
+          <div key={s.n} className="grid flex-1 grid-cols-[220px_1fr_1.4fr] items-center gap-5 border-t border-line">
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-base font-semibold text-surface">{s.n}</span>
+              <div>
+                <div className="text-xl font-semibold leading-tight">{s.t}</div>
+                <div className="mt-0.5 text-sm leading-snug text-muted">{s.when}</div>
+              </div>
+            </div>
+            <div className="text-base leading-snug text-muted">{s.got}</div>
+            <div className="flex items-center gap-3 text-[17px] leading-snug">
+              <span className="flex-1">{s.feeds}</span>
+              <span className="text-xl text-accent">→</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex flex-col justify-center rounded-2xl bg-accent p-5 text-surface">
+        <div className="text-xs font-semibold uppercase tracking-wider opacity-80">Health score</div>
+        <div className="tabular mt-1 text-5xl font-semibold">0–100</div>
+        <div className="mt-3 text-lg leading-snug">= the chance the part survives the next 12 months</div>
+        <div className="mt-4 border-t border-surface/30 pt-3 text-[15px] leading-snug opacity-90">
+          plus <b>years left</b>, and a <b>confidence</b>: the more sources a part has, the tighter its range
+        </div>
+      </div>
     </div>
   );
 }
@@ -216,7 +237,7 @@ export function Deck({ data }: { data: DeckData }) {
       </div>
     </Slide>,
 
-    <Slide key="collect" kicker="How we collect data" title="Use what the plant has, fill the gaps cheaply">
+    <Slide key="collect" kicker="The solution" title="Data Collection Workflow">
       <Ladder />
     </Slide>,
 
