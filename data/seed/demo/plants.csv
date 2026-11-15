@@ -1,0 +1,7 @@
+plant_id,company_id,plant_name,city,state,employees,status
+PA,CO-HALVORSEN,Toledo,Toledo,OH,220,owned
+PB,CO-HALVORSEN,Fort Wayne,Fort Wayne,IN,180,owned
+PC,CO-HALVORSEN,Lima,Lima,OH,140,owned
+PD,CO-BRIGHTWATER,Waukesha,Waukesha,WI,130,owned
+PF,CO-BRIGHTWATER,Oshkosh,Oshkosh,WI,100,owned
+PE,CO-TILLMAN,Rockford,Rockford,IL,90,target

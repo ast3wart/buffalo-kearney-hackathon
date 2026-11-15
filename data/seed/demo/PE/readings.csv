@@ -1,0 +1,11 @@
+reading_id,plant_id,machine_id,component_id,photo_id,raw_text,component_type_hint,method,confidence,date_code
+PE-L1-M01-C1-R1,PE,PE-L1-M01,PE-L1-M01-C1,,1747-L542,plc,vision_sim,0.96,2001
+PE-L1-M02-C1-R1,PE,PE-L1-M02,PE-L1-M02-C1,,1785-L40B,plc,vision_sim,0.96,1998
+PE-L1-M02-C2-R1,PE,PE-L1-M02,PE-L1-M02-C2,,SICK WL12-3P2431 photoelectric,other,list,0.92,1994
+PE-L1-M03-C1-R1,PE,PE-L1-M03,PE-L1-M03-C1,,1747-L542,plc,vision_sim,0.89,2008
+PE-L1-M03-C2-R1,PE,PE-L1-M03,PE-L1-M03-C2,,PHOENIX CONTACT QUINTPS/1AC/24DC/10,power_supply,vision_sim,0.67,2014
+PE-L1-M04-C1-R1,PE,PE-L1-M04,PE-L1-M04-C1,,1764LSP,plc,vision_sim,0.89,1992
+PE-L2-M01-C1-R1,PE,PE-L2-M01,PE-L2-M01-C1,,FX2N-48MR-001,plc,list,0.86,1999
+PE-L2-M02-C1-R1,PE,PE-L2-M02,PE-L2-M02-C1,,1764-LSP,plc,list,0.93,2000
+PE-L2-M03-C1-R1,PE,PE-L2-M03,PE-L2-M03-C1,,6ES59437UB11,plc,vision_sim,0.87,2002
+PE-L2-M04-C1-R1,PE,PE-L2-M04,PE-L2-M04-C1,,1764LSP,plc,list,0.88,2010

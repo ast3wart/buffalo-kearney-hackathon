@@ -14,3 +14,4 @@ results.duckdb
 temp/
 .worktrees/
 archive/
+demo.db

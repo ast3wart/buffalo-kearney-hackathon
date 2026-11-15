@@ -1,0 +1,12 @@
+{
+  "manufacturer": "Rockwell Automation",
+  "part_no": "2711P-T10C4D8",
+  "series": "D",
+  "serial": "2302646",
+  "date_code": "2003-12",
+  "description": "PanelView Plus 6 1000 touch terminal",
+  "unclear": [],
+  "confidence": 0.97,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0003.jpg"
+}

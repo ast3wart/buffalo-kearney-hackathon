@@ -1,0 +1,12 @@
+{
+  "manufacturer": "Rockwell Automation",
+  "part_no": "1756-L61",
+  "series": "D",
+  "serial": "2751726",
+  "date_code": "2007-03",
+  "description": "ControlLogix 5561 controller 2MB",
+  "unclear": [],
+  "confidence": 0.98,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0004.jpg"
+}
