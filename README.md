@@ -57,7 +57,8 @@ tests/              pytest · scripts/checkpoint.sh runs the same checks as CI (
 ```bash
 python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
 cp .env.example .env                         # add ANTHROPIC_API_KEY
-uvicorn api.main:app --reload --port 8000    # API: localhost:8000/docs
+./scripts/demo.sh                            # FAST demo mode: production build + API (use this on stage)
+uvicorn api.main:app --reload --port 8000    # dev API: localhost:8000/docs
 cd web && npm install && npm run dev         # app: localhost:3000
 ./scripts/checkpoint.sh                      # tests + type check
 python scripts/export_openapi.py && (cd web && npm run types:api)   # after API changes

@@ -1,0 +1,133 @@
+listing_id,kb_id,part_no,channel,seller,seller_location,authorized,condition,price,currency,qty_available,sold_price,shipping,lead_time_days,warranty_months,seller_rating,seller_sales_count,returns_accepted,trust_score,url,seen_on,sample
+LS-0001,KB-001,1756-L61,refurbisher,Industrial refurbisher A,OH,no,new_surplus,6810.0,USD,4,,80,10,24,,,yes,0.84,,2026-11-14,yes
+LS-0002,KB-001,1756-L61,refurbisher,Industrial refurbisher C,GA,no,refurbished,4040.0,USD,5,,80,2,24,,,yes,0.81,,2026-11-14,yes
+LS-0003,KB-001,1756-L61,surplus,Surplus dealer D,OH,no,used,3340.0,USD,6,,80,8,3,,,yes,0.77,,2026-11-14,yes
+LS-0004,KB-001,1756-L61,marketplace,"eBay seller (99.3% positive, 2493 sales)",NJ,no,used,2770.0,USD,5,,25,9,0,99.3,,no,0.74,,2026-11-14,yes
+LS-0005,KB-001,1756-L61,marketplace,"eBay seller (99.0% positive, 1367 sales)",NC,no,for_repair,900.0,USD,4,,25,11,0,99.0,,no,0.64,,2026-11-14,yes
+LS-0006,KB-002,1769-L32E,refurbisher,Industrial refurbisher B,TX,no,refurbished,2270.0,USD,6,,25,3,24,,,yes,0.81,,2026-11-14,yes
+LS-0007,KB-002,1769-L32E,refurbisher,Industrial refurbisher A,NC,no,new_surplus,3100.0,USD,5,,45,7,24,,,yes,0.81,,2026-11-14,yes
+LS-0008,KB-002,1769-L32E,surplus,Surplus dealer E,MI,no,used,1800.0,USD,4,,25,7,3,,,yes,0.67,,2026-11-14,yes
+LS-0009,KB-002,1769-L32E,marketplace,"eBay seller (99.4% positive, 2976 sales)",GA,no,used,1460.0,USD,5,,25,13,0,99.4,,yes,0.73,,2026-11-14,yes
+LS-0010,KB-002,1769-L32E,marketplace,"eBay seller (98.3% positive, 218 sales)",OH,no,used,1350.0,USD,4,,0,6,0,98.3,,yes,0.64,,2026-11-14,yes
+LS-0011,KB-003,1764-LSP,refurbisher,Industrial refurbisher F,OH,no,refurbished,780.0,USD,4,,0,7,24,,,yes,0.8,,2026-11-14,yes
+LS-0012,KB-003,1764-LSP,refurbisher,Industrial refurbisher D,PA,no,new_surplus,1000.0,USD,3,,80,10,24,,,yes,0.82,,2026-11-14,yes
+LS-0013,KB-003,1764-LSP,surplus,Surplus dealer C,PA,no,used,510.0,USD,5,,25,11,3,,,yes,0.73,,2026-11-14,yes
+LS-0014,KB-003,1764-LSP,marketplace,"eBay seller (97.8% positive, 1807 sales)",TX,no,used,500.0,USD,4,,45,14,0,97.8,,no,0.68,,2026-11-14,yes
+LS-0015,KB-003,1764-LSP,marketplace,"eBay seller (99.1% positive, 1770 sales)",IL,no,used,560.0,USD,6,,25,12,0,99.1,,no,0.55,,2026-11-14,yes
+LS-0016,KB-004,1747-L542,refurbisher,Industrial refurbisher E,NC,no,new_surplus,2490.0,USD,3,,0,2,24,,,yes,0.86,,2026-11-14,yes
+LS-0017,KB-004,1747-L542,refurbisher,Industrial refurbisher E,CA,no,new_surplus,2310.0,USD,6,,0,7,24,,,yes,0.86,,2026-11-14,yes
+LS-0018,KB-004,1747-L542,surplus,Surplus dealer B,WI,no,new_surplus,2390.0,USD,4,,45,3,3,,,yes,0.7,,2026-11-14,yes
+LS-0019,KB-004,1747-L542,marketplace,"eBay seller (99.4% positive, 661 sales)",CA,no,used,910.0,USD,6,,0,6,0,99.4,,no,0.66,,2026-11-14,yes
+LS-0020,KB-004,1747-L542,marketplace,"eBay seller (98.3% positive, 1215 sales)",GA,no,used,1010.0,USD,5,,25,12,0,98.3,,no,0.49,,2026-11-14,yes
+LS-0021,KB-005,1785-L40B,refurbisher,Industrial refurbisher B,OH,no,refurbished,4600.0,USD,4,,80,2,24,,,yes,0.87,,2026-11-14,yes
+LS-0022,KB-005,1785-L40B,refurbisher,Industrial refurbisher C,NJ,no,new_surplus,6010.0,USD,3,,45,7,24,,,yes,0.82,,2026-11-14,yes
+LS-0023,KB-005,1785-L40B,surplus,Surplus dealer D,GA,no,new_surplus,5720.0,USD,3,,45,4,3,,,yes,0.71,,2026-11-14,yes
+LS-0024,KB-005,1785-L40B,marketplace,"eBay seller (100.0% positive, 679 sales)",WI,no,for_repair,890.0,USD,5,,80,5,0,100.0,,no,0.6,,2026-11-14,yes
+LS-0025,KB-005,1785-L40B,marketplace,"eBay seller (97.0% positive, 231 sales)",MI,no,for_repair,990.0,USD,1,,25,13,0,97.0,,no,0.41,,2026-11-14,yes
+LS-0026,KB-006,22B-D010N104,refurbisher,Industrial refurbisher C,PA,no,refurbished,780.0,USD,2,,0,4,24,,,yes,0.87,,2026-11-14,yes
+LS-0027,KB-006,22B-D010N104,refurbisher,Industrial refurbisher E,NJ,no,new_surplus,1120.0,USD,1,,25,2,24,,,yes,0.9,,2026-11-14,yes
+LS-0028,KB-006,22B-D010N104,surplus,Surplus dealer A,TX,no,new_surplus,1060.0,USD,2,,45,10,3,,,yes,0.78,,2026-11-14,yes
+LS-0029,KB-006,22B-D010N104,marketplace,"eBay seller (98.7% positive, 3236 sales)",OH,no,for_repair,190.0,USD,5,,0,9,0,98.7,,yes,0.45,,2026-11-14,yes
+LS-0030,KB-006,22B-D010N104,marketplace,"eBay seller (97.5% positive, 957 sales)",PA,no,used,530.0,USD,3,,25,12,0,97.5,,no,0.63,,2026-11-14,yes
+LS-0031,KB-007,22B-B8P0N104,refurbisher,Industrial refurbisher F,WI,no,refurbished,540.0,USD,3,,80,4,24,,,yes,0.84,,2026-11-14,yes
+LS-0032,KB-007,22B-B8P0N104,refurbisher,Industrial refurbisher A,GA,no,new_surplus,700.0,USD,6,,25,10,24,,,yes,0.82,,2026-11-14,yes
+LS-0033,KB-007,22B-B8P0N104,surplus,Surplus dealer D,CA,no,used,320.0,USD,3,,80,10,3,,,yes,0.77,,2026-11-14,yes
+LS-0034,KB-007,22B-B8P0N104,marketplace,"eBay seller (99.8% positive, 1581 sales)",PA,no,used,380.0,USD,1,,45,11,0,99.8,,yes,0.54,,2026-11-14,yes
+LS-0035,KB-007,22B-B8P0N104,marketplace,"eBay seller (98.7% positive, 146 sales)",WI,no,for_repair,120.0,USD,6,,80,13,0,98.7,,yes,0.72,,2026-11-14,yes
+LS-0036,KB-008,2711P-T10C4D8,refurbisher,Industrial refurbisher F,CA,no,refurbished,4090.0,USD,4,,0,8,24,,,yes,0.86,,2026-11-14,yes
+LS-0037,KB-008,2711P-T10C4D8,refurbisher,Industrial refurbisher A,OH,no,new_surplus,5230.0,USD,3,,45,4,24,,,yes,0.81,,2026-11-14,yes
+LS-0038,KB-008,2711P-T10C4D8,surplus,Surplus dealer E,WI,no,new_surplus,4620.0,USD,1,,0,9,3,,,yes,0.72,,2026-11-14,yes
+LS-0039,KB-008,2711P-T10C4D8,marketplace,"eBay seller (99.9% positive, 3351 sales)",MI,no,used,1930.0,USD,1,,25,12,0,99.9,,yes,0.7,,2026-11-14,yes
+LS-0040,KB-008,2711P-T10C4D8,marketplace,"eBay seller (97.8% positive, 1244 sales)",CA,no,for_repair,800.0,USD,5,,45,9,0,97.8,,yes,0.48,,2026-11-14,yes
+LS-0041,KB-009,2094-BC01-MP5-S,refurbisher,Industrial refurbisher A,TX,no,refurbished,3520.0,USD,1,,45,6,24,,,yes,0.81,,2026-11-14,yes
+LS-0042,KB-009,2094-BC01-MP5-S,refurbisher,Industrial refurbisher A,OH,no,refurbished,3560.0,USD,6,,0,10,24,,,yes,0.83,,2026-11-14,yes
+LS-0043,KB-009,2094-BC01-MP5-S,surplus,Surplus dealer F,OH,no,used,2690.0,USD,2,,0,5,3,,,yes,0.68,,2026-11-14,yes
+LS-0044,KB-009,2094-BC01-MP5-S,marketplace,"eBay seller (98.5% positive, 3096 sales)",TX,no,used,1850.0,USD,1,,80,4,0,98.5,,no,0.68,,2026-11-14,yes
+LS-0045,KB-009,2094-BC01-MP5-S,marketplace,"eBay seller (97.1% positive, 676 sales)",OH,no,used,2250.0,USD,5,,80,4,0,97.1,,no,0.43,,2026-11-14,yes
+LS-0046,KB-010,6ES7315-2AG10-0AB0,refurbisher,Industrial refurbisher C,NC,no,new_surplus,2090.0,USD,2,,25,6,24,,,yes,0.88,,2026-11-14,yes
+LS-0047,KB-010,6ES7315-2AG10-0AB0,refurbisher,Industrial refurbisher B,TX,no,refurbished,1480.0,USD,5,,0,8,24,,,yes,0.88,,2026-11-14,yes
+LS-0048,KB-010,6ES7315-2AG10-0AB0,surplus,Surplus dealer B,WI,no,new_surplus,2150.0,USD,6,,25,4,3,,,yes,0.69,,2026-11-14,yes
+LS-0049,KB-010,6ES7315-2AG10-0AB0,marketplace,"eBay seller (97.3% positive, 2473 sales)",TX,no,used,1010.0,USD,4,,45,5,0,97.3,,yes,0.64,,2026-11-14,yes
+LS-0050,KB-010,6ES7315-2AG10-0AB0,marketplace,"eBay seller (100.0% positive, 3226 sales)",IL,no,for_repair,370.0,USD,2,,45,14,0,100.0,,no,0.56,,2026-11-14,yes
+LS-0051,KB-011,6ES7313-5BG04-0AB0,refurbisher,Industrial refurbisher E,WI,no,refurbished,1210.0,USD,3,,0,3,24,,,yes,0.88,,2026-11-14,yes
+LS-0052,KB-011,6ES7313-5BG04-0AB0,refurbisher,Industrial refurbisher A,WI,no,refurbished,1090.0,USD,1,,0,9,24,,,yes,0.88,,2026-11-14,yes
+LS-0053,KB-011,6ES7313-5BG04-0AB0,surplus,Surplus dealer C,NJ,no,new_surplus,1520.0,USD,4,,45,7,3,,,yes,0.66,,2026-11-14,yes
+LS-0054,KB-011,6ES7313-5BG04-0AB0,marketplace,"eBay seller (99.7% positive, 3314 sales)",IL,no,for_repair,240.0,USD,6,,80,10,0,99.7,,yes,0.46,,2026-11-14,yes
+LS-0055,KB-011,6ES7313-5BG04-0AB0,marketplace,"eBay seller (99.8% positive, 177 sales)",OH,no,used,850.0,USD,3,,25,5,0,99.8,,no,0.73,,2026-11-14,yes
+LS-0056,KB-012,6SE6440-2UD24-0BA1,refurbisher,Industrial refurbisher D,MI,no,refurbished,900.0,USD,3,,80,4,24,,,yes,0.86,,2026-11-14,yes
+LS-0057,KB-012,6SE6440-2UD24-0BA1,refurbisher,Industrial refurbisher F,NJ,no,new_surplus,1510.0,USD,1,,45,6,24,,,yes,0.85,,2026-11-14,yes
+LS-0058,KB-012,6SE6440-2UD24-0BA1,surplus,Surplus dealer D,NJ,no,used,760.0,USD,1,,80,4,3,,,yes,0.69,,2026-11-14,yes
+LS-0059,KB-012,6SE6440-2UD24-0BA1,marketplace,"eBay seller (97.1% positive, 2582 sales)",PA,no,used,630.0,USD,3,,80,7,0,97.1,,yes,0.68,,2026-11-14,yes
+LS-0060,KB-012,6SE6440-2UD24-0BA1,marketplace,"eBay seller (99.1% positive, 1128 sales)",PA,no,used,760.0,USD,6,,25,12,0,99.1,,yes,0.57,,2026-11-14,yes
+LS-0061,KB-013,6AV6643-0CD01-1AX1,refurbisher,Industrial refurbisher F,CA,no,new_surplus,3840.0,USD,5,,25,8,24,,,yes,0.88,,2026-11-14,yes
+LS-0062,KB-013,6AV6643-0CD01-1AX1,refurbisher,Industrial refurbisher F,CA,no,refurbished,3020.0,USD,5,,0,3,24,,,yes,0.81,,2026-11-14,yes
+LS-0063,KB-013,6AV6643-0CD01-1AX1,surplus,Surplus dealer B,IL,no,new_surplus,3810.0,USD,3,,25,8,3,,,yes,0.68,,2026-11-14,yes
+LS-0064,KB-013,6AV6643-0CD01-1AX1,marketplace,"eBay seller (98.1% positive, 1287 sales)",NC,no,used,2070.0,USD,4,,25,13,0,98.1,,no,0.72,,2026-11-14,yes
+LS-0065,KB-013,6AV6643-0CD01-1AX1,marketplace,"eBay seller (98.8% positive, 2146 sales)",OH,no,used,2020.0,USD,2,,0,11,0,98.8,,no,0.62,,2026-11-14,yes
+LS-0066,KB-014,ACS550-U1-012A-4,refurbisher,Industrial refurbisher B,GA,no,refurbished,1300.0,USD,3,,80,5,24,,,yes,0.85,,2026-11-14,yes
+LS-0067,KB-014,ACS550-U1-012A-4,refurbisher,Industrial refurbisher F,PA,no,refurbished,1550.0,USD,3,,25,3,24,,,yes,0.83,,2026-11-14,yes
+LS-0068,KB-014,ACS550-U1-012A-4,surplus,Surplus dealer E,OH,no,used,1160.0,USD,3,,80,11,3,,,yes,0.72,,2026-11-14,yes
+LS-0069,KB-014,ACS550-U1-012A-4,marketplace,"eBay seller (100.0% positive, 1805 sales)",PA,no,used,930.0,USD,2,,80,4,0,100.0,,no,0.44,,2026-11-14,yes
+LS-0070,KB-014,ACS550-U1-012A-4,marketplace,"eBay seller (99.6% positive, 817 sales)",MI,no,used,1110.0,USD,2,,25,7,0,99.6,,yes,0.62,,2026-11-14,yes
+LS-0071,KB-015,FX2N-48MR-001,refurbisher,Industrial refurbisher E,PA,no,new_surplus,900.0,USD,2,,80,5,24,,,yes,0.82,,2026-11-14,yes
+LS-0072,KB-015,FX2N-48MR-001,refurbisher,Industrial refurbisher E,PA,no,refurbished,570.0,USD,1,,0,4,24,,,yes,0.84,,2026-11-14,yes
+LS-0073,KB-015,FX2N-48MR-001,surplus,Surplus dealer E,CA,no,new_surplus,850.0,USD,5,,80,4,3,,,yes,0.78,,2026-11-14,yes
+LS-0074,KB-015,FX2N-48MR-001,marketplace,"eBay seller (97.8% positive, 3242 sales)",TX,no,used,320.0,USD,1,,25,5,0,97.8,,yes,0.75,,2026-11-14,yes
+LS-0075,KB-015,FX2N-48MR-001,marketplace,"eBay seller (99.5% positive, 2925 sales)",GA,no,used,370.0,USD,4,,80,12,0,99.5,,yes,0.7,,2026-11-14,yes
+LS-0076,KB-016,FX3U-32MR/ES-A,authorized_distributor,Authorized distributor A,NJ,yes,new,770.0,USD,5,,80,5,12,,,yes,0.97,,2026-11-14,yes
+LS-0077,KB-016,FX3U-32MR/ES-A,refurbisher,Industrial refurbisher C,NC,no,refurbished,430.0,USD,1,,45,10,24,,,yes,0.85,,2026-11-14,yes
+LS-0078,KB-016,FX3U-32MR/ES-A,surplus,Surplus dealer D,NJ,no,new_surplus,480.0,USD,3,,45,12,3,,,yes,0.76,,2026-11-14,yes
+LS-0079,KB-016,FX3U-32MR/ES-A,marketplace,"eBay seller (99.4% positive, 998 sales)",CA,no,for_repair,90.0,USD,1,,0,5,0,99.4,,no,0.54,,2026-11-14,yes
+LS-0080,KB-017,1756-L83E,authorized_distributor,Authorized distributor F,CA,yes,new,16320.0,USD,2,,0,136,12,,,yes,0.96,,2026-11-14,yes
+LS-0081,KB-017,1756-L83E,oem,Manufacturer direct D,IL,yes,new,15760.0,USD,4,,0,142,12,,,yes,0.98,,2026-11-14,yes
+LS-0082,KB-017,1756-L83E,surplus,Surplus dealer A,WI,no,used,6390.0,USD,2,,0,8,3,,,yes,0.77,,2026-11-14,yes
+LS-0083,KB-017,1756-L83E,marketplace,"eBay seller (98.6% positive, 1653 sales)",OH,no,used,4990.0,USD,5,,45,6,0,98.6,,yes,0.52,,2026-11-14,yes
+LS-0084,KB-018,5069-L320ER,authorized_distributor,Authorized distributor E,TX,yes,new,7510.0,USD,3,,80,45,12,,,yes,0.98,,2026-11-14,yes
+LS-0085,KB-018,5069-L320ER,oem,Manufacturer direct A,OH,yes,new,6770.0,USD,5,,80,79,12,,,yes,0.99,,2026-11-14,yes
+LS-0086,KB-018,5069-L320ER,surplus,Surplus dealer B,GA,no,used,3080.0,USD,1,,80,6,3,,,yes,0.68,,2026-11-14,yes
+LS-0087,KB-018,5069-L320ER,marketplace,"eBay seller (99.4% positive, 1923 sales)",WI,no,used,2620.0,USD,1,,80,9,0,99.4,,no,0.52,,2026-11-14,yes
+LS-0088,KB-019,25B-D010N104,authorized_distributor,Authorized distributor C,TX,yes,new,1440.0,USD,3,,25,9,12,,,yes,0.96,,2026-11-14,yes
+LS-0089,KB-019,25B-D010N104,oem,Manufacturer direct C,NC,yes,new,1360.0,USD,1,,25,173,12,,,yes,0.97,,2026-11-14,yes
+LS-0090,KB-019,25B-D010N104,surplus,Surplus dealer C,IL,no,new_surplus,900.0,USD,5,,0,6,3,,,yes,0.71,,2026-11-14,yes
+LS-0091,KB-019,25B-D010N104,marketplace,"eBay seller (98.0% positive, 1387 sales)",NC,no,used,460.0,USD,2,,45,9,0,98.0,,yes,0.6,,2026-11-14,yes
+LS-0092,KB-020,25B-B8P0N104,authorized_distributor,Authorized distributor B,MI,yes,new,890.0,USD,1,,45,129,12,,,yes,0.99,,2026-11-14,yes
+LS-0093,KB-020,25B-B8P0N104,oem,Manufacturer direct B,NC,yes,new,930.0,USD,4,,45,148,12,,,yes,0.98,,2026-11-14,yes
+LS-0094,KB-020,25B-B8P0N104,surplus,Surplus dealer F,NC,no,new_surplus,620.0,USD,5,,80,12,3,,,yes,0.76,,2026-11-14,yes
+LS-0095,KB-020,25B-B8P0N104,marketplace,"eBay seller (100.0% positive, 813 sales)",CA,no,for_repair,90.0,USD,1,,0,13,0,100.0,,yes,0.4,,2026-11-14,yes
+LS-0096,KB-021,2711P-T10C22D9P,authorized_distributor,Authorized distributor A,CA,yes,new,5780.0,USD,4,,45,104,12,,,yes,0.96,,2026-11-14,yes
+LS-0097,KB-021,2711P-T10C22D9P,oem,Manufacturer direct D,MI,yes,new,7000.0,USD,2,,80,58,12,,,yes,0.99,,2026-11-14,yes
+LS-0098,KB-021,2711P-T10C22D9P,surplus,Surplus dealer D,PA,no,used,2310.0,USD,6,,80,5,3,,,yes,0.75,,2026-11-14,yes
+LS-0099,KB-021,2711P-T10C22D9P,marketplace,"eBay seller (98.2% positive, 1762 sales)",WI,no,used,1820.0,USD,6,,25,4,0,98.2,,no,0.5,,2026-11-14,yes
+LS-0100,KB-022,2198-D006-ERS3,authorized_distributor,Authorized distributor E,OH,yes,new,3370.0,USD,5,,45,97,12,,,yes,0.95,,2026-11-14,yes
+LS-0101,KB-022,2198-D006-ERS3,oem,Manufacturer direct D,MI,yes,new,4210.0,USD,4,,25,126,12,,,yes,0.98,,2026-11-14,yes
+LS-0102,KB-022,2198-D006-ERS3,surplus,Surplus dealer B,GA,no,new_surplus,2500.0,USD,1,,0,6,3,,,yes,0.71,,2026-11-14,yes
+LS-0103,KB-022,2198-D006-ERS3,marketplace,"eBay seller (99.0% positive, 1528 sales)",WI,no,used,1280.0,USD,6,,0,8,0,99.0,,yes,0.69,,2026-11-14,yes
+LS-0104,KB-023,6ES7515-2AM02-0AB0,authorized_distributor,Authorized distributor E,PA,yes,new,4990.0,USD,3,,25,125,12,,,yes,0.97,,2026-11-14,yes
+LS-0105,KB-023,6ES7515-2AM02-0AB0,oem,Manufacturer direct C,TX,yes,new,5070.0,USD,6,,45,170,12,,,yes,0.97,,2026-11-14,yes
+LS-0106,KB-023,6ES7515-2AM02-0AB0,surplus,Surplus dealer D,OH,no,used,1780.0,USD,6,,25,5,3,,,yes,0.65,,2026-11-14,yes
+LS-0107,KB-023,6ES7515-2AM02-0AB0,marketplace,"eBay seller (98.5% positive, 2231 sales)",GA,no,used,1510.0,USD,5,,25,12,0,98.5,,no,0.69,,2026-11-14,yes
+LS-0108,KB-024,6ES7214-1AG40-0XB0,authorized_distributor,Authorized distributor F,GA,yes,new,580.0,USD,3,,25,18,12,,,yes,0.98,,2026-11-14,yes
+LS-0109,KB-024,6ES7214-1AG40-0XB0,oem,Manufacturer direct A,CA,yes,new,560.0,USD,2,,25,56,12,,,yes,0.98,,2026-11-14,yes
+LS-0110,KB-024,6ES7214-1AG40-0XB0,surplus,Surplus dealer A,MI,no,used,210.0,USD,3,,80,3,3,,,yes,0.67,,2026-11-14,yes
+LS-0111,KB-024,6ES7214-1AG40-0XB0,marketplace,"eBay seller (97.8% positive, 2085 sales)",NC,no,for_repair,60.0,USD,5,,25,9,0,97.8,,yes,0.64,,2026-11-14,yes
+LS-0112,KB-025,6SL3210-1KE21-3UF1,authorized_distributor,Authorized distributor D,IL,yes,new,1040.0,USD,5,,80,110,12,,,yes,0.95,,2026-11-14,yes
+LS-0113,KB-025,6SL3210-1KE21-3UF1,oem,Manufacturer direct E,WI,yes,new,1230.0,USD,2,,25,96,12,,,yes,0.98,,2026-11-14,yes
+LS-0114,KB-025,6SL3210-1KE21-3UF1,surplus,Surplus dealer A,NJ,no,new_surplus,780.0,USD,1,,80,10,3,,,yes,0.7,,2026-11-14,yes
+LS-0115,KB-025,6SL3210-1KE21-3UF1,marketplace,"eBay seller (99.2% positive, 93 sales)",MI,no,used,390.0,USD,5,,45,5,0,99.2,,yes,0.66,,2026-11-14,yes
+LS-0116,KB-026,ACS580-01-012A-4,authorized_distributor,Authorized distributor B,PA,yes,new,2030.0,USD,5,,25,72,12,,,yes,0.97,,2026-11-14,yes
+LS-0117,KB-026,ACS580-01-012A-4,oem,Manufacturer direct D,OH,yes,new,1820.0,USD,1,,25,104,12,,,yes,0.99,,2026-11-14,yes
+LS-0118,KB-026,ACS580-01-012A-4,surplus,Surplus dealer C,PA,no,used,850.0,USD,3,,45,10,3,,,yes,0.65,,2026-11-14,yes
+LS-0119,KB-026,ACS580-01-012A-4,marketplace,"eBay seller (99.7% positive, 2526 sales)",NJ,no,used,660.0,USD,5,,25,6,0,99.7,,no,0.49,,2026-11-14,yes
+LS-0120,KB-027,FX5U-32MR/ES,authorized_distributor,Authorized distributor B,CA,yes,new,620.0,USD,3,,25,115,12,,,yes,0.97,,2026-11-14,yes
+LS-0121,KB-027,FX5U-32MR/ES,oem,Manufacturer direct F,NC,yes,new,780.0,USD,3,,45,155,12,,,yes,0.98,,2026-11-14,yes
+LS-0122,KB-027,FX5U-32MR/ES,surplus,Surplus dealer C,OH,no,new_surplus,450.0,USD,1,,25,10,3,,,yes,0.76,,2026-11-14,yes
+LS-0123,KB-027,FX5U-32MR/ES,marketplace,"eBay seller (99.6% positive, 2532 sales)",GA,no,used,200.0,USD,6,,25,4,0,99.6,,yes,0.72,,2026-11-14,yes
+LS-0124,KB-028,1766-L32BWA,authorized_distributor,Authorized distributor D,NJ,yes,new,920.0,USD,5,,80,110,12,,,yes,0.97,,2026-11-14,yes
+LS-0125,KB-028,1766-L32BWA,oem,Manufacturer direct D,NJ,yes,new,920.0,USD,5,,80,37,12,,,yes,1.0,,2026-11-14,yes
+LS-0126,KB-028,1766-L32BWA,surplus,Surplus dealer A,NJ,no,used,350.0,USD,6,,0,8,3,,,yes,0.67,,2026-11-14,yes
+LS-0127,KB-028,1766-L32BWA,marketplace,"eBay seller (99.3% positive, 1933 sales)",NC,no,used,370.0,USD,3,,45,12,0,99.3,,no,0.61,,2026-11-14,yes
+LS-0128,KB-029,6ES5943-7UB11,marketplace,"eBay seller (97.5% positive, 460 sales)",CA,no,used,900.0,USD,3,,80,6,0,97.5,,yes,0.51,,2026-11-14,yes
+LS-0129,KB-030,6AV2124-0MC01-0AX0,authorized_distributor,Authorized distributor E,WI,yes,new,3380.0,USD,6,,80,106,12,,,yes,0.98,,2026-11-14,yes
+LS-0130,KB-030,6AV2124-0MC01-0AX0,oem,Manufacturer direct E,NJ,yes,new,3860.0,USD,5,,25,30,12,,,yes,0.97,,2026-11-14,yes
+LS-0131,KB-030,6AV2124-0MC01-0AX0,surplus,Surplus dealer A,MI,no,new_surplus,2640.0,USD,2,,25,10,3,,,yes,0.72,,2026-11-14,yes
+LS-0132,KB-030,6AV2124-0MC01-0AX0,marketplace,"eBay seller (98.6% positive, 2751 sales)",TX,no,used,1130.0,USD,1,,25,7,0,98.6,,yes,0.71,,2026-11-14,yes

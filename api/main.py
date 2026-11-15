@@ -27,6 +27,15 @@ app = FastAPI(title="Equipment X-Ray API", version="0.2.0")
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:3000"], allow_methods=["*"], allow_headers=["*"])
 
 
+@app.on_event("startup")
+def warm_caches():
+    try:
+        reg(); health_table(); _components_full_cached()
+        _sourcing_tables(); _capex_all(); _spof_all(); _savings_all(True); _savings_all(False)
+    except Exception:  # noqa: BLE001 - missing pieces just stay lazy (e.g. no demo.db yet)
+        pass
+
+
 @lru_cache(maxsize=1)
 def reg() -> dict[str, pd.DataFrame]:
     db = registry.DEFAULT_DB
@@ -309,7 +318,7 @@ def health_table() -> pd.DataFrame:
 
 
 def parts_with_health() -> pd.DataFrame:
-    return components_full().merge(health_table(), on="component_id", how="left")
+    return _components_full_cached().merge(health_table(), on="component_id", how="left")
 
 
 def _machine_summary(ms: pd.DataFrame, parts: pd.DataFrame) -> list[dict]:
@@ -374,16 +383,47 @@ def _brandon(module: str, *funcs: str):
         raise HTTPException(501, f"pending: xray/{module}.py ({', '.join(funcs)}) from Brandon's money thread")
 
 
+@lru_cache(maxsize=1)
 def _sourcing_tables():
     value_parts, recommend_sourcing = _brandon("sourcing", "value_parts", "recommend_sourcing")
     pv = value_parts(reg())
     return pv, recommend_sourcing(reg(), pv)
 
 
+@lru_cache(maxsize=1)
+def _capex_all() -> pd.DataFrame:
+    (capex_by_year,) = _brandon("valuation", "capex_by_year")
+    return capex_by_year(reg(), _sourcing_tables()[0])
+
+
+@lru_cache(maxsize=1)
+def _spof_all() -> pd.DataFrame:
+    (spof,) = _brandon("valuation", "spof")
+    df = spof(reg(), _sourcing_tables()[1])
+    if "plant_id" not in df.columns:
+        df = df.merge(components_full()[["component_id", "plant_id"]], on="component_id", how="left")
+    return df
+
+
+@lru_cache(maxsize=2)
+def _savings_all(full_plant: bool = True) -> tuple[pd.DataFrame, pd.DataFrame]:
+    plant_savings, price = _brandon("pricing", "plant_savings", "price")
+    try:
+        s = plant_savings(reg(), _sourcing_tables()[1], full_plant=full_plant)
+    except TypeError:  # older money model without the full-plant quote
+        s = plant_savings(reg(), _sourcing_tables()[1])
+    return s, price(s)
+
+
+@lru_cache(maxsize=1)
+def _components_full_cached() -> pd.DataFrame:
+    return components_full()
+
+
 @app.get("/plants/{plant_id}/sourcing")
 def plant_sourcing(plant_id: str) -> dict:
     pv, rec = _sourcing_tables()
-    c = components_full()
+    c = _components_full_cached()
     extra = [x for x in ["plant_id", "part_no", "family", "lifecycle_status", "criticality"] if x not in rec.columns]
     rec = rec.merge(c[["component_id", *extra]], on="component_id", how="left")
     return {"part_valuation": records(pv), "recommendations": records(rec[rec.plant_id == plant_id])}
@@ -391,33 +431,26 @@ def plant_sourcing(plant_id: str) -> dict:
 
 @app.get("/plants/{plant_id}/capex")
 def plant_capex(plant_id: str) -> dict:
-    (capex_by_year,) = _brandon("valuation", "capex_by_year")
-    pv, _ = _sourcing_tables()
-    df = capex_by_year(reg(), pv)
+    df = _capex_all()
     return {"capex_by_year": records(df[df.plant_id == plant_id])}
 
 
 @app.get("/plants/{plant_id}/spof")
 def plant_spof(plant_id: str) -> dict:
-    (spof,) = _brandon("valuation", "spof")
-    _, rec = _sourcing_tables()
-    df = spof(reg(), rec)
-    if "plant_id" not in df.columns:
-        df = df.merge(components_full()[["component_id", "plant_id"]], on="component_id", how="left")
+    df = _spof_all()
     return {"spof": records(df[df.plant_id == plant_id])}
 
 
 @app.get("/plants/{plant_id}/savings")
 def plant_savings_route(plant_id: str) -> dict:
-    plant_savings, price = _brandon("pricing", "plant_savings", "price")
-    _, rec = _sourcing_tables()
-    s = plant_savings(reg(), rec)
-    p = price(s)
-    return {"plant_savings": records(s[s.plant_id == plant_id]), "price": records(p[p.plant_id == plant_id])}
+    s, p = _savings_all(True)
+    ss, sp = _savings_all(False)
+    return {"plant_savings": records(s[s.plant_id == plant_id]), "price": records(p[p.plant_id == plant_id]),
+            "sample_savings": records(ss[ss.plant_id == plant_id]), "sample_price": records(sp[sp.plant_id == plant_id]),
+            "basis": "price extrapolated to a whole-plant scan; sample = only the parts in this registry"}
 
 
 @app.get("/companies/{company_id}/deal")
 def company_deal(company_id: str) -> dict:
-    capex_by_year, deal_adjustment = _brandon("valuation", "capex_by_year", "deal_adjustment")
-    pv, _ = _sourcing_tables()
-    return {"deal_adjustment": records(deal_adjustment(reg(), capex_by_year(reg(), pv), company_id, 0.10))}
+    (deal_adjustment,) = _brandon("valuation", "deal_adjustment")
+    return {"deal_adjustment": records(deal_adjustment(reg(), _capex_all(), company_id, 0.10))}

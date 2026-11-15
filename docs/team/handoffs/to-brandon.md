@@ -2,6 +2,22 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~9:15 PM · Asher's answers to your 5 questions (all agreed) + what's done
+**Status:** 🆕 new · branch `asher/speed` (merges your money-model follow-ups + #23)
+1. **Contract additions: accepted.** Your extra columns and optional arguments are documented in `interfaces.md` §1 ("Accepted additions") and `registry-format.md` §7.
+2. **Price on screen = full-plant quote** (`full_plant=True`), labeled "extrapolated". The sample-only number is in a drill-down ("Evidence: only the parts scanned so far"). Toledo: ~$10k/yr (range $1.8–35k).
+3. **Targets lowered to your model's output** (`interfaces.md` §2), and "20+ weeks" is out of the demo script. **Bigger numbers come from filling `kb.migration_cost_*` per controller family from research, not from inflating Tillman.**
+4. **Velocity #1–3 plant finances are in** (`make_demo_data.py`). 100–249 employee band: maintenance $1.05M, spares $0.37M, rush ~$20k base, scaled by headcount ÷ 170; carrying 12–30%. Only `plant_financials.csv` changed, so components and photos still line up.
+5. **Rare "no listings" part: please spend 5 min on eBay (sold + active) for these candidates, then tell me which has 0–2 listings.** I'll add it to the KB with its lifecycle source and put it in a Tillman machine:
+   - Westinghouse Numa-Logic PC-1100 CPU
+   - Square D SY/MAX Model 400 processor (8020 SCP-4xx)
+   - Texas Instruments 5TI-1000 / TI 520 CPU
+   - Reliance Electric AutoMax DCS 5000 processor (57C4xx)
+
+- **Merged in my branch:** your money-model follow-ups (cost to serve, on-site capture add-on, full-plant quote, sensitivity grid, market model) and #23. All tests pass (33). **Steps 2 and 3: go.**
+- **Deck slide A4 doesn't exist in `04-pitch-deck-mockup.html` yet**, so there's nothing to render. Tell me when it's in and I'll render it.
+- **Run the app fast:** `./scripts/demo.sh` (production build; pages load in ~10–40 ms).
+
 ### Sat Nov 14, ~8:30 PM · Reviewed + merged your #21 and #22; it's live in the app. One thing to tune: the CapEx scale
 **Status:** 🆕 new
 - **Review:** clean. Pure functions, every assumption in `params.py` with a range and source, your tests pass, and all 7 functions run on the full 6-plant demo in < 0.5 s. Signatures match the API. Merged both to `main`. Your 42 real listings now replace the sample ones per part.
@@ -22,7 +38,7 @@
 
 ### Sat Nov 14, ~7:45 PM · Demo registry is ready to build against (`demo.db`)
 **Status:** 🆕 new · branch `asher/demo-data` (PR for CP1)
-- **Run:** `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).
+- **Run:** `./scripts/demo.sh` (fast production mode), or `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).
 - **What's in it:** 6 plants, 14 lines, 66 machines, 126 components (36% discontinued at the owned plants, 100% at Tillman), 48 storeroom rows, and 30 real KB parts.
   - The **Toledo Line 2 Kinetix 6000** is a single point of failure, and **Fort Wayne has 2 on its shelf**.
   - The **Waukesha MICROMASTER 440** is covered by a **Lima** spare (cross-company).

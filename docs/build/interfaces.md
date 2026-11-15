@@ -22,7 +22,7 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | | `spof(reg, sourcing_recommendation) -> spof` | line-stopping components + yearly downtime exposure = P(fail by age band) × **hours down** × $/h. Hours down depend on sourcing: shelf spare (here or a sister plant) = swap (+ transfer) time; none = lead time; discontinued with no listings = lead time + migration. Redundant machines score 0. |
 | | `deal_adjustment(reg, capex_by_year, company_id, discount_rate) -> deal_adjustment` | deal lens only: price cut = PV(deferred CapEx, low); holdback = PV(high − low); no double counting |
 | `xray/pricing.py` | `plant_savings(reg, sourcing_recommendation) -> plant_savings` | savings per plant per lever, low/base/high, one-time vs yearly |
-| | `price(plant_savings, value_capture_pct=0.30) -> price` | price = capture % × **auditable recurring** savings (`in_price_base`); payback months; flags failed price checks (ROI ≥ 3×, payback ≤ 12 mo, approval ceiling, comparables) |
+| | `price(plant_savings, value_capture_pct=0.20) -> price` | price = capture % × **auditable recurring** savings (`in_price_base`); payback months; flags failed price checks (ROI ≥ 3×, payback ≤ 12 mo, approval ceiling, comparables) |
 
 ### Asher (machine thread)
 | Module | Function | Returns |
@@ -51,6 +51,17 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | `GET /components/{component_id}/health` | Working / Replace soon / Replace ASAP, life used %, order-by date, action, options (shelf first, then listings) | `xray/health.py` (engineering rules; Brandon's money overlay refines the action) |
 | `POST /scan` | upload a photo → reading → KB match → new component row (the live demo) | `extract`, `matching` |
 
+### Accepted additions from Brandon's model (Sat ~9 PM)
+- **Optional arguments:** `capex_by_year(..., sourcing_recommendation=None, growth=None, as_of_year)`, `plant_savings(reg, rec, full_plant=False)` (`True` = whole-plant quote, shown on screen with an "extrapolated" label; `False` = the parts in the registry, shown in the drill-down), `deal_adjustment(..., discount_rate=None)`, plus `pricing.deal_fee_check`. All parameters live in `xray/params.py` with ranges and sources.
+- **Extra output columns** (additive, nothing removed):
+  - `part_valuation.n_low_trust`
+  - `sourcing_recommendation`: plant_id, kb_id, spare_plant_id, transfer_cost_low/high, part_value_low/high
+  - `spof`: plant_id, kb_id, action, annual_failure_rate_low/high, downtime_cost_per_hour_low/high
+  - `plant_savings.basis`
+  - `price`: price_per_plant_base, recurring_savings_base
+
+  The app shows `basis`, `part_value_*` and the spof `why` in the evidence/financial views.
+
 ## 2. Demo portfolio (scale + planted problems)
 **Knowledge base uses REAL manufacturer part numbers** (e.g. Allen-Bradley SLC 500 / PLC-5 / ControlLogix / PowerFlex, Siemens S7-300 / MICROMASTER) with their **actual lifecycle status and a source link for each** (Asher researches and cites). Plants, companies and the fund are fictional, and we say so.
 
@@ -75,10 +86,10 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | Line revenue per day | $60–90k | $50–75k | $55–80k | $50–75k | $40–60k | $35–55k |
 | Contribution margin | 30–40% | 30–40% | 30–40% | 30–40% | 30–40% | 28–38% |
 | Downtime cost per hour (derived) | ~$2–5k | ~$1.5–4k | ~$1.5–4k | ~$1.5–4k | ~$1–3k | ~$1–3k |
-| Spares inventory value | $1.8–2.2M | $1.4–1.7M | $1.0–1.2M | $0.9–1.1M | $0.6–0.8M | $0.5–0.7M |
-| Maintenance budget / yr | $4.5–5.5M | $3.5–4.2M | $2.6–3.0M | $2.4–2.8M | $1.8–2.1M | $1.6–1.9M |
-| Carrying cost / yr | 15–25% of inventory | 15–25% | 15–25% | 15–25% | 15–25% | 15–25% |
-| Rush premiums / yr | $40–80k | $30–60k | $25–45k | $20–40k | $15–30k | $15–30k |
+| Spares inventory value | Velocity #1 ($0.37M base for ~170 people), × headcount ÷ 170, × 0.6–1.6 | | | | | |
+| Maintenance budget / yr | Velocity #1 ($1.05M base), × headcount ÷ 170, × 0.7–1.4 | | | | | |
+| Carrying cost / yr | 12–30% of inventory (Velocity #2, economic; cash part only 3.5–8%) | | | | | |
+| Rush premiums / yr | Velocity #3 (~$20k base), × headcount ÷ 170, × 0.5–2.5 | | | | | |
 | Deal value (deal view only) | — | — | — | — | — | $28–34M |
 
 Totals: **~66 machines, ~123 components**. The KB (~30 real parts) is reused across plants, which is realistic, because plants share brands.
@@ -95,17 +106,17 @@ All dollar figures are **placeholders (Brandon's to refine from research)**, lab
 6b. **Target PE (Tillman, Rockford)** has deferred catch-up CapEx (discontinued controllers past life, no spares), which drives the deal view.
 7. **A few low-confidence readings** (blurry/worn photos) → `needs_review`.
 
-**Target magnitudes** (so the headline numbers land; Brandon checks they're plausible):
-- PA 5-yr CapEx **~$1.5–3M**; Halvorsen (3 plants) **~$3.5–6M**; fund-wide (PA, PB, PC, PD, PF) **~$5.5–9M**
-- top single point of failure exposure **~$100–300k/yr**
-- savings per plant **~$20–40k/yr + ~$150–300k one-time**
-- deal view on **Tillman (PE)** **~$0.8–1.5M** price reduction (on a $28–34M deal)
+**Model output (Brandon's money model on this data, Sat ~9 PM; these replace the earlier targets):**
+- 5-yr CapEx (control parts + migration engineering): Toledo ~$70–350k; fund (5 owned plants) up to ~$0.85M
+- whole-plant price (extrapolated, 20% of auditable savings): Toledo ~$10k/yr (range $1.8–35k), others ~$5–6k
+- Tillman deal view: deferred CapEx $73–230k → pay ~$73k less + ~$130k holdback
+- bigger, defensible numbers come from filling `kb.migration_cost_*` per controller family (Brandon, research), not from inflating the demo plants
 
 ## 3. Demo script (~3 min) + headline numbers
 1. **"Halvorsen Industrial runs 3 plants. Its owner, Granite Ridge Capital, also owns Brightwater (2 plants)."** Portfolio page tiles: plants, machines, components scanned, **% end-of-life or discontinued**, CapEx 5-yr, idle spares.
 2. **Plant A registry:** lines → machines → components. Click one → evidence drawer (photo, reading, KB source).
 3. **CapEx cliff:** low/high by year → click a bar → the components driving it.
-4. **Single point of failure:** "Line 2 stops if this discontinued drive fails. Lead time 20+ weeks." **Exposure $/yr.**
+4. **Single point of failure:** "Line 2 stops if this discontinued drive fails, and the manufacturer doesn't make it anymore." **Exposure $/yr.**
 5. **Sourcing:** "**Fort Wayne already has 2 on the shelf.**" Then the listings range (≥ 3 listings) and buy / migrate / monitor. (The portfolio page also shows the Lima → Waukesha match across companies.)
 6. **Savings + price per plant** (from Brandon's model) + **accuracy tile** (precision/recall on the answer key).
 7. **Live photo** of a real nameplate → appears in the registry. Close with the deal view: "**Granite Ridge is about to buy Tillman Machine Works. The same scan prices the deal**" → **pay $X less**.
