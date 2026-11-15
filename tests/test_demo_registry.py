@@ -61,6 +61,8 @@ def test_photo_readings_cached_and_exact():
     from xray.extract import read_photo
 
     truth = pd.read_csv(TRUTH / "components.csv", dtype=str).fillna("").set_index("component_id")
+    n = sum(len(pd.read_csv(m)) for m in (ROOT / "data/seed/demo").glob("*/photos.csv"))
+    assert n >= 10, f"only {n} demo photos listed: photos.csv files were emptied?"
     for manifest in (ROOT / "data/seed/demo").glob("*/photos.csv"):
         for p in pd.read_csv(manifest, dtype=str).fillna("").itertuples():
             r = read_photo(manifest.parent / p.file, use_api=False)

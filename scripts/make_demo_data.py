@@ -232,7 +232,10 @@ def main():
     # ordinary stock per plant (some idle 5+ years)
     for pid, co, *_ in PLANTS:
         for _ in range(R.randint(5, 8)):
-            kb_id = R.choice([x for x in sum(POOLS[co].values(), []) if not (pid == "PA" and x == "KB-009")])
+            # keep the planted stories clean: Toledo has no Kinetix 6000 spare; Brightwater has no MM440 spare
+            # (so the Waukesha drive's spare must come from Lima, across companies)
+            blocked = {"PA": {"KB-009"}, "PD": {"KB-012"}, "PF": {"KB-012"}}.get(pid, set())
+            kb_id = R.choice([x for x in sum(POOLS[co].values(), []) if x not in blocked])
             k = KB.loc[kb_id]
             spare(pid, kb_id, R.choice([k.description.upper()[:28], f"{k.family.upper()} {k.part_no}", k.aliases.split(";")[-1].upper()]),
                   R.randint(1, 3), f"{R.randint(2014, 2026)}-{R.randint(1, 12):02d}-{R.randint(1, 28):02d}", R.random() > 0.4)
@@ -255,8 +258,9 @@ def main():
         spare_df[spare_df.plant_id == pid].to_csv(d / "spares.csv", index=False)
         reads[pid].reset_index()[["reading_id", "plant_id", "machine_id", "component_id", "photo_id", "raw_text",
                                   "component_type_hint", "method", "confidence", "date_code"]].to_csv(d / "readings.csv", index=False)
-        pd.DataFrame(columns=["photo_id", "plant_id", "machine_id", "file", "photo_kind", "taken_on", "quality"]).to_csv(
-            d / "photos.csv", index=False)
+        if not (d / "photos.csv").exists():  # never overwrite: render_test_photos.py / real photos own this file
+            pd.DataFrame(columns=["photo_id", "plant_id", "machine_id", "component_id", "file", "photo_kind", "taken_on",
+                                  "quality", "rendered"]).to_csv(d / "photos.csv", index=False)
     pd.DataFrame(plants).to_csv(SEED_DIR / "plants.csv", index=False)
     pd.DataFrame(fin).to_csv(SEED_DIR / "plant_financials.csv", index=False)
     pd.DataFrame(lines).to_csv(SEED_DIR / "lines.csv", index=False)

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Equipment X-Ray API",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "paths": {
     "/health": {
@@ -22,10 +22,584 @@
           }
         }
       }
+    },
+    "/portfolio": {
+      "get": {
+        "summary": "Portfolio",
+        "operationId": "portfolio_portfolio_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Portfolio"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/{plant_id}/registry": {
+      "get": {
+        "summary": "Plant Registry",
+        "operationId": "plant_registry_plants__plant_id__registry_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Plant Registry Plants  Plant Id  Registry Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/components/{component_id}/evidence": {
+      "get": {
+        "summary": "Evidence",
+        "operationId": "evidence_components__component_id__evidence_get",
+        "parameters": [
+          {
+            "name": "component_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Component Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Evidence Components  Component Id  Evidence Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/photos/{plant_id}/{photo_id}.jpg": {
+      "get": {
+        "summary": "Photo File",
+        "operationId": "photo_file_photos__plant_id___photo_id__jpg_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          },
+          {
+            "name": "photo_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Photo Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/{plant_id}/shelf-matches": {
+      "get": {
+        "summary": "Plant Shelf Matches",
+        "operationId": "plant_shelf_matches_plants__plant_id__shelf_matches_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShelfMatch"
+                  },
+                  "title": "Response Plant Shelf Matches Plants  Plant Id  Shelf Matches Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/accuracy": {
+      "get": {
+        "summary": "Accuracy",
+        "operationId": "accuracy_accuracy_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Accuracy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/scan": {
+      "post": {
+        "summary": "Scan",
+        "description": "The live demo: a real photo -> Claude reads it -> matched to the knowledge base.",
+        "operationId": "scan_scan_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_scan_scan_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Scan Scan Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/{plant_id}/sourcing": {
+      "get": {
+        "summary": "Plant Sourcing",
+        "operationId": "plant_sourcing_plants__plant_id__sourcing_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Plant Sourcing Plants  Plant Id  Sourcing Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/{plant_id}/capex": {
+      "get": {
+        "summary": "Plant Capex",
+        "operationId": "plant_capex_plants__plant_id__capex_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Plant Capex Plants  Plant Id  Capex Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/{plant_id}/spof": {
+      "get": {
+        "summary": "Plant Spof",
+        "operationId": "plant_spof_plants__plant_id__spof_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Plant Spof Plants  Plant Id  Spof Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/plants/{plant_id}/savings": {
+      "get": {
+        "summary": "Plant Savings Route",
+        "operationId": "plant_savings_route_plants__plant_id__savings_get",
+        "parameters": [
+          {
+            "name": "plant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Plant Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Plant Savings Route Plants  Plant Id  Savings Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/companies/{company_id}/deal": {
+      "get": {
+        "summary": "Company Deal",
+        "operationId": "company_deal_companies__company_id__deal_get",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Company Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Company Deal Companies  Company Id  Deal Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "Accuracy": {
+        "properties": {
+          "components_precision": {
+            "type": "number",
+            "title": "Components Precision"
+          },
+          "components_recall": {
+            "type": "number",
+            "title": "Components Recall"
+          },
+          "components_records": {
+            "type": "integer",
+            "title": "Components Records"
+          },
+          "auto_accepted": {
+            "type": "integer",
+            "title": "Auto Accepted"
+          },
+          "auto_accepted_correct": {
+            "type": "integer",
+            "title": "Auto Accepted Correct"
+          },
+          "needs_review": {
+            "type": "integer",
+            "title": "Needs Review"
+          },
+          "spares_precision": {
+            "type": "number",
+            "title": "Spares Precision"
+          },
+          "spares_recall": {
+            "type": "number",
+            "title": "Spares Recall"
+          },
+          "photos_read": {
+            "type": "integer",
+            "title": "Photos Read"
+          },
+          "photos_exact": {
+            "type": "integer",
+            "title": "Photos Exact"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "components_precision",
+          "components_recall",
+          "components_records",
+          "auto_accepted",
+          "auto_accepted_correct",
+          "needs_review",
+          "spares_precision",
+          "spares_recall",
+          "photos_read",
+          "photos_exact",
+          "note"
+        ],
+        "title": "Accuracy"
+      },
+      "Body_scan_scan_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_scan_scan_post"
+      },
+      "Company": {
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "title": "Company Id"
+          },
+          "company_name": {
+            "type": "string",
+            "title": "Company Name"
+          },
+          "fund_id": {
+            "type": "string",
+            "title": "Fund Id"
+          },
+          "plants": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Plants"
+          }
+        },
+        "type": "object",
+        "required": [
+          "company_id",
+          "company_name",
+          "fund_id",
+          "plants"
+        ],
+        "title": "Company"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
       "Health": {
         "properties": {
           "ok": {
@@ -38,6 +612,245 @@
           "ok"
         ],
         "title": "Health"
+      },
+      "PlantTile": {
+        "properties": {
+          "plant_id": {
+            "type": "string",
+            "title": "Plant Id"
+          },
+          "plant_name": {
+            "type": "string",
+            "title": "Plant Name"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "company_id": {
+            "type": "string",
+            "title": "Company Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "employees": {
+            "type": "integer",
+            "title": "Employees"
+          },
+          "lines": {
+            "type": "integer",
+            "title": "Lines"
+          },
+          "machines": {
+            "type": "integer",
+            "title": "Machines"
+          },
+          "components": {
+            "type": "integer",
+            "title": "Components"
+          },
+          "at_risk": {
+            "type": "integer",
+            "title": "At Risk"
+          },
+          "at_risk_pct": {
+            "type": "number",
+            "title": "At Risk Pct"
+          },
+          "needs_review": {
+            "type": "integer",
+            "title": "Needs Review"
+          },
+          "line_stop_at_risk": {
+            "type": "integer",
+            "title": "Line Stop At Risk"
+          },
+          "idle_spares": {
+            "type": "integer",
+            "title": "Idle Spares"
+          }
+        },
+        "type": "object",
+        "required": [
+          "plant_id",
+          "plant_name",
+          "state",
+          "company_id",
+          "status",
+          "employees",
+          "lines",
+          "machines",
+          "components",
+          "at_risk",
+          "at_risk_pct",
+          "needs_review",
+          "line_stop_at_risk",
+          "idle_spares"
+        ],
+        "title": "PlantTile"
+      },
+      "Portfolio": {
+        "properties": {
+          "fund_name": {
+            "type": "string",
+            "title": "Fund Name"
+          },
+          "companies": {
+            "items": {
+              "$ref": "#/components/schemas/Company"
+            },
+            "type": "array",
+            "title": "Companies"
+          },
+          "plants": {
+            "items": {
+              "$ref": "#/components/schemas/PlantTile"
+            },
+            "type": "array",
+            "title": "Plants"
+          },
+          "totals": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Totals"
+          },
+          "shelf_matches": {
+            "items": {
+              "$ref": "#/components/schemas/ShelfMatch"
+            },
+            "type": "array",
+            "title": "Shelf Matches"
+          }
+        },
+        "type": "object",
+        "required": [
+          "fund_name",
+          "companies",
+          "plants",
+          "totals",
+          "shelf_matches"
+        ],
+        "title": "Portfolio"
+      },
+      "ShelfMatch": {
+        "properties": {
+          "component_id": {
+            "type": "string",
+            "title": "Component Id"
+          },
+          "plant_id": {
+            "type": "string",
+            "title": "Plant Id"
+          },
+          "line_id": {
+            "type": "string",
+            "title": "Line Id"
+          },
+          "machine": {
+            "type": "string",
+            "title": "Machine"
+          },
+          "part_no": {
+            "type": "string",
+            "title": "Part No"
+          },
+          "family": {
+            "type": "string",
+            "title": "Family"
+          },
+          "lifecycle_status": {
+            "type": "string",
+            "title": "Lifecycle Status"
+          },
+          "criticality": {
+            "type": "string",
+            "title": "Criticality"
+          },
+          "spare_id": {
+            "type": "string",
+            "title": "Spare Id"
+          },
+          "spare_plant_id": {
+            "type": "string",
+            "title": "Spare Plant Id"
+          },
+          "spare_plant_name": {
+            "type": "string",
+            "title": "Spare Plant Name"
+          },
+          "spare_description": {
+            "type": "string",
+            "title": "Spare Description"
+          },
+          "spare_qty": {
+            "type": "integer",
+            "title": "Spare Qty"
+          },
+          "same_company": {
+            "type": "boolean",
+            "title": "Same Company"
+          }
+        },
+        "type": "object",
+        "required": [
+          "component_id",
+          "plant_id",
+          "line_id",
+          "machine",
+          "part_no",
+          "family",
+          "lifecycle_status",
+          "criticality",
+          "spare_id",
+          "spare_plant_id",
+          "spare_plant_name",
+          "spare_description",
+          "spare_qty",
+          "same_company"
+        ],
+        "title": "ShelfMatch"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
       }
     }
   }
