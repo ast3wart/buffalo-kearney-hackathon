@@ -1,0 +1,5 @@
+machine_id,line_id,asset_tag,description,machine_type,make,model,serial,year_built,condition,criticality,redundant_with,replacement_value_low,replacement_value_high,book_value
+PA-L1-M01,PA-L1,PA9779,KOMATSU OBS 150-2 #1,press,Komatsu,OBS 150-2,60631,2002,good,line_stop,,450000.0,900000.0,
+PA-L1-M05,PA-L1,PA7233,COMPRESSOR 5 - Atlas Copco,compressor,Atlas Copco,GA 37,445469,2011,good,degraded,,40000.0,90000.0,
+PA-L2-M01,PA-L2,PA7164,AIDA NC1-200 SERVO PRESS #1,press,Aida,NC1-200 servo,83731,2008,good,line_stop,,450000.0,900000.0,
+PA-L2-M04,PA-L2,PA2964,HYTROL E24 ACCUMULATION #4,conveyor,Hytrol,E24 accumulation,684373,2013,good,degraded,,40000.0,120000.0,

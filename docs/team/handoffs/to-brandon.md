@@ -22,7 +22,7 @@
 
 ### Sat Nov 14, ~7:45 PM · Demo registry is ready to build against (`demo.db`)
 **Status:** 🆕 new · branch `asher/demo-data` (PR for CP1)
-- **Run:** `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).
+- **Run:** `./scripts/demo.sh` (fast production mode), or `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).
 - **What's in it:** 6 plants, 14 lines, 66 machines, 126 components (36% discontinued at the owned plants, 100% at Tillman), 48 storeroom rows, and 30 real KB parts.
   - The **Toledo Line 2 Kinetix 6000** is a single point of failure, and **Fort Wayne has 2 on its shelf**.
   - The **Waukesha MICROMASTER 440** is covered by a **Lima** spare (cross-company).

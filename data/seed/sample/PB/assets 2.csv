@@ -1,0 +1,3 @@
+machine_id,line_id,asset_tag,description,machine_type,make,model,serial,year_built,condition,criticality,redundant_with,replacement_value_low,replacement_value_high,book_value
+PB-L1-M01,PB-L1,PB4906,KOMA OBS,press,Komatsu,OBS 150-2,,2017,good,line_stop,,450000.0,900000.0,
+PB-L2-M01,PB-L2,PB1308,HAAS VF-4 #1,cnc_mill,Haas,VF-4,595658,2010,fair,line_stop,,180000.0,420000.0,

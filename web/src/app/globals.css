@@ -16,6 +16,9 @@
   --warn: #b45309;
   --warn-soft: #fcf0e2;
   --ok: #15803d;
+  /* system fonts: no download at build time, works offline at the venue */
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 body {
