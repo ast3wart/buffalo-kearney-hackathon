@@ -131,11 +131,43 @@ export function Deck({ data }: { data: DeckData }) {
       <p className="mt-8 text-xl">The question they hired us for: <b>which equipment will stop a line, and what do we do about it?</b></p>
     </Slide>,
 
-    <Slide key="problem" kicker="The problem" title="The parts that stop lines are old, and nobody knows their health">
-      <div className="grid grid-cols-3 gap-10 pt-6">
-        <Big n="9.2 yrs" label="average age of US factory equipment, oldest since 2011" />
-        <Big n="83%" label="of automation parts end-of-life in one real plant audit" />
-        <Big n="~9%" label="of plants keep part-level maintenance history (estimate)" />
+    <Slide key="problem" kicker="Problem" title="Owners do not know the health of the equipment their plants run on">
+      <div className="flex h-full flex-col gap-4">
+        <div className="grid min-h-0 flex-1 grid-cols-[1.6fr_1fr_1fr] grid-rows-2 gap-3">
+          <div className="row-span-2 rounded-xl border border-line border-l-4 border-l-accent bg-bg p-5 text-lg leading-snug">
+            <div className="text-xs font-semibold uppercase tracking-wider text-muted">A typical situation</div>
+            <p className="mt-2">The plant follows its maintenance schedule: bearings greased, belts changed, oil sampled.</p>
+            <p className="mt-3">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
+            <p className="mt-3 font-semibold">It fails. The line stops.</p>
+          </div>
+          {[
+            ["83%", "of automation parts in one real plant audit were discontinued or end-of-life"],
+            ["55%", "of plants have a plan for obsolete parts. The rest do not."],
+            ["44%", "of plants have an equipment interruption every month"],
+            ["10–24 wks", "to get a new controller; a discontinued one is resale-only"],
+          ].map(([n, d]) => (
+            <div key={n} className="rounded-xl border border-line bg-bg p-4">
+              <div className="tabular text-4xl font-semibold tracking-tight text-accent">{n}</div>
+              <div className="mt-1 text-base leading-snug">{d}</div>
+            </div>
+          ))}
+        </div>
+        <div className="flex items-stretch gap-2">
+          {[
+            ["Unknown health", "no list of what is in the cabinets"],
+            ["Surprise failure", "no warning, no spare"],
+            ["Lost output", "days, sometimes weeks"],
+            ["Lost revenue", "and spending nobody budgeted"],
+          ].map(([t, d], i, arr) => (
+            <div key={t} className="flex flex-1 items-center gap-2">
+              <div className={`flex-1 rounded-xl px-3 py-3 text-center ${i === arr.length - 1 ? "bg-accent text-surface" : "border border-line bg-bg"}`}>
+                <div className="text-lg font-semibold">{t}</div>
+                <div className={`text-sm ${i === arr.length - 1 ? "" : "text-muted"}`}>{d}</div>
+              </div>
+              {i < arr.length - 1 && <span className="text-2xl text-accent">→</span>}
+            </div>
+          ))}
+        </div>
       </div>
     </Slide>,
 
