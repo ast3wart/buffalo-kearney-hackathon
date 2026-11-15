@@ -1,0 +1,5 @@
+component_id,problem
+PA-L2-M01-C1,failing fan: temperature steps up ~18°C at day 70 (EWMA shift)
+PB-L1-M02-C3,capacitors 91% used (self-reported) + slow warming (CUSUM drift / trend)
+PA-L1-M01-C3,motor current sideband energy rising (Mahalanobis on current features)
+PC-L1-M01-C1,hot connection: intermittent temperature spikes + 3 faults

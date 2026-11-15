@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { API_URL, getJSON, tryJSON, usd } from "@/lib/api";
-import { Card, HealthBadge, LifeBar, PageHeader, PartNo, Pending, Pill, StatusBadge } from "@/components/ui";
+import { Card, HealthBadge, HealthScore, LifeBar, PageHeader, PartNo, Pending, Pill, StatusBadge, sourceLabel } from "@/components/ui";
 
 type Ev = {
   component: Record<string, string | number>;
@@ -23,7 +23,13 @@ type Option = {
 type Health = {
   health: string; life_used_pct: number | null; installed?: number; expected_end_year?: number; lead_time_days?: number;
   order_by?: string; order_now?: boolean; action: string; line_stop?: boolean; options?: Option[]; best_price?: number | null;
+  health_score?: number | null; remaining_years_low?: number | null; remaining_years_high?: number | null; confidence?: string | null;
+  sources?: string | null; drivers?: string | null; age_basis?: string | null; simulated?: string | null;
+  anomaly_severity?: number | null; resid_mean_c?: number | null; ewma_out_days?: number | null; cusum_max?: number | null;
+  trend_c_per_month?: number | null; trend_t?: number | null; peer_z?: number | null; peer_n?: number | null; mahalanobis?: number | null;
 };
+
+const fmt = (v: number | null | undefined, d = 1) => (v === null || v === undefined ? null : v.toFixed(d));
 
 const CH: Record<string, string> = { shelf: "Shelf, another plant", successor: "Successor, from manufacturer", oem: "Manufacturer", authorized_distributor: "Authorized distributor", refurbisher: "Refurbisher", surplus: "Surplus dealer", marketplace: "Marketplace", broker: "Broker" };
 
@@ -48,9 +54,41 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
       />
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card title="Status">
+        <Card title="Health">
           <div className="space-y-3">
-            <HealthBadge health={h.health} />
+            <div className="flex items-center justify-between gap-2"><HealthScore score={h.health_score} confidence={h.confidence} /><HealthBadge health={h.health} /></div>
+            {h.remaining_years_low !== null && h.remaining_years_low !== undefined && (
+              <div className="text-sm">Remaining life: <b>{h.remaining_years_low}–{h.remaining_years_high} years</b></div>
+            )}
+            {h.drivers && (
+              <ul className="list-disc space-y-0.5 pl-4 text-xs">
+                {h.drivers.split(";").map((d) => <li key={d}>{d}</li>)}
+              </ul>
+            )}
+            {(h.resid_mean_c != null || h.peer_z != null || h.mahalanobis != null) && (
+              <div className="rounded border border-line p-2 text-xs">
+                <div className="mb-1 flex justify-between font-medium">
+                  <span>Anomaly detection</span>
+                  <span className={(h.anomaly_severity ?? 0) > 0 ? "text-alert" : "text-muted"}>severity {fmt(h.anomaly_severity, 2) ?? "0.00"}</span>
+                </div>
+                <table className="tabular w-full">
+                  <tbody>
+                    {h.resid_mean_c != null && <tr><td className="text-muted">vs. expected for load + ambient</td><td className="text-right">{h.resid_mean_c > 0 ? "+" : ""}{fmt(h.resid_mean_c)} °C</td></tr>}
+                    {h.ewma_out_days != null && <tr><td className="text-muted">EWMA shift (days out of control)</td><td className="text-right">{h.ewma_out_days}</td></tr>}
+                    {h.cusum_max != null && <tr><td className="text-muted">CUSUM drift (alarm at 5)</td><td className="text-right">{fmt(h.cusum_max)}</td></tr>}
+                    {h.trend_c_per_month != null && <tr><td className="text-muted">Trend °C/month (t)</td><td className="text-right">{fmt(h.trend_c_per_month)} ({fmt(h.trend_t)})</td></tr>}
+                    {h.peer_z != null && <tr><td className="text-muted">vs. {h.peer_n} identical parts (robust z)</td><td className="text-right">{fmt(h.peer_z)}</td></tr>}
+                    {h.mahalanobis != null && <tr><td className="text-muted">Motor current (Mahalanobis, alarm at 3)</td><td className="text-right">{fmt(h.mahalanobis)}</td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {h.sources && (
+              <div className="text-xs text-muted">
+                Based on: {h.sources.split(";").map(sourceLabel).join(" · ")}
+                {h.simulated === "yes" && <> <Pill>simulated sensor data</Pill></>}
+              </div>
+            )}
             <div>
               <div className="text-xs text-muted">Life used since install ({h.installed ?? "?"})</div>
               <LifeBar pct={h.life_used_pct} />

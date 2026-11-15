@@ -125,7 +125,7 @@ Liquidity sells all four. **Status:** hypothesis until the doc 08 research backs
 6. **This roadmap**, with the flywheel and the PE portfolio vision.
 
 ## Risks and open questions
-- **Price** comes from Brandon's financial model (share of cost saved per plant), not a chosen number. Willingness to pay is still untested. Next step: paid pilots.
+- **Price** comes from Brandon's financial model, not a chosen number. **Not a share of savings** (Nov 15): savings can't be audited, so revenue share is a conflict of interest; use fixed fees per plant / per device. Downtime avoided is the headline figure. Willingness to pay is still untested. Next step: paid pilots.
 - **Value is a scenario** from vendor cases, and downtime isn't counted yet. Prove it in pilots.
 - **Incumbents:** Rockwell/Siemens/ABB installed-base services, SPARETECH/Verusen, CMMS tools. Our edge is multi-brand, from the photo and the panel (not only the ERP), and cross-plant.
 - **Accuracy on worn plates and crowded cabinets:** measure it; firmware isn't readable from labels.

@@ -374,6 +374,15 @@ def component_health(component_id: str) -> dict:
     return json.loads(row.to_json(orient="records"))[0]
 
 
+@app.get("/components/{component_id}/series")
+def component_series(component_id: str) -> dict:
+    """Simulated device time series for one part: temperature residual vs expected, EWMA and its control limit."""
+    from xray import anomaly
+    ts = reg().get("thermal_series", pd.DataFrame())
+    g = ts[ts.component_id == component_id] if "component_id" in ts else ts
+    return {"component_id": component_id, "simulated": True, "points": anomaly.residual_chart(g) if len(g) else []}
+
+
 # ---------------------------------------------------------------- Brandon's routes (call his pure functions)
 def _brandon(module: str, *funcs: str):
     try:

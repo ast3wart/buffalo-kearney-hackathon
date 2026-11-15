@@ -1,0 +1,17 @@
+component_id,plant_id,simulated,install_year_record,install_year_basis,thermal_mode,days_observed,ambient_c,temp_c,diag_cap_life_used,diag_fan_life_used,diag_heatsink_c,diag_run_hours,diag_faults_12m
+PC-L1-M01-C1,PC,yes,,,continuous,90,34.9,51.0,,,,,3
+PC-L1-M02-C1,PC,yes,,,continuous,48,34.3,46.8,,,,69398,0
+PC-L1-M03-C1,PC,yes,,,snapshot,1,33.7,42.4,,,,,
+PC-L1-M04-C1,PC,yes,,,snapshot,1,32.8,42.7,,,,33410,0
+PC-L1-M04-C2,PC,yes,,,snapshot,1,30.1,36.6,,,,,
+PC-L1-M05-C1,PC,yes,,,snapshot,1,35.8,46.2,,,,,
+PC-L2-M01-C1,PC,yes,,,continuous,89,31.7,40.0,,,,40757,0
+PC-L2-M01-C2,PC,yes,,,continuous,111,36.3,54.4,,,,,
+PC-L2-M02-C1,PC,yes,,,continuous,36,30.5,38.3,,,,52433,0
+PC-L2-M02-C2,PC,yes,,,continuous,83,31.9,51.1,,,,,
+PC-L2-M02-C3,PC,yes,,,continuous,38,32.4,48.0,,,,,
+PC-L2-M03-C1,PC,yes,,,snapshot,1,31.3,45.9,,,,,
+PC-L2-M03-C2,PC,yes,,,snapshot,1,32.8,57.3,,,,,
+PC-L2-M04-C1,PC,yes,,,snapshot,1,36.1,47.8,,,,28205,1
+PC-L2-M05-C1,PC,yes,,,snapshot,1,33.8,45.7,,,,35815,0
+PC-L2-M05-C2,PC,yes,,,snapshot,1,37.8,59.5,0.57,0.97,65.7,44687,0

@@ -47,6 +47,17 @@ const SECTIONS: { title: string; note?: string; rows: Row[] }[] = [
     ],
   },
   {
+    title: "What plants already know about their parts (data collection)",
+    note: "Velocity-powered research, US plants with 100–1,000 employees. No survey measures these directly, so each is a range (low / base / high).",
+    rows: [
+      { n: "60% (45–75%)", what: "Plants using a maintenance system (CMMS) for at least some records", source: "Velocity research, anchored to Plant Engineering maintenance surveys (53% in 2018, 61% in 2019)", kind: "survey" },
+      { n: "15% (5–30%)", what: "Of those, plants keeping part-level records with install dates (the rest track whole machines)", source: "Velocity research estimate; no representative survey exists. Supported by Emerson field visits: only 'a handful' of plants had complete parts lists", kind: "estimate" },
+      { n: "25% (10–45%)", what: "Installed drives that can report their own fan / capacitor life", source: "Velocity research estimate from Rockwell, ABB and Siemens product documentation", kind: "estimate" },
+      { n: "12% (5–25%)", what: "Plants that actually use that built-in diagnostic data for maintenance", source: "Velocity research estimate; MaintainX 2026 survey: 31% do condition-based maintenance (a broader practice)", kind: "estimate" },
+      { n: "~28% of parts", what: "Parts with a usable install record in a typical plant: 60% × (15% × 70% complete + 85% × 60% original part × 70% complete) = 6% part records + 21% machine records", source: "Our formula on the Velocity numbers above. Completeness (70%, from a measured study where record fields went from 20% to 90% filled) and original-part share (60%) are our assumptions", kind: "model" },
+    ],
+  },
+  {
     title: "Plant economics (inputs to the price model)",
     note: "Values for a ~170-person plant (100–249 employee band), scaled by headcount in the demo.",
     rows: [

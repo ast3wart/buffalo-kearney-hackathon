@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/plants/PA", label: "Plant view" },
   { href: "/scan", label: "Live scan" },
   { href: "/sources", label: "Sources" },
+  { href: "/pitch", label: "Pitch" },
 ];
 
 export function Nav() {

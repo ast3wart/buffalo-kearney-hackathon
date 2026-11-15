@@ -31,6 +31,9 @@ def _lead_options(kb_id, listings, shelf):
 
 
 def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFrame:
+    from xray import condition
+
+    cond = condition.compute(reg).set_index("component_id") if "condition" in reg else pd.DataFrame()
     year = year or TODAY.year
     comp = reg["component"].merge(reg["machine"][["machine_id", "line_id", "criticality"]], on="machine_id", how="left")
     comp = comp.merge(reg["line"][["line_id", "plant_id"]], on="line_id", how="left")
@@ -63,6 +66,9 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         installed = int(float(c["date_code"])) if str(c.get("date_code", "")) not in ("", "nan") else year - int(lo)
         age = max(0, year - installed)
         life_pct = age / ((lo + hi) / 2)
+        hs = cond.loc[c["component_id"]].to_dict() if c["component_id"] in cond.index else {}
+        if hs.get("life_used") is not None and hs.get("life_used") == hs.get("life_used"):
+            life_pct = float(hs["life_used"])  # health model (diagnostics / records / thermal / current) beats age alone
         end_year = installed + round((lo + hi) / 2)  # middle of the typical life range
         # shelf spares elsewhere in the portfolio (not this plant's own)
         shelf = {kb_id: [s for s in shelf_all.get(kb_id, []) if s["plant_id"] != c["plant_id"]]}
@@ -93,6 +99,8 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         # there's still time to get one; otherwise no action needed.
         life_mid = (lo + hi) / 2
         days_life_left = (date(installed, 6, 30) + timedelta(days=int(life_mid * 365)) - TODAY).days
+        if hs.get("remaining_years_low") is not None and hs.get("remaining_years_low") == hs.get("remaining_years_low"):
+            days_life_left = int(float(hs["remaining_years_low"]) * 365)  # conservative end of the health model's range
         if days_life_left < lead:
             health = "replace_asap"
         elif life_pct >= 0.75:
@@ -130,7 +138,12 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
             action = f"Discontinued, no successor sold new: buy the best trusted spare {order_txt} ({rec.get('condition', '').replace('_', ' ')}, {cost(rec)})."
         else:
             action = "Discontinued, no reliable spare and no successor: find an alternative part."
-        out.append({**base, "health": health, "life_used_pct": round(life_pct, 2), "installed": installed,
+        extra = {k2: hs.get(k2) for k2 in ("health_score", "remaining_years_low", "remaining_years_high", "confidence",
+                                            "sources", "drivers", "age_basis", "simulated", "anomaly_severity", "resid_mean_c",
+                                            "ewma_out_days", "cusum_max", "trend_c_per_month", "trend_t", "peer_z", "peer_n",
+                                            "mahalanobis")} if hs else {}
+        extra = {k2: (None if isinstance(v, float) and v != v else v) for k2, v in extra.items()}
+        out.append({**base, **extra, "health": health, "life_used_pct": round(life_pct, 2), "installed": installed,
                     "expected_end_year": end_year, "lead_time_days": lead, "order_by": order_by.isoformat(),
                     "order_now": days_left <= 0 and not covered, "covered_by_own_spare": covered, "action": action, "line_stop": line_stop,
                     "options": sorted(options, key=lambda o: (not o.get("recommended"), o["kind"] != "shelf", o.get("condition") == "for_repair", o.get("price") or 1e12)),

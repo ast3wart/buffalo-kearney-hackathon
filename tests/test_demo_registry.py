@@ -74,3 +74,31 @@ def test_photo_readings_cached_and_exact():
             assert exact or (r["unclear"] and r["confidence"] <= 0.7), p.photo_id
         else:
             assert exact, (p.photo_id, r["part_no"], expected)
+
+
+def test_health_model_finds_planted_problems(reg):
+    """The health score must put every planted problem (failing fan, worn capacitors, current anomaly, hot
+    connection) in poor health, while most parts stay healthy."""
+    from xray import condition
+
+    h = condition.compute(reg).set_index("component_id")
+    planted = pd.read_csv(TRUTH / "condition_planted.csv").component_id
+    assert (h.loc[planted, "health_score"] <= 40).all(), h.loc[planted, ["health_score", "drivers"]]
+    assert h.health_score.median() >= 50, "most parts should look healthy (demo plants are old: median ~55)"
+    assert set(h.confidence) <= {"high", "medium", "low", "none"}
+
+
+def test_anomaly_detectors_catch_planted_patterns_with_few_false_alarms(reg):
+    """Each planted time-series pattern is caught by the detector built for it; parts with no planted problem
+    rarely fire (SPC false-alarm rate, measured, not assumed)."""
+    from xray import anomaly
+
+    a = anomaly.compute(reg).set_index("component_id")
+    assert a.loc["PA-L2-M01-C1", "sev_shift"] > 0.5            # step: failing fan -> EWMA
+    assert a.loc["PB-L1-M02-C3", "sev_drift"] > 0.5            # slow warming -> CUSUM
+    assert a.loc["PA-L1-M01-C3", "sev_current"] > 0.5          # motor current -> Mahalanobis
+    assert a.loc["PC-L1-M01-C1", "anomaly_severity"] > 0.5     # intermittent spikes
+    planted = set(pd.read_csv(TRUTH / "condition_planted.csv").component_id)
+    monitored = a[a.sigma_c.notna() & ~a.index.isin(planted)]
+    assert len(monitored) >= 20
+    assert (monitored.anomaly_severity > 0).mean() <= 0.10, monitored[monitored.anomaly_severity > 0]

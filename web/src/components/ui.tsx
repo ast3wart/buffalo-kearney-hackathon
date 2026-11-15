@@ -92,6 +92,29 @@ export function HealthBadge({ health }: { health?: string | null }) {
   return <span className={`inline-block whitespace-nowrap rounded px-1.5 py-0.5 text-[11px] font-medium ${cls}`}>{label}</span>;
 }
 
+const SRC: Record<string, string> = {
+  diagnostics: "Self-reported diagnostics",
+  records: "Plant records (part install date)",
+  machine_records: "Plant records (machine install date)",
+  label_date_code: "Label date code (age floor)",
+  thermal_continuous: "Cabinet thermal camera (continuous)",
+  thermal_snapshot: "Thermal snapshot (walkthrough)",
+  current_signature: "Motor current sensor",
+  thermal_trend: "90-day temperature history (statistical anomaly detection)",
+};
+export const sourceLabel = (s: string) => SRC[s] ?? s;
+
+export function HealthScore({ score, confidence }: { score?: number | null; confidence?: string | null }) {
+  if (score === null || score === undefined) return <span className="text-xs text-muted">no data</span>;
+  const c = score >= 60 ? "text-ok" : score >= 30 ? "text-warn" : "text-alert";
+  return (
+    <span className="whitespace-nowrap">
+      <b className={`tabular text-lg ${c}`}>{Math.round(score)}</b>
+      <span className="text-xs text-muted">/100{confidence ? ` · ${confidence} confidence` : ""}</span>
+    </span>
+  );
+}
+
 export function LifeBar({ pct }: { pct?: number | null }) {
   if (pct === null || pct === undefined) return <span className="text-xs text-muted">n/a</span>;
   const w = Math.min(100, Math.round(pct * 100));
