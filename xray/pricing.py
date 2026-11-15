@@ -30,8 +30,11 @@ def _lever(plant_id, lever, lo, base, hi, one_time, in_base, basis):
 
 def plant_savings(reg: dict, sourcing_recommendation: pd.DataFrame | None = None,
                   part_valuation: pd.DataFrame | None = None, spof_table: pd.DataFrame | None = None,
-                  as_of_year: int = P.AS_OF_YEAR) -> pd.DataFrame:
-    """Savings per owned plant per lever, low / base / high (per year unless one_time = yes)."""
+                  as_of_year: int = P.AS_OF_YEAR, full_plant: bool = False) -> pd.DataFrame:
+    """Savings per owned plant per lever, low / base / high (per year unless one_time = yes).
+
+    full_plant=True quotes a whole-plant scan: plant-level levers use 100% coverage, and register-level levers
+    (sister spares, planned vs emergency, downtime) are extrapolated by 1 / coverage. Label it as extrapolated."""
     pv = part_valuation if part_valuation is not None else value_parts(reg)
     sr = sourcing_recommendation if sourcing_recommendation is not None else recommend_sourcing(reg, pv, as_of_year)
     sp = spof_table if spof_table is not None else spof(reg, sr, as_of_year)
@@ -47,6 +50,11 @@ def plant_savings(reg: dict, sourcing_recommendation: pd.DataFrame | None = None
     rows = []
     for plant_id in reg["plant"].loc[reg["plant"].status == "owned", "plant_id"]:
         c, f = cov.loc[plant_id], fin.loc[plant_id]
+        # Register-level levers scale up by 1 / coverage for a full-plant quote (low end uses the smaller factor).
+        up = ((1 / max(c.cov_high, 1e-9), 1 / max(c.cov_base, 1e-9), 1 / max(c.cov_low, 1e-9)) if full_plant
+              else (1, 1, 1))
+        if full_plant:
+            c = pd.Series({"cov_low": 1.0, "cov_base": 1.0, "cov_high": 1.0})
         inv = (num(pd.Series([f.spares_inventory_value_low])).iloc[0], num(pd.Series([f.spares_inventory_value_high])).iloc[0])
         carry = (float(f.carrying_cost_pct_low), float(f.carrying_cost_pct_high))
         rush = (float(f.rush_premium_annual_low), float(f.rush_premium_annual_high))
@@ -67,7 +75,7 @@ def plant_savings(reg: dict, sourcing_recommendation: pd.DataFrame | None = None
             net_lo = max((r.part_value_low if pd.notna(r.part_value_low) else 0) - r.transfer_cost_high, 0)
             net_hi = max((r.part_value_high if pd.notna(r.part_value_high) else 0) - r.transfer_cost_low, 0)
             lo, base, hi = lo + fr.low * net_lo, base + fr.base * (net_lo + net_hi) / 2, hi + fr.high * net_hi
-        rows.append(_lever(plant_id, "sister_spare_purchases_avoided", lo, base, hi, False, True,
+        rows.append(_lever(plant_id, "sister_spare_purchases_avoided", lo * up[0], base * up[1], hi * up[2], False, True,
                            f"{len(sis)} sister-plant spare(s): P(fail) x (part value - transfer cost)"))
         # Planned vs emergency replacement for at-risk parts, haircut before it enters the price base.
         risk = cv[(cv.plant_id == plant_id) & at_risk(cv)]
@@ -80,16 +88,20 @@ def plant_savings(reg: dict, sourcing_recommendation: pd.DataFrame | None = None
             base += fr.base * (m.base - 1) * (clo + chi) / 2
             hi += fr.high * (m.high - 1) * chi
         h = P.EMERGENCY_HAIRCUT
-        rows.append(_lever(plant_id, "planned_vs_emergency", lo * h, base * h, hi * h, False, True,
+        rows.append(_lever(plant_id, "planned_vs_emergency", lo * h * up[0], base * h * up[1], hi * h * up[2], False, True,
                            f"{len(risk)} at-risk part(s): P(fail) x (emergency - planned), {h:.0%} haircut"))
         rows.append(_lever(plant_id, "spares_inventory_released", *rel, True, False,
                            "one-time cash freed: excess spares x coverage (not priced)"))
         d_with, d_none = sp[sp.plant_id == plant_id], sp_none[sp_none.plant_id == plant_id]
         lo = max(d_none.downtime_exposure_per_year_low.sum() - d_with.downtime_exposure_per_year_low.sum(), 0)
         hi = max(d_none.downtime_exposure_per_year_high.sum() - d_with.downtime_exposure_per_year_high.sum(), 0)
+        lo, hi = lo * up[0], hi * up[2]
         rows.append(_lever(plant_id, "downtime_avoided", lo, (lo + hi) / 2, hi, False, False,
                            "expected value from spof, no defensible baseline (shown, not priced)"))
-    return pd.DataFrame(rows)
+    out = pd.DataFrame(rows)
+    if full_plant:
+        out["basis"] = "full plant, extrapolated from the register sample: " + out.basis
+    return out
 
 
 def price(plant_savings: pd.DataFrame, value_capture_pct: float = P.VALUE_CAPTURE_PCT.base) -> pd.DataFrame:

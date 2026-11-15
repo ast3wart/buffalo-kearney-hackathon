@@ -147,18 +147,18 @@ def pv(cash: pd.Series, year: pd.Series, rate: float, as_of_year: int) -> float:
 def deal_adjustment(reg: dict, capex_by_year: pd.DataFrame, company_id: str | None = None,
                     discount_rate: float | None = None, as_of_year: int = P.AS_OF_YEAR) -> pd.DataFrame:
     """Deal lens, target companies only (a plant with status `target`). Deferred CapEx is a debt-like item:
-    price cut = PV(deferred, low); holdback = PV(deferred high - low), so nothing is counted twice.
-    No discount_rate -> the price cut is a range over the deal rates (high rate -> low cut) and the holdback
-    uses the base rate."""
+    price cut = deferred low at face value; holdback = PV(deferred high - low), so nothing is counted twice.
+    No discount_rate -> the holdback uses the base deal rate."""
     targets = set(reg["plant"].loc[reg["plant"].status == "target", "company_id"])
     if company_id is not None:
         targets &= {company_id}
-    r_lo, r_hi, r_base = ((discount_rate,) * 3 if discount_rate is not None
-                          else (P.DEAL_DISCOUNT_RATE.high, P.DEAL_DISCOUNT_RATE.low, P.DEAL_DISCOUNT_RATE.base))
+    r_base = discount_rate if discount_rate is not None else P.DEAL_DISCOUNT_RATE.base
     rows = []
     for co in sorted(targets):
         d = capex_by_year[(capex_by_year.company_id == co) & (capex_by_year.capex_type == "deferred")]
-        cut_lo, cut_hi = pv(d.capex_low, d.year, r_lo, as_of_year), pv(d.capex_low, d.year, r_hi, as_of_year)
+        # Deferred CapEx is overdue catch-up spend, so the price cut takes the low case at face value
+        # (velocity #15/#17: debt-like items aren't discounted); only the uncertain gap is discounted.
+        cut_lo = cut_hi = float(d.capex_low.sum())
         hold = pv(d.capex_high - d.capex_low, d.year, r_base, as_of_year)
         rows.append({"company_id": co, "deferred_capex_low": round(d.capex_low.sum(), 2),
                      "deferred_capex_high": round(d.capex_high.sum(), 2),
@@ -166,7 +166,7 @@ def deal_adjustment(reg: dict, capex_by_year: pd.DataFrame, company_id: str | No
                      "suggested_holdback": round(hold, 2),
                      "rationale": (f"deferred CapEx {d.year.min() if len(d) else '-'}-{d.year.max() if len(d) else '-'} "
                                    f"from {len(set(';'.join(d.driver_component_ids).split(';')) - {''})} component(s); "
-                                   f"price cut = PV of the low case at {r_hi:.1%}-{r_lo:.1%}, holdback = PV of the "
+                                   f"price cut = low case at face value, holdback = PV of the "
                                    f"high-low gap at {r_base:.1%} ({P.DEAL_DISCOUNT_RATE.source})")})
     cols = ["company_id", "deferred_capex_low", "deferred_capex_high", "suggested_price_reduction_low",
             "suggested_price_reduction_high", "suggested_holdback", "rationale"]
