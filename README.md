@@ -1,4 +1,4 @@
-# Equipment X-Ray (working name)
+# Equipment Health Index (working name)
 
 **Kearney × PERLab Hackathon · Startup track · Team Buffalo (Asher + Brandon)**
 
@@ -6,7 +6,7 @@
 
 Factories run on **controllers, drives and screens their manufacturers stopped making**. One failure there can stop a line for weeks, and most plants don't have a full picture of what's inside their machines.
 
-Equipment X-Ray takes a plant's equipment list and **photos of nameplates and control cabinets**, and turns them into a **living registry of every machine and every critical part**. From that registry it produces:
+Equipment Health Index takes a plant's equipment list and **photos of nameplates and control cabinets**, and turns them into a **living registry of every machine and every critical part**. From that registry it produces:
 - a **CapEx cliff** (equipment spending needed, year by year)
 - the **single points of failure**
 - **where to source every part**, checking the shelves at your other plants first

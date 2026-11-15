@@ -13,6 +13,7 @@ BUFFER_DAYS = 14          # order this much earlier than strictly needed
 TRANSFER_DAYS = 7         # move a spare between plants
 MIGRATION_EXTRA_DAYS = 28  # engineering + programming when only the successor is available
 TODAY = date.today()
+ASAP_SCORE = 10          # health score at or below this: under ~10% chance of surviving the year -> replace ASAP
 
 
 def _lead_options(kb_id, listings, shelf):
@@ -77,11 +78,13 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         succ_kb = kb.index[kb.part_no == k.successor_part_no].tolist() if k.successor_part_no else []
         if k.lifecycle_status == "discontinued" and succ_kb:  # the official successor, bought new from the manufacturer side
             for l in listings.get(succ_kb[0], []):
-                if l.get("authorized") == "yes":
+                # authorized channel, or a new unit from a stocking distributor (the successor is still made)
+                if l.get("authorized") == "yes" or (l.get("channel") == "distributor" and l.get("condition") == "new"):
                     options.append({"kind": "successor", **l, "part_no": k.successor_part_no})
         buyable = [o for o in options if o["kind"] == "listing" and (o.get("trust_score") or 0) >= 0.6 and o.get("condition") != "for_repair"]
         best = min(buyable, key=lambda o: (o.get("price") or 1e12)) if buyable else None
-        fastest = min(options, key=lambda o: o.get("lead_time_days") or 1e9) if options else None
+        timed = [o for o in options if o.get("lead_time_days")]
+        fastest = min(timed, key=lambda o: o["lead_time_days"]) if timed else None
         if own_spare:
             lead = 1  # swap from this plant's own shelf
         elif fastest:
@@ -91,17 +94,20 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         else:
             lead = 120
         failure_date = date(end_year, 6, 30)
+        rem_low = hs.get("remaining_years_low")
+        if rem_low is not None and rem_low == rem_low:
+            # the health model (age, heat, anomalies, faults) beats the catalog average: use its conservative end
+            failure_date = TODAY + timedelta(days=int(float(rem_low) * 365))
+            end_year = failure_date.year
         order_by = failure_date - timedelta(days=lead + BUFFER_DAYS)
         status = k.lifecycle_status
         line_stop = c.get("criticality") == "line_stop"
         days_left = (order_by - TODAY).days
         # Asher's rule: ASAP if getting one takes longer than the life left; soon if >= 75% of life is used but
         # there's still time to get one; otherwise no action needed.
-        life_mid = (lo + hi) / 2
-        days_life_left = (date(installed, 6, 30) + timedelta(days=int(life_mid * 365)) - TODAY).days
-        if hs.get("remaining_years_low") is not None and hs.get("remaining_years_low") == hs.get("remaining_years_low"):
-            days_life_left = int(float(hs["remaining_years_low"]) * 365)  # conservative end of the health model's range
-        if days_life_left < lead:
+        days_life_left = (failure_date - TODAY).days
+        score = hs.get("health_score")
+        if days_life_left < lead or (score is not None and score == score and score <= ASAP_SCORE):
             health = "replace_asap"
         elif life_pct >= 0.75:
             health = "replace_soon"
@@ -117,7 +123,9 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         for o in options:
             o["recommended"] = o is rec
         def cost(o):
-            return f"~${o['price']:,.0f}, ~{int(o['lead_time_days'])} days" if o and o.get("price") else ""
+            if not (o and o.get("price")):
+                return ""
+            return f"~${o['price']:,.0f}, ~{int(o['lead_time_days'])} days" if o.get("lead_time_days") else f"~${o['price']:,.2f} each"
         covered = own_spare and health != "working"
         if covered:
             action = (f"Covered: a spare is on this plant's own shelf. Swap it in when needed and restock one {order_txt}."

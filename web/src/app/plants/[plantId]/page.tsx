@@ -36,6 +36,9 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
   const spr = sav.data?.sample_price?.[0];
   const rescues = sav.data?.downtime_rescues ?? [];
   const label = (s: string) => s.replace(/_/g, " ");
+  const mid = (a: number, b: number) => (a + b) / 2;
+  const atStake = rescues.reduce((t, r) => t + r.at_stake_base, 0);
+  const hoursSaved = rescues.reduce((t, r) => t + mid(r.hours_down_without_low, r.hours_down_without_high) - mid(r.hours_down_with_low, r.hours_down_with_high), 0);
   const value = p.lines.reduce((a, l) => [a[0] + l.value_low, a[1] + l.value_high], [0, 0]);
   return (
     <>
@@ -63,17 +66,20 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
       )}
       <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div className="md:col-span-2">
-          <Card title={`CapEx cliff · next 5 years ${capex.data ? `(${usd(capexTotal[0])}–${usd(capexTotal[1])})` : ""}`}>
-            {capex.data ? <CapexChart rows={capex.data.capex_by_year} /> : <Pending what="The CapEx cliff" detail={capex.pending ?? capex.error} />}
+          <Card className="flex h-full flex-col" title={`CapEx cliff · next 5 years ${capex.data ? `(${usd(capexTotal[0])}–${usd(capexTotal[1])})` : ""}`}>
+            {capex.data ? <div className="min-h-[240px] flex-1"><CapexChart rows={capex.data.capex_by_year} fill /></div> : <Pending what="The CapEx cliff" detail={capex.pending ?? capex.error} />}
             <p className="mt-1 text-xs text-muted">Dark = low estimate, light = up to high estimate. Control-part replacements + migration engineering. How we got this: Sources page.</p>
           </Card>
         </div>
-        <Card title="Savings and price (per year)">
+        <Card title="Savings and our fee (per year)">
           {pr ? (
             <div className="space-y-3">
               <Stat label="recurring savings we can audit (whole plant, extrapolated)" value={usd(pr.recurring_savings_base)} tone="ok" />
-              <Stat label={`price per plant (${Math.round((pr.value_capture_pct ?? 0.2) * 100)}% of savings, extrapolated)`} value={`${usd(pr.price_per_plant_base)}`} />
-              <div className="text-xs text-muted">range {usd(pr.price_per_plant_low)}–{usd(pr.price_per_plant_high)} · customer payback {pr.customer_payback_months} months</div>
+              <Stat label="registry subscription per year (fixed fee, tiered by the number of critical parts)" value={`${usd(pr.price_per_plant_base)}`} />
+              <div className="text-xs text-muted">
+                + one-time onboarding $1–2k · sensors: monthly fee per monitored point (price to set) · customer payback {pr.customer_payback_months} months.
+                The fee stays fixed whatever we report, so we never judge our own fee.
+              </div>
               {spr && (
                 <details className="text-xs text-muted">
                   <summary className="cursor-pointer">Evidence: only the parts scanned so far</summary>
@@ -81,7 +87,18 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
                 </details>
               )}
               <ul className="space-y-1 text-xs">
-                {(sav.data?.plant_savings ?? []).map((l) => (
+                {[...(sav.data?.plant_savings ?? [])].sort((a, b) => Number(b.lever === "downtime_avoided") - Number(a.lever === "downtime_avoided")).map((l) => l.lever === "downtime_avoided" ? (
+                  <li key={l.lever} className="border-b border-line pb-2">
+                    <div className="flex items-baseline justify-between gap-2 text-base font-semibold">
+                      <span>Downtime avoided <span className="text-xs font-normal text-muted">/ yr</span></span>
+                      <span className="tabular text-2xl">{usd(l.savings_base)}</span>
+                    </div>
+                    <div className="text-xs text-muted">
+                      expected value, range {usd(l.savings_low)}–{usd(l.savings_high)} · odds from each part&apos;s health score
+                      {atStake > 0 && <> · {usd(atStake)} of output at stake if the {rescues.length} line-stopper{rescues.length === 1 ? "" : "s"} fail ({Math.round(hoursSaved)} h of stoppage)</>} · not priced
+                    </div>
+                  </li>
+                ) : (
                   <li key={l.lever} className="flex justify-between gap-2">
                     <span>{label(l.lever)}{l.in_price_base !== "yes" && <span className="text-muted"> (not priced)</span>}{l.one_time === "yes" && <span className="text-muted"> · one-time</span>}</span>
                     <span className="tabular">{usd(l.savings_base)}</span>

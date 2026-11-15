@@ -71,11 +71,19 @@ def spof(reg: dict, sourcing_recommendation: pd.DataFrame, as_of_year: int = P.A
     kb = reg["kb_entry"].set_index("kb_id").to_dict("index")
     ls = scored_listings(reg)
     ls = ls[ls.condition.isin(P.USABLE_CONDITIONS) & (ls.trust_score >= P.MIN_TRUST)]
+    # The health model (xray/condition.py) gives each part its own chance of surviving the next 12 months from age,
+    # heat, sensor anomalies and faults. Where a part has a health score, P(fail this year) = 1 - health/100; the age
+    # table below is only the fallback for parts with no health evidence.
+    from xray import condition
+    health = condition.compute(reg).set_index("component_id").health_score.dropna().to_dict()
     rows = []
     for c in cv.itertuples():
         k = kb.get(c.kb_id, {})
         fr = failure_rate(c.age, num(pd.Series([k.get("annual_failure_rate_low")])).iloc[0],
                           num(pd.Series([k.get("annual_failure_rate_high")])).iloc[0])
+        if c.component_id in health:
+            pf = min(0.99, max(0.001, 1 - health[c.component_id] / 100))
+            fr = P.P(pf, pf, pf, "health model: 1 - health/100")
         rec = recs.get(c.component_id, {})
         h_lo, h_hi, how = hours_down(c, rec, ls[ls.kb_id == c.kb_id].lead_days, c.op_hours, k)
         on = 0.0 if c.redundant else 1.0

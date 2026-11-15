@@ -2,7 +2,7 @@ component_id,kb_id,part_no,lifecycle_status
 PA-L1-M01-C1,KB-017,1756-L83E,active
 PA-L1-M01-C2,KB-021,2711P-T10C22D9P,active
 PA-L1-M01-C3,KB-022,2198-D006-ERS3,active
-PA-L1-M01-C4,,,unknown
+PA-L1-M01-C4,KB-031,RH2B-U-AC120V,discontinued
 PA-L1-M02-C1,KB-018,5069-L320ER,active
 PA-L1-M02-C2,KB-008,2711P-T10C4D8,discontinued
 PA-L1-M03-C1,KB-018,5069-L320ER,active

@@ -1,0 +1,12 @@
+{
+  "manufacturer": "IDEC",
+  "part_no": "RH2B-U-AC120V",
+  "series": "C",
+  "serial": "131197",
+  "date_code": "",
+  "description": "Relay (IDEC RH2B-U-AC120V) mounted on a DIN rail panel next to other modules, with three indicator LEDs (two green, one red)",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0004.jpg"
+}

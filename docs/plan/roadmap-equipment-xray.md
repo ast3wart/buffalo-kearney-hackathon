@@ -1,4 +1,4 @@
-# Equipment X-Ray: platform roadmap and how the system works
+# Equipment Health Index: platform roadmap and how the system works
 
 **Status:** UPDATED Sat Nov 14, ~4:30 PM, after the market research. Companion to [idea-equipment-xray.md](idea-equipment-xray.md). **Brandon: review and edit freely.**
 
@@ -10,7 +10,7 @@
 > Evidence: [market-validation.md](../research/market-validation.md) and [deep-dive-numbers.md](../research/deep-dive-numbers.md).
 
 ## Positioning
-**Equipment X-Ray is the system of record for aging plant equipment.** It shows:
+**Equipment Health Index is the system of record for aging plant equipment.** It shows:
 - every machine
 - every critical component inside it
 - what's on the shelf across your plants

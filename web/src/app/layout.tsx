@@ -5,7 +5,7 @@ import { Nav } from "@/components/Nav";
 
 
 export const metadata: Metadata = {
-  title: "Equipment X-Ray",
+  title: "Equipment Health Index",
   description: "Pre-deal equipment diligence: CapEx cliff, single points of failure, and parts sourcing.",
 };
 

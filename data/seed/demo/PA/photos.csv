@@ -2,7 +2,7 @@ photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rende
 PA-IMG0001,PA,PA-L1-M01,PA-L1-M01-C1,photos/PA-IMG0001.jpg,component_in_cabinet,2026-11-14,glare,yes
 PA-IMG0002,PA,PA-L1-M01,PA-L1-M01-C2,photos/PA-IMG0002.jpg,component_in_cabinet,2026-11-14,ok,yes
 PA-IMG0003,PA,PA-L1-M01,PA-L1-M01-C3,photos/PA-IMG0003.jpg,component_in_cabinet,2026-11-14,ok,yes
-PA-IMG0004,PA,PA-L1-M01,PA-L1-M01-C4,photos/PA-IMG0004.jpg,component_in_cabinet,2026-11-14,glare,yes
+PA-IMG0004,PA,PA-L1-M01,PA-L1-M01-C4,photos/PA-IMG0004.jpg,component_in_cabinet,2026-11-14,ok,yes
 PA-IMG0005,PA,PA-L1-M02,PA-L1-M02-C1,photos/PA-IMG0005.jpg,component_in_cabinet,2026-11-14,ok,yes
 PA-IMG0006,PA,PA-L1-M02,PA-L1-M02-C2,photos/PA-IMG0006.jpg,component_in_cabinet,2026-11-14,glare,yes
 PA-IMG0007,PA,PA-L1-M03,PA-L1-M03-C1,photos/PA-IMG0007.jpg,component_in_cabinet,2026-11-14,ok,yes

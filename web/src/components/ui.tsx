@@ -10,9 +10,9 @@ export function PageHeader({ title, subtitle }: { title: string; subtitle?: Reac
   );
 }
 
-export function Card({ title, children, tone }: { title?: string; children: ReactNode; tone?: "alert" }) {
+export function Card({ title, children, tone, className = "" }: { title?: string; children: ReactNode; tone?: "alert"; className?: string }) {
   return (
-    <section className={`rounded border bg-surface p-5 ${tone === "alert" ? "border-alert" : "border-line"}`}>
+    <section className={`rounded border bg-surface p-5 ${tone === "alert" ? "border-alert" : "border-line"} ${className}`}>
       {title && <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-muted">{title}</h2>}
       {children}
     </section>
