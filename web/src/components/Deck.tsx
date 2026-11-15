@@ -277,7 +277,7 @@ export function Deck({ data }: { data: DeckData }) {
             The fee stays fixed whatever we report, so we never judge our own fee.
           </div>
           <div className="flex flex-col rounded-2xl bg-ink px-5 py-3 text-surface">
-            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">One PE fund, the kind Kearney serves</div>
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">A typical mid-market PE portfolio</div>
             <div className="tabular mt-1 text-4xl font-semibold tracking-tight">$1–4M <span className="text-xl opacity-80">a year</span></div>
             <div className="mt-1 text-sm leading-snug opacity-85">10–20 portfolio companies · 30–100 plants · registry + sensors on ~60 line-stopper cabinets per plant</div>
             <div className="mt-auto border-t border-surface/25 pt-2 text-sm leading-snug">
