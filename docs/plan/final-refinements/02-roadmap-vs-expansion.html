@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap vs Expansion</title>
+<style>
+/* Same tokens as ../pivot-plan/04-pitch-deck-mockup.html so these slides can be pasted into the deck. */
+:root{
+  --bg:#e9ebee; --slide:#ffffff; --ink:#14181f; --muted:#5b6472; --line:#d8dce2;
+  --accent:#c2410c; --accent-soft:#fdeee5; --ok:#0f766e; --ok-soft:#e3f4f1; --warn:#a16207; --warn-soft:#fdf5dc;
+  --tile:#f4f5f7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c0e12; --slide:#161a21; --ink:#e8ebf0; --muted:#9aa3b1; --line:#2a303a;
+    --accent:#fb923c; --accent-soft:#3a2216; --ok:#2dd4bf; --ok-soft:#10302c; --warn:#facc15; --warn-soft:#332b0e; --tile:#1e232c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c0e12; --slide:#161a21; --ink:#e8ebf0; --muted:#9aa3b1; --line:#2a303a;
+  --accent:#fb923c; --accent-soft:#3a2216; --ok:#2dd4bf; --ok-soft:#10302c; --warn:#facc15; --warn-soft:#332b0e; --tile:#1e232c;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif}
+.deck{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 16px 80px}
+.slide{position:relative;width:min(1100px,100%);background:var(--slide);border:1px solid var(--line);border-radius:10px;padding:32px 40px 56px;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:clamp(20px,2.6vw,30px);line-height:1.15;margin:.25em 0 .7em;max-width:92%;text-wrap:balance}
+h2{font-size:15px;margin:0 0 .35em}
+p,li{font-size:14px;margin:0}
+ul{margin:0;padding-left:1.1em} li{margin:.25em 0}
+.muted{color:var(--muted)}
+.foot{position:absolute;left:40px;right:40px;bottom:16px;font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:12px}
+.card{background:var(--tile);border-radius:8px;padding:12px 14px}
+.warn{background:var(--warn-soft);color:var(--warn);font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.ok{background:var(--ok-soft);color:var(--ok);font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;white-space:nowrap}
+.trust{background:var(--ok-soft);border-left:4px solid var(--ok);padding:10px 14px;border-radius:6px;margin-top:14px}
+
+/* Two lanes */
+.lanes{display:grid;grid-template-columns:1.55fr 1fr;gap:18px}
+.lane{border:1px solid var(--line);border-radius:10px;padding:14px}
+.lane.vision{border-style:dashed}
+.lane-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}
+.lane-head b{font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.phases{display:grid;gap:10px}
+.lane.road .phases{grid-template-columns:repeat(2,1fr)}
+.phase{border-top:4px solid var(--line);padding-top:8px}
+.phase.now{border-color:var(--accent)}
+.phase.next{border-color:var(--ok)}
+.phase .pay{font-size:12px;color:var(--muted);margin-top:6px}
+.new{color:var(--accent);font-weight:700}
+
+/* Ladder */
+.ladder{display:flex;flex-direction:column-reverse;gap:8px}
+.rung{display:grid;grid-template-columns:44px 1fr 1.4fr auto;gap:12px;align-items:center;background:var(--tile);border-radius:8px;padding:10px 14px;border-left:4px solid var(--line)}
+.rung .n{font-size:26px;font-weight:800;color:var(--accent);line-height:1}
+.rung.built{border-left-color:var(--accent)}
+.rung.road{border-left-color:var(--ok)}
+.rung.vis{border-left-style:dashed;border-left-color:var(--muted)}
+.rung:nth-child(5){margin-right:16%}.rung:nth-child(4){margin-right:12%}.rung:nth-child(3){margin-right:8%}.rung:nth-child(2){margin-right:4%}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+
+@media (max-width:760px){
+  .slide{padding:22px 16px 60px}
+  .foot{left:16px;right:16px;flex-direction:column;gap:2px}
+  .lanes,.g2,.lane.road .phases{grid-template-columns:1fr}
+  .rung{grid-template-columns:34px 1fr;margin-right:0 !important}
+  .rung > :nth-child(3),.rung > :nth-child(4){grid-column:2}
+  .tablewrap{overflow-x:auto}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<!-- 10a ROADMAP vs EXPANSION -->
+<section class="slide">
+  <div class="kicker">Roadmap vs expansion vision</div>
+  <h1>We commit to four steps. The rest is where the registry takes us.</h1>
+  <div class="lanes">
+    <div class="lane road">
+      <div class="lane-head"><b>Roadmap · committed</b><span class="muted" style="font-size:12px">sold per plant</span></div>
+      <div class="phases">
+        <div class="phase now">
+          <h2>0 · MVP <span class="ok">built this weekend</span></h2>
+          <p>Photos + equipment list → parts identified → lifecycle check → CapEx by year, line stoppers, shelf-first sourcing. Accuracy measured against planted answers.</p>
+        </div>
+        <div class="phase next">
+          <h2>1 · Plant assessment</h2>
+          <p>Capture on a site walk. <span class="new">Review queue</span> with an audit trail. <span class="new">Reconciliation</span> of the plant's own list against what we found. <span class="new">Report</span> for the CapEx committee or the appraiser.</p>
+          <p class="pay">Per-plant assessment fee · also sold as a deal module</p>
+        </div>
+        <div class="phase next">
+          <h2>2 · Living registry</h2>
+          <p>Stays current: lifecycle alerts, rescans, <span class="new">import from maintenance and stock systems</span>, <span class="new">accounts with each company's data kept separate</span>. Knowledge base grows with every scan.</p>
+          <p class="pay">Subscription per plant = a share of audited savings</p>
+        </div>
+        <div class="phase next">
+          <h2>3 · Sourcing</h2>
+          <p>Shelf first across plants, then live offers through official APIs and partners. Successor advice, scarcity alerts, <span class="new">spare transfer requests</span>. A person approves every purchase.</p>
+          <p class="pay">Same subscribers · later a take rate through partners</p>
+        </div>
+      </div>
+    </div>
+    <div class="lane vision">
+      <div class="lane-head"><b>Expansion vision</b><span class="warn">not committed</span></div>
+      <div class="phases">
+        <div class="phase">
+          <h2>4 · Portfolio network</h2>
+          <p>Across a company's plants and a fund's companies: pooled spares, shared buying, standard parts, benchmarks.</p>
+          <p class="pay">Portfolio license</p>
+        </div>
+        <div class="phase">
+          <h2>5 · Condition sensing <span class="warn">research in progress</span></h2>
+          <p>Clip-on thermal camera / sensor on the parts the registry ranks as highest risk. Health by measurement, not only by age.</p>
+          <p class="pay">Premium tier · this is when downtime avoided becomes a counted number</p>
+        </div>
+        <div class="phase">
+          <h2>Later</h2>
+          <p>Our own failure models from the history we collect. Verified equipment records for lenders and insurers.</p>
+          <p class="pay">Partners</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="trust"><p><b>Flywheel:</b> every plant scanned → more labeled parts → better knowledge base → better sourcing and risk calls → more plants. <span class="new">Orange</span> = added in the final refinements.</p></div>
+  <div class="foot"><span>Source: docs/plan/roadmap-equipment-xray.md (proposed changes in final-refinements/01)</span><span>10a</span></div>
+</section>
+
+<!-- 10b DATA LADDER -->
+<section class="slide">
+  <div class="kicker">Plants with bad data</div>
+  <h1>Start with a phone camera. Every rung of data narrows the range.</h1>
+  <div class="ladder">
+    <div class="rung built">
+      <div class="n">0</div>
+      <div><h2>Photos only</h2><p class="muted">Nameplates and open cabinets</p></div>
+      <p>Registry of critical parts, lifecycle status, CapEx range (wide)</p>
+      <span class="ok">in the demo</span>
+    </div>
+    <div class="rung built">
+      <div class="n">1</div>
+      <div><h2>+ Equipment list</h2><p class="muted">Any export, any column names</p></div>
+      <p>What the list misses or gets wrong; which parts stop which line</p>
+      <span class="ok">in the demo</span>
+    </div>
+    <div class="rung built">
+      <div class="n">2</div>
+      <div><h2>+ Storeroom stock</h2><p class="muted">Descriptions as typed</p></div>
+      <p>Shelf-first sourcing across plants, idle spares, duplicates under two names</p>
+      <span class="ok">in the demo</span>
+    </div>
+    <div class="rung road">
+      <div class="n">3</div>
+      <div><h2>+ Maintenance history</h2><p class="muted">Work orders, failures</p></div>
+      <p>Failure rates from the plant's own record; savings that can be audited</p>
+      <span class="muted" style="font-size:11px;font-weight:700">roadmap</span>
+    </div>
+    <div class="rung vis">
+      <div class="n">4</div>
+      <div><h2>+ Condition sensing</h2><p class="muted">Clip-on thermal camera / sensor</p></div>
+      <p>Health measured on the few parts that matter most; downtime avoided becomes countable</p>
+      <span class="warn">research in progress</span>
+    </div>
+  </div>
+  <div class="trust"><p><b>Bad records are a finding, not a blocker.</b> The photo is the ground truth. Less data gives a wider range, never a made-up number, and a person confirms every low-confidence reading.</p></div>
+  <div class="foot"><span>Rungs 0–2 run in the demo on a fictional portfolio; accuracy measured on rendered test photos</span><span>10b</span></div>
+</section>
+
+<!-- 10c CONDITION SENSING -->
+<section class="slide">
+  <div class="kicker">Expansion · condition sensing <span class="warn">hypothesis until the research lands</span></div>
+  <h1>The registry says where to look. A thermal sensor says how it is doing.</h1>
+  <div class="g2">
+    <div class="card">
+      <h2>Why heat</h2>
+      <ul>
+        <li>Failing drives, power supplies and loose connections tend to run hot before they stop <span class="warn">⚠ cite</span></li>
+        <li>Thermal checks of electrical cabinets are already normal maintenance practice <span class="warn">⚠ cite</span></li>
+        <li>Today our health status comes from age and lifecycle. Heat adds a measurement.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Why us</h2>
+      <ul>
+        <li>The registry already ranks the cabinets that matter: line stopper, discontinued, no spare at any plant</li>
+        <li>A plant needs a handful of sensors, not hundreds</li>
+        <li>No hardware of our own at first: an off-the-shelf thermal camera on the same site walk as the photos</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tablewrap" style="margin-top:14px">
+  <table>
+    <tr><th>Step</th><th>What the plant does</th><th>What the registry gains</th><th>Status</th></tr>
+    <tr><td><b>A · Walk</b></td><td>Thermal image next to each cabinet photo</td><td>A baseline temperature per part, attached as evidence</td><td class="muted">after pilots</td></tr>
+    <tr><td><b>B · Clip-on</b></td><td>Fixed sensor on the top-ranked line stoppers</td><td>Trend over time; alert when a part drifts from its baseline</td><td class="muted">expansion</td></tr>
+    <tr><td><b>C · Models</b></td><td>Nothing new</td><td>Remaining life from measured condition + failure history across plants</td><td class="muted">later</td></tr>
+  </table>
+  </div>
+  <div class="trust"><p><b>Open questions for the research:</b> which failures show as heat and how early · reading a cabinet with the door closed · device cost per point · who sells this today · the smallest thing we can show.</p></div>
+  <div class="foot"><span>Asher's research in progress; replace ⚠ items with sources before this goes in the deck</span><span>10c</span></div>
+</section>
+
+</div>
+</body>
+</html>

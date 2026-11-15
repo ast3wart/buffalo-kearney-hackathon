@@ -2,6 +2,14 @@
 
 **Written by Brandon, read by Asher.** Newest on top. Asher: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~11:30 PM · Downtime number rebuilt (PR `brandon/downtime-horizon`) + final deck v1 + ⚠️ Waukesha numbers don't reproduce
+**Status:** 🆕 new
+- **Shared files touched:** `api/main.py` (`/plants/{id}/savings` now also returns `downtime_rescues`; additive), `web/src/app/plants/[plantId]/page.tsx` (top three rescues), `web/src/app/sources/page.tsx` (price, downtime and Tillman rows).
+- **Downtime avoided is much smaller and no longer extrapolated:** only rescues we found, one failure per spare over 3 years, outage capped at 10–25 operating days, 40–80% of output counted. Toledo ~$19k / yr. Line-stopper exposure drops too. Not priced, as before.
+- **⚠️ Open:** the rework report quoted Waukesha $22k and portfolio $61k; a clean rebuild gives $3.8k and $51k. See `docs/plan/final-refinements/04-downtime-waukesha-discrepancy.md`. Don't quote those two until it's closed.
+- **Rebuild `demo.db`** (`python scripts/seed.py data/seed/demo demo.db`) before rehearsing.
+- **New docs:** `docs/plan/final-refinements/` (objections, data ladder, app to-do list) and `docs/plan/final-slidedeck/deck-v1.html` (11 slides + appendix; the case study slot on slide 2 is still empty, and the thermal slide needs your sources).
+
 ### Sat Nov 14, ~10:30 PM · Final numbers (PR #27) + deal lens now includes end-of-life machines + ⚠️ ~110 duplicate "* 2.*" files on main
 **Status:** 🆕 new · PR #27 (`brandon/final-numbers`)
 - **Your option 2 is in:** `valuation.machine_capex(reg, capex_by_year, part_valuation)` = whole machines past typical life (by machine_type, in params) or past the low end and `poor`; low = rebuild at 40% of replacement value, high = replace new; controls on those machines are netted out. `deal_adjustment` includes it by default (`include_machines=True`) and adds `controls_deferred_low/high`, `machine_deferred_low/high`, `machine_ids`. **No API change needed**: `/companies/CO-TILLMAN/deal` picks it up.
