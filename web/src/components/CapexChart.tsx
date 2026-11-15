@@ -28,8 +28,8 @@ export function CapexChart({ rows, fill = false }: { rows: Row[]; fill?: boolean
           formatter={(v: number, n: string, item: { payload?: { low: number; spread: number } }) =>
             n === "low" ? [k(v), "Low estimate"] : [k((item.payload?.low ?? 0) + v), "High estimate"]}
         />
-        <Bar dataKey="low" stackId="a" fill="var(--alert)" />
-        <Bar dataKey="spread" stackId="a" fill="var(--alert-soft)" />
+        <Bar dataKey="low" stackId="a" fill="var(--alert)"  isAnimationActive={false} />
+        <Bar dataKey="spread" stackId="a" fill="var(--alert-soft)"  isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
   );

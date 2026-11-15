@@ -30,7 +30,7 @@ Live marketplace search · sensors · login · mobile field app · trained compo
 ## Demo script (~3 min)
 > **Current version of the demo script: [interfaces.md §3](../../build/interfaces.md)** (6 plants: Halvorsen Toledo/Fort Wayne/Lima, Brightwater Waukesha/Oshkosh, target Tillman Rockford). The steps below are the original outline.
 
-1. "Granite Ridge Capital's Halvorsen Industrial **owns** Toledo and Fort Wayne…" Open the registry: Toledo, lines, machines.
+1. "Stone Rose Capital's Halvorsen Industrial **owns** Toledo and Fort Wayne…" Open the registry: Toledo, lines, machines.
 2. CapEx cliff → click a bar → evidence drawer (photo, KB source, confidence).
 3. SPOF: "Line 2 stops if this discontinued drive fails. Lead time 20 weeks."
 4. Sourcing → **"Fort Wayne already has 2 on the shelf."** ← the portfolio moment

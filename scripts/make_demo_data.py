@@ -22,7 +22,7 @@ VEL = {"maint": 1.05e6, "spares": 0.37e6, "rush": 20e3}  # base values for a ~17
 KB = pd.read_csv(REF / "kb.csv", dtype=str).set_index("kb_id")
 
 # ---------------------------------------------------------------- portfolio
-FUND = ("F-GRANITE", "Granite Ridge Capital")
+FUND = ("F-STONEROSE", "Stone Rose Capital")
 COMPANIES = [  # company_id, name, owned_since, deal_low, deal_high, in fund
     ("CO-HALVORSEN", "Halvorsen Industrial Products", "2019-04-01", "", "", True),
     ("CO-BRIGHTWATER", "Brightwater Packaging Systems", "2023-09-15", "", "", True),

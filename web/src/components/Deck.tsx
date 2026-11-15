@@ -136,7 +136,7 @@ export function Deck({ data }: { data: DeckData }) {
       <p className="mt-6 max-w-2xl text-balance text-2xl text-muted">Know the health of every part in every plant, before one stops a line.</p>
     </div>,
 
-    <Slide key="client" kicker="Our client" title="Granite Ridge Capital">
+    <Slide key="client" kicker="Our client" title="Stone Rose Capital">
       <ClientSlide companies={data.companies} />
     </Slide>,
 
@@ -216,7 +216,7 @@ export function Deck({ data }: { data: DeckData }) {
 
     <div key="demo" className="flex h-full flex-col">
       <div className="flex items-baseline justify-between px-1 pb-2">
-        <span className="text-sm font-semibold uppercase tracking-wider text-accent">Live demo · Granite Ridge Capital</span>
+        <span className="text-sm font-semibold uppercase tracking-wider text-accent">Live demo · Stone Rose Capital</span>
         <span className="text-xs text-muted">click inside to drive the app · click outside, then arrows to leave</span>
       </div>
       <iframe src={`${BASE}/`} className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Equipment Health Index live demo" />
@@ -342,6 +342,14 @@ export function Deck({ data }: { data: DeckData }) {
     ro.observe(el);
     return () => ro.disconnect();
   }, [full]);
+  // Open at a slide from the URL (#3 = slide 3), and keep the URL in sync, so a slide can be linked.
+  useEffect(() => {
+    const n = parseInt(window.location.hash.slice(1), 10);
+    if (n >= 1 && n <= slides.length) setI(n - 1);
+  }, [slides.length]);
+  useEffect(() => {
+    if (window.location.hash !== `#${i + 1}`) window.history.replaceState(null, "", `#${i + 1}`);
+  }, [i]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); go(1); }
