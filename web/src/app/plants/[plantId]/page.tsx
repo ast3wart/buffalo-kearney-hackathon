@@ -71,12 +71,15 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
             <p className="mt-1 text-xs text-muted">Dark = low estimate, light = up to high estimate. Control-part replacements + migration engineering. How we got this: Sources page.</p>
           </Card>
         </div>
-        <Card title="Savings and price (per year)">
+        <Card title="Savings and our fee (per year)">
           {pr ? (
             <div className="space-y-3">
               <Stat label="recurring savings we can audit (whole plant, extrapolated)" value={usd(pr.recurring_savings_base)} tone="ok" />
-              <Stat label={`price per plant (${Math.round((pr.value_capture_pct ?? 0.2) * 100)}% of savings, extrapolated)`} value={`${usd(pr.price_per_plant_base)}`} />
-              <div className="text-xs text-muted">range {usd(pr.price_per_plant_low)}–{usd(pr.price_per_plant_high)} · customer payback {pr.customer_payback_months} months</div>
+              <Stat label="registry subscription per year (fixed fee, tiered by the number of critical parts)" value={`${usd(pr.price_per_plant_base)}`} />
+              <div className="text-xs text-muted">
+                + one-time onboarding $1–2k · sensors: monthly fee per monitored point (price to set) · customer payback {pr.customer_payback_months} months.
+                The fee stays fixed whatever we report, so we never judge our own fee.
+              </div>
               {spr && (
                 <details className="text-xs text-muted">
                   <summary className="cursor-pointer">Evidence: only the parts scanned so far</summary>

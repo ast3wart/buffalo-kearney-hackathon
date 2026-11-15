@@ -10,7 +10,10 @@ export type DeckData = {
     deal: string;
     plants: { name: string; state: string; employees: number; lines: number; machines: number }[];
   }[];
+  toledo: { levers: Record<string, number>; total: number; fee: number; payback: number; dtBase: number; dtLow: number; dtHigh: number } | null;
 };
+
+const k = (v: number) => (v >= 1000 ? `$${(v / 1000).toFixed(v >= 100000 ? 0 : 1).replace(/\.0$/, "")}k` : `$${Math.round(v)}`);
 
 // One idea per slide: a headline, at most one visual or 3 short lines. Details live in the live demo, not on slides.
 function Slide({ kicker, title, children, owner }: { kicker?: string; title: string; children?: React.ReactNode; owner?: string }) {
@@ -24,14 +27,6 @@ function Slide({ kicker, title, children, owner }: { kicker?: string; title: str
   );
 }
 
-function Big({ n, label }: { n: string; label: string }) {
-  return (
-    <div>
-      <div className="tabular text-6xl font-semibold tracking-tight">{n}</div>
-      <div className="mt-2 max-w-xs text-lg text-muted">{label}</div>
-    </div>
-  );
-}
 
 // Data collection workflow (three sources): each source, when it happens, what we collect, and what it changes in the health score.
 function Ladder() {
@@ -221,19 +216,73 @@ export function Deck({ data }: { data: DeckData }) {
       <iframe src="/" className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Equipment Health Index live demo" />
     </div>,
 
-    <Slide key="ask" kicker="Recommendation" title="3 paid plant pilots + 1 portfolio">
-      <div className="grid grid-cols-3 gap-10 pt-6">
-        <Big n="90 days" label="per pilot: registry + Cabinet Monitors on line stoppers" />
-        <Big n="10" label="cabinets monitored per plant to calibrate the score" />
-        <Big n="1" label="Granite Ridge portfolio to prove sharing spares across plants" />
-      </div>
+    <Slide key="savings" kicker="Financials · Cost savings" title="What we count, and what we only show">
+      {data.toledo ? (() => { const t = data.toledo; return (
+      <div className="flex h-full flex-col gap-4">
+        <div className="grid min-h-0 flex-1 grid-cols-2 gap-5">
+          <div className="flex flex-col rounded-2xl border-t-4 border-accent bg-bg p-5">
+            <div className="flex items-center gap-2 text-xl font-semibold">Direct savings <span className="rounded bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent">auditable</span></div>
+            <div className="tabular mt-1 text-5xl font-semibold tracking-tight text-accent">{k(t.total)} / yr</div>
+            <div className="text-sm text-muted">Toledo, each line traced to parts in the registry</div>
+            <div className="mt-3 text-[15px]">
+              {[["Spares carrying cost", t.levers.carrying_cost_avoided], ["Planned instead of emergency buys", t.levers.planned_vs_emergency], ["Purchases a sister plant's spare avoids", t.levers.sister_spare_purchases_avoided], ["Rush premiums", t.levers.rush_premiums_avoided]].map(([l, v]) => (
+                <div key={l as string} className="flex justify-between border-b border-line py-1.5"><span>{l}</span><span className="tabular">{k(v as number)}</span></div>
+              ))}
+            </div>
+            <div className="mt-2 text-[15px]">+ <b>{k(t.levers.spares_inventory_released)}</b> of idle spares cash freed once</div>
+          </div>
+          <div className="flex flex-col rounded-2xl border-2 border-dashed border-line p-5">
+            <div className="flex items-center gap-2 text-xl font-semibold">Downtime avoided <span className="rounded bg-warn-soft px-2 py-0.5 text-xs font-semibold text-warn">estimate</span></div>
+            <div className="tabular mt-1 text-5xl font-semibold tracking-tight text-muted">~${Math.round(t.dtBase / 1000)}k / yr</div>
+            <div className="text-sm text-muted">Toledo, range ${Math.round(t.dtLow / 1000)}–{Math.round(t.dtHigh / 1000)}k</div>
+            <pre className="mt-3 rounded bg-bg px-3 py-2 font-mono text-[13px] leading-relaxed">{`chance it fails × hours the spare saves
+× lost margin per hour
+× share of output never made up`}</pre>
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-[15px]">
+              <li>Only spare rescues the scan actually found</li>
+              <li>One failure per spare, over 3 years, at 10%</li>
+              <li>Outage capped at 10–25 days; 40–80% never made up</li>
+            </ul>
+          </div>
+        </div>
+        <div className="rounded-xl border-l-4 border-accent bg-accent-soft px-5 py-3 text-[17px]">
+          <b>The business case uses only the left side.</b> Downtime depends on judgment calls, so we show it conservatively and never price it.
+        </div>
+      </div>); })() : <div className="text-muted">Start the API to load Toledo&apos;s numbers.</div>}
     </Slide>,
 
-    <div key="end" className="flex h-full flex-col justify-center">
-      <h2 className="text-5xl font-semibold tracking-tight">Know before it stops.</h2>
-      <p className="mt-6 text-2xl text-muted">Records first. A small box where it matters. Statistics that say why.</p>
-    </div>,
-
+    <Slide key="model" kicker="Financials · Business model" title="We charge for what the customer can count, not for what we say they saved">
+      <div className="flex h-full flex-col gap-4">
+        <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-3">
+          {[
+            { n: "1 · One-time", t: "Onboard a plant", d: "First scan: registry, line stoppers, spending by year", p: "$1–2k", u: "flat, per plant" },
+            { n: "2 · Yearly", t: "Registry subscription", d: "Kept current: lifecycle alerts, rescans, spares on every plant's shelf", p: "$4–10k", u: "per plant, tiered by the number of critical parts", hi: true },
+            { n: "3 · Monthly", t: "Sensors", d: "Clip-on sensors on the riskiest parts, hardware included", p: "$ / point", u: "per monitored point", tag: "price to set" },
+          ].map((c, i, arr) => (
+            <Fragment key={c.t}>
+              <div className={`flex flex-col rounded-2xl p-5 ${c.hi ? "bg-accent text-surface" : "bg-bg"}`}>
+                <div className={`text-xs font-semibold uppercase tracking-wider ${c.hi ? "opacity-85" : "text-accent"}`}>{c.n}</div>
+                <div className="mt-1 text-xl font-semibold">{c.t}</div>
+                <div className={`mt-1 text-[15px] leading-snug ${c.hi ? "opacity-90" : "text-muted"}`}>{c.d}</div>
+                <div className={`tabular mt-auto pt-3 text-4xl font-semibold tracking-tight ${c.hi ? "" : "text-accent"}`}>{c.p}</div>
+                <div className={`text-sm ${c.hi ? "opacity-85" : "text-muted"}`}>{c.u}{c.tag && <span className="ml-2 rounded bg-warn-soft px-1.5 py-0.5 text-xs font-semibold text-warn">{c.tag}</span>}</div>
+              </div>
+              {i < arr.length - 1 && <span className="self-center text-2xl text-accent">→</span>}
+            </Fragment>
+          ))}
+        </div>
+        <div className="grid flex-1 grid-cols-2 gap-4">
+          <div className="rounded-2xl bg-bg p-5">
+            <div className="text-xl font-semibold">It grows three ways</div>
+            <div className="mt-2 text-[17px] leading-snug">More plants per company → more sensors per plant → more companies per fund, on one portfolio license</div>
+          </div>
+          <div className="rounded-2xl border-l-4 border-accent bg-accent-soft p-5 text-[17px] leading-snug">
+            {data.toledo ? <><b>Toledo pays {k(data.toledo.fee)} a year and saves {k(data.toledo.total)}: paid back in {data.toledo.payback} months.</b> </> : null}
+            The fee stays fixed whatever we report, so we never judge our own fee.
+          </div>
+        </div>
+      </div>
+    </Slide>,
   ];
 
   const [i, setI] = useState(0);

@@ -23,7 +23,13 @@ async function companyFacts(): Promise<Record<string, { since: string; dealLow: 
 }
 
 export default async function PitchPage() {
-  const [pf, facts] = await Promise.all([tryJSON<Portfolio>("/portfolio"), companyFacts()]);
+  type Sav = { plant_savings: { lever: string; savings_low: number; savings_base: number; savings_high: number }[]; price: { price_per_plant_base: number; recurring_savings_base: number; customer_payback_months: number }[] };
+  const [pf, facts, sv] = await Promise.all([tryJSON<Portfolio>("/portfolio"), companyFacts(), tryJSON<Sav>("/plants/PA/savings")]);
+  const pr = sv.data?.price?.[0];
+  const lv = Object.fromEntries((sv.data?.plant_savings ?? []).map((l) => [l.lever, l.savings_base]));
+  const dt = sv.data?.plant_savings?.find((l) => l.lever === "downtime_avoided");
+  const toledo: DeckData["toledo"] = pr && dt ? { levers: lv, total: pr.recurring_savings_base, fee: pr.price_per_plant_base, payback: pr.customer_payback_months,
+    dtBase: dt.savings_base, dtLow: dt.savings_low, dtHigh: dt.savings_high } : null;
   const plants = pf.data?.plants ?? [];
   const companies: DeckData["companies"] = (pf.data?.companies ?? []).map((c) => ({
     name: c.company_name,
@@ -34,5 +40,5 @@ export default async function PitchPage() {
       .filter((p) => p.company_id === c.company_id)
       .map((p) => ({ name: p.plant_name, state: p.state, employees: Number(p.employees), lines: Number(p.lines), machines: Number(p.machines) })),
   }));
-  return <Deck data={{ companies }} />;
+  return <Deck data={{ companies, toledo }} />;
 }

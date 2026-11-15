@@ -198,7 +198,13 @@ order-by          = failure date − lead time − 14-day buffer`}</F>
         </Section>
 
         <Section id="pricing" n={sec.pricing} title="How we charge">
-          <p><b>Fixed fees: per plant per year</b> (registry, health scores, sourcing) and <b>per Cabinet Monitor per year</b>. No share of savings: savings can&apos;t be audited, so a share of them would make us the judge of our own fee (mentor feedback). Fee amounts: Brandon&apos;s financial model.</p>
+          <p><b>We charge for what the customer can count, not for what we say they saved.</b> Never a share of savings: savings can&apos;t be audited, so a share of them would make us the judge of our own fee (mentor feedback).</p>
+          <T head={["Step", "Price", "What it covers"]} rows={[
+            ["1 · One-time: onboard a plant", "$1–2k flat, per plant", "first scan: registry, line stoppers, spending by year"],
+            ["2 · Yearly: registry subscription", "$4–10k per plant, tiered by the number of critical parts", "kept current: lifecycle alerts, rescans, spares on every plant's shelf"],
+            ["3 · Monthly: sensors", "$ per monitored point (price to set)", "clip-on Cabinet Monitors on the riskiest parts, hardware included"],
+          ]} />
+          <p>Toledo pays ~$9.5k a year against ~$48k of auditable savings: paid back in ~2.4 months. Cost to serve a plant: $0.3–1.8k a year. Tier amounts come from Brandon&apos;s money model (<code>xray/pricing.py</code>); pilots test willingness to pay.</p>
           <p className="text-sm text-muted">The savings model stays as the customer&apos;s business case (payback), not as the price formula. Comparable monitoring sells for ~$900 per machine per year <V chat="unit economics" />.</p>
         </Section>
 
