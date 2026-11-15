@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "22B-B8P0N104",
+  "series": "C",
+  "serial": "460528",
+  "date_code": "",
+  "description": "Drive/variable frequency drive with display showing 0.0 Hz; label reads CAT 22B-B8P0N104, SER C, S/N 460528",
+  "unclear": [],
+  "confidence": 0.85,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0075.jpg"
+}

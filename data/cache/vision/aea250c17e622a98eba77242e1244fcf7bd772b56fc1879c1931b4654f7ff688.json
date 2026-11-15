@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L61",
+  "series": "B",
+  "serial": "730894",
+  "date_code": "",
+  "description": "CAT 1756-L61 controller module; label reads SER B S/N 730894",
+  "unclear": [],
+  "confidence": 0.97,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0050.jpg"
+}

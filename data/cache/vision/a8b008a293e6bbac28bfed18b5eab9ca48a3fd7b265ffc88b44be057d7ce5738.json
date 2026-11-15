@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7315-2AG10-0AB0",
+  "series": "SER D",
+  "serial": "237961",
+  "date_code": "",
+  "description": "PLC CPU module with status LEDs (two green, one red) mounted on rail beside three I/O modules; label reads CAT, SER D, S/N 237961",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0111.jpg"
+}

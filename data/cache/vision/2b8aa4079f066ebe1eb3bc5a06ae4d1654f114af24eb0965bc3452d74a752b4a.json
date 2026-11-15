@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7515-2AM02-0AB0",
+  "series": "B",
+  "serial": "405771",
+  "date_code": "",
+  "description": "Siemens PLC CPU module with status LEDs (two green, one red), mounted on a DIN rail next to two smaller modules",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0086.jpg"
+}

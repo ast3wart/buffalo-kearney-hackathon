@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2711P-T10C22D9P",
+  "series": "C",
+  "serial": "620309",
+  "date_code": "",
+  "description": "Operator terminal (HMI) display showing \"LINE STATUS RUNNING\" with a green status bar; label reads CAT 2711P-T10C22D9P, SER C, S/N 620309",
+  "unclear": [
+    "serial number is small text; digits 620309 may be slightly uncertain"
+  ],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0002.jpg"
+}

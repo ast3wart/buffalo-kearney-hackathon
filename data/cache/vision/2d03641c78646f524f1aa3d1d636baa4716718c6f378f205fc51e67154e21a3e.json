@@ -1,0 +1,16 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6AV6643-0CD01-1AX1",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "HMI panel with blue display showing 'LINE STATUS RUNNING' and a green bar; label has small illegible text below the part number (possibly serial/version line).",
+  "unclear": [
+    "serial",
+    "date_code",
+    "small text line below part number"
+  ],
+  "confidence": 0.85,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0101.jpg"
+}

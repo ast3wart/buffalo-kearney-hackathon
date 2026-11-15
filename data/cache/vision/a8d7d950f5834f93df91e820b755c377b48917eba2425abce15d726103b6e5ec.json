@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L61",
+  "series": "C",
+  "serial": "735340",
+  "date_code": "",
+  "description": "Controller module with status LEDs (two green, one red) mounted in a rack alongside two other modules; label reads CAT 1756-L61, SER C S/N 735340",
+  "unclear": [],
+  "confidence": 0.97,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0063.jpg"
+}

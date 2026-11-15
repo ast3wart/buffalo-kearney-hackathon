@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "E",
+  "serial": "794827",
+  "date_code": "",
+  "description": "Module with status LEDs (two green, one red) mounted on rack with other modules; label reads CAT 1764-LSP, SER E, S/N 794827",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0019.jpg"
+}

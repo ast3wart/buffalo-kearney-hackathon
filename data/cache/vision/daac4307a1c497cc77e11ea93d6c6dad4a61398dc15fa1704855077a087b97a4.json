@@ -1,0 +1,17 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2094-BC01-MP5-S",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "Kinetix 6000 style axis module with green display reading \"AXIS OK\", four gray buttons, and a white label showing CAT number",
+  "unclear": [
+    "series",
+    "serial",
+    "date_code",
+    "small print below catalog number"
+  ],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0060.jpg"
+}

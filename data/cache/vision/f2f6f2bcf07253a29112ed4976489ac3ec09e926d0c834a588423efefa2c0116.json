@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "22B-D010N104",
+  "series": "C",
+  "serial": "630922",
+  "date_code": "",
+  "description": "Variable frequency drive (PowerFlex 40 style) with display showing 0.0 Hz, label reads CAT 22B-D010N104, SER C, S/N 630922",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0055.jpg"
+}

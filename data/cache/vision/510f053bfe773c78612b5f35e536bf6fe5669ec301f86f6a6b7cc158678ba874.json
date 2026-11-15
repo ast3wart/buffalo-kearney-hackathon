@@ -1,0 +1,15 @@
+{
+  "manufacturer": "MITSUBISHI ELE",
+  "part_no": "FX2N-48M",
+  "series": "D",
+  "serial": "331661",
+  "date_code": "",
+  "description": "Mitsubishi PLC base unit with status LEDs (two green, one red), mounted on a DIN rail beside several expansion modules; label is cut off at the right edge.",
+  "unclear": [
+    "manufacturer name truncated after 'ELE'",
+    "part_no truncated after '48M', may continue beyond image edge"
+  ],
+  "confidence": 0.5,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0126.jpg"
+}

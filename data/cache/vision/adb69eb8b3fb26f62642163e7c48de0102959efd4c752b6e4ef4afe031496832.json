@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "22B-D010N104",
+  "series": "D",
+  "serial": "283848",
+  "date_code": "",
+  "description": "Rockwell Automation PowerFlex 4 style AC drive with a display reading 0.0 Hz, mounted on a DIN rail",
+  "unclear": [
+    "date_code"
+  ],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0072.jpg"
+}

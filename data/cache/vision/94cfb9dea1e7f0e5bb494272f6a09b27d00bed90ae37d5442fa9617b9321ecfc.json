@@ -1,0 +1,14 @@
+{
+  "manufacturer": "IDEC",
+  "part_no": "RH2B-UL",
+  "series": "C",
+  "serial": "501652",
+  "date_code": "",
+  "description": "relay",
+  "unclear": [
+    "date_code"
+  ],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0004.jpg"
+}

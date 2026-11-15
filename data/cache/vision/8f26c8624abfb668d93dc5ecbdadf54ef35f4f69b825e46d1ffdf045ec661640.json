@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "25B-B8P0N104",
+  "series": "B",
+  "serial": "478869",
+  "date_code": "",
+  "description": "Drive display showing 0.0 Hz; label reads CAT 25B-B8P0N104, SER B, S/N 478869",
+  "unclear": [],
+  "confidence": 0.8,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0035.jpg"
+}

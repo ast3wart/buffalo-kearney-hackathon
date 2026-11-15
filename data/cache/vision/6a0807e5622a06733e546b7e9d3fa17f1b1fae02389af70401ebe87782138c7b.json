@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "22B-B8P0N104",
+  "series": "",
+  "serial": "837024",
+  "date_code": "",
+  "description": "Drive with display showing 0.0 Hz; label reads CAT 22B-B8P0N104, SER A S/N 837024",
+  "unclear": [
+    "series"
+  ],
+  "confidence": 0.85,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0062.jpg"
+}

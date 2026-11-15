@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7315-2AG10-0AB0",
+  "series": "C",
+  "serial": "637815",
+  "date_code": "",
+  "description": "Siemens PLC CPU module mounted in a control panel rack with status LEDs (two green, one red), next to three smaller modules",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0084.jpg"
+}

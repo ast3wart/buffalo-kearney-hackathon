@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "SER D",
+  "serial": "135415",
+  "date_code": "",
+  "description": "Rockwell Automation controller module with status LEDs (two green, one red), mounted on a rail next to two smaller dark modules",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0007.jpg"
+}

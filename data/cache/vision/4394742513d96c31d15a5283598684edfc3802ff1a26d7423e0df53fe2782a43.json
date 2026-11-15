@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1785-L40B",
+  "series": "SER C",
+  "serial": "451022",
+  "date_code": "",
+  "description": "Allen-Bradley PLC-5 processor module (label reads CAT 1785-L40B, SER C, S/N 451022) mounted beside three smaller dark modules with status LEDs",
+  "unclear": [
+    "serial digits are small and blurry, so 451022 may be misread"
+  ],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0121.jpg"
+}

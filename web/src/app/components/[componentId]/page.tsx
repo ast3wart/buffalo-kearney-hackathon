@@ -100,7 +100,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`${API_URL}/photos/${e.photo.plant_id}/${e.photo.photo_id}.jpg`} alt="label photo" className="w-full rounded border border-line" />
-              <p className="mt-2 text-xs text-muted">{e.photo.photo_id} · {e.photo.rendered === "yes" ? "rendered test label" : "photo"} · quality: {e.photo.quality}</p>
+              <p className="mt-2 text-xs text-muted">{e.photo.photo_id} · {e.photo.rendered === "yes" ? "rendered photo" : "photo"} · quality: {e.photo.quality}</p>
             </>
           ) : (
             <p className="text-sm text-muted">No photo yet.</p>

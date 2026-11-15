@@ -1,0 +1,15 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7315-2AG10-0AB0",
+  "series": "",
+  "serial": "582863",
+  "date_code": "",
+  "description": "Siemens PLC CPU module (S7-300 style) with status LEDs, mounted beside three other modules; label reads CAT, SER D, S/N 582863",
+  "unclear": [
+    "part_no: characters in '7315' and '10' appear partially obscured/struck through by a smear",
+    "series: 'SER D' may be a series/version indicator but is unclear"
+  ],
+  "confidence": 0.8,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0114.jpg"
+}

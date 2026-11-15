@@ -1,0 +1,15 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7515-",
+  "series": "A",
+  "serial": "986061",
+  "date_code": "",
+  "description": "PLC CPU module with status LEDs (two green, one red), mounted on DIN rail next to three dark I/O modules; label is cut off at the right edge",
+  "unclear": [
+    "part_no (label cut off after '6ES7515-')",
+    "series (only 'SER A' visible, may be truncated)"
+  ],
+  "confidence": 0.2,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0118.jpg"
+}

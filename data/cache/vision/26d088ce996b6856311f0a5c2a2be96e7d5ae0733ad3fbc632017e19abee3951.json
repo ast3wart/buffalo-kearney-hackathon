@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "C",
+  "serial": "510450",
+  "date_code": "",
+  "description": "Rockwell Automation controller module mounted on DIN rail with other modules; status LEDs show green, green, red.",
+  "unclear": [],
+  "confidence": 0.97,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0047.jpg"
+}

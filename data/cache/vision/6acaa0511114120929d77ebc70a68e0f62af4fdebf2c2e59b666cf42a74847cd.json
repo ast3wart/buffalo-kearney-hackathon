@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1769-L32E",
+  "series": "C",
+  "serial": "393948",
+  "date_code": "",
+  "description": "Controller module with status LEDs (green, green, red) mounted on a DIN rail next to three smaller I/O modules; label reads CAT 1769-L32E, SER C, S/N 393948",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0068.jpg"
+}

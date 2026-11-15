@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ABB",
+  "part_no": "ACS550-U1-012A-4",
+  "series": "",
+  "serial": "291742",
+  "date_code": "",
+  "description": "ABB variable frequency drive with display showing 0.0 Hz; label reads CAT ACS550-U1-012A-4, SER A S/N 291742",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0102.jpg"
+}

@@ -63,7 +63,7 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         installed = int(float(c["date_code"])) if str(c.get("date_code", "")) not in ("", "nan") else year - int(lo)
         age = max(0, year - installed)
         life_pct = age / ((lo + hi) / 2)
-        end_year = installed + int(lo)  # conservative: plan for the short end of the life range
+        end_year = installed + round((lo + hi) / 2)  # middle of the typical life range
         # shelf spares elsewhere in the portfolio (not this plant's own)
         shelf = {kb_id: [s for s in shelf_all.get(kb_id, []) if s["plant_id"] != c["plant_id"]]}
         own_spare = any(s["plant_id"] == c["plant_id"] for s in shelf_all.get(kb_id, []))
@@ -71,7 +71,9 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         buyable = [o for o in options if o["kind"] == "listing" and (o.get("trust_score") or 0) >= 0.6 and o.get("condition") != "for_repair"]
         best = min(buyable, key=lambda o: (o.get("price") or 1e12)) if buyable else None
         fastest = min(options, key=lambda o: o.get("lead_time_days") or 1e9) if options else None
-        if fastest:
+        if own_spare:
+            lead = 1  # swap from this plant's own shelf
+        elif fastest:
             lead = int(fastest["lead_time_days"])
         elif k.successor_part_no:
             lead = int(float(k.lead_time_wks_new or 16) * 7) + MIGRATION_EXTRA_DAYS
@@ -82,10 +84,13 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         status = k.lifecycle_status
         line_stop = c.get("criticality") == "line_stop"
         days_left = (order_by - TODAY).days
-        critical = line_stop or status in AT_RISK
-        if (life_pct >= 1.0 and critical and not own_spare) or (line_stop and status in AT_RISK and not own_spare and life_pct >= 0.8):
+        # Asher's rule: ASAP if getting one takes longer than the life left; soon if >= 75% of life is used but
+        # there's still time to get one; otherwise no action needed.
+        life_mid = (lo + hi) / 2
+        days_life_left = (date(installed, 6, 30) + timedelta(days=int(life_mid * 365)) - TODAY).days
+        if days_life_left < lead:
             health = "replace_asap"
-        elif life_pct >= 0.85 or (critical and days_left <= 365) or (line_stop and status in AT_RISK and not own_spare):
+        elif life_pct >= 0.75:
             health = "replace_soon"
         else:
             health = "working"
@@ -96,7 +101,7 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
             action = (f"Covered: a spare is on this plant's own shelf. Swap it in when needed and restock one {order_txt}."
                       + (f" Plan migration to {succ}." if status in AT_RISK and succ else ""))
         elif health == "working":
-            action = "Monitor. No action needed this year."
+            action = "No action needed."
         elif shelf[kb_id]:
             s = shelf[kb_id][0]
             action = (f"Reserve the spare at {s['plant_name']} now; it can be here in ~{TRANSFER_DAYS} days."

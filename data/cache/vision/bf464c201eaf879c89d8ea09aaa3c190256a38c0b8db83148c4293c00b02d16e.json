@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1769-L32E",
+  "series": "D",
+  "serial": "988471",
+  "date_code": "",
+  "description": "Allen-Bradley/Rockwell CompactLogix controller module with status LEDs (two green, one red), mounted beside I/O modules; label reads CAT 1769-L32E, SER D, S/N 988471",
+  "unclear": [
+    "part_no: the 'L' and '3' characters appear partially smudged or obscured"
+  ],
+  "confidence": 0.8,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0065.jpg"
+}

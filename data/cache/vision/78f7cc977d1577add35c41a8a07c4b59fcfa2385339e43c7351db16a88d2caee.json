@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "SER E",
+  "serial": "832079",
+  "date_code": "",
+  "description": "Controller module with three status LEDs (green, green, red) mounted beside other modules; label reads CAT 5069-L320ER, SER E, S/N 832079",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0076.jpg"
+}

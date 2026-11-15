@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ABB",
+  "part_no": "ACS580-01-012A-4",
+  "series": "B",
+  "serial": "666236",
+  "date_code": "",
+  "description": "ABB variable frequency drive (AC drive) with display showing 0.0 Hz and four control buttons",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0115.jpg"
+}

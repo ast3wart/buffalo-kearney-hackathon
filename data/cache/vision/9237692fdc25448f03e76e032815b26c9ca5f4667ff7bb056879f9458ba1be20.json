@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L83E",
+  "series": "C",
+  "serial": "459562",
+  "date_code": "",
+  "description": "Module with status LEDs (two green, one red); label reads CAT 1756-L83E, SER C, S/N 459562",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0045.jpg"
+}

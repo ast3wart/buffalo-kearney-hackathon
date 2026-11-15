@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1747-L542",
+  "series": "B",
+  "serial": "788413",
+  "date_code": "",
+  "description": "Allen-Bradley/Rockwell SLC 500 processor module with three status LEDs (two green, one red); label reads CAT 1747-L542, SER B S/N 788413",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0123.jpg"
+}

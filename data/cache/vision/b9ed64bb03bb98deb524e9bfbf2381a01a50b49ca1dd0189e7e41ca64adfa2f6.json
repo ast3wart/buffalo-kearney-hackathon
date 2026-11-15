@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7313-5BG04-0AB0",
+  "series": "",
+  "serial": "242202",
+  "date_code": "",
+  "description": "Siemens PLC CPU module with status LEDs (green, green, red), mounted on a rack next to other modules. Label reads: SIEMENS, CAT, 6ES7313-5BG04-0AB0, SER E S/N 242202.",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0092.jpg"
+}

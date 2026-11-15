@@ -1,0 +1,17 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2711P-T10C4D8",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "PanelView Plus operator terminal display showing 'LINE STATUS RUNNING' with a green status bar; label has small illegible text below the catalog number",
+  "unclear": [
+    "series",
+    "serial",
+    "date_code",
+    "small text below catalog number"
+  ],
+  "confidence": 0.8,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0017.jpg"
+}

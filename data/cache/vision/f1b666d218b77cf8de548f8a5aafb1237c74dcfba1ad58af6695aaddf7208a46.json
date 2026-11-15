@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "B",
+  "serial": "335364",
+  "date_code": "",
+  "description": "Programmable automation controller module (Compact GuardLogix/CompactLogix style) with three status LEDs (green, green, red), mounted next to other I/O modules on a rail",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0036.jpg"
+}

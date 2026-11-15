@@ -1,0 +1,15 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "25B-D010N104",
+  "series": "D",
+  "serial": "353626",
+  "date_code": "",
+  "description": "Drive with display showing 0.0 Hz; label reads CAT 25B-D010N104, SER D, S/N 353626",
+  "unclear": [
+    "serial (faint, low contrast text)",
+    "series (faint, low contrast text)"
+  ],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0033.jpg"
+}

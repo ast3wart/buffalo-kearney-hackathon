@@ -1,0 +1,17 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6AV2124-0MC01-0AX0",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "HMI operator panel with a display showing LINE STATUS RUNNING and a green bar; the label has a small line of text below the part number that is too blurry to read",
+  "unclear": [
+    "series",
+    "serial",
+    "date_code",
+    "small text line below part number"
+  ],
+  "confidence": 0.85,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0080.jpg"
+}

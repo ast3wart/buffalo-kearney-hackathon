@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "B",
+  "serial": "684128",
+  "date_code": "",
+  "description": "Allen-Bradley/Rockwell MicroLogix processor module (CAT 1764-LSP) mounted on a DIN rail beside three narrow modules; status LEDs show green, green, red.",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0053.jpg"
+}

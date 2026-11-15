@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7515-2AM02-0AB0",
+  "series": "E",
+  "serial": "570027",
+  "date_code": "",
+  "description": "Siemens controller module (CPU) with status LEDs, label reads CAT 6ES7515-2AM02-0AB0, SER E, S/N 570027",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0116.jpg"
+}

@@ -1,0 +1,16 @@
+{
+  "manufacturer": "ROCKWELL AUTOM",
+  "part_no": "1766-L32BW",
+  "series": "E",
+  "serial": "760911",
+  "date_code": "",
+  "description": "Controller module (MicroLogix 1400 style) with status LEDs, mounted next to I/O modules on DIN rail; label cut off at right edge",
+  "unclear": [
+    "manufacturer name truncated at right edge",
+    "part_no may be truncated after 'BW' (e.g., suffix cut off)",
+    "series letter partially legible"
+  ],
+  "confidence": 0.6,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0059.jpg"
+}
