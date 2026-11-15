@@ -33,6 +33,14 @@ LEAD_TIME_WKS_NEW = P(1, 2.5, 4, "assumption: distributor stock for an active pa
 LEAD_TIME_WKS_SUCCESSOR = P(2, 5, 8, "assumption: successor hardware when the part itself can't be bought")
 LEAD_TIME_WKS_UNLISTED = P(8, 14, 20, "assumption: broker search for a discontinued part with no listings")
 MIGRATION_DOWNTIME_HOURS = P(40, 80, 120, "assumption, velocity #5 (kb migration_downtime_hours blank)")
+# A plant without a spare doesn't sit idle for the full lead time: a repair service, a used unit or a temporary
+# bypass gets the line running. Caps hours down on every no-spare path (operating days x operating hours/day).
+OUTAGE_CAP_DAYS = P(10, 15, 25, "assumption: repair service / used unit / bypass restores the line within 2-5 weeks")
+# Share of the lost output that is never made up on later shifts or other lines (only that share is lost margin).
+UNRECOVERED_SHARE = P(0.4, 0.6, 0.8, "assumption; method from docs/research/Manufacturing_Downtime_Cost_Benchmarks "
+                                     "(EV = hours x P(output unrecoverable) x contribution/h)")
+# Downtime avoided is an expected outcome over this horizon, one event per spare (a spare is used once), in PV.
+HORIZON_YEARS = 3
 
 # --- costs
 TRANSFER_FREIGHT = P(100, 155, 400, "estimate, velocity #20 (Nov 14): ~$355 per transfer incl. admin")

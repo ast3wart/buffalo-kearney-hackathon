@@ -39,7 +39,7 @@ downtime_cost_per_hour = revenue_per_day / operating_hours_per_day × contributi
 | Purchases avoided via a sister-plant spare | Σ (part value − transfer cost #20) | per event | ✅ (auditable: PO + transfer) |
 | Planned vs emergency replacement | Σ P(fail) × (emergency − planned cost) | yes (expected) | ✅ with a haircut |
 | Spares inventory released | excess % × spares inventory value | **one-time** | ❌ show it separately (it's cash freed, part of the liquidity story) |
-| Downtime avoided | from `spof` | expected value | ❌ **show it separately, clearly labeled.** No defensible baseline. |
+| Downtime avoided | per sister-plant rescue: PV of P(first failure within `HORIZON_YEARS` = 3) × (hours down without − with, no-spare outage capped at `OUTAGE_CAP_DAYS` 10–25) × $/h × `UNRECOVERED_SHARE` 40–80%; shown ÷ 3 per year. Scanned parts only, **never extrapolated** | expected value, one event per spare | ❌ **show it separately, clearly labeled.** No defensible baseline. Pitch it as "$X at stake if it fails, Y% chance in 3 yrs" (`downtime_rescues`). |
 
 **Coverage scaling:** the $2M spares and $5M maintenance figures are **whole-plant** numbers, but the register covers only a sample of critical machines (~15 per plant). **Scale plant-level levers by the covered share**, or the results will be overstated ($2M ÷ 15 machines ≈ $130k each is only believable in heavy industry).
 

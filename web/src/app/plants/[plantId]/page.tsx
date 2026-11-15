@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getJSON, tryJSON, usd } from "@/lib/api";
+import { getJSON, pct, tryJSON, usd } from "@/lib/api";
 import { Card, HealthBadge, PageHeader, Pending, Pill, Stat } from "@/components/ui";
 import { CapexChart } from "@/components/CapexChart";
 
@@ -17,6 +17,7 @@ type CapexRow = { year: number; capex_low: number; capex_high: number; capex_typ
 type Spof = { component_id: string; kb_id: string; hours_down_low: number; hours_down_high: number; downtime_exposure_per_year_low: number; downtime_exposure_per_year_high: number; why: string; action: string };
 type Lever = { lever: string; savings_low: number; savings_base: number; savings_high: number; one_time: string; in_price_base: string; basis: string };
 type Price = { price_per_plant_low: number; price_per_plant_base: number; price_per_plant_high: number; customer_payback_months: number; recurring_savings_base: number; failed_checks: string; value_capture_pct: number };
+type Rescue = { component_id: string; spare_id: string; spare_plant_id: string; hours_down_without_low: number; hours_down_without_high: number; hours_down_with_low: number; hours_down_with_high: number; at_stake_base: number; p_fail_horizon_base: number; expected_pv_base: number; horizon_years: number };
 type Deal = { deferred_capex_low: number; deferred_capex_high: number; suggested_price_reduction_low: number; suggested_holdback: number; rationale: string };
 
 export default async function PlantPage({ params }: { params: Promise<{ plantId: string }> }) {
@@ -25,7 +26,7 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
     getJSON<Lines>(`/plants/${plantId}/lines`),
     tryJSON<{ capex_by_year: CapexRow[] }>(`/plants/${plantId}/capex`),
     tryJSON<{ spof: Spof[] }>(`/plants/${plantId}/spof`),
-    tryJSON<{ plant_savings: Lever[]; price: Price[]; sample_price: Price[] }>(`/plants/${plantId}/savings`),
+    tryJSON<{ plant_savings: Lever[]; price: Price[]; sample_price: Price[]; downtime_rescues?: Rescue[] }>(`/plants/${plantId}/savings`),
   ]);
   const deal = p.plant.status === "target" ? await tryJSON<{ deal_adjustment: Deal[] }>(`/companies/${(p.plant as { company_id?: string }).company_id}/deal`) : null;
   const d = deal?.data?.deal_adjustment?.[0];
@@ -33,6 +34,7 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
   const capexTotal = (capex.data?.capex_by_year ?? []).reduce((a, r) => [a[0] + r.capex_low, a[1] + r.capex_high], [0, 0]);
   const pr = sav.data?.price?.[0];
   const spr = sav.data?.sample_price?.[0];
+  const rescues = sav.data?.downtime_rescues ?? [];
   const label = (s: string) => s.replace(/_/g, " ");
   const value = p.lines.reduce((a, l) => [a[0] + l.value_low, a[1] + l.value_high], [0, 0]);
   return (
@@ -86,6 +88,21 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
                   </li>
                 ))}
               </ul>
+              {rescues.length > 0 && (
+                <div className="border-t border-line pt-2 text-xs">
+                  <div className="font-medium">Outages a sister-plant spare prevents (if it fails)</div>
+                  <ul className="mt-1 space-y-1 text-muted">
+                    {rescues.slice(0, 3).map((r) => (
+                      <li key={r.component_id}>
+                        <Link href={`/components/${r.component_id}`} className="font-mono hover:underline">{r.component_id}</Link>: spare {r.spare_id} from {r.spare_plant_id} cuts{" "}
+                        {Math.round((r.hours_down_without_low + r.hours_down_without_high) / 2)} h down to {Math.round((r.hours_down_with_low + r.hours_down_with_high) / 2)} h ·{" "}
+                        <span className="text-ink">{usd(r.at_stake_base)} at stake</span> · {pct(r.p_fail_horizon_base)} chance in {r.horizon_years} yrs
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-1 text-muted">Downtime avoided above = expected value of these over {rescues[0].horizon_years} years, per year, scanned parts only. Not in the price.</p>
+                </div>
+              )}
             </div>
           ) : (
             p.plant.status === "target" ? <p className="text-sm text-muted">Not priced yet: this plant is an acquisition target. See the deal view above.</p>
@@ -95,7 +112,7 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
       </div>
       {top.length > 0 && (
         <div className="mt-4">
-          <Card title="Line stoppers · downtime exposure per year (failure odds × hours down × $/hour)">
+          <Card title="Line stoppers · downtime exposure per year (failure odds × hours down × $/hour × share not made up later)">
             <table className="w-full text-sm">
               <thead className="text-left text-xs text-muted">
                 <tr><th className="pb-2">Part</th><th>Hours down if it fails</th><th>Exposure / year</th><th>Why</th></tr>
