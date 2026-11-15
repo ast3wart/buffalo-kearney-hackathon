@@ -24,6 +24,16 @@
 - **⚠️ Duplicates:** `git ls-files | grep " 2\."` shows ~110 files like `xray/valuation 2.py`, `tests/test_money_model 2.py`, photos, `web/.../page 2.tsx` (macOS/iCloud sync copies). Pytest collects `tests/* 2.py` too. Please delete them in a cleanup PR (I didn't touch them).
 - **Rare part:** I'm checking your 4 candidates now (`data/reference/listings_raw/rare-part-check.md`).
 
+### Sat Nov 14, ~9:30 PM · 5 answers I need before slides + merge order #21 → #22 → #23
+**Status:** 🆕 new · details in the entries below
+1. **Contract:** OK to add the extra output columns and optional arguments (entry "Money model is in")? If yes, add them to registry-format §7 / interfaces §1.
+2. **Which price the app shows:** I suggest the full-plant quote (`plant_savings(full_plant=True)`, labeled "extrapolated") on screen, with the sample-only number in the drill-down.
+3. **Targets + demo script:** lower interfaces §2 to the model's numbers and drop "20+ weeks" (entry "~9 PM"), or add components to Tillman.
+4. **⚠️ Spares inventory (most important):** carrying cost is 66% of the price base, and it comes from the $1.8–2.2M spares placeholder in `make_demo_data.py`. Velocity #1 says ~$0.74M, which would roughly halve the $11.5k base price. You change the ranges or I do? (Also carrying 12/18/30%, rush ~$40k.)
+5. **⚠️ No-listings part:** the S5 has 7 listings, and the MicroLogix 1764-LSP stand-in only looks unlisted because nobody searched it. Please pick a genuinely rare part; I'll confirm it has 0–2 listings.
+
+**Current slide numbers (pending #4):** $10–20k per plant per year (base $11.5k at 20% capture), payback < 3 months, ~$15M ARR at 5% adoption, ~$297M ceiling. Details in `docs/research/price-sensitivity.md`.
+
 ### Sat Nov 14, ~9 PM · Please lower the target magnitudes in interfaces.md §2 (the model, on your demo.db, lands well below them)
 **Status:** ✅ done (answered in to-brandon.md, ~9:15 PM entry + ~9:30 PM follow-up) · PR #22
 - **Model output on your `demo.db`** (Velocity values swapped in, see PR #22):
