@@ -23,7 +23,12 @@ const CH: Record<string, string> = { shelf: "Shelf, another plant", successor: "
 export default async function ComponentPage({ params }: { params: Promise<{ componentId: string }> }) {
   const { componentId } = await params;
   const [e, h] = await Promise.all([getJSON<Ev>(`/components/${componentId}/evidence`), getJSON<Health>(`/components/${componentId}/health`)]);
-  const fin = await tryJSON<unknown>(`/plants/${e.component.plant_id}/savings`);
+  const [sp, so] = await Promise.all([
+    tryJSON<{ spof: { component_id: string; hours_down_low: number; hours_down_high: number; downtime_exposure_per_year_low: number; downtime_exposure_per_year_high: number; annual_failure_rate: number; why: string }[] }>(`/plants/${e.component.plant_id}/spof`),
+    tryJSON<{ recommendations: { component_id: string; action: string; reason: string; part_value_low: number | null; part_value_high: number | null }[] }>(`/plants/${e.component.plant_id}/sourcing`),
+  ]);
+  const myS = sp.data?.spof.find((x) => x.component_id === componentId);
+  const myR = so.data?.recommendations.find((x) => x.component_id === componentId);
   const c = e.component;
   const reading = e.evidence ? (JSON.parse(e.evidence.reading_json) as { raw_text: string; read_confidence: number }) : null;
   const options = h.options ?? [];
@@ -42,7 +47,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
             <div>
               <div className="text-xs text-muted">Life used since install ({h.installed ?? "?"})</div>
               <LifeBar pct={h.life_used_pct} />
-              {h.expected_end_year && <div className="mt-1 text-xs text-muted">Expected end of life: {h.expected_end_year} (conservative end of the typical range)</div>}
+              {h.expected_end_year && <div className="mt-1 text-xs text-muted">Expected end of life: {h.expected_end_year} (middle of the typical life range)</div>}
             </div>
             {c.kb_id && <div className="text-sm"><StatusBadge status={String(c.lifecycle_status)} /> {c.family}</div>}
           </div>
@@ -57,7 +62,27 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
           )}
         </Card>
         <Card title="Financial view">
-          {fin.data ? <p className="text-sm">See savings on the plant page.</p> : <Pending what="Cost of waiting vs. replacing now" detail="Brandon's money model" />}
+          {sp.pending || so.pending ? (
+            <Pending what="Cost of waiting vs. replacing now" detail="Brandon's money model" />
+          ) : (
+            <div className="space-y-2 text-sm">
+              {myS ? (
+                <>
+                  <div>Downtime exposure: <b className="text-alert">{usd(myS.downtime_exposure_per_year_low)}–{usd(myS.downtime_exposure_per_year_high)} / yr</b></div>
+                  <div className="text-xs text-muted">{Math.round(myS.annual_failure_rate * 100)}% chance of failing this year × {Math.round(myS.hours_down_low)}–{Math.round(myS.hours_down_high)} h down × line cost per hour</div>
+                </>
+              ) : (
+                <div className="text-muted">Not a line stopper: no downtime exposure counted.</div>
+              )}
+              {myR && (
+                <>
+                  <div>Money model says: <b>{myR.action.replace(/_/g, " ")}</b></div>
+                  <div className="text-xs text-muted">{myR.reason}</div>
+                  {myR.part_value_low ? <div className="text-xs">Part value (real listings): {usd(myR.part_value_low)}–{usd(myR.part_value_high ?? 0)}</div> : null}
+                </>
+              )}
+            </div>
+          )}
         </Card>
       </div>
 

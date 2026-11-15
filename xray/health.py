@@ -133,6 +133,6 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         out.append({**base, "health": health, "life_used_pct": round(life_pct, 2), "installed": installed,
                     "expected_end_year": end_year, "lead_time_days": lead, "order_by": order_by.isoformat(),
                     "order_now": days_left <= 0 and not covered, "covered_by_own_spare": covered, "action": action, "line_stop": line_stop,
-                    "options": sorted(options, key=lambda o: (not o.get("recommended"), o["kind"] != "shelf", o.get("price") or 1e12)),
+                    "options": sorted(options, key=lambda o: (not o.get("recommended"), o["kind"] != "shelf", o.get("condition") == "for_repair", o.get("price") or 1e12)),
                     "best_price": best["price"] if best else None, "n_listings": len([o for o in options if o["kind"] == "listing"])})
     return pd.DataFrame(out)

@@ -368,7 +368,8 @@ def _sourcing_tables():
 def plant_sourcing(plant_id: str) -> dict:
     pv, rec = _sourcing_tables()
     c = components_full()
-    rec = rec.merge(c[["component_id", "plant_id", "part_no", "family", "lifecycle_status", "criticality"]], on="component_id", how="left")
+    extra = [x for x in ["plant_id", "part_no", "family", "lifecycle_status", "criticality"] if x not in rec.columns]
+    rec = rec.merge(c[["component_id", *extra]], on="component_id", how="left")
     return {"part_valuation": records(pv), "recommendations": records(rec[rec.plant_id == plant_id])}
 
 
@@ -384,7 +385,9 @@ def plant_capex(plant_id: str) -> dict:
 def plant_spof(plant_id: str) -> dict:
     (spof,) = _brandon("valuation", "spof")
     _, rec = _sourcing_tables()
-    df = spof(reg(), rec).merge(components_full()[["component_id", "plant_id"]], on="component_id", how="left")
+    df = spof(reg(), rec)
+    if "plant_id" not in df.columns:
+        df = df.merge(components_full()[["component_id", "plant_id"]], on="component_id", how="left")
     return {"spof": records(df[df.plant_id == plant_id])}
 
 
