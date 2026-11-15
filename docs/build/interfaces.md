@@ -52,7 +52,7 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | `POST /scan` | upload a photo → reading → KB match → new component row (the live demo) | `extract`, `matching` |
 
 ### Accepted additions from Brandon's model (Sat ~9 PM)
-- **Optional arguments:** `capex_by_year(..., sourcing_recommendation=None, growth=None, as_of_year)`, `plant_savings(reg, rec, full_plant=False)` (`True` = whole-plant quote, shown on screen with an "extrapolated" label; `False` = the parts in the registry, shown in the drill-down), `deal_adjustment(..., discount_rate=None)`, plus `pricing.deal_fee_check`. All parameters live in `xray/params.py` with ranges and sources.
+- **Optional arguments:** `capex_by_year(..., sourcing_recommendation=None, growth=None, as_of_year)`, `plant_savings(reg, rec, part_valuation=None, spof_table=None, full_plant=False)` (`True` = whole-plant quote, shown on screen with an "extrapolated" label; `False` = the parts in the registry, shown in the drill-down), `deal_adjustment(..., discount_rate=None)`, plus `pricing.deal_fee_check`. All parameters live in `xray/params.py` with ranges and sources.
 - **Extra output columns** (additive, nothing removed):
   - `part_valuation.n_low_trust`
   - `sourcing_recommendation`: plant_id, kb_id, spare_plant_id, transfer_cost_low/high, part_value_low/high
@@ -117,7 +117,7 @@ All dollar figures are **placeholders (Brandon's to refine from research)**, lab
 2. **Plant A registry:** lines → machines → components. Click one → evidence drawer (photo, reading, KB source).
 3. **CapEx cliff:** low/high by year → click a bar → the components driving it.
 4. **Single point of failure:** "Line 2 stops if this discontinued drive fails, and the manufacturer doesn't make it anymore." **Exposure $/yr.**
-5. **Sourcing:** "**Fort Wayne already has 2 on the shelf.**" Then the listings range (≥ 3 listings) and buy / migrate / monitor. (The portfolio page also shows the Lima → Waukesha match across companies.)
+5. **Sourcing:** "**Fort Wayne already has 2 on the shelf.** A broker could have one here in days, but at $4.3–6.5k refurbished, which is more than the successor." Then the listings range (≥ 3 listings) and buy / migrate / monitor. (The portfolio page also shows the Lima → Waukesha match across companies.)
 6. **Savings + price per plant** (from Brandon's model) + **accuracy tile** (precision/recall on the answer key).
 7. **Live photo** of a real nameplate → appears in the registry. Close with the deal view: "**Granite Ridge is about to buy Tillman Machine Works. The same scan prices the deal**" → **pay $X less**.
 
