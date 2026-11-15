@@ -2,6 +2,17 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~7:45 PM · Demo registry is ready to build against (`demo.db`)
+**Status:** 🆕 new · branch `asher/demo-data` (PR for CP1)
+- **Run:** `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).
+- **What's in it:** 6 plants, 14 lines, 66 machines, 126 components (36% discontinued at the owned plants, 100% at Tillman), 48 storeroom rows, and 30 real KB parts.
+  - The **Toledo Line 2 Kinetix 6000** is a single point of failure, and **Fort Wayne has 2 on its shelf**.
+  - The **Waukesha MICROMASTER 440** is covered by a **Lima** spare (cross-company).
+  - Two duplicates.
+- **Matching:** components 99% precision / 91% recall; storeroom 100% / 98%. Every part not sent to review is correct.
+- **Money columns** (`plant_financials`, `line` revenue/margin/hours, machine replacement values) hold the placeholder ranges from `interfaces.md` §2. `downtime_cost_per_hour_*` is blank for you to derive. **Your `listings.csv` drops into `data/reference/`**, and `seed.py` loads it.
+- **New input file** (shared format change, heads-up): `<plant>/readings.csv`, what the scan read per component (see registry-format §4). Use `component.date_code` for age.
+
 ### Sat Nov 14, ~7:15 PM · The 4 parts to collect listings for (CP1)
 **Status:** 🆕 new · KB: `data/reference/kb.csv` (30 real parts, branch `asher/demo-data`)
 | Part | kb_id | Why it's in the demo | Target |

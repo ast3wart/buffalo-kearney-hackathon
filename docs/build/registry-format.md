@@ -49,6 +49,7 @@ data/seed/<portfolio_id>/                 e.g. data/seed/demo/   (hand-made samp
     spares.csv                            ERP storeroom export: what's on the shelf
     work_orders.csv                       maintenance history (optional; failures, repairs)
     photos.csv                            photo manifest: what each photo shows
+    readings.csv                          what the scan read per component (raw text, confidence, date code). Simulates vision for parts without a real photo; the matcher runs on it
     photos/                               the images (nameplates, cabinets)
 data/reference/
   kb.csv                                  knowledge base: one row per part (catalog) number
@@ -163,6 +164,17 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 | downtime_hours | how long the line was down | Asher |
 | parts_cost, labor_cost, rush (yes/no) | | Brandon |
 | notes | free text | Asher |
+
+### `<plant>/readings.csv` (what the scan read: one row per component)
+| Column | Meaning | Owner |
+|---|---|---|
+| reading_id, plant_id, machine_id, component_id | | Asher |
+| photo_id | blank when simulated (no real photo) | Asher |
+| raw_text | exactly what was read off the label (typos, missing dashes, cut-offs) | Asher |
+| component_type_hint | plc / drive / hmi / … as seen | Asher |
+| method | `vision_sim` (simulated scan), `vision` (real photo), `list` (equipment list) | Asher |
+| confidence | read confidence 0–1 | Asher |
+| date_code | year on the label / install year (drives age → CapEx timing) | Asher |
 
 ### `<plant>/photos.csv` (manifest)
 | Column | Meaning | Owner |

@@ -1,0 +1,11 @@
+machine_id,line_id,asset_tag,description,machine_type,make,model,serial,year_built,condition,criticality,redundant_with,replacement_value_low,replacement_value_high,book_value
+PD-L1-M01,PD-L1,PD5295,WEXXAR WFT CASE FORMER #1,packaging,Wexxar,WFT case former,656948,2009,fair,line_stop,,150000.0,400000.0,
+PD-L1-M02,PD-L1,PD6370,DORNER 3200 SERIES #2,conveyor,Dorner,3200 series,646752,2020,good,line_stop,,40000.0,120000.0,
+PD-L1-M03,PD-L1,PD7898,FANUC R-2000IC WELD CELL #3,robot_cell,Fanuc,R-2000iC weld cell,228461,2000,poor,none,,250000.0,500000.0,
+PD-L1-M04,PD-L1,PD5162,CONVEYOR 4 - Hytrol,conveyor,Hytrol,E24 accumulation,290668,2007,fair,none,,40000.0,120000.0,
+PD-L1-M05,PD-L1,PD7125,OTHER 5 - Miller,other,Miller,PipePro welder,252340,1998,good,none,,30000.0,120000.0,
+PD-L2-M01,PD-L2,PD1103,DOUG Axiom,packaging,Douglas Machines,Axiom case packer,822644,2012,good,line_stop,,150000.0,400000.0,
+PD-L2-M02,PD-L2,PD3532,CONVEYOR 2 - Dorner,conveyor,Dorner,3200 series,844502,2000,good,line_stop,,40000.0,120000.0,
+PD-L2-M03,PD-L2,PD7655,FANUC R-2000IC WELD CELL #3,robot_cell,Fanuc,R-2000iC weld cell,870218,2011,fair,degraded,,250000.0,500000.0,
+PD-L2-M04,PD-L2,PD3651,CONVEYOR 4 - Dorner,conveyor,Dorner,3200 series,374846,2021,fair,degraded,,40000.0,120000.0,
+PD-L2-M05,PD-L2,PD8748,MILLER PIPEPRO WELDER #5,other,Miller,PipePro welder,654590,2018,good,degraded,,30000.0,120000.0,
