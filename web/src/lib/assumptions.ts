@@ -18,5 +18,13 @@ export const ASSUMPTIONS: { what: string; value: string; why: string }[] = [
   { what: "Certification, one time", value: "$55k ($25–100k)", why: "Velocity research; safety listing + FCC (pre-certified module, $4.9–10k quotes) + cellular; spread over the rollout" },
   { what: "Line-stopper cabinets per plant", value: "60 (20–150)", why: "Velocity research estimate; no published cabinets-per-plant benchmark, so a planning assumption" },
   { what: "Comparable monitoring price", value: "~$900 / machine / yr ($300–2,400)", why: "Velocity research; e.g. Erbessd $22/device/month + $400 hardware; Augury doesn't publish prices" },
+  { what: "Failure odds used in the dollars", value: "1 − health/100 per year", why: "the part's own health score (age, heat, anomalies, faults); the age table (2–10%/yr, Velocity #4) only for parts with no health evidence" },
+  { what: "Replace ASAP threshold", value: "health ≤ 10", why: "under ~10% chance of surviving the year, or a replacement takes longer than the life left" },
+  { what: "Health floor", value: "1 (never 0)", why: "the model can say 'almost certain to fail', not 'certain'" },
+  { what: "Registry subscription", value: "$4–10k / plant / yr", why: "fixed fee tiered by the number of critical parts; amounts from Brandon's money model; never a share of savings" },
+  { what: "Onboarding", value: "$1–2k per plant, once", why: "first scan: registry, line stoppers, spending by year" },
+  { what: "Sensor price", value: "$50 / point / month (illustrative)", why: "price to set; used only for the $1–4M portfolio example; comparable monitoring ~$900 / machine / yr (Velocity)" },
+  { what: "Typical PE portfolio", value: "10–20 companies, 30–100 plants", why: "planning assumption for a mid-market industrial fund" },
+  { what: "Downtime horizon", value: "one failure per spare, 3 years, 10% discount", why: "conservative; outage capped at 10–25 operating days, 40–80% of lost output never made up" },
   { what: "Sensor data in the demo", value: "simulated", why: "no hardware built; data is in the exact format the device would send" },
 ];

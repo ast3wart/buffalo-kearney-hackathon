@@ -49,7 +49,7 @@ const SECTIONS = [
   { id: "capex", title: "CapEx cliff and order-by dates", keywords: "capex cliff replacement migration order by lead time buffer" },
   { id: "sourcing", title: "Sourcing and where to buy", keywords: "listings shelf successor distributor authorized counterfeit trust" },
   { id: "hardware", title: "Cabinet Monitor: design and economics", keywords: "hardware device cabinet monitor bom cost install certification cellular mlx90640 esp32 diagram" },
-  { id: "pricing", title: "How we charge", keywords: "pricing fixed fee per plant per device revenue share conflict of interest" },
+  { id: "pricing", title: "How we charge, savings and revenue", keywords: "pricing fixed fee subscription onboarding sensors per point revenue share conflict of interest direct savings carrying cost rush premiums emergency 48.6k 9.7k payback portfolio 1-4M market 25,800" },
   { id: "proof", title: "Proof: what we measured", keywords: "accuracy precision recall planted failures false alarms test factory" },
   { id: "downtime14", title: "The $1.4T on the problem slide", keywords: "1.4 trillion downtime cost siemens fortune 500 11% revenue unplanned" },
   { id: "eol83", title: "How much automation is end-of-life (83%)", keywords: "83% discontinued end-of-life audit siemens 699 843 obsolete representative" },
@@ -202,14 +202,28 @@ order-by          = failure date − lead time − 14-day buffer`}</F>
           <p className="text-sm text-muted">Read-only to plant equipment, own cellular link (not on the plant network), no inbound ports. Before quoting: qualify the clamps, confirm camera field of view in a real cabinet, test LTE-M inside a closed steel cabinet. Diagram source: <code>docs/plan/hardware/cabinet-monitor-diagram.tex</code> (TikZ).</p>
         </Section>
 
-        <Section id="pricing" n={sec.pricing} title="How we charge">
+        <Section id="pricing" n={sec.pricing} title="How we charge, savings and revenue">
           <p><b>We charge for what the customer can count, not for what we say they saved.</b> Never a share of savings: savings can&apos;t be audited, so a share of them would make us the judge of our own fee (mentor feedback).</p>
           <T head={["Step", "Price", "What it covers"]} rows={[
             ["1 · One-time: onboard a plant", "$1–2k flat, per plant", "first scan: registry, line stoppers, spending by year"],
             ["2 · Yearly: registry subscription", "$4–10k per plant, tiered by the number of critical parts", "kept current: lifecycle alerts, rescans, spares on every plant's shelf"],
             ["3 · Monthly: sensors", "$ per monitored point (price to set)", "clip-on Cabinet Monitors on the riskiest parts, hardware included"],
           ]} />
-          <p>Toledo pays ~$9.5k a year against ~$48k of auditable savings: paid back in ~2.4 months. Cost to serve a plant: $0.3–1.8k a year. Tier amounts come from Brandon&apos;s money model (<code>xray/pricing.py</code>); pilots test willingness to pay.</p>
+          <p>Toledo pays ~$9.7k a year against ~$48.6k of auditable savings: paid back in ~2.4 months. Cost to serve a plant: $0.3–1.8k a year. Tier amounts come from Brandon&apos;s money model (<code>xray/pricing.py</code>); pilots test willingness to pay.</p>
+          <T head={["Direct savings at Toledo (slide 8)", "Per year", "How"]} rows={[
+            ["Spares carrying cost", "$16.6k", <>excess spares × carrying cost % <V chat="money thread #2" /></>],
+            ["Planned instead of emergency buys", "$13.7k", <>at-risk parts × P(fail) × (emergency − planned price) <V chat="#5" /></>],
+            ["Purchases a sister plant's spare avoids", "$10.5k", <>P(fail) × (part value − transfer cost) <V chat="#20" /></>],
+            ["Rush premiums", "$7.8k", <>rush premiums × share avoided <V chat="#3" /></>],
+            [<b key="t">Total, auditable</b>, <b key="v">$48.6k</b>, "each line traced to parts in the registry; whole-plant extrapolation by coverage"],
+            ["Idle spares cash, freed once", "$79k", "excess spares inventory released (one-time, not priced)"],
+          ]} />
+          <p><b>Revenue per PE portfolio (slide 9: $1–4M a year).</b> A typical mid-market PE portfolio: 10–20 companies, 30–100 plants.</p>
+          <F>{`registry      = plants × ~$5.9k (demo-plant average)                       = $0.2–0.6M / yr
+sensors       = plants × ~60 line-stopper cabinets × $50 / point / month     = $36k per plant / yr   (illustrative; price to set)
+total         = 30 plants × ($5.9k + $36k) ≈ $1.3M   …   100 plants ≈ $4.2M   → $1–4M / yr
+market        = 25,800 US plants with 100+ employees (Census CBP 2022): registry alone $7.6M / yr at 5%, $152M at all`}</F>
+          <p className="text-sm text-muted">The $50 / point / month sensor price is an assumption for illustration (comparable monitoring sells for ~$900 per machine per year <V chat="unit economics" />). Without sensors one portfolio is ~$0.2–0.6M a year.</p>
           <p className="text-sm text-muted">The savings model stays as the customer&apos;s business case (payback), not as the price formula. Comparable monitoring sells for ~$900 per machine per year <V chat="unit economics" />.</p>
         </Section>
 
