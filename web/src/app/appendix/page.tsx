@@ -51,7 +51,8 @@ const SECTIONS = [
   { id: "hardware", title: "Cabinet Monitor: design and economics", keywords: "hardware device cabinet monitor bom cost install certification cellular mlx90640 esp32 diagram" },
   { id: "pricing", title: "How we charge", keywords: "pricing fixed fee per plant per device revenue share conflict of interest" },
   { id: "proof", title: "Proof: what we measured", keywords: "accuracy precision recall planted failures false alarms test factory" },
-  { id: "eol83", title: "The 83%* on the problem slide", keywords: "83% asterisk discontinued end-of-life audit siemens 699 843 obsolete representative" },
+  { id: "downtime14", title: "The $1.4T on the problem slide", keywords: "1.4 trillion downtime cost siemens fortune 500 11% revenue unplanned" },
+  { id: "eol83", title: "How much automation is end-of-life (83%)", keywords: "83% discontinued end-of-life audit siemens 699 843 obsolete representative" },
   { id: "market", title: "Market, competition, risks", keywords: "market size deals pe competition appraisers risks objections" },
   { id: "assumptions", title: "Every assumption", keywords: "assumptions table values justification" },
 ];
@@ -222,9 +223,14 @@ order-by          = failure date − lead time − 14-day buffer`}</F>
           <p className="text-sm text-muted">Sensor data in the demo is simulated in the exact format the device would send; plants are fictional; part numbers, lifecycle data and listings are real.</p>
         </Section>
 
-        <Section id="eol83" n={sec.eol83} title="The 83%* on the problem slide">
+        <Section id="downtime14" n={sec.downtime14} title="The $1.4T on the problem slide">
+          <p><b>What it is:</b> unplanned downtime costs the world&apos;s 500 largest companies about <b>$1.4 trillion a year, 11% of their revenue</b> (Siemens, <i>The True Cost of Downtime</i>, 2024). <V chat="Manufacturing Equipment Risk Costs" /></p>
+          <p><b>How to say it:</b> it is a cost to the largest companies, not the size of a market, and not specific to mid-market plants. For smaller firms, the same Velocity research found 52% of smaller US manufacturers put an hour of downtime at $50k or more, and 44% have an equipment interruption every month.</p>
+        </Section>
+
+        <Section id="eol83" n={sec.eol83} title="How much automation is end-of-life (83%)">
           <p><b>What it is:</b> one real plant audit published by Siemens (2025): <b>699 of 843</b> automation assets, from 17 manufacturers, were discontinued or end-of-life. <V chat="Manufacturing Equipment Risk Costs" /></p>
-          <p><b>Why the asterisk:</b> it is one plant, from a vendor that sells upgrades, not a national rate. Siemens&apos; other published audits found <b>35%</b> (3,686 filling/packaging assets), <b>59%</b> (914 process assets) and <b>60%</b> (388 utility assets). <V chat="Manufacturing Equipment Risk Costs" /></p>
+          <p><b>Why we don&apos;t headline it:</b> it is one plant, from a vendor that sells upgrades, not a national rate. Siemens&apos; other published audits found <b>35%</b> (3,686 filling/packaging assets), <b>59%</b> (914 process assets) and <b>60%</b> (388 utility assets). <V chat="Manufacturing Equipment Risk Costs" /></p>
           <p><b>What we claim:</b> a large share of the automation in older plants is past its supported life, often a third to most of it. Our own demo portfolio, built on real part numbers and lifecycle data, has <b>32%</b> of critical parts discontinued or end-of-life. No survey measures a national rate, so we never quote one.</p>
         </Section>
 

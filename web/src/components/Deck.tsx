@@ -142,11 +142,10 @@ export function Deck({ data }: { data: DeckData }) {
             <p className="mt-2">The plant follows its maintenance schedule: bearings greased, belts changed, oil sampled.</p>
             <p className="mt-3 text-muted">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
             <p className="mt-3 text-xl font-semibold">It fails. The line stops.</p>
-            <p className="mt-6 text-xs text-muted">* One plant&apos;s audit; how representative it is: see the Appendix.</p>
           </div>
           <div className="grid grid-cols-2 content-start gap-x-8 gap-y-5">
             {[
-              ["83%*", "of automation parts were discontinued or end-of-life"],
+              ["$1.4T", "lost to unplanned downtime every year by the world's 500 largest companies (11% of revenue)"],
               ["55%", "of plants have a plan for obsolete parts. The rest do not."],
               ["44%", "of plants have an equipment interruption every month"],
               ["10–24 wks", "to get a new controller; a discontinued one is resale-only"],
