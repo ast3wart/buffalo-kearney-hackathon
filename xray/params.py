@@ -77,6 +77,7 @@ MAX_PAYBACK_MONTHS = 12
 APPROVAL_CEILING = P(10000, 17500, 25000, "assumption, velocity #19 (plant-manager quick-yes zone)")
 COMPARABLES = P(6000, 8000, 10000, "assumption, velocity #7 (distributor installed-base evaluation)")
 COMPARABLE_BAND = (0.5, 2.0)   # flag a price below 0.5x the low or above 2x the high comparable
-COST_TO_SERVE = P(350, 1100, 3850, "assumption, velocity #18 (API + 4-12 h review, + on-site capture at high)")
+COST_TO_SERVE = P(300, 910, 1840, "estimate, velocity #18 (Nov 14): sonnet-5-5 API $2-40 + 4-12 h review; customer takes photos")
+ONSITE_CAPTURE = P(1000, 1500, 2000, "assumption, velocity #18: optional add-on, 1-2 days if we take the photos")
 MIN_GROSS_MARGIN = 0.60
 MAX_DEAL_FEE_SHARE = 0.10      # deal fee should be <= 10% of what the scan finds (model-spec §2 check 4)
