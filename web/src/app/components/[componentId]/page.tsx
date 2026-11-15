@@ -70,7 +70,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
         </Card>
         <Card title="Financial view">
           {sp.pending || so.pending ? (
-            <Pending what="Cost of waiting vs. replacing now" detail="Brandon's money model" />
+            <Pending what="Cost of waiting vs. replacing now" detail="money model" />
           ) : (
             <div className="space-y-2 text-sm">
               {myS ? (

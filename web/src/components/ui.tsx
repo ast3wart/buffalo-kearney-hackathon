@@ -74,7 +74,7 @@ export function Pill({ children, tone }: { children: ReactNode; tone?: "alert" |
 export function Pending({ what, detail }: { what: string; detail?: string }) {
   return (
     <div className="rounded border border-dashed border-line p-4 text-sm text-muted">
-      <b className="text-ink">{what}</b> appears here when Brandon&apos;s money model lands.
+      <b className="text-ink">{what}</b> appears here once the money model has run.
       {detail && <div className="mt-1 font-mono text-[11px]">{detail}</div>}
     </div>
   );
