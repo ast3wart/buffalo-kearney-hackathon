@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equipment X-Ray Deck v2</title>
+<style>
+/* Tokens carried over from pivot-plan/04-pitch-deck-mockup.html */
+:root{
+  --bg:#e9ebee; --slide:#ffffff; --ink:#14181f; --muted:#5b6472; --line:#d8dce2;
+  --accent:#c2410c; --accent-soft:#fdeee5; --ok:#0f766e; --ok-soft:#e3f4f1; --warn:#a16207; --warn-soft:#fdf5dc;
+  --tile:#f4f5f7;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c0e12; --slide:#161a21; --ink:#e8ebf0; --muted:#9aa3b1; --line:#2a303a;
+    --accent:#fb923c; --accent-soft:#3a2216; --ok:#2dd4bf; --ok-soft:#10302c; --warn:#facc15; --warn-soft:#332b0e; --tile:#1e232c;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c0e12; --slide:#161a21; --ink:#e8ebf0; --muted:#9aa3b1; --line:#2a303a;
+  --accent:#fb923c; --accent-soft:#3a2216; --ok:#2dd4bf; --ok-soft:#10302c; --warn:#facc15; --warn-soft:#332b0e; --tile:#1e232c;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.4 "Segoe UI",system-ui,-apple-system,sans-serif}
+.deck{display:flex;flex-direction:column;align-items:center;gap:24px;padding:24px 16px 90px}
+
+/* Every slide is a fixed 1280x720 canvas, scaled to fit by the script below. */
+.frame{width:calc(1280px*var(--s,1));height:calc(720px*var(--s,1));flex:none}
+.slide{position:relative;width:1280px;height:720px;transform:scale(var(--s,1));transform-origin:0 0;background:var(--slide);border:1px solid var(--line);border-radius:10px;padding:40px 56px 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.slide.appx{border-style:dashed}
+.kicker{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-size:34px;line-height:1.14;margin:6px 0 20px;max-width:1080px;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:20px;margin:0 0 6px;line-height:1.25}
+p,li{font-size:19px;margin:0}
+ul{margin:0;padding-left:1.1em} li{margin:4px 0}
+.sm{font-size:16.5px}.xs{font-size:13px}
+.muted{color:var(--muted)}
+.foot{position:absolute;left:56px;right:56px;bottom:16px;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:16px}
+.row{display:grid;gap:18px}
+.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}.c5{grid-template-columns:repeat(5,1fr)}
+.card{background:var(--tile);border-radius:8px;padding:18px 20px}
+.big{font-size:68px;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-.02em}
+.mid{font-size:38px;font-weight:800;color:var(--accent);line-height:1.08;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.trust{background:var(--ok-soft);border-left:4px solid var(--ok);padding:14px 18px;border-radius:6px}
+.tag{font-size:11.5px;font-weight:700;padding:1px 7px;border-radius:4px;white-space:nowrap;vertical-align:middle}
+.tag.warn{background:var(--warn-soft);color:var(--warn)}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}
+.tag.plain{background:var(--tile);color:var(--muted)}
+.new{color:var(--accent);font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:17.5px}
+th,td{border-bottom:1px solid var(--line);padding:11px 10px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:13px}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Dense slides keep the smaller scale */
+.dense h2{font-size:17.5px;margin-bottom:4px}.dense p,.dense li{font-size:16px}.dense .sm{font-size:15px}.dense .xs{font-size:12.5px}
+.dense .row{gap:14px}.dense .card{padding:13px 16px}.dense .mid{font-size:32px}.dense table{font-size:15px}.dense th,.dense td{padding:8px 10px}
+.dense .trust{padding:11px 16px}
+/* Title */
+.title-slide{padding:0;flex-direction:row}
+.title-slide .txt{flex:1;padding:56px 48px 0 56px;display:flex;flex-direction:column;justify-content:center;background:linear-gradient(135deg,var(--slide) 60%,var(--accent-soft))}
+.title-slide h1{font-size:54px;max-width:none;margin:14px 0 22px}
+.title-slide .pic{width:470px;background:#222 center/cover no-repeat}
+
+/* Case study slot */
+.slot{border:2px dashed var(--accent);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;background:var(--accent-soft)}
+.slot .line{border-top:1px dashed var(--line);padding-top:7px}
+.slot .line b{display:block;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.slot .fill{color:var(--muted);font-style:italic;font-size:14.5px}
+
+/* Flow */
+.flow{display:flex;align-items:stretch;gap:10px}
+.flow .card{flex:1}
+.arrow{align-self:center;color:var(--accent);font-weight:800;font-size:22px}
+
+/* Lanes + phases */
+.lanes{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.lane{border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+.lane.vision{border-style:dashed}
+.lane-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:8px}
+.lane-head b{font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.phases{display:grid;gap:18px}
+.lane.road .phases{grid-template-columns:1fr 1fr}
+.phase{border-top:4px solid var(--line);padding-top:7px}
+.phase.now{border-color:var(--accent)}.phase.next{border-color:var(--ok)}
+.phase{padding-bottom:10px}
+.phase p{font-size:18px}
+.phase .pay{font-size:14.5px;color:var(--muted);margin-top:6px}
+
+/* Ladder */
+.ladder{display:flex;flex-direction:column-reverse;gap:11px}
+.rung{display:grid;grid-template-columns:48px 280px 1fr auto;gap:16px;align-items:center;background:var(--tile);border-radius:8px;padding:15px 18px;border-left:4px solid var(--line)}
+.rung .n{font-size:28px;font-weight:800;color:var(--accent);line-height:1}
+.rung.built{border-left-color:var(--accent)}.rung.road{border-left-color:var(--ok)}
+.rung.vis{border-left-style:dashed;border-left-color:var(--muted)}
+.rung:nth-child(5){margin-right:16%}.rung:nth-child(4){margin-right:12%}.rung:nth-child(3){margin-right:8%}.rung:nth-child(2){margin-right:4%}
+
+/* Matrix */
+.matrix{position:relative;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);margin:4px 0 24px 26px;height:400px}
+.matrix .q{position:absolute;width:50%;height:50%}
+.dot{position:absolute;transform:translate(-50%,-50%);background:var(--tile);border:1px solid var(--line);border-radius:14px;padding:4px 11px;font-size:13.5px;white-space:nowrap}
+.dot.us{background:var(--accent);color:#fff;border:none;font-weight:700}
+.axis-x{position:absolute;bottom:-24px;left:0;right:0;display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.axis-y{position:absolute;left:-26px;top:0;bottom:0;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+
+.funnel{display:flex;flex-direction:column;align-items:center;gap:8px}
+.funnel .tier{background:var(--tile);border-radius:6px;padding:9px 14px;text-align:center}
+
+/* v2: chain, hardware flow, fill-in slots, formulas */
+.chain{display:flex;align-items:stretch;gap:8px}
+.chain .card{flex:1;text-align:center;display:flex;flex-direction:column;justify-content:center;padding:14px 10px}
+.rung.focus{background:var(--accent-soft);border-left:4px solid var(--accent)}
+.hw{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.hw .step{background:var(--tile);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;position:relative}
+.hw .step h2{font-size:17px}.hw .step p{font-size:14.5px}
+.hw .step .k{font-size:22px;font-weight:800;color:var(--accent);line-height:1}
+.fillin{border:2px dashed var(--accent);border-radius:6px;padding:6px 8px;font-size:12.5px;font-style:italic;color:var(--muted);background:var(--accent-soft);margin-top:auto}
+.fillin b{font-style:normal;color:var(--accent);font-size:11px;letter-spacing:.05em;text-transform:uppercase;display:block}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14.5px;background:var(--tile);border-radius:6px;padding:8px 12px;margin-top:8px;line-height:1.45}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.steps .card{padding:12px 12px}.steps .card h2{font-size:16px}.steps .card p{font-size:14px}
+.steps .k{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:.05em}
+/* Controls */
+.nav{position:fixed;bottom:14px;right:16px;display:flex;gap:8px;align-items:center;background:var(--slide);border:1px solid var(--line);border-radius:20px;padding:6px 10px;font-size:13px;z-index:5}
+.nav button{background:none;border:1px solid var(--line);color:var(--ink);border-radius:14px;padding:3px 10px;cursor:pointer;font:inherit}
+.present{background:#000}
+.present .deck{min-height:100vh;justify-content:center;padding:0;gap:0}
+.present .frame{display:none}.present .frame.on{display:block}
+.present .slide{border:none;border-radius:0}
+@page{size:1280px 720px;margin:0}
+@media print{
+  html,body{background:#fff}.nav{display:none}.deck{padding:0;gap:0;display:block}
+  .frame{width:1280px !important;height:720px !important;page-break-after:always;break-after:page}
+  .slide{transform:none !important;border:none;border-radius:0;box-shadow:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 1 TITLE -->
+<div class="frame"><section class="slide title-slide">
+  <div class="txt">
+    <div class="kicker">Kearney × PERLab Hackathon · Startup track · Team Buffalo</div>
+    <h1>Equipment X-Ray</h1>
+    <p style="font-size:24px;font-weight:600;max-width:640px;line-height:1.3">The system of record for aging factory equipment.</p>
+    <p class="muted" style="font-size:18px;max-width:620px;margin-top:16px">We tell a plant owner which hidden parts will stop which production lines, what it will cost and when, and we show the evidence behind every number.</p>
+    <p class="muted sm" style="margin-top:36px">Asher + Brandon · November 15, 2026</p>
+  </div>
+  <div class="pic" style="background-image:url('assets/cabinet.jpg')" role="img" aria-label="Allen-Bradley PLC rack inside a machine cabinet"></div>
+  <div class="foot" style="left:auto;right:14px;bottom:8px;color:#fff;text-shadow:0 1px 2px #000"><span>Photo: Elmschrat, CC BY-SA 3.0, Wikimedia Commons</span></div>
+</section></div>
+
+<!-- PROBLEM -->
+<div class="frame"><section class="slide">
+  <div class="kicker">Problem</div>
+  <h1>Owners do not know the health of the equipment their plants run on</h1>
+  <div class="row" style="grid-template-columns:1fr 1.25fr;margin-bottom:18px">
+    <div class="card" style="border-left:4px solid var(--accent)">
+      <p class="xs muted" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700">A typical situation</p>
+      <p style="margin-top:6px">The plant follows its maintenance schedule: bearings greased, belts changed, oil sampled.</p>
+      <p style="margin-top:8px">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
+      <p style="margin-top:8px"><b>It fails. The line stops.</b></p>
+    </div>
+    <div class="row c2">
+      <div class="card"><div class="mid">83%</div><p>of automation parts in one real plant audit were discontinued or end-of-life</p></div>
+      <div class="card"><div class="mid">55%</div><p>of plants have a plan for obsolete parts. The rest do not.</p></div>
+      <div class="card"><div class="mid">44%</div><p>of plants have an equipment interruption every month</p></div>
+      <div class="card"><div class="mid">10–24 wks</div><p>to get a new controller; a discontinued one is resale-only</p></div>
+    </div>
+  </div>
+  <div class="chain">
+    <div class="card"><h2>Unknown health</h2><p class="sm">no list of what is in the cabinets</p></div><div class="arrow">→</div>
+    <div class="card"><h2>Surprise failure</h2><p class="sm">no warning, no spare</p></div><div class="arrow">→</div>
+    <div class="card"><h2>Lost output</h2><p class="sm">days, sometimes weeks</p></div><div class="arrow">→</div>
+    <div class="card" style="background:var(--accent-soft)"><h2>Lost revenue</h2><p class="sm">and spending nobody budgeted</p></div>
+  </div>
+  <div class="foot"><span>Siemens obsolescence audit 2025 (699 of 843 parts, one plant) · ABB / Sapio 2025, n = 3,600 · distributor lead times Q1 2026 · the situation is an illustration, not a named case</span><span>2</span></div>
+</section></div>
+
+<!-- SOLUTION LADDER -->
+<div class="frame"><section class="slide">
+  <div class="kicker">Solution</div>
+  <h1>Start with what the plant has. Hardware closes the gap.</h1>
+  <div class="ladder">
+    <div class="rung built"><div class="n">0</div><div><h2>Photos</h2><p class="sm muted">Nameplates and open cabinets</p></div><p class="sm">What is installed, and whether it is still made</p><span class="tag ok">in the demo</span></div>
+    <div class="rung built"><div class="n">1</div><div><h2>+ Equipment list</h2><p class="sm muted">Any export</p></div><p class="sm">Which parts stop which line</p><span class="tag ok">in the demo</span></div>
+    <div class="rung built"><div class="n">2</div><div><h2>+ Storeroom stock</h2><p class="sm muted">Descriptions as typed</p></div><p class="sm">Spares on any plant's shelf; where to buy the rest</p><span class="tag ok">in the demo</span></div>
+    <div class="rung road"><div class="n">3</div><div><h2>+ Maintenance history</h2><p class="sm muted">Work orders, failures</p></div><p class="sm">Failure rates from the plant's own record</p><span class="tag plain">next</span></div>
+    <div class="rung focus"><div class="n">4</div><div><h2>+ Sensing hardware</h2><p class="sm muted">Clip-on thermal camera</p></div><p class="sm"><b>Health measured, not estimated from age.</b> Anomalies caught before the part fails.</p><span class="tag warn">in design</span></div>
+  </div>
+  <div class="trust" style="margin-top:12px;padding:10px 18px"><p class="sm"><b>AI reads every source</b> (photos, lists, sensor data) into one health record per part. Less data gives a wider range, never a made-up number.</p></div>
+  <div class="foot"><span>Rungs 0–2 run in the demo on a fictional portfolio · the sensing hardware is in design, not built</span><span>3</span></div>
+</section></div>
+
+<!-- SOLUTION HARDWARE -->
+<div class="frame"><section class="slide">
+  <div class="kicker">Solution · the hardware <span class="tag warn">Asher: fill the dashed boxes</span></div>
+  <h1>A sensor that knows what it is looking at</h1>
+  <div class="row" style="grid-template-columns:300px 1fr;gap:16px;margin-bottom:14px">
+    <!-- ASHER: replace this box with the device picture or drawing -->
+    <div class="slot" style="justify-content:center;align-items:center;text-align:center;min-height:150px">
+      <span class="tag warn">to add</span>
+      <p class="fill">[Device picture or drawing: thermal camera clipped inside / onto a control cabinet]</p>
+    </div>
+    <div class="row c4" style="gap:10px">
+      <div class="slot"><h2 style="font-size:15px">Cost per point</h2><p class="fill">[$ device + $ install]</p></div>
+      <div class="slot"><h2 style="font-size:15px">Works offline</h2><p class="fill">[Yes / how: on-device processing, no plant internet needed]</p></div>
+      <div class="slot"><h2 style="font-size:15px">Where data goes</h2><p class="fill">[Stored on device → synced how → who can see it]</p></div>
+      <div class="slot"><h2 style="font-size:15px">Impact</h2><p class="fill">[Warning time before failure; failures it can and cannot catch]</p></div>
+    </div>
+  </div>
+  <!-- ASHER: the five steps are the diagram. Keep or change the black text; replace each dashed line. -->
+  <div class="hw">
+    <div class="step"><span class="k">1</span><h2>Sense</h2><p>Thermal camera on the highest-risk cabinets</p><div class="fillin"><b>Fill</b>[What it measures · how often · range]</div></div>
+    <div class="step"><span class="k">2</span><h2>Know the part</h2><p>The registry tells the device which part it sees and its rated limits</p><div class="fillin"><b>Fill</b>[Which specs are used: max temp, load]</div></div>
+    <div class="step"><span class="k">3</span><h2>Find anomalies</h2><p>Compares each reading with the spec and the part's own baseline</p><div class="fillin"><b>Fill</b>[Rule or model · threshold · false-alarm rate]</div></div>
+    <div class="step"><span class="k">4</span><h2>Alert</h2><p>Flags the part and lowers its health score</p><div class="fillin"><b>Fill</b>[How the alert leaves the device with no internet]</div></div>
+    <div class="step" style="background:var(--accent-soft)"><span class="k">5</span><h2>Act</h2><p>Registry shows the spare on a sister plant's shelf, or where to buy</p><p class="xs muted" style="margin-top:auto">Built: in the demo today</p></div>
+  </div>
+  <div class="foot"><span>The registry already ranks where sensors pay: line stoppers that are discontinued with no spare (14 in the demo) · platform expansion comes later</span><span>4</span></div>
+</section></div>
+
+<!-- DEMO -->
+<div class="frame"><section class="slide">
+  <div class="kicker">Demo</div>
+  <h1>From the fund down to one part, and what it saves</h1>
+  <div class="steps" style="margin-bottom:16px">
+    <div class="card"><span class="k">1</span><h2>Select the fund</h2><p>Granite Ridge. Each company's data stays separate.</p></div>
+    <div class="card"><span class="k">2</span><h2>Plant view</h2><p>Health score by plant, line and machine</p></div>
+    <div class="card"><span class="k">3</span><h2>Live monitoring</h2><p>Sensor readings on the riskiest parts</p></div>
+    <div class="card"><span class="k">4</span><h2>Issue found</h2><p>A discontinued drive that stops Line 2</p></div>
+    <div class="card"><span class="k">5</span><h2>Sourcing</h2><p>Fort Wayne has 2 on the shelf</p></div>
+    <div class="card"><span class="k">6</span><h2>Human review</h2><p>A person confirms before anything is ordered</p></div>
+  </div>
+  <div class="row c3">
+    <div class="card"><h2>Health score</h2><div class="mid">54 / 100</div><p class="sm">Toledo. Portfolio 58. The acquisition target: <b>4</b>.</p>
+      <div class="formula">working 100 · replace soon 50 · replace ASAP 0<br>average, line stoppers count double</div></div>
+    <div class="card"><h2>Money saved</h2><div class="mid">$47.7k / yr</div><p class="sm">Toledo, savings the customer can audit</p>
+      <div class="formula">spares carrying cost + rush premiums<br>+ purchases a sister spare avoids<br>+ planned instead of emergency buys</div></div>
+    <div class="card"><h2>Downtime cut</h2><div class="mid">176 h → 40 h</div><p class="sm">worst case if the Line 2 drive fails, with Fort Wayne's spare. About $84k at stake.</p>
+      <div class="formula">shown as one event, never in the savings</div></div>
+  </div>
+  <div class="foot"><span>Fictional portfolio, real part numbers and resale prices · 127 of 129 part numbers read exactly from rendered test photos · full formulas in the appendix</span><span>5</span></div>
+</section></div>
+
+<!-- CLOSE -->
+<div class="frame"><section class="slide" style="background:linear-gradient(135deg,var(--slide) 55%,var(--accent-soft));justify-content:center;padding-bottom:40px">
+  <div class="kicker">Next</div>
+  <h1 style="font-size:50px;margin-bottom:24px">Run 3 paid plant pilots and 1 portfolio</h1>
+  <div class="row c4" style="max-width:1168px">
+    <div class="phase now"><h2>Now</h2><p>Photos → registry → health, sourcing, savings. <b>Built.</b></p></div>
+    <div class="phase next"><h2>Pilots</h2><p>Site walks at real plants; first sensors on the riskiest cabinets</p></div>
+    <div class="phase next"><h2>Then</h2><p>Live registry per plant, kept current by the hardware</p></div>
+    <div class="phase"><h2>Later</h2><p>Platform: shared spares and buying across a fund's companies</p></div>
+  </div>
+  <p class="muted" style="margin-top:26px;max-width:980px">In the pilots we measure three things: accuracy on real worn nameplates, which findings changed a decision, and whether the owner pays to keep it running.</p>
+  <div class="foot"><span>Equipment X-Ray · Team Buffalo</span><span>6</span></div>
+</section></div>
+
+<!-- FORMULAS -->
+<div class="frame"><section class="slide appx dense">
+  <div class="kicker">Appendix A1 · how the numbers are calculated</div>
+  <h1>Every formula, and which inputs are assumptions</h1>
+  <table>
+    <tr><th style="width:21%">Number</th><th>Formula</th><th style="width:27%">Inputs that are judgment calls</th></tr>
+    <tr><td><b>Part health</b></td><td>Life used = age ÷ typical life. <b>Replace ASAP</b> if the life left is shorter than the time to get one; <b>replace soon</b> at 75% of life used; else working.</td><td>Typical life per part family</td></tr>
+    <tr><td><b>Health score</b> <span class="tag warn">proposed</span></td><td>Working 100, replace soon 50, replace ASAP 0. Weighted average over identified parts; line stoppers count double.</td><td>The point values and the double weight. Not in the app yet.</td></tr>
+    <tr><td><b>Carrying cost avoided</b></td><td>Excess spares (10–25% of stock value) × carrying cost (12–30% a year)</td><td>Excess share</td></tr>
+    <tr><td><b>Rush premiums avoided</b></td><td>Yearly rush premiums × 10–30% avoided</td><td>Share avoided</td></tr>
+    <tr><td><b>Sister-spare purchases avoided</b></td><td>For each part a sister plant can cover: chance of failure per year × (part value − transfer cost)</td><td>Failure odds by age: 3% / 6% / 8% a year for under 10 / 10–20 / over 20 years</td></tr>
+    <tr><td><b>Planned vs emergency</b></td><td>For each at-risk part: chance of failure × replacement cost × emergency premium (10–60%), then halved</td><td>Premium and the 50% haircut</td></tr>
+    <tr><td><b>Whole-plant quote</b></td><td>The two part-level savings ÷ share of the plant scanned (machines scanned ÷ estimated machines, at 0.55 per employee)</td><td>Machines per employee</td></tr>
+    <tr><td><b>Downtime avoided</b> (not in savings)</td><td>Hours saved by the spare × margin per hour × 40–80% not made up later × chance of one failure in 3 years, discounted at 10%. Never scaled up.</td><td>Outage cap (10–25 operating days), share not made up, 3-year horizon</td></tr>
+  </table>
+  <div class="foot"><span>xray/health.py · xray/pricing.py · xray/valuation.py · every parameter with its range and source in xray/params.py</span><span>A1</span></div>
+</section></div>
+
+<!-- PROOF -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A2 · Proof</div>
+  <h1>We built it this weekend, and we measured it</h1>
+  <p class="xs muted" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:8px">Measured</p>
+  <div class="row c3" style="margin-bottom:18px">
+    <div class="card"><div class="mid">127 / 129</div><p>part numbers read exactly from photos</p></div>
+    <div class="card"><div class="mid">112 of 112</div><p>auto-accepted matches correct; 17 sent to a person</p></div>
+    <div class="card"><div class="mid">Live</div><p>a real nameplate in this room, on stage</p></div>
+  </div>
+  <p class="xs muted" style="text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:8px">Found in the demo portfolio · 5 plants + 1 acquisition target</p>
+  <div class="row c3">
+    <div class="card"><div class="mid">38 of 119</div><p>critical parts at risk; <b>14</b> can stop a line</p></div>
+    <div class="card"><div class="mid">176 h → 40 h</div><p>worst-case outage if Toledo's Line 2 drive fails, once Fort Wayne's spare is known. <b>~$84k</b> at stake.</p></div>
+    <div class="card"><div class="mid">$429k</div><p>"pay this much less" for the acquisition target</p></div>
+  </div>
+  <div class="foot"><span>Accuracy measured on rendered test photos of real part labels, against a planted answer key; real worn plates are the first pilot test · outage and dollars from the money model (ranges in the app)</span><span>A2</span></div>
+</section></div>
+
+<!-- BUSINESS CASE -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A3 · business case and price</div>
+  <h1>The savings are the customer's business case, not our fee formula</h1>
+  <div class="row c4" style="margin-bottom:18px">
+    <div class="card"><div class="mid">$47.7k</div><p>a year of auditable savings at Toledo</p></div>
+    <div class="card"><div class="mid">$79k</div><p>spares cash freed once</p></div>
+    <div class="card"><div class="mid">$4–10k</div><p>a year per demo plant: a flat fee by plant size</p></div>
+    <div class="card"><div class="mid">$0.3–1.8k</div><p>our cost to serve a plant for a year</p></div>
+  </div>
+  <table>
+    <tr><th>What we sell</th><th>Who pays</th><th>How</th></tr>
+    <tr><td><b>Plant registry</b></td><td>VP Operations / CFO</td><td>Flat yearly fee per plant, tiered by the number of critical parts</td></tr>
+    <tr><td><b>Sensing hardware</b></td><td>Same</td><td>Per monitored point <span class="tag warn">price to set</span></td></tr>
+    <tr><td><b>Deal or pre-exit scan</b></td><td>Deal team or seller</td><td>Fee per deal (~$15k)</td></tr>
+    <tr><td><b>Portfolio license</b></td><td>PE operating partner</td><td>One license for the fund</td></tr>
+  </table>
+  <div class="trust" style="margin-top:16px"><p class="sm"><b>Why not a share of savings:</b> we would be measuring the savings we get paid on. The fee is fixed; the savings model shows the payback.</p></div>
+  <div class="foot"><span>Savings from the money model, whole-plant quote extrapolated from the scanned parts · fee tiers and willingness to pay are untested</span><span>A3</span></div>
+</section></div>
+
+<!-- CUSTOMER + MARKET -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A4 · Customer and market</div>
+  <h1>Multi-plant manufacturers and private equity portfolios</h1>
+  <div class="row c2">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card"><h2>Who buys</h2><p>Owners of 3+ plants with mixed brands and messy records. <b>Main trigger:</b> risk and budget planning for plants they already own.</p></div>
+      <div class="card"><p><b>VP Operations:</b> uptime, and a spare when it matters</p><p style="margin-top:6px"><b>PE operating partner:</b> savings across the portfolio</p><p style="margin-top:6px"><b>Deal partner:</b> the right price on the next plant</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="card"><div class="mid">25,799</div><p>US plants with 100+ employees</p></div>
+      <div class="card" style="background:var(--accent-soft)"><div class="mid">$7.6M → $152M</div><p>a year at about <b>$5.9k per plant</b>: 5% of plants → all of them. A floor: smallest plants, registry only, no hardware.</p></div>
+      <div class="card"><p><b>Deals alone are small:</b> about $10M a year at most. One way in, not the business.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>US Census County Business Patterns 2022 · price from our money model, revenue from scripts/market_model.py · sensitivity in the appendix</span><span>A4</span></div>
+</section></div>
+
+<!-- 7 COMPETITION -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A5 · Competition</div>
+  <h1>Everyone values the machine. No one keeps the record.</h1>
+  <div class="row" style="grid-template-columns:1.1fr 1fr;gap:28px">
+    <div class="matrix">
+      <div class="q" style="left:50%;top:0;background:var(--accent-soft)"></div>
+      <div class="dot" style="left:20%;top:76%">Appraisers</div>
+      <div class="dot" style="left:30%;top:60%">Operations diligence</div>
+      <div class="dot" style="left:70%;top:68%">Controls diligence</div>
+      <div class="dot" style="left:26%;top:30%">Manufacturer audits</div>
+      <div class="dot" style="left:56%;top:42%">Spare-parts data tools</div>
+      <div class="dot" style="left:24%;top:12%">Sensors / maintenance software</div>
+      <div class="dot us" style="left:78%;top:16%">Equipment X-Ray</div>
+      <div class="axis-x"><span>Single brand / asset value</span><span>Any brand, part-level risk →</span></div>
+      <div class="axis-y"><span>One-time</span><span>Kept current →</span></div>
+    </div>
+    <div>
+      <table>
+        <tr><th>Group</th><th>Where it falls short</th></tr>
+        <tr><td>Appraisers</td><td>Value of the machine, not what keeps it running</td></tr>
+        <tr><td>Controls diligence</td><td>A people service; starts from scratch each time, data not kept</td></tr>
+        <tr><td>Manufacturer audits</td><td>Their own brand only, one time</td></tr>
+        <tr><td>Spare-parts data tools</td><td>The storeroom, not what is installed</td></tr>
+        <tr><td>Sensors / maintenance software</td><td>Need months of data or clean records first</td></tr>
+      </table>
+      <div class="trust" style="margin-top:14px"><p class="sm"><b>Precedent:</b> one 2-day controls check found <b>$4.1M</b> of near-term spending. We make that repeatable and keep the record.</p></div>
+    </div>
+  </div>
+  <div class="foot"><span>Positions are qualitative (market-validation.md §2) · Case: Joltek, vendor-reported</span><span>A5</span></div>
+</section></div>
+
+<!-- OBJECTIONS -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A6 · Objections</div>
+  <h1>What could go wrong, and how we would know</h1>
+  <table>
+    <tr><th style="width:30%">Objection</th><th>Our answer</th><th style="width:24%">The test</th></tr>
+    <tr><td><b>"Plants have terrible data."</b></td><td>We start from photos. Bad records are what we find and fix.</td><td>Share of a plant's list we correct</td></tr>
+    <tr><td><b>"Does it read worn nameplates?"</b></td><td>A person confirms every doubtful reading.</td><td>Accuracy on real pilot photos</td></tr>
+    <tr><td><b>"Your downtime number is a guess."</b></td><td>It is a range, it is never in the price, and it counts only spare rescues we actually found.</td><td>Outages logged in pilots</td></tr>
+    <tr><td><b>"The manufacturers already do this."</b></td><td>Their own brand, once. We cover every brand, kept current, across plants.</td><td>Brands per pilot plant</td></tr>
+    <tr><td><b>"A registry goes stale."</b></td><td>Lifecycle alerts, rescans, then condition sensing.</td><td>Renewal after year one</td></tr>
+  </table>
+  <div class="foot"><span>More objections and answers: docs/plan/final-refinements/01</span><span>A6</span></div>
+</section></div>
+
+<!-- ROADMAP vs EXPANSION -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A7 · Roadmap vs expansion vision</div>
+  <h1>We commit to four steps. The rest is where the registry takes us.</h1>
+  <div class="lanes">
+    <div class="lane road">
+      <div class="lane-head"><b>Roadmap · committed</b></div>
+      <div class="phases">
+        <div class="phase now"><h2>0 · MVP <span class="tag ok">built</span></h2><p>Photos → registry → spending, line stoppers, sourcing</p></div>
+        <div class="phase next"><h2>1 · Plant assessment</h2><p>Site-walk capture, review queue, report</p><p class="pay">Fee per plant</p></div>
+        <div class="phase next"><h2>2 · Living registry</h2><p>Lifecycle alerts, links to maintenance and stock systems</p><p class="pay">Yearly fee per plant</p></div>
+        <div class="phase next"><h2>3 · Sourcing</h2><p>Shelf first, then live offers from trusted sellers</p><p class="pay">Later a take rate</p></div>
+      </div>
+    </div>
+    <div class="lane vision">
+      <div class="lane-head"><b>Expansion vision</b></div>
+      <div class="phases">
+        <div class="phase"><h2>4 · Portfolio network</h2><p>Pooled spares and buying across a fund's companies</p></div>
+        <div class="phase"><h2>5 · Condition sensing</h2><p>Clip-on thermal sensor on the highest-risk parts: health measured, not estimated from age</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="trust" style="margin-top:18px"><p><b>Flywheel:</b> every plant scanned → better knowledge base → better risk and sourcing calls → more plants.</p></div>
+  <div class="foot"><span>Condition sensing is research in progress, not a commitment</span><span>A7</span></div>
+</section></div>
+
+<!-- A2 -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A8</div>
+  <h1>The deal view: the same scan prices an acquisition</h1>
+  <div class="row c3" style="margin-bottom:14px">
+    <div class="card"><h2>Pay less</h2><div class="mid">$429k</div><p class="sm">overdue spending the buyer inherits, low case, at face value</p></div>
+    <div class="card"><h2>Of which</h2><div class="mid">$79k + $350k</div><p class="sm">8 control parts past life with no spare, plus 6 machines from 1992–99 at rebuild cost</p></div>
+    <div class="card"><h2>Hold back at closing</h2><div class="mid">~$1.3–1.7M</div><p class="sm">present value of the gap between the low and high case, at a 25% to 10% discount rate</p></div>
+  </div>
+  <div class="row c2">
+    <div class="card"><h2>Downside if we only sold to deals</h2><p class="sm">About 670 reviewed deals a year × $15k ≈ $10M a year at most: a tool for advisers.</p></div>
+    <div class="card"><h2>Why it still matters</h2><p class="sm">The scan becomes the acquired plant's registry on day one. A deal is a way in, not the business.</p></div>
+  </div>
+  <div class="foot"><span>Tillman Machine Works (fictional target, $28–34M deal) · valuation.deal_adjustment · discount rate per Damodaran Jan 2026, escrow norms per SRS Acquiom 2025</span><span>A8</span></div>
+</section></div>
+
+<!-- A4 -->
+<div class="frame"><section class="slide appx">
+  <div class="kicker">Appendix A9</div>
+  <h1>Where the numbers come from, and how strong each one is</h1>
+  <table>
+    <tr><th>Number</th><th>What it is</th><th>Source</th><th>Evidence</th></tr>
+    <tr><td class="num">25,799</td><td>US plants with 100+ employees</td><td>US Census CBP 2022</td><td><span class="tag ok">measured</span></td></tr>
+    <tr><td class="num">127 / 129 · 100% / 98%</td><td>Photo reading and catalog matching</td><td>Our demo, planted answer key, rendered photos</td><td><span class="tag ok">measured</span></td></tr>
+    <tr><td class="num">30 parts · 42 listings</td><td>Lifecycle status and resale prices</td><td>Manufacturer lifecycle pages; eBay sold, Radwell, DO Supply</td><td><span class="tag ok">real data</span></td></tr>
+    <tr><td class="num">83% (699 of 843)</td><td>Discontinued or end-of-life in one audit</td><td>Siemens case 2025, one plant</td><td><span class="tag warn">vendor</span></td></tr>
+    <tr><td class="num">44% · 55%</td><td>Monthly interruptions · have an obsolescence plan</td><td>ABB / Sapio 2025, n = 3,600</td><td><span class="tag warn">survey</span></td></tr>
+    <tr><td class="num">$4.1M</td><td>Found by a 2-day controls check</td><td>Joltek</td><td><span class="tag warn">vendor</span></td></tr>
+    <tr><td class="num">~$93B</td><td>US maintenance, repair and operations spend</td><td>Mordor Intelligence</td><td><span class="tag plain">estimate</span></td></tr>
+    <tr><td class="num">$5.9k · $7.6M · $429k</td><td>Price, revenue at 5%, deal cut</td><td>Our money and market models</td><td><span class="tag plain">model</span></td></tr>
+  </table>
+  <div class="foot"><span>Full list on the app's Sources page; research in docs/research/</span><span>A9</span></div>
+</section></div>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="Previous slide">←</button>
+  <span id="count">all</span>
+  <button id="next" aria-label="Next slide">→</button>
+  <button id="mode">Present</button>
+</div>
+
+<script>
+const frames=[...document.querySelectorAll('.frame')];
+let i=0,present=false;
+const count=document.getElementById('count');
+function fit(){
+  const s=present?Math.min(innerWidth/1280,innerHeight/720):Math.min(1,(innerWidth-32)/1280);
+  document.documentElement.style.setProperty('--s',s);
+}
+function show(){
+  frames.forEach((f,k)=>f.classList.toggle('on',k===i));
+  count.textContent=present?`${i+1} / ${frames.length}`:'all';
+  if(!present) frames[i].scrollIntoView({behavior:'smooth',block:'center'});
+}
+function go(d){i=Math.max(0,Math.min(frames.length-1,i+d));show();}
+document.getElementById('prev').onclick=()=>go(-1);
+document.getElementById('next').onclick=()=>go(1);
+document.getElementById('mode').onclick=e=>{present=!present;document.body.classList.toggle('present',present);e.target.textContent=present?'Grid':'Present';fit();show();};
+addEventListener('resize',fit);
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(-1);}
+  if(e.key==='p'){document.getElementById('mode').click();}
+});
+fit();
+// Open with #check to list slides whose content runs past the footer (shown in the tab title).
+if(location.hash==='#check'){
+  const bad=[];
+  frames.forEach((f,k)=>{
+    const sl=f.firstElementChild,foot=sl.querySelector('.foot');
+    const limit=sl.classList.contains('title-slide')?sl.getBoundingClientRect().bottom:foot.getBoundingClientRect().top-4;
+    let max=0;[...sl.children].forEach(c=>{if(c!==foot)max=Math.max(max,c.getBoundingClientRect().bottom);});
+    sl.querySelectorAll('*').forEach(c=>{if(c.scrollWidth>c.clientWidth+1&&getComputedStyle(c).overflow==='hidden')bad.push('w'+(k+1));});
+    if(max>limit)bad.push((k+1)+':'+Math.round(max-limit));
+  });
+  document.title='OVERFLOW '+(bad.join(' ')||'none');
+}
+</script>
+</body>
+</html>

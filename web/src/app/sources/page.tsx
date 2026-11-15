@@ -65,9 +65,10 @@ const SECTIONS: { title: string; note?: string; rows: Row[] }[] = [
       { n: "100% precision · 98% recall", what: "Parts matched to the right catalog entry; 112 / 112 auto-accepted parts correct", source: "Measured against the demo's planted answer key", kind: "measured" },
       { n: "30 parts", what: "Lifecycle status (active / end-of-life / discontinued) with date and successor", source: "Manufacturer lifecycle pages: Rockwell, Siemens, ABB, Mitsubishi (each part links its source)", kind: "real data" },
       { n: "42 listings", what: "Real marketplace prices for 6 parts (e.g. refurbished Kinetix 6000 $4.3–6.5k)", source: "Hand-collected Nov 14, 2026 from eBay (sold), Radwell, DO Supply; screenshots in the repo", kind: "real data" },
-      { n: "~$10k / plant / yr", what: "Price: 20% of auditable recurring savings, extrapolated to a whole-plant scan (Toledo; range $1.8–35k)", source: "Our money model (xray/pricing.py); every input labeled in xray/params.py", kind: "model" },
-      { n: "~$200k / yr", what: "Downtime exposure at a plant's riskiest line stoppers (shown separately, not in the price)", source: "Our model: failure odds by age × hours down × $/hour", kind: "model" },
-      { n: "$73k cut + $130k holdback", what: "Tillman deal view: deferred CapEx the buyer inherits", source: "Our model; discount rate per Damodaran Jan 2026, escrow norms per SRS Acquiom 2025", kind: "model" },
+      { n: "~$9.5k / plant / yr", what: "Price: 20% of auditable recurring savings, extrapolated to a whole-plant scan (Toledo; range $1.8–33k; demo-plant average $5.9k)", source: "Our money model (xray/pricing.py); every input labeled in xray/params.py", kind: "model" },
+      { n: "176 h → 40 h · ~$84k at stake", what: "One event: Toledo's Line 2 servo drive fails. Worst-case outage without and with the Fort Wayne shelf spare (at stake: $5–249k)", source: "Our model: outage capped at 10–25 operating days, 40–80% of lost output counted (both assumptions)", kind: "model" },
+      { n: "~$19k / yr", what: "Downtime avoided at Toledo, expected (range $2–71k). Shown separately, never in the price, never scaled up to the whole plant", source: "Our model: only the spare rescues we found; chance of one failure per spare within 3 years, discounted at 10%", kind: "model" },
+      { n: "$429k cut + ~$1.7M holdback", what: "Tillman deal view: overdue spending the buyer inherits ($79k control parts + $350k for 6 machines at end of life); holdback at a 10% discount rate", source: "Our model; discount rate per Damodaran Jan 2026, escrow norms per SRS Acquiom 2025", kind: "model" },
     ],
   },
 ];

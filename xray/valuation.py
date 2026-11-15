@@ -31,7 +31,17 @@ def failure_rate(age: float, kb_low=np.nan, kb_high=np.nan) -> P.P:
 
 
 def hours_down(comp, rec: dict, lead_days: pd.Series, op_hours: float, kb_row: dict) -> tuple[float, float, str]:
-    """(low, high, how) hours the line is down after a failure, given what sourcing says is available."""
+    """(low, high, how) hours the line is down after a failure, given what sourcing says is available.
+    No-spare paths are capped at OUTAGE_CAP_DAYS of operating time (repair service, used unit or bypass)."""
+    lo, hi, how = _hours_down_uncapped(comp, rec, lead_days, op_hours, kb_row)
+    cap_lo, cap_hi = P.OUTAGE_CAP_DAYS.low * op_hours, P.OUTAGE_CAP_DAYS.high * op_hours
+    if rec.get("action") != "use_shelf_spare" and (lo > cap_lo or hi > cap_hi):
+        lo, hi = min(lo, cap_lo), min(hi, cap_hi)
+        how += f" (capped at {P.OUTAGE_CAP_DAYS.low:.0f}-{P.OUTAGE_CAP_DAYS.high:.0f} operating days: repair, used unit or bypass)"
+    return lo, hi, how
+
+
+def _hours_down_uncapped(comp, rec: dict, lead_days: pd.Series, op_hours: float, kb_row: dict) -> tuple[float, float, str]:
     if rec.get("action") == "use_shelf_spare":
         if rec.get("spare_plant_id") in ("", comp.plant_id):
             return P.SWAP_HOURS.low, P.SWAP_HOURS.high, f"swap in shelf spare {rec['spare_id']}"
@@ -52,8 +62,9 @@ def hours_down(comp, rec: dict, lead_days: pd.Series, op_hours: float, kb_row: d
 
 
 def spof(reg: dict, sourcing_recommendation: pd.DataFrame, as_of_year: int = P.AS_OF_YEAR) -> pd.DataFrame:
-    """Line-stopping components and their yearly downtime exposure = P(fail by age) x hours down x $/h.
-    Hours down follow the sourcing recommendation; components on redundant machines score 0."""
+    """Line-stopping components and their yearly downtime exposure = P(fail by age) x hours down x $/h x share of
+    output never recovered. Hours down follow the sourcing recommendation (capped, see hours_down); components on
+    redundant machines score 0. loss_if_fails_* = the cost of one failure (no probability)."""
     cv = component_view(reg, as_of_year)
     cv = cv[cv.criticality == "line_stop"].merge(downtime_cost_per_hour(reg).drop(columns="plant_id"), on="line_id", how="left")
     recs = sourcing_recommendation.set_index("component_id").to_dict("index")
@@ -68,13 +79,16 @@ def spof(reg: dict, sourcing_recommendation: pd.DataFrame, as_of_year: int = P.A
         rec = recs.get(c.component_id, {})
         h_lo, h_hi, how = hours_down(c, rec, ls[ls.kb_id == c.kb_id].lead_days, c.op_hours, k)
         on = 0.0 if c.redundant else 1.0
-        why = (f"{c.line_id} stops if it fails; {c.lifecycle_status}, age "
+        u = P.UNRECOVERED_SHARE
+        loss_lo, loss_hi = on * h_lo * c.dph_low * u.low, on * h_hi * c.dph_high * u.high
+        why =(f"{c.line_id} stops if it fails; {c.lifecycle_status}, age "
                + (f"{c.age:.0f}y" if pd.notna(c.age) else "unknown") + f"; {how}"
                + (f"; backed up by {c.redundant_with}, scores 0" if c.redundant else ""))
         rows.append({"component_id": c.component_id, "line_id": c.line_id, "criticality": c.criticality,
                      "annual_failure_rate": fr.base, "hours_down_low": h_lo, "hours_down_high": h_hi,
-                     "downtime_exposure_per_year_low": round(on * fr.low * h_lo * c.dph_low, 2),
-                     "downtime_exposure_per_year_high": round(on * fr.high * h_hi * c.dph_high, 2),
+                     "downtime_exposure_per_year_low": round(fr.low * loss_lo, 2),
+                     "downtime_exposure_per_year_high": round(fr.high * loss_hi, 2),
+                     "loss_if_fails_low": round(loss_lo, 2), "loss_if_fails_high": round(loss_hi, 2),
                      "why": why, "plant_id": c.plant_id, "kb_id": c.kb_id, "action": rec.get("action", ""),
                      "annual_failure_rate_low": fr.low, "annual_failure_rate_high": fr.high,
                      "downtime_cost_per_hour_low": round(c.dph_low, 2), "downtime_cost_per_hour_high": round(c.dph_high, 2)})
