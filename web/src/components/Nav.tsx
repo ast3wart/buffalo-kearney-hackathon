@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// Add a link here for each screen as the MVP is built (e.g. Plant, Registry, Sourcing).
-const LINKS = [{ href: "/", label: "Overview" }];
+const LINKS = [
+  { href: "/", label: "Portfolio" },
+  { href: "/plants/PA", label: "Plant view" },
+  { href: "/scan", label: "Live scan" },
+];
 
 export function Nav() {
   const path = usePathname();
@@ -16,7 +19,7 @@ export function Nav() {
         </Link>
         <nav className="flex flex-wrap gap-1 text-sm">
           {LINKS.map((l) => {
-            const active = l.href === "/" ? path === "/" : path.startsWith(l.href);
+            const active = l.href === "/" ? path === "/" : path.startsWith(l.href.split("/").slice(0, 2).join("/"));
             return (
               <Link
                 key={l.href}
@@ -28,6 +31,7 @@ export function Nav() {
             );
           })}
         </nav>
+        <span className="ml-auto text-xs text-muted">Demo data: fictional plants, real part numbers</span>
       </div>
     </header>
   );

@@ -49,3 +49,33 @@ export const fmt = {
   ratio: (v: number) => `${v.toFixed(1)}×`,
   rate: (v: number) => `${v.toFixed(1)} / 1,000`,
 };
+
+const STATUS: Record<string, string> = {
+  discontinued: "bg-alert-soft text-alert",
+  end_of_life: "bg-warn-soft text-warn",
+  active_mature: "bg-warn-soft text-warn",
+  active: "bg-accent-soft text-accent",
+  unknown: "bg-bg text-muted",
+};
+
+export function StatusBadge({ status }: { status: string }) {
+  return (
+    <span className={`inline-block rounded px-1.5 py-0.5 text-[11px] font-medium ${STATUS[status] ?? STATUS.unknown}`}>
+      {status.replace(/_/g, " ")}
+    </span>
+  );
+}
+
+export function Pill({ children, tone }: { children: ReactNode; tone?: "alert" | "warn" | "ok" | "muted" }) {
+  const c = tone === "alert" ? "border-alert text-alert" : tone === "warn" ? "border-warn text-warn" : tone === "ok" ? "border-ok text-ok" : "border-line text-muted";
+  return <span className={`inline-block rounded-full border px-2 py-0.5 text-[11px] ${c}`}>{children}</span>;
+}
+
+export function Pending({ what, detail }: { what: string; detail?: string }) {
+  return (
+    <div className="rounded border border-dashed border-line p-4 text-sm text-muted">
+      <b className="text-ink">{what}</b> appears here when Brandon&apos;s money model lands.
+      {detail && <div className="mt-1 font-mono text-[11px]">{detail}</div>}
+    </div>
+  );
+}
