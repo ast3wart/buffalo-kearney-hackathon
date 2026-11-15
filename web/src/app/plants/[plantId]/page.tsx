@@ -90,14 +90,13 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
                 {[...(sav.data?.plant_savings ?? [])].sort((a, b) => Number(b.lever === "downtime_avoided") - Number(a.lever === "downtime_avoided")).map((l) => l.lever === "downtime_avoided" ? (
                   <li key={l.lever} className="border-b border-line pb-2">
                     <div className="flex items-baseline justify-between gap-2 text-base font-semibold">
-                      <span>Downtime avoided</span>
-                      <span className="tabular text-2xl">{atStake > 0 ? usd(atStake) : usd(l.savings_base)}</span>
+                      <span>Downtime avoided <span className="text-xs font-normal text-muted">/ yr</span></span>
+                      <span className="tabular text-2xl">{usd(l.savings_base)}</span>
                     </div>
-                    {atStake > 0 && (
-                      <div className="text-xs text-muted">
-                        output protected across {rescues.length} line-stopping failure{rescues.length === 1 ? "" : "s"} ({Math.round(hoursSaved)} h of stoppage) · expected {usd(l.savings_base)}/yr · not priced
-                      </div>
-                    )}
+                    <div className="text-xs text-muted">
+                      expected value, range {usd(l.savings_low)}–{usd(l.savings_high)} · odds from each part&apos;s health score
+                      {atStake > 0 && <> · {usd(atStake)} of output at stake if the {rescues.length} line-stopper{rescues.length === 1 ? "" : "s"} fail ({Math.round(hoursSaved)} h of stoppage)</>} · not priced
+                    </div>
                   </li>
                 ) : (
                   <li key={l.lever} className="flex justify-between gap-2">

@@ -252,7 +252,7 @@ export function Deck({ data }: { data: DeckData }) {
     </Slide>,
 
     <Slide key="model" kicker="Financials · Business model" title="We charge for what the customer can count, not for what we say they saved">
-      <div className="flex h-full flex-col gap-4">
+      <div className="flex h-full flex-col gap-3">
         <div className="grid grid-cols-[1fr_auto_1fr_auto_1fr] items-stretch gap-3">
           {[
             { n: "1 · One-time", t: "Onboard a plant", d: "First scan: registry, line stoppers, spending by year", p: "$1–2k", u: "flat, per plant" },
@@ -260,25 +260,29 @@ export function Deck({ data }: { data: DeckData }) {
             { n: "3 · Monthly", t: "Sensors", d: "Clip-on sensors on the riskiest parts, hardware included", p: "$ / point", u: "per monitored point", tag: "price to set" },
           ].map((c, i, arr) => (
             <Fragment key={c.t}>
-              <div className={`flex flex-col rounded-2xl p-5 ${c.hi ? "bg-accent text-surface" : "bg-bg"}`}>
+              <div className={`flex flex-col rounded-2xl p-4 ${c.hi ? "bg-accent text-surface" : "bg-bg"}`}>
                 <div className={`text-xs font-semibold uppercase tracking-wider ${c.hi ? "opacity-85" : "text-accent"}`}>{c.n}</div>
                 <div className="mt-1 text-xl font-semibold">{c.t}</div>
                 <div className={`mt-1 text-[15px] leading-snug ${c.hi ? "opacity-90" : "text-muted"}`}>{c.d}</div>
-                <div className={`tabular mt-auto pt-3 text-4xl font-semibold tracking-tight ${c.hi ? "" : "text-accent"}`}>{c.p}</div>
+                <div className={`tabular mt-auto pt-2 text-4xl font-semibold tracking-tight ${c.hi ? "" : "text-accent"}`}>{c.p}</div>
                 <div className={`text-sm ${c.hi ? "opacity-85" : "text-muted"}`}>{c.u}{c.tag && <span className="ml-2 rounded bg-warn-soft px-1.5 py-0.5 text-xs font-semibold text-warn">{c.tag}</span>}</div>
               </div>
               {i < arr.length - 1 && <span className="self-center text-2xl text-accent">→</span>}
             </Fragment>
           ))}
         </div>
-        <div className="grid flex-1 grid-cols-2 gap-4">
-          <div className="rounded-2xl bg-bg p-5">
-            <div className="text-xl font-semibold">It grows three ways</div>
-            <div className="mt-2 text-[17px] leading-snug">More plants per company → more sensors per plant → more companies per fund, on one portfolio license</div>
-          </div>
-          <div className="rounded-2xl border-l-4 border-accent bg-accent-soft p-5 text-[17px] leading-snug">
+        <div className="mb-2 grid flex-1 grid-cols-2 gap-4">
+          <div className="flex flex-col justify-center rounded-2xl border-l-4 border-accent bg-accent-soft px-5 py-3 text-[17px] leading-snug">
             {data.toledo ? <><b>Toledo pays {k(data.toledo.fee)} a year and saves {k(data.toledo.total)}: paid back in {data.toledo.payback} months.</b> </> : null}
             The fee stays fixed whatever we report, so we never judge our own fee.
+          </div>
+          <div className="flex flex-col rounded-2xl bg-ink px-5 py-3 text-surface">
+            <div className="text-xs font-semibold uppercase tracking-wider opacity-70">One PE fund, the kind Kearney serves</div>
+            <div className="tabular mt-1 text-4xl font-semibold tracking-tight">$1–4M <span className="text-xl opacity-80">a year</span></div>
+            <div className="mt-1 text-sm leading-snug opacity-85">10–20 portfolio companies · 30–100 plants · registry + sensors on ~60 line-stopper cabinets per plant</div>
+            <div className="mt-auto border-t border-surface/25 pt-2 text-sm leading-snug">
+              <b>25,800</b> US plants with 100+ employees · registry alone: <b>$7.6M</b> a year at 5% of them, <b>$152M</b> at all
+            </div>
           </div>
         </div>
       </div>
