@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "A",
+  "serial": "854931",
+  "date_code": "",
+  "description": "Controller module with status LEDs (two green, one red) mounted next to three dark I/O modules on a DIN rail",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0071.jpg"
+}

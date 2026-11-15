@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "E",
+  "serial": "125119",
+  "date_code": "",
+  "description": "Dark gray modular PLC processor unit with three status LEDs (two green, one red), mounted on DIN rail next to three smaller I/O modules with wiring above",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0127.jpg"
+}

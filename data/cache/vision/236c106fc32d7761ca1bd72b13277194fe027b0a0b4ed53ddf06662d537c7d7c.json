@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "E",
+  "serial": "115708",
+  "date_code": "",
+  "description": "Processor module with status LEDs (green, green, red) mounted in a rack with adjacent modules; label reads CAT 1764-LSP, SER E, S/N 115708",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0074.jpg"
+}

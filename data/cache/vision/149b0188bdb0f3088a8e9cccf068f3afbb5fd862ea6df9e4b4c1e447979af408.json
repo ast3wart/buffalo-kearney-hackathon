@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ABB",
+  "part_no": "ACS580-01-012A-4",
+  "series": "C",
+  "serial": "683445",
+  "date_code": "",
+  "description": "ABB variable frequency drive with display showing 0.0 Hz and four buttons; label reads CAT ACS580-01-012A-4, SER C, S/N 683445",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0113.jpg"
+}

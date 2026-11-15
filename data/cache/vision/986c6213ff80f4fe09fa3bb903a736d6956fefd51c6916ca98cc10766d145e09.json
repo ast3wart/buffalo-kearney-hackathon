@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2198-D006-ERS3",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "Servo drive with green display reading \"AXIS OK\"; label shows CAT 2198-D006-ERS3",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0003.jpg"
+}

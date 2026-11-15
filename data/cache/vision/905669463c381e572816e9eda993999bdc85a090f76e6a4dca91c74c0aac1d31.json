@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1766-L32BWA",
+  "series": "E",
+  "serial": "492615",
+  "date_code": "",
+  "description": "Allen-Bradley style programmable logic controller (PLC) unit with status LEDs, shown mounted next to three smaller modules on a DIN rail panel",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0061.jpg"
+}

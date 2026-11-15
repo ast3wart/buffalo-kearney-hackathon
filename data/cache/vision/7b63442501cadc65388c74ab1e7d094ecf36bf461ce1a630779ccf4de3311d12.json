@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2711P-T10C22D9P",
+  "series": "A",
+  "serial": "556418",
+  "date_code": "",
+  "description": "",
+  "unclear": [
+    "date_code"
+  ],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0025.jpg"
+}

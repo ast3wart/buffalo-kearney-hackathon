@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7315-2AG10-0AB0",
+  "series": "B",
+  "serial": "502241",
+  "date_code": "",
+  "description": "Siemens PLC CPU module with three status LEDs (two green, one red) mounted in a rack next to other modules; label reads CAT, SER B, S/N 502241",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0094.jpg"
+}

@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMA",
+  "part_no": "1756-L83E",
+  "series": "D",
+  "serial": "388547",
+  "date_code": "",
+  "description": "Controller module with status indicator LEDs (two green, one red) mounted in a chassis next to three other modules; label reads CAT 1756-L83E, SER D, S/N 388547. Manufacturer name is cut off at the edge of the image.",
+  "unclear": [
+    "manufacturer name truncated at image edge (likely continues beyond 'AUTOMA')"
+  ],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0066.jpg"
+}

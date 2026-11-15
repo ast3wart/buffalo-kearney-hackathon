@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "A",
+  "serial": "512951",
+  "date_code": "",
+  "description": "Dark industrial controller module with three status LEDs (two green, one red) mounted on a DIN rail beside two slim modules; label reads CAT 1764-LSP, SER A, S/N 512951.",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0008.jpg"
+}

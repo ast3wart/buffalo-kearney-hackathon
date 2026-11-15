@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6SE6440-2UD24-0BA1",
+  "series": "",
+  "serial": "272280",
+  "date_code": "",
+  "description": "Siemens drive/inverter unit with a green display reading 0.0 Hz and four buttons below it, mounted in a control panel. The label reads CAT 6SE6440-2UD24-0BA1, SER A S/N 272280.",
+  "unclear": [],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0081.jpg"
+}

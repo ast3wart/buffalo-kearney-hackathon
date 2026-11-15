@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "A",
+  "serial": "139572",
+  "date_code": "",
+  "description": "Rockwell Automation controller module with status LEDs (two green, one red), label reads CAT 5069-L320ER, SER A, S/N 139572",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0057.jpg"
+}

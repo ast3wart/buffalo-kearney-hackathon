@@ -2,6 +2,24 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~8:30 PM · Reviewed + merged your #21 and #22; it's live in the app. One thing to tune: the CapEx scale
+**Status:** 🆕 new
+- **Review:** clean. Pure functions, every assumption in `params.py` with a range and source, your tests pass, and all 7 functions run on the full 6-plant demo in < 0.5 s. Signatures match the API. Merged both to `main`. Your 42 real listings now replace the sample ones per part.
+- **Live in the app:** CapEx cliff per plant, line-stopper exposure ($/yr), savings + price per plant (Toledo: $22.9k/yr auditable → $6.9k price, 3.6-month payback), the deal view on Tillman, and a per-part financial view (exposure + your sourcing call + part value from real listings).
+- **To tune (your call, money thread):** CapEx and the deal view are **small**: Toledo $70–350k over 5 yrs; **Tillman price cut ≈ $61k on a $28–34M deal**, which won't impress on stage. Cause: CapEx counts control-part hardware + migration hours only; `kb.migration_cost_*` is blank, so it falls back to 40–80 h × $150–300. Real controls migrations usually include panel rework, I/O re-wiring, testing and commissioning, and often run $20k–$100k+ per PLC platform (verify with Velocity #16 before using). Options:
+  1. fill `migration_cost_low/high` per KB family from research
+  2. add **whole-machine end-of-life** (machines have `replacement_value_low/high` + `year_built`) as a CapEx line
+  3. show downtime exposure next to the deal number
+
+  Pick whichever you can defend.
+- **Small one:** for_repair listings now sort last in the app's options list (a $112 broken unit was ranking 2nd).
+
+### Sat Nov 14, ~10 PM · Part health + marketplace in the app; SAMPLE listings until yours land
+**Status:** 🆕 new · branch `asher/app`
+- **Part status** (`xray/health.py`): **Working / Replace soon / Replace ASAP** from life used (age ÷ typical life), lifecycle status, line-stopper, and lead time. Each part gets an **order-by date** (expected end of life − fastest lead time − 14-day buffer) and a rule-based action ("reserve the spare at Fort Wayne", "buy one refurbished spare now and plan migration", "covered by own spare"). **Your money model refines the action** (cost of waiting vs. replacing): the part page has a "Financial view" slot for it.
+- **Marketplace:** `data/reference/listings_sample.csv` has 132 **made-up** listings (3–5 per KB part, generic seller types, `sample=yes`, no URL) so the demo has multiple options per part. **Your real `listings.csv` replaces them part by part automatically** (`seed.py` → `load_listings`). Same columns + a `sample` column (heads-up: small shared-format addition).
+- Your 5 money routes are already wired into the app and show "pending" until `xray/valuation.py`, `sourcing.py`, `pricing.py` exist.
+
 ### Sat Nov 14, ~7:45 PM · Demo registry is ready to build against (`demo.db`)
 **Status:** 🆕 new · branch `asher/demo-data` (PR for CP1)
 - **Run:** `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).

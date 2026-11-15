@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7515-2AM02-0AB0",
+  "series": "C",
+  "serial": "791334",
+  "date_code": "",
+  "description": "Siemens PLC CPU module (dark housing with three status LEDs: green, green, red) mounted next to several I/O modules; label reads CAT 6ES7515-2AM02-0AB0, SER C, S/N 791334",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0095.jpg"
+}

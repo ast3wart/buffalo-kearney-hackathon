@@ -1,0 +1,12 @@
+{
+  "manufacturer": "PHOENIX CONTACT",
+  "part_no": "QUINT-PS/1AC/24DC/10",
+  "series": "E",
+  "serial": "205533",
+  "date_code": "",
+  "description": "DIN-rail power supply unit with status LEDs (two green, one red) mounted next to three modules; label reads CAT QUINT-PS/1AC/24DC/10, SER E, S/N 205533",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0073.jpg"
+}

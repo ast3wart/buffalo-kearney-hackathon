@@ -1,0 +1,14 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2711P-T10C22D9P",
+  "series": "B",
+  "serial": "878837",
+  "date_code": "",
+  "description": "Operator interface terminal (display screen showing LINE STATUS RUNNING) with label reading CAT 2711P-T10C22D9P, SER B, S/N 878837",
+  "unclear": [
+    "date_code"
+  ],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0028.jpg"
+}

@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L83E",
+  "series": "E",
+  "serial": "581888",
+  "date_code": "",
+  "description": "Rockwell Automation label with CAT 1756-L83E, SER E, S/N 581888; controller module with green and red status LEDs mounted next to two other modules",
+  "unclear": [],
+  "confidence": 0.85,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0034.jpg"
+}

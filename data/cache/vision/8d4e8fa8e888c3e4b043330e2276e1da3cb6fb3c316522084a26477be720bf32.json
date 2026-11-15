@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "B",
+  "serial": "634931",
+  "date_code": "",
+  "description": "Rockwell Automation MicroLogix 1500 processor module with status LEDs (two green, one red), label reads CAT 1764-LSP, SER B, S/N 634931",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0125.jpg"
+}

@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1764-LSP",
+  "series": "B",
+  "serial": "854202",
+  "date_code": "",
+  "description": "Allen-Bradley style MicroLogix processor module with three status LEDs (two green, one red); label reads CAT 1764-LSP, SER B S/N 854202",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0129.jpg"
+}

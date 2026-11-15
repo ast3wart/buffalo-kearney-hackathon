@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1747-L542",
+  "series": "A",
+  "serial": "909848",
+  "date_code": "",
+  "description": "Rockwell Automation SLC 500 processor module in a rack with status LEDs (two green, one red); label reads CAT 1747-L542, SER A, S/N 909848",
+  "unclear": [],
+  "confidence": 0.95,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0120.jpg"
+}

@@ -19,12 +19,9 @@ CACHE = ROOT / "data/cache/vision"
 MODEL = os.environ.get("XRAY_LLM_MODEL", "claude-sonnet-5-5")
 MEDIA = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp"}
 
-PROMPT = """This is a photo of an industrial equipment label (nameplate, data plate or component label).
-Transcribe exactly what is printed. Do not guess or correct: if a character is unreadable, put the field name in
-"unclear" and give your best partial reading. Copy the catalog/part number character for character, keeping dashes.
-Return: manufacturer, part_no (catalog number), series (e.g. "B"), serial, date_code (year on the label, as printed),
-description (product line or text under the brand), unclear (fields you could not read with certainty), and
-confidence (0-1, how sure you are the part_no is exactly right)."""
+PROMPT = """Photo of an industrial control component with a label. Transcribe the label exactly; never guess or
+correct. Copy the catalog number character for character with dashes. List unreadable fields in "unclear".
+confidence = how sure the part_no is exactly right (0-1). Use "" for fields not on the label."""
 
 SCHEMA = {
     "type": "object",
@@ -55,6 +52,19 @@ def _env_file() -> dict[str, str]:
     return out
 
 
+def _small_jpeg(path: Path, max_side: int = 720) -> bytes:
+    """Downscale before sending: fewer image tokens, labels stay readable."""
+    import io
+
+    from PIL import Image
+
+    img = Image.open(path).convert("RGB")
+    img.thumbnail((max_side, max_side))
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=85)
+    return buf.getvalue()
+
+
 def image_hash(path: Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
@@ -73,15 +83,15 @@ def read_photo(path, use_api: bool = True) -> dict:
     env = _env_file()
     client = anthropic.Anthropic(api_key=env["ANTHROPIC_API_KEY"]) if env.get("ANTHROPIC_API_KEY") else anthropic.Anthropic()
     model = env.get("XRAY_LLM_MODEL", MODEL)
-    data = base64.standard_b64encode(path.read_bytes()).decode("utf-8")
+    data = base64.standard_b64encode(_small_jpeg(path)).decode("utf-8")
     response = client.beta.messages.create(
         model=model,
-        max_tokens=2000,
+        max_tokens=500,
         betas=["server-side-fallback-2026-07-01"],
         fallbacks="default",
         output_config={"effort": "low", "format": {"type": "json_schema", "schema": SCHEMA}},
         messages=[{"role": "user", "content": [
-            {"type": "image", "source": {"type": "base64", "media_type": MEDIA.get(path.suffix.lower(), "image/jpeg"), "data": data}},
+            {"type": "image", "source": {"type": "base64", "media_type": "image/jpeg", "data": data}},
             {"type": "text", "text": PROMPT},
         ]}],
     )

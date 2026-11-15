@@ -14,6 +14,16 @@ sys.path.insert(0, str(ROOT))
 from xray.pipeline import build_components, match_spares  # noqa: E402
 
 
+def load_listings(ref: Path) -> pd.DataFrame:
+    """Brandon's real listings (listings.csv) win per part; SAMPLE listings fill parts that have none yet."""
+    real = pd.read_csv(ref / "listings.csv", dtype=str).fillna("") if (ref / "listings.csv").exists() else pd.DataFrame()
+    sample = pd.read_csv(ref / "listings_sample.csv", dtype=str).fillna("") if (ref / "listings_sample.csv").exists() else pd.DataFrame()
+    if len(real):
+        real["sample"] = "no"
+        sample = sample[~sample.kb_id.isin(set(real.kb_id))] if len(sample) else sample
+    return pd.concat([real, sample], ignore_index=True)
+
+
 def apply_photo_readings(reading: pd.DataFrame, photo: pd.DataFrame, seed_dir: Path) -> pd.DataFrame:
     """Where a component has a photo with a cached Claude reading, use it instead of the simulated scan."""
     if photo.empty or "component_id" not in photo:
@@ -54,7 +64,7 @@ def main(seed_dir: Path, db_path: Path) -> dict[str, pd.DataFrame]:
         "line": pd.read_csv(seed_dir / "lines.csv"),
         "kb_entry": kb,
         "alternative": pd.read_csv(ref / "alternatives.csv", dtype=str).fillna("") if (ref / "alternatives.csv").exists() else pd.DataFrame(),
-        "listing": pd.read_csv(ref / "listings.csv", dtype=str).fillna("") if (ref / "listings.csv").exists() else pd.DataFrame(),
+        "listing": load_listings(ref),
     })
     tables["reading"] = apply_photo_readings(tables["reading"], tables["photo"], seed_dir)
     tables["component"], tables["evidence"] = build_components(tables["reading"], kb, abbr)

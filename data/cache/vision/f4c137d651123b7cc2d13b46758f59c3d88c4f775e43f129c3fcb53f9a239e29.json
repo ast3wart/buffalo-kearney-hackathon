@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "5069-L320ER",
+  "series": "E",
+  "serial": "757245",
+  "date_code": "",
+  "description": "Controller module with status indicator LEDs (two green, one red); label reads CAT 5069-L320ER, SER E, S/N 757245",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0027.jpg"
+}

@@ -1,0 +1,16 @@
+{
+  "manufacturer": "PHOENIX CONTACT",
+  "part_no": "QUINTPS/1A",
+  "series": "E",
+  "serial": "426030",
+  "date_code": "",
+  "description": "Power supply unit mounted on DIN rail with status LEDs (two green, one red), next to several modules",
+  "unclear": [
+    "part_no is cut off at the right edge of the label after 'QUINTPS/1A', so the full catalog number is not visible",
+    "manufacturer name is cut off after 'CONTACT'",
+    "series 'SER E' is small and may be partially read"
+  ],
+  "confidence": 0.2,
+  "model": "claude-sonnet-5-5",
+  "image": "PE-IMG0124.jpg"
+}

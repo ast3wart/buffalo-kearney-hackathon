@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "22B-D010N104",
+  "series": "E",
+  "serial": "248933",
+  "date_code": "",
+  "description": "Display shows 0.0 Hz; label reads CAT 22B-D010N104, SER E, S/N 248933 (PowerFlex 4 style AC drive)",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0070.jpg"
+}

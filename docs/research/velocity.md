@@ -6,6 +6,15 @@ Log new research here, newest first. Ideas to run:
 - How do plants source discontinued industrial parts (controllers, drives, HMIs), and what goes wrong (counterfeits, lead times)?
 - Equipment diligence and post-deal CapEx surprises: how often do they happen, and how big are they?
 
+### Sat Nov 14, ~8 PM · 2 chats for Asher's thread (knowledge base + vision feasibility)
+1. **Common PLC/drive/HMI families + lifecycle (KB check):** confirmed 1769-L32E discontinued Dec 16, 2020 and S7-300 PM410 Oct 1, 2025 (both in `kb.csv`). Pushback: no source gives installed-base prevalence by plant size, so the KB is an "audit shortlist, not a market-share ranking". **Plant age is a poor proxy for controls age** (lines get retrofitted), so the demo generator dates current parts on old machines as retrofits. Extra candidates: 1769-L33ER (active mature), Mitsubishi Q03UDCPU (discontinued Oct 30, 2026).
+2. **Vision feasibility (narrowed rerun):**
+   - No universal accuracy number exists for LLMs reading industrial labels. Building-nameplate study: 65.8% → **85.0%** character accuracy after post-processing (Park et al. 2022). Auto-parts part numbers: **94%** (Schlüter et al.). Control-cabinet detection: **> 95% mAP, > 97% OCR** on a purpose-built dataset (Scheck et al. 2026).
+   - **Failure modes:** O/0, I/1/l, S/5; dropped series letters; cut-off text; reading the neighbouring label; confidently filling an illegible character.
+   - **Design rules (we follow them):** a whole identifier is unverified if any character is ambiguous; never silently correct a serial or series letter; take close-ups, not one cabinet shot; route ambiguous or valuation-relevant facts to a person.
+   - **USPAP:** an appraiser *may* use third-party/AI-collected data and must judge its reliability; **Advisory Opinion 41 (April 2026)** covers technology use; the appraiser keeps responsibility. **Don't claim:** touchless exact inventory from one photo, or "USPAP-compliant appraisal by AI".
+   - **Our result to compare:** 12/12 exact reads on rendered test labels (incl. glare, blur, worn, cut-off), with "unclear" flagged on the cut-off label rather than guessed.
+
 ### Sat Nov 14, evening · 7 deep-dive Research chats (summary + model in [deep-dive-numbers.md](deep-dive-numbers.md), `scripts/market_model.py`)
 1. **On-site M&E appraisal cost structure**: ~64 h / ~$12.8k mid-market; capture 19%, research 38%; photo ID saves only 2–5 h (~$400–1,000). Pushback: research + report dominate.
 2. **US deal volume**: 1,667 US manufacturing deals (2024, measured); modeled ~385 appraisals + ~445 controls reviews → ~670 distinct deals (450–900); no published appraisal count.

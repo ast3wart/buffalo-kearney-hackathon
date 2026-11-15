@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ABB",
+  "part_no": "ACS580-01-012A-4",
+  "series": "C",
+  "serial": "529433",
+  "date_code": "",
+  "description": "Variable frequency drive (AC drive) with display showing 0.0 Hz, mounted on a DIN rail panel",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0083.jpg"
+}

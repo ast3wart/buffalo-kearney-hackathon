@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L83E",
+  "series": "D",
+  "serial": "651589",
+  "date_code": "",
+  "description": "Rockwell Automation ControlLogix controller module mounted in a rack with other modules; label reads CAT 1756-L83E, SER D, S/N 651589. Status LEDs show two green and one red.",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0051.jpg"
+}

@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L83E",
+  "series": "C",
+  "serial": "914571",
+  "date_code": "",
+  "description": "Controller module with status LEDs (two green, one red), mounted beside three smaller modules on a DIN rail",
+  "unclear": [],
+  "confidence": 0.97,
+  "model": "claude-sonnet-5-5",
+  "image": "PC-IMG0077.jpg"
+}

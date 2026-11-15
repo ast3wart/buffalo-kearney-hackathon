@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "25B-D010N104",
+  "series": "E",
+  "serial": "200780",
+  "date_code": "",
+  "description": "Variable frequency drive (PowerFlex 4M style) with display reading 0.0 Hz",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0043.jpg"
+}

@@ -49,3 +49,57 @@ export const fmt = {
   ratio: (v: number) => `${v.toFixed(1)}×`,
   rate: (v: number) => `${v.toFixed(1)} / 1,000`,
 };
+
+const STATUS: Record<string, string> = {
+  discontinued: "bg-alert-soft text-alert",
+  end_of_life: "bg-warn-soft text-warn",
+  active_mature: "bg-warn-soft text-warn",
+  active: "bg-accent-soft text-accent",
+  unknown: "bg-bg text-muted",
+};
+
+export function StatusBadge({ status }: { status: string }) {
+  return (
+    <span className={`inline-block rounded px-1.5 py-0.5 text-[11px] font-medium ${STATUS[status] ?? STATUS.unknown}`}>
+      {status.replace(/_/g, " ")}
+    </span>
+  );
+}
+
+export function Pill({ children, tone }: { children: ReactNode; tone?: "alert" | "warn" | "ok" | "muted" }) {
+  const c = tone === "alert" ? "border-alert text-alert" : tone === "warn" ? "border-warn text-warn" : tone === "ok" ? "border-ok text-ok" : "border-line text-muted";
+  return <span className={`inline-block rounded-full border px-2 py-0.5 text-[11px] ${c}`}>{children}</span>;
+}
+
+export function Pending({ what, detail }: { what: string; detail?: string }) {
+  return (
+    <div className="rounded border border-dashed border-line p-4 text-sm text-muted">
+      <b className="text-ink">{what}</b> appears here when Brandon&apos;s money model lands.
+      {detail && <div className="mt-1 font-mono text-[11px]">{detail}</div>}
+    </div>
+  );
+}
+
+const HEALTH: Record<string, [string, string]> = {
+  working: ["Working", "bg-accent-soft text-accent"],
+  replace_soon: ["Replace soon", "bg-warn-soft text-warn"],
+  replace_asap: ["Replace ASAP", "bg-alert-soft text-alert"],
+  unidentified: ["Unidentified", "bg-bg text-muted"],
+};
+
+export function HealthBadge({ health }: { health?: string | null }) {
+  const [label, cls] = HEALTH[health ?? "unidentified"] ?? HEALTH.unidentified;
+  return <span className={`inline-block whitespace-nowrap rounded px-1.5 py-0.5 text-[11px] font-medium ${cls}`}>{label}</span>;
+}
+
+export function LifeBar({ pct }: { pct?: number | null }) {
+  if (pct === null || pct === undefined) return <span className="text-xs text-muted">n/a</span>;
+  const w = Math.min(100, Math.round(pct * 100));
+  const color = pct >= 1 ? "bg-alert" : pct >= 0.75 ? "bg-warn" : "bg-accent";
+  return (
+    <div className="flex items-center gap-2">
+      <div className="h-1.5 w-24 overflow-hidden rounded bg-line"><div className={`h-full ${color}`} style={{ width: `${w}%` }} /></div>
+      <span className="tabular text-xs">{Math.round(pct * 100)}%</span>
+    </div>
+  );
+}

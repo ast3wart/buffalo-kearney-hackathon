@@ -1,2 +1,11 @@
 photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rendered
-PE-IMG0008,PE,PE-L1-M01,PE-L1-M01-C1,photos/PE-IMG0008.jpg,component_label,2026-11-14,blurry,yes
+PE-IMG0120,PE,PE-L1-M01,PE-L1-M01-C1,photos/PE-IMG0120.jpg,component_in_cabinet,2026-11-14,ok,yes
+PE-IMG0121,PE,PE-L1-M02,PE-L1-M02-C1,photos/PE-IMG0121.jpg,component_in_cabinet,2026-11-14,blurry,yes
+PE-IMG0122,PE,PE-L1-M02,PE-L1-M02-C2,photos/PE-IMG0122.jpg,component_in_cabinet,2026-11-14,ok,yes
+PE-IMG0123,PE,PE-L1-M03,PE-L1-M03-C1,photos/PE-IMG0123.jpg,component_in_cabinet,2026-11-14,glare,yes
+PE-IMG0124,PE,PE-L1-M03,PE-L1-M03-C2,photos/PE-IMG0124.jpg,component_in_cabinet,2026-11-14,cut_off,yes
+PE-IMG0125,PE,PE-L1-M04,PE-L1-M04-C1,photos/PE-IMG0125.jpg,component_in_cabinet,2026-11-14,glare,yes
+PE-IMG0126,PE,PE-L2-M01,PE-L2-M01-C1,photos/PE-IMG0126.jpg,component_in_cabinet,2026-11-14,cut_off,yes
+PE-IMG0127,PE,PE-L2-M02,PE-L2-M02-C1,photos/PE-IMG0127.jpg,component_in_cabinet,2026-11-14,ok,yes
+PE-IMG0128,PE,PE-L2-M03,PE-L2-M03-C1,photos/PE-IMG0128.jpg,component_in_cabinet,2026-11-14,ok,yes
+PE-IMG0129,PE,PE-L2-M04,PE-L2-M04-C1,photos/PE-IMG0129.jpg,component_in_cabinet,2026-11-14,ok,yes

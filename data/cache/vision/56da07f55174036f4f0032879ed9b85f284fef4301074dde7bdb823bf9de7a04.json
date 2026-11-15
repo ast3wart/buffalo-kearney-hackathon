@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L83E",
+  "series": "C",
+  "serial": "131197",
+  "date_code": "",
+  "description": "Rockwell Automation ControlLogix controller module with status LEDs (two green, one red), mounted in a rack with other modules",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0001.jpg"
+}

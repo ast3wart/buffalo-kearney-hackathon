@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6SL3210-1KE21-3UF1",
+  "series": "C",
+  "serial": "549751",
+  "date_code": "",
+  "description": "Variable frequency drive/inverter module with a display showing 0.0 Hz and four buttons below it",
+  "unclear": [],
+  "confidence": 0.85,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0087.jpg"
+}

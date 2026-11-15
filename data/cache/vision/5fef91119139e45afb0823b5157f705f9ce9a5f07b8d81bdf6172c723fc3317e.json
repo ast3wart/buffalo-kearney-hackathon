@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7214-1AG40-0XB0",
+  "series": "A",
+  "serial": "574082",
+  "date_code": "",
+  "description": "Siemens PLC CPU module with status LEDs (two green, one red), label reads CAT 6ES7214-1AG40-0XB0, SER A, S/N 574082",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0079.jpg"
+}

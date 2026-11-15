@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2711P-T10C4D8",
+  "series": "B",
+  "serial": "695762",
+  "date_code": "",
+  "description": "Operator terminal display screen showing LINE STATUS RUNNING with a green bar",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0054.jpg"
+}

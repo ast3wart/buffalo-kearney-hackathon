@@ -1,0 +1,15 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2711P-T10C4D8",
+  "series": "C",
+  "serial": "176938",
+  "date_code": "",
+  "description": "Operator terminal display showing LINE STATUS RUNNING",
+  "unclear": [
+    "serial number is small and partly blurred, so 176938 is uncertain",
+    "series letter C is small and partly blurred"
+  ],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0006.jpg"
+}

@@ -1,0 +1,15 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6AV2124-0MC01-0AX0",
+  "series": "",
+  "serial": "67,2698",
+  "date_code": "",
+  "description": "Siemens HMI display panel showing LINE STATUS RUNNING with green bar; label reads CAT 6AV2124-0MC01-0AX0, SER A. S/N 67,2698",
+  "unclear": [
+    "serial",
+    "series"
+  ],
+  "confidence": 0.9,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0090.jpg"
+}

@@ -1,0 +1,16 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "25B-B8P0N104",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "Variable frequency drive (PowerFlex style) with green display reading 0.0 Hz, four buttons, mounted on DIN rail; label shows CAT, SER E and S/N fields",
+  "unclear": [
+    "series",
+    "serial",
+    "date_code"
+  ],
+  "confidence": 0.8,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0046.jpg"
+}

@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7315-2AG10-0AB0",
+  "series": "SER D",
+  "serial": "590065",
+  "date_code": "",
+  "description": "Siemens PLC CPU module (SIMATIC S7-300 style) mounted on a rail with other modules; label shows CAT 6ES7315-2AG10-0AB0, SER D, S/N 590065. LEDs: two green, one red.",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PF-IMG0104.jpg"
+}

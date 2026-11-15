@@ -1,0 +1,17 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2094-BC01-MP5-S",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "Axis module (servo drive) with display reading \"AXIS OK\", four buttons below the display, and a label showing CAT 2094-BC01-MP5-S",
+  "unclear": [
+    "series",
+    "serial",
+    "date_code",
+    "small faint text below catalog number"
+  ],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0026.jpg"
+}

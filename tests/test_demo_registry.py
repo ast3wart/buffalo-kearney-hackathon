@@ -57,11 +57,20 @@ def test_spare_matching_floor(reg):
 
 
 def test_photo_readings_cached_and_exact():
-    """Every demo photo has a cached Claude reading (demo runs offline) that matches the true catalog number."""
+    """Every component has a cached image-recognition reading (demo runs offline). Catalog parts on readable photos
+    are read exactly; on cut-off photos the reader must flag it (unclear + low confidence) instead of guessing."""
     from xray.extract import read_photo
 
     truth = pd.read_csv(TRUTH / "components.csv", dtype=str).fillna("").set_index("component_id")
-    for manifest in (ROOT / "data/seed/demo").glob("*/photos.csv"):
-        for p in pd.read_csv(manifest, dtype=str).fillna("").itertuples():
-            r = read_photo(manifest.parent / p.file, use_api=False)
-            assert r["part_no"].replace(" ", "").upper() == truth.loc[p.component_id, "part_no"].upper(), p.photo_id
+    photos = pd.concat(pd.read_csv(m, dtype=str).fillna("").assign(manifest_dir=str(m.parent)) for m in (ROOT / "data/seed/demo").glob("*/photos.csv"))
+    assert len(photos) == len(truth), "every component should have a photo"
+    for p in photos.itertuples():
+        r = read_photo(Path(p.manifest_dir) / p.file, use_api=False)
+        expected = truth.loc[p.component_id, "part_no"]
+        if not expected:
+            continue  # commodity part: not in the KB
+        exact = r["part_no"].replace(" ", "").upper() == expected.replace(" ", "").upper()
+        if p.quality == "cut_off":
+            assert exact or (r["unclear"] and r["confidence"] <= 0.7), p.photo_id
+        else:
+            assert exact, (p.photo_id, r["part_no"], expected)

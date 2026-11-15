@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "2198-D006-ERS3",
+  "series": "",
+  "serial": "",
+  "date_code": "",
+  "description": "Kinetix 5500 style servo drive with display reading \"AXIS OK\" and label marked CAT",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PB-IMG0040.jpg"
+}

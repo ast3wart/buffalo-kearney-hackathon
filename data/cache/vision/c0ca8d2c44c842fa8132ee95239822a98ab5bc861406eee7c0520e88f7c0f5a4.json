@@ -1,0 +1,12 @@
+{
+  "manufacturer": "ROCKWELL AUTOMATION",
+  "part_no": "1756-L83E",
+  "series": "B",
+  "serial": "197627",
+  "date_code": "",
+  "description": "Controller module with status LEDs (two green, one red) mounted in a control panel; label reads CAT 1756-L83E, SER B S/N 197627",
+  "unclear": [],
+  "confidence": 0.93,
+  "model": "claude-sonnet-5-5",
+  "image": "PA-IMG0020.jpg"
+}
