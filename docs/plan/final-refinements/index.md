@@ -12,7 +12,7 @@
 | 2 | [02-roadmap-vs-expansion.html](02-roadmap-vs-expansion.html) | Three slides in the deck mockup's style: roadmap (committed) vs expansion vision (incl. the clip-on thermal sensor), and the data ladder. Open in a browser. |
 | 3 | [03-app-updates.md](03-app-updates.md) | What to change in the app / proof of concept before freeze, in priority order, with files |
 | 4 | [04-downtime-waukesha-discrepancy.md](04-downtime-waukesha-discrepancy.md) | **Open issue:** the Waukesha and portfolio downtime numbers in the rework report do not reproduce on a clean rebuild |
-| 5 | [05-feedback-notes.md](05-feedback-notes.md) | Raw feedback notes on the story, deck order, pricing model and the hardware / sensing focus. **Not yet applied.** |
+| 5 | [05-feedback-notes.md](05-feedback-notes.md) | **Mentor feedback turned into a deck layout:** problem, solution (hardware first), demo; pricing not as a percent of savings; app changes it implies. Not yet applied. Raw notes at the bottom. |
 
 ## The one idea that ties it together
 **The data ladder.** A plant starts with whatever it has, even only a phone camera, and each rung narrows the ranges and unlocks more outputs:
