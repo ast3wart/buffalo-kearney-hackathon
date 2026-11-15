@@ -14,6 +14,24 @@ sys.path.insert(0, str(ROOT))
 from xray.pipeline import build_components, match_spares  # noqa: E402
 
 
+def apply_photo_readings(reading: pd.DataFrame, photo: pd.DataFrame, seed_dir: Path) -> pd.DataFrame:
+    """Where a component has a photo with a cached Claude reading, use it instead of the simulated scan."""
+    if photo.empty or "component_id" not in photo:
+        return reading
+    from xray.extract import read_photo
+
+    reading = reading.set_index("component_id")
+    for p in photo.itertuples():
+        try:
+            r = read_photo(seed_dir / p.plant_id / p.file, use_api=False)
+        except LookupError:
+            continue  # not read yet: keep the simulated reading
+        if p.component_id in reading.index:
+            reading.loc[p.component_id, ["raw_text", "confidence", "method", "photo_id"]] = [
+                f"{r['part_no']} {r.get('series', '')}".strip(), r["confidence"], "vision", p.photo_id]
+    return reading.reset_index()
+
+
 def main(seed_dir: Path, db_path: Path) -> dict[str, pd.DataFrame]:
     ref = ROOT / "data/reference"
     kb = pd.read_csv(ref / "kb.csv", dtype=str).fillna("")
@@ -38,6 +56,7 @@ def main(seed_dir: Path, db_path: Path) -> dict[str, pd.DataFrame]:
         "alternative": pd.read_csv(ref / "alternatives.csv", dtype=str).fillna("") if (ref / "alternatives.csv").exists() else pd.DataFrame(),
         "listing": pd.read_csv(ref / "listings.csv", dtype=str).fillna("") if (ref / "listings.csv").exists() else pd.DataFrame(),
     })
+    tables["reading"] = apply_photo_readings(tables["reading"], tables["photo"], seed_dir)
     tables["component"], tables["evidence"] = build_components(tables["reading"], kb, abbr)
     tables["spare_match"] = match_spares(tables["spare_stock"], kb, abbr)
     db_path.unlink(missing_ok=True)

@@ -29,7 +29,7 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 |---|---|---|
 | `xray/registry.py` | `load(db_path) -> dict[str, DataFrame]` | the registry tables |
 | `scripts/seed.py` | `python scripts/seed.py data/seed/demo` → `demo.db` | |
-| `xray/extract.py` | `read_photo(path) -> dict` | vision reading: make, model, part_no, serial, year, components seen, confidence (cached by image hash) |
+| `xray/extract.py` | `read_photo(path, use_api=True) -> dict` | Claude vision reading of a label: manufacturer, part_no, series, serial, date_code, description, unclear fields, confidence. Cached by image hash in `data/cache/vision/` (committed), so the demo runs offline. `scripts/read_photos.py` reads all demo photos. |
 | `xray/matching.py` | `Matcher(kb descriptions).match(text)` (exists) | kb index, confidence, evidence |
 | `xray/evaluate.py` | `score(...)` (exists) → `accuracy` | precision/recall + confidence interval |
 

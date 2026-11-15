@@ -1,1 +1,2 @@
-photo_id,plant_id,machine_id,file,photo_kind,taken_on,quality
+photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rendered
+PE-IMG0008,PE,PE-L1-M01,PE-L1-M01-C1,photos/PE-IMG0008.jpg,component_label,2026-11-14,blurry,yes

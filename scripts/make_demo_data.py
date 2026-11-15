@@ -157,12 +157,15 @@ def main():
                         # era: machines built 2012+ mostly carry current parts; older ones mostly discontinued/EOL
                         cur = [x for x in pool[slot] if KB.loc[x].lifecycle_status == "active"]
                         old = [x for x in pool[slot] if KB.loc[x].lifecycle_status != "active"]
-                        p_old = 0.85 if co == "CO-TILLMAN" else (0.08 if year >= 2012 else 0.42)
+                        p_old = 0.85 if co == "CO-TILLMAN" else (0.08 if year >= 2012 else 0.5)
                         kb_id = R.choice(old if (old and (R.random() < p_old or not cur)) else cur)
                         k = KB.loc[kb_id]
                         text, ctype, part_no, status_ = k.part_no, k.component_type, k.part_no, k.lifecycle_status
                     comps_truth.append({"component_id": cid, "kb_id": kb_id, "part_no": part_no, "lifecycle_status": status_})
                     installed = min(2026, year + R.choice([0, 0, 0, 3, 6]))
+                    # a current part on an old machine is a retrofit: date it after the part existed (no 2006 CompactLogix 5380)
+                    if status_ == "active" and installed < 2015:
+                        installed = R.randint(2015, 2024)
                     level = R.choices([0, 1, 2, 3], weights=[35, 40, 18, 7])[0]
                     read = noisy(text, level)
                     readings.append({"reading_id": f"{cid}-R1", "plant_id": pid, "machine_id": mid, "component_id": cid,

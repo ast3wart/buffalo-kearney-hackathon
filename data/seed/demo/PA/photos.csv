@@ -1,1 +1,4 @@
-photo_id,plant_id,machine_id,file,photo_kind,taken_on,quality
+photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rendered
+PA-IMG0001,PA,PA-L2-M01,PA-L2-M01-C1,photos/PA-IMG0001.jpg,component_label,2026-11-14,ok,yes
+PA-IMG0003,PA,PA-L1-M02,PA-L1-M02-C2,photos/PA-IMG0003.jpg,component_label,2026-11-14,ok,yes
+PA-IMG0009,PA,PA-L1-M01,PA-L1-M01-C1,photos/PA-IMG0009.jpg,component_label,2026-11-14,worn,yes

@@ -179,10 +179,11 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 ### `<plant>/photos.csv` (manifest)
 | Column | Meaning | Owner |
 |---|---|---|
-| photo_id, plant_id, machine_id | which machine | Asher |
+| photo_id, plant_id, machine_id, component_id | which machine / component the label belongs to | Asher |
 | file | path under `photos/` | Asher |
 | photo_kind | nameplate / cabinet / component_label / overview | Asher |
-| taken_on, quality (`ok` / `blurry` / `glare` / `cut_off`) | | Asher |
+| taken_on, quality (`ok` / `blurry` / `glare` / `worn` / `cut_off`) | | Asher |
+| rendered | `yes` = a rendered test image (not a real photo; say so on screen), `no` = a real photo | Asher |
 
 ## 5. Reference data
 ### `data/reference/kb.csv` (knowledge base: one row per part number)

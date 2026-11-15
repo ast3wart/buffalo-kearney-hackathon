@@ -1,1 +1,3 @@
-photo_id,plant_id,machine_id,file,photo_kind,taken_on,quality
+photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rendered
+PB-IMG0004,PB,PB-L2-M03,PB-L2-M03-C1,photos/PB-IMG0004.jpg,component_label,2026-11-14,ok,yes
+PB-IMG0010,PB,PB-L1-M01,PB-L1-M01-C1,photos/PB-IMG0010.jpg,component_label,2026-11-14,cut_off,yes

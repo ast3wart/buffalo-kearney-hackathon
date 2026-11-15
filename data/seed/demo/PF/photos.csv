@@ -1,1 +1,2 @@
-photo_id,plant_id,machine_id,file,photo_kind,taken_on,quality
+photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rendered
+PF-IMG0007,PF,PF-L1-M01,PF-L1-M01-C2,photos/PF-IMG0007.jpg,component_label,2026-11-14,ok,yes
