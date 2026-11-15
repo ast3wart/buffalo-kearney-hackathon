@@ -16,11 +16,16 @@ export type DeckData = {
 const k = (v: number) => (v >= 1000 ? `$${(v / 1000).toFixed(v >= 100000 ? 0 : 1).replace(/\.0$/, "")}k` : `$${Math.round(v)}`);
 
 // One idea per slide: a headline, at most one visual or 3 short lines. Details live in the live demo, not on slides.
-function Slide({ kicker, title, children, owner }: { kicker?: string; title: string; children?: React.ReactNode; owner?: string }) {
+// "V" = found with Velocity research: say how Velocity helped when you reach it.
+function V() {
+  return <span title="Found with Velocity research" className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded bg-accent-soft align-middle text-[11px] font-bold text-accent ring-1 ring-accent/30">V</span>;
+}
+
+function Slide({ kicker, title, children, owner, v }: { kicker?: string; title: string; children?: React.ReactNode; owner?: string; v?: boolean }) {
   return (
     <div className="flex h-full flex-col">
       {kicker && <div className="text-sm font-semibold uppercase tracking-wider text-accent">{kicker}</div>}
-      <h2 className="mt-2 text-balance text-4xl font-semibold leading-tight tracking-tight">{title}</h2>
+      <h2 className="mt-2 text-balance text-4xl font-semibold leading-tight tracking-tight">{title}{v && <V />}</h2>
       <div className="mt-6 min-h-0 flex-1">{children}</div>
       {owner && <div className="text-right text-xs text-muted">{owner}</div>}
     </div>
@@ -32,7 +37,7 @@ function Slide({ kicker, title, children, owner }: { kicker?: string; title: str
 function Ladder() {
   const steps = [
     { n: "1", t: "Label photos", when: "day 1 · every cabinet", got: "part number, maker, date code", feeds: <>what the part is → <b>rated life</b> from its manual, discontinued or not; date code = <b>minimum age</b></> },
-    { n: "2", t: "Plant records", when: "week 1 · where they exist (~28%)", got: "install dates from the maintenance system and purchase orders", feeds: <>true <b>age</b> → how far along its wear-out curve the part is</> },
+    { n: "2", t: "Plant records", v: true, when: "week 1 · where they exist (~28%)", got: "install dates from the maintenance system and purchase orders", feeds: <>true <b>age</b> → how far along its wear-out curve the part is</> },
     { n: "3", t: "Cabinet Monitor", when: "continuous · line-stopper cabinets", got: "temperature, motor current, drive fault logs, fan + capacitor life", feeds: <><b>heat</b> ages parts faster (2× per +10 °C); <b>anomalies</b> raise failure risk up to 20×; each <b>fault</b> +30%</> },
   ];
   return (
@@ -46,7 +51,7 @@ function Ladder() {
             <div className="flex items-center gap-3">
               <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-base font-semibold text-surface">{s.n}</span>
               <div>
-                <div className="text-xl font-semibold leading-tight">{s.t}</div>
+                <div className="text-xl font-semibold leading-tight">{s.t}{"v" in s && s.v && <V />}</div>
                 <div className="mt-0.5 text-sm leading-snug text-muted">{s.when}</div>
               </div>
             </div>
@@ -151,7 +156,7 @@ export function Deck({ data }: { data: DeckData }) {
               ["10–24 wks", "to get a new controller; a discontinued one is resale-only"],
             ].map(([n, d]) => (
               <div key={n}>
-                <div className="tabular text-4xl font-semibold tracking-tight text-accent">{n}</div>
+                <div className="tabular text-4xl font-semibold tracking-tight text-accent">{n}<V /></div>
                 <div className="mt-1 text-[15px] leading-snug text-muted">{d}</div>
               </div>
             ))}
@@ -195,7 +200,7 @@ export function Deck({ data }: { data: DeckData }) {
             ["~$185 to build", "clips on a DIN rail in a planned stop, ~2.5 h install"],
           ].map(([t, d]) => (
             <div key={t} className="border-l-2 border-accent pl-4">
-              <div className="text-xl font-semibold">{t}</div>
+              <div className="text-xl font-semibold">{t}{t.startsWith("~$185") && <V />}</div>
               <div className="text-base text-muted">{d}</div>
             </div>
           ))}
@@ -203,7 +208,7 @@ export function Deck({ data }: { data: DeckData }) {
       </div>
     </Slide>,
 
-    <Slide key="diagram" kicker="The hardware" title="How the Cabinet Monitor works">
+    <Slide key="diagram" kicker="The hardware" title="How the Cabinet Monitor works" v>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/cabinet-monitor-diagram.png" alt="System block diagram of the Cabinet Monitor" className="h-full w-full object-contain object-top" />
     </Slide>,
@@ -221,7 +226,7 @@ export function Deck({ data }: { data: DeckData }) {
       <div className="flex h-full flex-col gap-4">
         <div className="grid min-h-0 flex-1 grid-cols-2 gap-5">
           <div className="flex flex-col rounded-2xl border-t-4 border-accent bg-bg p-5">
-            <div className="flex items-center gap-2 text-xl font-semibold">Direct savings <span className="rounded bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent">auditable</span></div>
+            <div className="flex items-center gap-2 text-xl font-semibold">Direct savings <span className="rounded bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent">auditable</span><V /></div>
             <div className="tabular mt-1 text-5xl font-semibold tracking-tight text-accent">{k(t.total)} / yr</div>
             <div className="text-sm text-muted">Toledo, each line traced to parts in the registry</div>
             <div className="mt-3 text-[15px]">
@@ -287,6 +292,26 @@ export function Deck({ data }: { data: DeckData }) {
         </div>
       </div>
     </Slide>,
+
+    <div key="next" className="flex h-full flex-col justify-center">
+      <div className="text-sm font-semibold uppercase tracking-wider text-accent">Next</div>
+      <h2 className="mt-2 text-5xl font-semibold tracking-tight">Run 3 paid plant pilots and 1 portfolio</h2>
+      <div className="mt-10 grid grid-cols-4 gap-6">
+        {[
+          { t: "Now", d: <>Photos → registry → health, sourcing, savings. <b>Built.</b></>, bar: "bg-ink" },
+          { t: "Pilots", d: "Site walks at real plants; first sensors on the riskiest cabinets", bar: "bg-accent" },
+          { t: "Then", d: "Live registry per plant, kept current by the hardware", bar: "bg-accent" },
+          { t: "Later", d: "Platform: shared spares and buying across a fund's companies", bar: "bg-line" },
+        ].map((c) => (
+          <div key={c.t}>
+            <div className={`h-1 rounded ${c.bar}`} />
+            <div className="mt-3 text-xl font-semibold">{c.t}</div>
+            <div className="mt-1 text-[17px] leading-snug">{c.d}</div>
+          </div>
+        ))}
+      </div>
+      <p className="mt-10 max-w-4xl text-lg text-muted">In the pilots we measure three things: accuracy on real worn nameplates, which findings changed a decision, and whether the owner pays to keep it running.</p>
+    </div>,
 
     <div key="appendix" className="flex h-full flex-col">
       <div className="flex items-baseline justify-between px-1 pb-2">
