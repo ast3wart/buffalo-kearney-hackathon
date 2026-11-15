@@ -97,3 +97,12 @@ def test_nothing_one_time_in_price_base(model):
     for plant_id, v in base.items():
         assert p.loc[plant_id, "price_per_plant_high"] == pytest.approx(p.loc[plant_id, "value_capture_pct"] * v, abs=0.01)
     assert set(s.plant_id) == {"PA", "PB"}, "savings are for owned plants; the target gets the deal lens"
+
+
+def test_full_plant_quote_scales_up_and_stays_unpriced_for_one_time(reg):
+    sample = plant_savings(reg)
+    full = plant_savings(reg, full_plant=True)
+    assert full.savings_base.sum() > sample.savings_base.sum()
+    assert full.basis.str.startswith("full plant").all()
+    assert (full.loc[full.one_time == "yes", "in_price_base"] == "no").all()
+    assert (full.savings_low <= full.savings_high).all()

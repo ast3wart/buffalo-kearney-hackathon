@@ -21,7 +21,7 @@
 4. **Using it on your own plants is the bigger market:**
    - **25,799 US plants with 100+ employees** (MEASURED)
    - **$10k / $30k / $60k** of recurring auditable value per plant per year, plus a **one-time $100–400k** in spares released (VELOCITY)
-   - at a realistic **$10–25k per plant per year** and **5% adoption**, that's **$13–32M ARR**, with a **$258–645M ceiling**
+   - at the financial model's **~$11.5k per plant per year** (range $4–32k) and **5% adoption**, that's **~$15M ARR** (range $5–42M), with a **~$297M ceiling** at the base price (*updated from the financial model, Nov 14; was $10–25k → $13–32M ARR, $258–645M ceiling*)
 5. **For a consulting firm (e.g. Kearney): conditional GO on a narrow, expert-reviewed "assessment accelerator", NO-GO on a broad AI platform.**
    - Breakeven is **~45 paid engagements a year** at a **$15k fee uplift**.
    - On photo savings alone, it would take 643 a year, which is not viable.
@@ -103,11 +103,15 @@
   - MANN+HUMMEL found a failed inverter at a sister plant, so the outage lasted "a few hours instead of a few days."
   - Verusen, 17 rigs: **$48M identified but only $3.3M verified**, a warning that identified value is not realized value.
 
+*Updated from the financial model, Nov 14:* prices are now the portfolio-average full-plant price at 20% value capture on the demo registry (low / base / high), from `scripts/sensitivity.py` (see [price-sensitivity.md](price-sensitivity.md)). Model output on synthetic plants with real part prices.
+
 | Price / plant / yr | 2% adoption | 5% | 10% | 100% ceiling |
 |---|---|---|---|---|
-| $10k | $5.2M | $12.9M | $25.8M | $258M |
-| $25k | $12.9M | $32.2M | $64.5M | $645M |
-| $50k | $25.8M | $64.5M | $129M | $1.29B |
+| $4.1k (low) | $2.1M | $5.3M | $10.6M | $106M |
+| $11.5k (base) | $5.9M | $14.8M | $29.7M | $297M |
+| $32.2k (high) | $16.6M | $41.5M | $83.1M | $831M |
+
+Previous hand-picked prices: $10k / $25k / $50k → $12.9M / $32.2M / $64.5M ARR at 5%, $258M / $645M / $1.29B ceiling.
 
 - **Which price is plausible:**
   - **$10k** is safe: a third of base value, and in line with a $6–10k IBE done once.

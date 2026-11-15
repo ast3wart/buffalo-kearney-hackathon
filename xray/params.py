@@ -19,11 +19,11 @@ DOMESTIC = {"US"}          # seller locations not counted as cross-border for th
 
 # --- failure probability by component age (velocity #4). Lifecycle status changes hours down, not the odds.
 FAILURE_RATE_BY_AGE = [    # (age from, age to) in years -> annual failure probability
-    ((0, 10), P(0.02, 0.035, 0.05, "assumption, velocity #4")),
-    ((10, 20), P(0.05, 0.075, 0.10, "assumption, velocity #4")),
-    ((20, 999), P(0.10, 0.15, 0.20, "assumption, velocity #4")),
+    ((0, 10), P(0.02, 0.03, 0.05, "estimate, velocity #4 (Nov 14): field rates, capped ~10%/yr")),
+    ((10, 20), P(0.04, 0.06, 0.08, "estimate, velocity #4 (Nov 14): field rates, capped ~10%/yr")),
+    ((20, 999), P(0.06, 0.08, 0.10, "estimate, velocity #4 (Nov 14): field rates, capped ~10%/yr")),
 ]
-FAILURE_RATE_AGE_UNKNOWN = P(0.05, 0.075, 0.10, "assumption, velocity #4 (age unknown -> middle band)")
+FAILURE_RATE_AGE_UNKNOWN = P(0.04, 0.06, 0.08, "estimate, velocity #4 (age unknown -> middle band)")
 
 # --- hours down (spof)
 SWAP_HOURS = P(2, 4, 8, "assumption: swap + re-commission a shelf spare")
@@ -35,9 +35,9 @@ LEAD_TIME_WKS_UNLISTED = P(8, 14, 20, "assumption: broker search for a discontin
 MIGRATION_DOWNTIME_HOURS = P(40, 80, 120, "assumption, velocity #5 (kb migration_downtime_hours blank)")
 
 # --- costs
-TRANSFER_FREIGHT = P(150, 400, 1000, "assumption, velocity #20")
-TRANSFER_ADMIN = P(200, 200, 200, "assumption, velocity #20")
-EMERGENCY_MULTIPLIER = P(1.5, 2.0, 3.0, "assumption, velocity #5 (emergency vs planned, before downtime)")
+TRANSFER_FREIGHT = P(100, 155, 400, "estimate, velocity #20 (Nov 14): ~$355 per transfer incl. admin")
+TRANSFER_ADMIN = P(200, 200, 200, "estimate, velocity #20 (Nov 14)")
+EMERGENCY_MULTIPLIER = P(1.1, 1.3, 1.6, "estimate, velocity #5 (Nov 14): emergency vs planned, before downtime")
 EMERGENCY_HAIRCUT = 0.5    # share of planned-vs-emergency savings counted in the price base (model-spec §2)
 MIGRATION_HOURS = {        # engineering hours to migrate to the successor, by component_type (velocity #16)
     "plc": P(40, 60, 80, "assumption, velocity #16"),
@@ -68,15 +68,16 @@ MACHINES_PER_EMPLOYEE = P(0.4, 0.55, 0.7, "assumption, velocity #18 (~150 machin
 
 # --- discount rates (velocity #15)
 OWNER_DISCOUNT_RATE = P(0.08, 0.10, 0.12, "assumption, velocity #15")
-DEAL_DISCOUNT_RATE = P(0.15, 0.175, 0.20, "assumption, velocity #15")
+DEAL_DISCOUNT_RATE = P(0.20, 0.25, 0.30, "estimate, velocity #15 (Nov 14): PE hurdle ~25%")
 
 # --- price + price checks (velocity #6, #7, #18, #19)
-VALUE_CAPTURE_PCT = P(0.20, 0.30, 0.40, "assumption, velocity #6")
+VALUE_CAPTURE_PCT = P(0.10, 0.20, 0.30, "estimate, velocity #6 (Nov 14)")
 MIN_CUSTOMER_ROI = 3.0
 MAX_PAYBACK_MONTHS = 12
 APPROVAL_CEILING = P(10000, 17500, 25000, "assumption, velocity #19 (plant-manager quick-yes zone)")
 COMPARABLES = P(6000, 8000, 10000, "assumption, velocity #7 (distributor installed-base evaluation)")
 COMPARABLE_BAND = (0.5, 2.0)   # flag a price below 0.5x the low or above 2x the high comparable
-COST_TO_SERVE = P(350, 1100, 3850, "assumption, velocity #18 (API + 4-12 h review, + on-site capture at high)")
+COST_TO_SERVE = P(300, 910, 1840, "estimate, velocity #18 (Nov 14): sonnet-5-5 API $2-40 + 4-12 h review; customer takes photos")
+ONSITE_CAPTURE = P(1000, 1500, 2000, "assumption, velocity #18: optional add-on, 1-2 days if we take the photos")
 MIN_GROSS_MARGIN = 0.60
 MAX_DEAL_FEE_SHARE = 0.10      # deal fee should be <= 10% of what the scan finds (model-spec §2 check 4)
