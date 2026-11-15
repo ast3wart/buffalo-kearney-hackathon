@@ -233,7 +233,7 @@
     "/scan": {
       "post": {
         "summary": "Scan",
-        "description": "The live demo: a real photo -> Claude reads it -> matched to the knowledge base.",
+        "description": "The live demo: a real photo -> image recognition reads it -> matched to the knowledge base.",
         "operationId": "scan_scan_post",
         "requestBody": {
           "content": {

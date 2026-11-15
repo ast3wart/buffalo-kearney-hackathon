@@ -38,7 +38,7 @@ export default function ScanPage() {
 
   return (
     <>
-      <PageHeader title="Live scan" subtitle="Photograph a nameplate or component label. Claude reads it, and we match it to the lifecycle knowledge base." />
+      <PageHeader title="Live scan" subtitle="Photograph a nameplate or component label. Image recognition reads it, and we match it to the lifecycle knowledge base." />
       <div className="grid gap-4 md:grid-cols-2">
         <Card title="Photo">
           <input type="file" accept="image/*" capture="environment" onChange={(e) => e.target.files?.[0] && onFile(e.target.files[0])} className="text-sm" />

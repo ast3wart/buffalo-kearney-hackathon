@@ -86,15 +86,19 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
                         <>
                           <td>
                             <Link href={`/components/${c.component_id}`} className="hover:underline">
-                              {c.kb_id ? <PartNo>{c.part_no}</PartNo> : <span className="text-muted">not in KB</span>}
+                              {c.kb_id ? <PartNo>{c.part_no}</PartNo> : <span className="font-mono text-[0.85em] text-muted">{c.part_no_read}</span>}
                             </Link>
-                            <div className="text-xs text-muted">{c.family || <span className="font-mono">read: {c.part_no_read}</span>}</div>
+                            <div className="text-xs text-muted">{c.family || (c.component_type === "other" || c.component_type === "power_supply" ? "commodity part" : "label unreadable")}</div>
                           </td>
-                          <td><StatusBadge status={c.lifecycle_status} /></td>
+                          <td>
+                            {c.kb_id ? <StatusBadge status={c.lifecycle_status} /> : c.component_type === "other" || c.component_type === "power_supply"
+                              ? <span className="text-[11px] text-muted">not tracked</span>
+                              : <Pill tone="warn">re-photograph</Pill>}
+                          </td>
                           <td className="tabular">{c.date_code}</td>
                           <td className="text-xs">
-                            {c.method === "vision" ? "📷 photo (Claude)" : c.method === "list" ? "equipment list" : "scan"}
-                            {c.needs_review === "yes" && <div><Pill tone="warn">review: {c.review_reason}</Pill></div>}
+                            {c.method === "vision" ? "📷 Image Recognition" : c.method === "list" ? "equipment list" : "scan"}
+                            {c.needs_review === "yes" && c.kb_id && <div><Pill tone="warn">confirm: {c.review_reason}</Pill></div>}
                           </td>
                         </>
                       ) : (

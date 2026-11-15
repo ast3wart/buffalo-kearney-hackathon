@@ -22,14 +22,14 @@ export default async function PortfolioPage() {
     <>
       <PageHeader
         title={p.fund_name}
-        subtitle="Every machine and every critical part across the portfolio: what's discontinued, what stops a line, and what's already on a shelf somewhere."
+        subtitle="Every machine and every critical part across the portfolio: what's discontinued, which line stoppers are at risk, and what's already on a shelf somewhere."
       />
       <div className="grid gap-4 md:grid-cols-5">
         <Card><Stat label="owned plants" value={totals.plants_owned} /></Card>
         <Card><Stat label="machines scanned" value={totals.machines} /></Card>
         <Card><Stat label="critical parts identified" value={totals.components} /></Card>
         <Card><Stat label="discontinued or end-of-life" value={pct(totals.at_risk_pct)} tone="alert" /></Card>
-        <Card><Stat label="at-risk parts that stop a line" value={totals.line_stop_at_risk} tone="alert" /></Card>
+        <Card><Stat label="line stoppers at risk (machines that halt production)" value={totals.line_stop_at_risk} tone="alert" /></Card>
       </div>
 
       {p.companies.map((co) => (
@@ -45,15 +45,15 @@ export default async function PortfolioPage() {
               <Link key={t.plant_id} href={`/plants/${t.plant_id}`} className="block rounded border border-line bg-surface p-5 hover:border-accent">
                 <div className="mb-3 flex items-baseline justify-between">
                   <span className="font-semibold">{t.plant_name}, {t.state}</span>
-                  {t.status === "target" ? <Pill tone="warn">target</Pill> : <span className="text-xs text-muted">{t.employees} people</span>}
+                  {t.status === "target" ? <Pill tone="warn">target</Pill> : <span className="text-xs text-muted">{t.employees} employees</span>}
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  <Stat label="parts" value={t.components} />
+                  <Stat label="machines" value={t.machines} />
                   <Stat label="at risk" value={pct(t.at_risk_pct)} tone={t.at_risk_pct > 0.4 ? "alert" : "warn"} />
-                  <Stat label="stop a line" value={t.line_stop_at_risk} tone={t.line_stop_at_risk ? "alert" : undefined} />
+                  <Stat label="line stoppers at risk" value={t.line_stop_at_risk} tone={t.line_stop_at_risk ? "alert" : undefined} />
                 </div>
                 <div className="mt-3 text-xs text-muted">
-                  {t.machines} machines · {t.lines} lines · {t.idle_spares} shelf items idle 5+ yrs · {t.needs_review} to review
+                  {t.components} critical parts · {t.lines} lines · {t.idle_spares} shelf items idle 5+ yrs · {t.needs_review} to review
                 </div>
               </Link>
             ))}
@@ -91,7 +91,7 @@ export default async function PortfolioPage() {
         </div>
         <Card title="Measured, not assumed">
           <div className="space-y-4">
-            <Stat label={`photos read exactly (Claude vision)`} value={`${a.photos_exact}/${a.photos_read}`} tone="ok" />
+            <Stat label={`labels read exactly (image recognition)`} value={`${a.photos_exact}/${a.photos_read}`} tone="ok" />
             <Stat label="part-identification precision" value={pct(a.components_precision)} tone="ok" />
             <Stat label="recall (rest goes to a person)" value={pct(a.components_recall)} />
             <Stat label="auto-accepted parts that were right" value={`${a.auto_accepted_correct}/${a.auto_accepted}`} tone="ok" />

@@ -164,7 +164,7 @@ def portfolio() -> Portfolio:
             machines=int(pc.machine_id.nunique()), components=len(pc), at_risk=int(risk.sum()),
             at_risk_pct=round(float(risk.mean()) if len(pc) else 0.0, 3),
             needs_review=int((pc.needs_review == "yes").sum()),
-            line_stop_at_risk=int((risk & (pc.criticality == "line_stop")).sum()),
+            line_stop_at_risk=int(pc[risk & (pc.criticality == "line_stop")].machine_id.nunique()),
             idle_spares=int(((spares.plant_id == p.plant_id) & (spares.last_moved_on < cutoff)).sum())))
     comp = r["company"]
     companies = [Company(company_id=x.company_id, company_name=x.company_name, fund_id=x.fund_id or "",
@@ -247,12 +247,12 @@ def accuracy() -> Accuracy:
                     auto_accepted=len(acc), auto_accepted_correct=int((acc.kb_id == acc.kb_id_t).sum()),
                     needs_review=int((c.needs_review == "yes").sum()), spares_precision=float(ss.precision),
                     spares_recall=float(ss.recall), photos_read=len(v), photos_exact=int((v.kb_id == v.kb_id_t).sum()),
-                    note="Synthetic demo portfolio with a planted answer key; photos are rendered test labels read by Claude.")
+                    note="Synthetic demo portfolio with a planted answer key; photos are rendered test labels read by image recognition.")
 
 
 @app.post("/scan")
 async def scan(file: UploadFile = File(...)) -> dict:
-    """The live demo: a real photo -> Claude reads it -> matched to the knowledge base."""
+    """The live demo: a real photo -> image recognition reads it -> matched to the knowledge base."""
     from xray.extract import read_photo
     from xray.pipeline import ExactIndex
     from xray.matching import Matcher

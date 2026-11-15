@@ -134,7 +134,7 @@ export interface paths {
         put?: never;
         /**
          * Scan
-         * @description The live demo: a real photo -> Claude reads it -> matched to the knowledge base.
+         * @description The live demo: a real photo -> image recognition reads it -> matched to the knowledge base.
          */
         post: operations["scan_scan_post"];
         delete?: never;
