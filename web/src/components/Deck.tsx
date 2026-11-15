@@ -1,5 +1,6 @@
 "use client";
 
+import { BASE } from "@/lib/api";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
 export type DeckData = {
@@ -189,7 +190,7 @@ export function Deck({ data }: { data: DeckData }) {
       <div className="grid h-full grid-cols-[1.5fr_1fr] gap-8">
         <figure className="flex min-h-0 flex-col">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/xray-monitor.png" alt="Concept image of the Cabinet Monitor clipped to a DIN rail in a control cabinet" className="min-h-0 flex-1 rounded-xl object-cover" />
+          <img src={`${BASE}/xray-monitor.png`} alt="Concept image of the Cabinet Monitor clipped to a DIN rail in a control cabinet" className="min-h-0 flex-1 rounded-xl object-cover" />
           <figcaption className="mt-2 text-xs text-muted">AI-generated concept image · no hardware built yet</figcaption>
         </figure>
         <div className="flex flex-col justify-center gap-5">
@@ -210,7 +211,7 @@ export function Deck({ data }: { data: DeckData }) {
 
     <Slide key="diagram" kicker="The hardware" title="How the Cabinet Monitor works" v>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/cabinet-monitor-diagram.png" alt="System block diagram of the Cabinet Monitor" className="h-full w-full object-contain object-top" />
+      <img src={`${BASE}/cabinet-monitor-diagram.png`} alt="System block diagram of the Cabinet Monitor" className="h-full w-full object-contain object-top" />
     </Slide>,
 
     <div key="demo" className="flex h-full flex-col">
@@ -218,7 +219,7 @@ export function Deck({ data }: { data: DeckData }) {
         <span className="text-sm font-semibold uppercase tracking-wider text-accent">Live demo · Granite Ridge Capital</span>
         <span className="text-xs text-muted">click inside to drive the app · click outside, then arrows to leave</span>
       </div>
-      <iframe src="/" className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Equipment Health Index live demo" />
+      <iframe src={`${BASE}/`} className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Equipment Health Index live demo" />
     </div>,
 
     <Slide key="savings" kicker="Financials · Cost savings" title="What we count, and what we only show">
@@ -318,7 +319,7 @@ export function Deck({ data }: { data: DeckData }) {
         <span className="text-sm font-semibold uppercase tracking-wider text-accent">Appendix · every formula, assumption and source</span>
         <span className="text-xs text-muted">search on the left · click outside, then arrows to leave</span>
       </div>
-      <iframe src="/appendix" className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Appendix" />
+      <iframe src={`${BASE}/appendix/`} className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Appendix" />
     </div>,
   ];
 

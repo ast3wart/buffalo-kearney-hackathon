@@ -22,7 +22,15 @@ We also designed the **Cabinet Monitor**, a small DIN-rail box (thermal camera, 
 
 ---
 
-## Run it on your computer (about 5 minutes)
+## Option 1: open it in your browser (no setup)
+**https://ast3wart.github.io/buffalo-kearney-hackathon/**
+
+- **Pitch deck:** https://ast3wart.github.io/buffalo-kearney-hackathon/pitch/
+- **Appendix** (every formula, assumption and source): https://ast3wart.github.io/buffalo-kearney-hackathon/appendix/
+
+This is a read-only snapshot of the app: every page is pre-rendered, so it needs no server. To change the data and see the numbers move, use option 2.
+
+## Option 2: run it on your computer (about 5 minutes)
 
 **You need:** [Python 3.11+](https://www.python.org/downloads/) and [Node.js 20+](https://nodejs.org/). No API key is needed: the photo readings are cached, so the demo runs offline.
 
@@ -86,6 +94,8 @@ Everything is plain CSV files. Edit, rebuild, refresh.
 After `seed.py`, restart the API (`./scripts/demo.sh` does both servers) and refresh the browser. Plant IDs: PA Toledo, PB Fort Wayne, PC Lima, PD Waukesha, PE Rockford (the acquisition target), PF Oshkosh.
 
 **Check nothing broke:** `./scripts/checkpoint.sh` runs the tests (accuracy floors against the planted answer key) and the type check.
+
+**Republish the online version** (option 1) after changes: `./scripts/deploy_pages.sh` pre-renders every page from your local API and pushes it to the `gh-pages` branch.
 
 ---
 

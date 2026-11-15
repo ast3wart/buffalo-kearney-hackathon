@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AnomalyChart, type SeriesPoint } from "@/components/AnomalyChart";
 import { AppendixIndex, type IndexItem } from "@/components/AppendixIndex";
 import { ASSUMPTIONS } from "@/lib/assumptions";
-import { tryJSON } from "@/lib/api";
+import { BASE, tryJSON } from "@/lib/api";
 
 // Everything behind the numbers that is not a slide: how we got the data, every formula, every assumption, and the
 // backup material for Q&A. Searchable (sticky index on the left). Velocity = kearney-perlab.growthsignals.com.
@@ -189,7 +189,7 @@ order-by          = failure date − lead time − 14-day buffer`}</F>
 
         <Section id="hardware" n={sec.hardware} title="Cabinet Monitor: design and economics">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/cabinet-monitor-diagram.png" alt="Cabinet Monitor system block diagram" className="w-full rounded border border-line" />
+          <img src={`${BASE}/cabinet-monitor-diagram.png`} alt="Cabinet Monitor system block diagram" className="w-full rounded border border-line" />
           <T head={["Item", "Low / base / high", "Basis"]} rows={[
             ["Hardware at 1,000 units", "$127 / $185 / $285", <>MLX90640 ~$31 (Octopart), ESP32-S3 $3.73, SHT40 $1.33 (DigiKey), 24→5 V ~$20 <V chat="Cabinet Monitor unit economics" /></>],
             ["Certification (one time)", "$25k / $55k / $100k", <>safety listing + FCC (pre-certified module $4.9–10k) + cellular <V chat="unit economics" /></>],
