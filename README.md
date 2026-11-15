@@ -8,7 +8,7 @@
 Unplanned downtime costs the world's 500 largest companies about **$1.4 trillion a year** (Siemens, 2024). The parts that stop a line are usually small and old: a 20-year-old drive, a discontinued relay, a controller nobody makes anymore. Plants follow their maintenance schedules, but almost nobody tracks the **health of the electronics inside their control cabinets**. Most plants run a maintenance system, but only ~15% of those keep part-level records (Velocity research).
 
 ## What it does
-We play a consulting firm hired by **Granite Ridge Capital**, a (fictional) Midwest private equity firm with two portfolio companies, five plants and one acquisition on the table.
+We play a consulting firm hired by **Stone Rose Capital**, a (fictional) Midwest private equity firm with two portfolio companies, five plants and one acquisition on the table.
 
 1. **Identify.** Photos of nameplates and cabinet labels are read by Claude vision into part number, maker, serial and date code. Unclear characters are flagged, never guessed.
 2. **Register.** Each part is matched to a lifecycle knowledge base (active / discontinued, rated life, successor) and placed in fund → company → plant → line → machine → part.
@@ -74,7 +74,7 @@ Click **Pitch** in the top bar. That's our presentation, built into the app.
 - A small **V** next to a number means we found it with **Velocity**, the Kearney × PERLab research platform.
 
 ## A 3-minute tour
-1. **Portfolio** (home page): Granite Ridge's two companies and five plants, how many critical parts are discontinued, and which spares are sitting idle at sister plants.
+1. **Portfolio** (home page): Stone Rose's two companies and five plants, how many critical parts are discontinued, and which spares are sitting idle at sister plants.
 2. Click **Toledo, OH**: parts to replace ASAP / soon / working, the **CapEx cliff** (spending needed per year), **savings and our fee**, **downtime avoided**, and the line-stoppers ranked by risk.
 3. Open **Line 1 → Komatsu OBS 150-2** (a stamping press): four parts, each with a health score. The **IDEC RH2B-U-AC120V relay** scores **1/100**. It's discontinued, overheating, and no plant has a spare.
 4. Click the relay's **where to buy**: its health drivers, the anomaly statistics that caught it, the financial view, and five real distributors selling its successor part.

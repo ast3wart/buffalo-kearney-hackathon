@@ -72,7 +72,7 @@ The input is **`reg: dict[str, pd.DataFrame]`**, the registry tables by name fro
 | **PA · Toledo, OH** | **Halvorsen Industrial Products** (`CO-HALVORSEN`): metal stamping and assemblies, 3 plants. **The main story.** | owned | **Deep dive:** registry, CapEx cliff, the part that stops a line |
 | **PB · Fort Wayne, IN** | Halvorsen | owned | **Has the spare** Toledo needs on its shelf (sharing **within** a company) |
 | **PC · Lima, OH** | Halvorsen | owned | Its shelf spare covers a Waukesha component (sharing **across** companies in the fund) |
-| **PD · Waukesha, WI** | **Brightwater Packaging Systems** (`CO-BRIGHTWATER`): packaging machinery, 2 plants, an add-on of **Granite Ridge Capital** (`F-GRANITE`), which owns both companies | owned | The PE layer: fund-wide totals |
+| **PD · Waukesha, WI** | **Brightwater Packaging Systems** (`CO-BRIGHTWATER`): packaging machinery, 2 plants, an add-on of **Stone Rose Capital** (`F-STONEROSE`), which owns both companies | owned | The PE layer: fund-wide totals |
 | **PF · Oshkosh, WI** | Brightwater | owned | Fund-wide totals |
 | **PE · Rockford, IL** | **Tillman Machine Works** (`CO-TILLMAN`) | **target** | **Deal view:** "pay $X less" |
 
@@ -113,13 +113,13 @@ All dollar figures are **placeholders (Brandon's to refine from research)**, lab
 - bigger, defensible numbers come from filling `kb.migration_cost_*` per controller family (Brandon, research), not from inflating the demo plants
 
 ## 3. Demo script (~3 min) + headline numbers
-1. **"Halvorsen Industrial runs 3 plants. Its owner, Granite Ridge Capital, also owns Brightwater (2 plants)."** Portfolio page tiles: plants, machines, components scanned, **% end-of-life or discontinued**, CapEx 5-yr, idle spares.
+1. **"Halvorsen Industrial runs 3 plants. Its owner, Stone Rose Capital, also owns Brightwater (2 plants)."** Portfolio page tiles: plants, machines, components scanned, **% end-of-life or discontinued**, CapEx 5-yr, idle spares.
 2. **Plant A registry:** lines → machines → components. Click one → evidence drawer (photo, reading, KB source).
 3. **CapEx cliff:** low/high by year → click a bar → the components driving it.
 4. **Single point of failure:** "Line 2 stops if this discontinued drive fails, and the manufacturer doesn't make it anymore." **Exposure $/yr.**
 5. **Sourcing:** "**Fort Wayne already has 2 on the shelf.** A broker could have one here in days, but at $4.3–6.5k refurbished, which is more than the successor." Then the listings range (≥ 3 listings) and buy / migrate / monitor. (The portfolio page also shows the Lima → Waukesha match across companies.)
 6. **Savings + price per plant** (from Brandon's model) + **accuracy tile** (precision/recall on the answer key).
-7. **Live photo** of a real nameplate → appears in the registry. Close with the deal view: "**Granite Ridge is about to buy Tillman Machine Works. The same scan prices the deal**" → **pay $X less**.
+7. **Live photo** of a real nameplate → appears in the registry. Close with the deal view: "**Stone Rose is about to buy Tillman Machine Works. The same scan prices the deal**" → **pay $X less**.
 
 **Headline numbers on screen (4 + 1):**
 1. **5-yr CapEx** (range)

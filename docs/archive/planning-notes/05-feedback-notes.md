@@ -18,13 +18,13 @@
 | 2 | **Problem** (1 page) | "Owners do not know the health of their plant equipment" | **Situation:** one preventive-maintenance example, where the schedule was followed and an unmonitored part still stopped the line. Then the chain: unknown health → failures → lost output → lost revenue. One health figure (share of parts at risk). | Deck slide 2, rewritten. Use stats in place of a named case (decided): 83% discontinued in one audit, only 55% have an obsolescence plan, 38 of 119 at risk in the demo |
 | 3 | **Solution** | "Start with what the plant has; hardware closes the gap" | The **data ladder** as tiered steps: photos → lists → storeroom → maintenance history → sensing. Hardware is the top rung and the point of the slide. | Deck slide 5, with rung 4 promoted from "research in progress" to the focus |
 | 4 | **Solution** | "How the hardware works" | **One diagram:** thermal camera on a cabinet → reading on the device → anomaly found against the part's spec and its own baseline → alert → action in the registry. State: works **without internet** on site, where the data is stored, who can see it, cost per point, expected impact. | Appendix A3, redrawn as a data-flow diagram. **Needs Asher's research for every number.** |
-| 5 | **Demo** | In the app, slides embedded | Top down: **select Granite Ridge** (each company's data kept separate) → plant view → **health score** → **live monitoring** → an issue detected → **action and sourcing** → human review → cost savings and downtime reduction. | App. See "App changes" below |
+| 5 | **Demo** | In the app, slides embedded | Top down: **select Stone Rose** (each company's data kept separate) → plant view → **health score** → **live monitoring** → an issue detected → **action and sourcing** → human review → cost savings and downtime reduction. | App. See "App changes" below |
 | 6 | — | Close | Roadmap in one line (platform expansion comes later) and the ask: 3 paid plant pilots + 1 portfolio | Deck slides 9 and 11, merged |
 
 **Move to appendix:** proof numbers (4), customer and market (6), competition (7), value capture (8), objections (10). Keep them for questions.
 
 ## Demo flow (what the app should show, in order)
-1. **Portfolio, top down.** Pick the fund (Granite Ridge). Companies are separate; the fund sees totals.
+1. **Portfolio, top down.** Pick the fund (Stone Rose). Companies are separate; the fund sees totals.
 2. **Plant view** with a **health score** per plant, line and machine.
 3. **Live monitoring** *(my reading: a sensor feed on the highest-risk parts)*.
 4. **Issue detected → action → sourcing.** Shelf at a sister plant first.
@@ -71,7 +71,7 @@ story is good
 
 focus on the hardware product, where does data go, cost, impacts
 
-make app proof of concept tell story begin with selecting the granite, then have it emphasize the cost savings, down time reduction, etc
+make app proof of concept tell story begin with selecting the fund (Stone Rose), then have it emphasize the cost savings, down time reduction, etc
 
 model, dont make it percent of savings conflict of interest, better ways for variable pricing
 

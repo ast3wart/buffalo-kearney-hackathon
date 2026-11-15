@@ -4,7 +4,7 @@ Small slice of Asher's `data/seed/demo/` (branch `asher/demo-data`), same column
 
 | Plant | Company | Role in the sample |
 |---|---|---|
-| **PA Toledo** | Halvorsen (Granite Ridge Capital) | Line 2 Aida servo press runs on a discontinued **Kinetix 6000** (KB-009), no spare at Toledo → line-stopping single point of failure. Compressor on Line 1 has a **CompactLogix 1769-L32E** (KB-002) + **PowerFlex 40** (KB-006). Storeroom holds the PowerFlex 40 twice under two names (duplicate). |
+| **PA Toledo** | Halvorsen (Stone Rose Capital) | Line 2 Aida servo press runs on a discontinued **Kinetix 6000** (KB-009), no spare at Toledo → line-stopping single point of failure. Compressor on Line 1 has a **CompactLogix 1769-L32E** (KB-002) + **PowerFlex 40** (KB-006). Storeroom holds the PowerFlex 40 twice under two names (duplicate). |
 | **PB Fort Wayne** | Halvorsen | Shelf row `PB-S001` "SERVO DRV KIN6K IAM 460V 6KW" ×2 = the Kinetix 6000 Toledo needs (the portfolio moment). Also a PowerFlex 525 (the PF40 successor). |
 | **PE Rockford** | Tillman (acquisition **target**, deal $28–34M) | Two Okuma lathes on **Siemens S5 CPU 943** (KB-029, the no/few-listings path). Has Kinetix 6000 spares, but it isn't owned yet, so `recommend_sourcing` must **not** use them. Use it to test `deal_adjustment`. |
 
