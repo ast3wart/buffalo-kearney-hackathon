@@ -1,0 +1,12 @@
+{
+  "manufacturer": "SIEMENS",
+  "part_no": "6ES7315-2AG10-0AB0",
+  "series": "F",
+  "serial": "3458238",
+  "date_code": "2008-03",
+  "description": "S7-300 CPU 315-2 DP",
+  "unclear": [],
+  "confidence": 0.96,
+  "model": "claude-sonnet-5-5",
+  "image": "PD-IMG0006.jpg"
+}

@@ -1,0 +1,4 @@
+photo_id,plant_id,machine_id,component_id,file,photo_kind,taken_on,quality,rendered
+PD-IMG0002,PD,PD-L1-M01,PD-L1-M01-C3,photos/PD-IMG0002.jpg,component_label,2026-11-14,ok,yes
+PD-IMG0006,PD,PD-L1-M03,PD-L1-M03-C1,photos/PD-IMG0006.jpg,component_label,2026-11-14,glare,yes
+PD-IMG0012,PD,PD-L1-M01,PD-L1-M01-C1,photos/PD-IMG0012.jpg,component_label,2026-11-14,ok,yes

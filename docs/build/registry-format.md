@@ -5,7 +5,7 @@
 **Defaults (Brandon owns these and can change them):**
 - **His outputs:** the six §7 tables as written.
 - **His functions take pandas DataFrames** read from SQLite. They don't need a database connection, so his code runs without the app.
-- **Demo portfolio:** 2 plants (PA owned, PB owned), ~3 lines each, ~30 machines total.
+- **Demo portfolio:** 6 plants (see interfaces.md §2).
 - **Money per plant:** ~$2M spares inventory, ~$5M maintenance budget.
 - **Price = 30% of modeled savings per plant.** Placeholder until `xray/pricing.py` computes it.
 - **Listings:** ≥ 3 listings for **3 parts by CP1**, more later.
@@ -22,12 +22,12 @@ This doc describes the full data model, so the pitch and the roadmap hang togeth
 
 | Needed for the demo | Minimum |
 |---|---|
-| Plants / lines / machines | 2 plants, ~3 lines each, ~30 machines. Identity, criticality, line downtime $/h (ranges) |
-| Components | ~40–60, with ~10 photographed (nameplate or cabinet) for the vision step. The rest come from the equipment list. |
+| Plants / lines / machines | **6 plants** (Halvorsen: Toledo, Fort Wayne, Lima; Brightwater: Waukesha, Oshkosh; target Tillman: Rockford; see interfaces.md §2), ~14 lines, ~66 machines. Identity, criticality, line downtime $/h (ranges) |
+| Components | ~123, with ~10 photographed (nameplate or cabinet) for the vision step. The rest come from the equipment list. |
 | Spares | a short storeroom list per plant with **the planted Plant B spare** and **one duplicate** |
 | KB | ~30 parts: lifecycle status, successor, failure rate, migration cost (ranges) |
 | Listings | **3 parts with ≥ 3 real listings each**, plus 1 part with none (shows the alternatives path) |
-| `plant_financials` | one row per plant, placeholder ranges |
+| `plant_financials` | one row per plant (6), placeholder ranges |
 | Outputs | CapEx cliff, single points of failure, sourcing for 3 parts, accuracy, price per plant (placeholder model), deal view for one plant |
 | **Skip for the demo** | work orders, book value, seller trust beyond a simple score, `alternatives` beyond 1–2 rows, migration downtime, multi-currency, real CMMS/ERP connectors |
 
@@ -49,6 +49,7 @@ data/seed/<portfolio_id>/                 e.g. data/seed/demo/   (hand-made samp
     spares.csv                            ERP storeroom export: what's on the shelf
     work_orders.csv                       maintenance history (optional; failures, repairs)
     photos.csv                            photo manifest: what each photo shows
+    readings.csv                          what the scan read per component (raw text, confidence, date code). Simulates vision for parts without a real photo; the matcher runs on it
     photos/                               the images (nameplates, cabinets)
 data/reference/
   kb.csv                                  knowledge base: one row per part (catalog) number
@@ -164,13 +165,25 @@ data/truth/<portfolio_id>/                answer key (never read by the pipeline
 | parts_cost, labor_cost, rush (yes/no) | | Brandon |
 | notes | free text | Asher |
 
+### `<plant>/readings.csv` (what the scan read: one row per component)
+| Column | Meaning | Owner |
+|---|---|---|
+| reading_id, plant_id, machine_id, component_id | | Asher |
+| photo_id | blank when simulated (no real photo) | Asher |
+| raw_text | exactly what was read off the label (typos, missing dashes, cut-offs) | Asher |
+| component_type_hint | plc / drive / hmi / … as seen | Asher |
+| method | `vision_sim` (simulated scan), `vision` (real photo), `list` (equipment list) | Asher |
+| confidence | read confidence 0–1 | Asher |
+| date_code | year on the label / install year (drives age → CapEx timing) | Asher |
+
 ### `<plant>/photos.csv` (manifest)
 | Column | Meaning | Owner |
 |---|---|---|
-| photo_id, plant_id, machine_id | which machine | Asher |
+| photo_id, plant_id, machine_id, component_id | which machine / component the label belongs to | Asher |
 | file | path under `photos/` | Asher |
 | photo_kind | nameplate / cabinet / component_label / overview | Asher |
-| taken_on, quality (`ok` / `blurry` / `glare` / `cut_off`) | | Asher |
+| taken_on, quality (`ok` / `blurry` / `glare` / `worn` / `cut_off`) | | Asher |
+| rendered | `yes` = a rendered test image (not a real photo; say so on screen), `no` = a real photo | Asher |
 
 ## 5. Reference data
 ### `data/reference/kb.csv` (knowledge base: one row per part number)

@@ -2,6 +2,44 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~7:45 PM · Demo registry is ready to build against (`demo.db`)
+**Status:** 🆕 new · branch `asher/demo-data` (PR for CP1)
+- **Run:** `python scripts/make_demo_data.py && python scripts/seed.py`, then `from xray.registry import load; reg = load()`. That's your `reg`: a dict of DataFrames (`plant`, `plant_financials`, `line`, `machine`, `component`, `spare_stock`, `spare_match`, `kb_entry`, `alternative`, `listing`, …).
+- **What's in it:** 6 plants, 14 lines, 66 machines, 126 components (36% discontinued at the owned plants, 100% at Tillman), 48 storeroom rows, and 30 real KB parts.
+  - The **Toledo Line 2 Kinetix 6000** is a single point of failure, and **Fort Wayne has 2 on its shelf**.
+  - The **Waukesha MICROMASTER 440** is covered by a **Lima** spare (cross-company).
+  - Two duplicates.
+- **Matching:** components 99% precision / 91% recall; storeroom 100% / 98%. Every part not sent to review is correct.
+- **Money columns** (`plant_financials`, `line` revenue/margin/hours, machine replacement values) hold the placeholder ranges from `interfaces.md` §2. `downtime_cost_per_hour_*` is blank for you to derive. **Your `listings.csv` drops into `data/reference/`**, and `seed.py` loads it.
+- **New input file** (shared format change, heads-up): `<plant>/readings.csv`, what the scan read per component (see registry-format §4). Use `component.date_code` for age.
+
+### Sat Nov 14, ~7:15 PM · The 4 parts to collect listings for (CP1)
+**Status:** 🆕 new · KB: `data/reference/kb.csv` (30 real parts, branch `asher/demo-data`)
+| Part | kb_id | Why it's in the demo | Target |
+|---|---|---|---|
+| **2094-BC01-MP5-S**: Rockwell **Kinetix 6000** servo axis module (discontinued Dec 2023) | KB-009 | **The line-stopping part at Toledo Line 2.** Fort Wayne has 2 on its shelf. | ≥ 3 listings (eBay sold, Radwell, PLC Center, DoSupply…) |
+| **22B-D010N104**: Rockwell **PowerFlex 40** 5HP drive (discontinued Jun 2025) | KB-006 | Common drive across plants; successor 25B-D010N104 (PowerFlex 525) | ≥ 3 listings, plus 1 for the successor if easy |
+| **1769-L32E**: Rockwell **CompactLogix** controller (discontinued Dec 2020) | KB-002 | Drives the CapEx cliff (migrate to 5069-L320ER) | ≥ 3 listings |
+| **6ES5943-7UB11**: Siemens **S5-115U CPU 943** (very old) | KB-029 | **Candidate for the "no / few listings" path** → alternatives | Record whatever you find. If ≥ 3 turn up, tell me and I'll pick a rarer part. |
+
+- One row per listing in `data/reference/listings.csv` (columns in registry-format §5). `url` + `seen_on` are required. Counterfeit risk shows for non-authorized sellers.
+- **Collect by hand, don't scrape.**
+
+### Sat Nov 14, ~7 PM · Demo portfolio is now 6 plants: two multi-plant manufacturers + a target (we target multi-plant manufacturers)
+**Status:** 🆕 new
+- **Granite Ridge Capital** (`F-GRANITE`) owns:
+  - **Halvorsen Industrial Products** (3 plants: **Toledo PA** = deep dive, **Fort Wayne PB** = has the spare, **Lima PC**)
+  - **Brightwater Packaging Systems** (2 plants: **Waukesha PD**, **Oshkosh PF**)
+
+  **Tillman Machine Works** (**Rockford PE**) is the acquisition **target** (deal view). All fictional. The table is in `interfaces.md` §2.
+- **For you:**
+  - `plant_financials` has **6 rows** (placeholder ranges are in the table)
+  - **`deal_adjustment` runs on Tillman** (`CO-TILLMAN`, deal value $28–34M)
+  - portfolio totals sum the 5 owned plants (Rockford excluded until bought)
+- **Spare sharing:** Fort Wayne → Toledo (within Halvorsen) and Lima → Waukesha (**across companies** in the fund). `recommend_sourcing` should check every owned plant.
+- **Your hand-made sample can stay at 2 plants.** My generated `data/seed/demo/` has all 6.
+- **Listings:** I'll post the 4 part numbers to collect within ~30 min.
+
 ### Sat Nov 14, ~6:40 PM · Your financials plan (#19) merged + your 5 format changes adopted
 **Status:** 🆕 new
 - **Adopted into registry-format + interfaces:**

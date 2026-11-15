@@ -1,0 +1,9 @@
+machine_id,line_id,asset_tag,description,machine_type,make,model,serial,year_built,condition,criticality,redundant_with,replacement_value_low,replacement_value_high,book_value
+PF-L1-M01,PF-L1,PF2795,DOUG Axiom,packaging,Douglas Machines,Axiom case packer,653955,1998,fair,line_stop,,150000.0,400000.0,
+PF-L1-M02,PF-L1,PF1795,HYTR E24,conveyor,Hytrol,E24 accumulation,,2006,fair,line_stop,,40000.0,120000.0,
+PF-L1-M03,PF-L1,PF6122,YASK MH50,robot_cell,Yaskawa,MH50 cell,922572,2014,fair,none,,250000.0,500000.0,
+PF-L1-M04,PF-L1,PF1231,HYTROL E24 ACCUMULATION #4,conveyor,Hytrol,E24 accumulation,176328,2009,good,degraded,,40000.0,120000.0,
+PF-L2-M01,PF-L2,PF2008,WEXXAR WFT CASE FORMER #1,packaging,Wexxar,WFT case former,10418,2005,good,line_stop,,150000.0,400000.0,
+PF-L2-M02,PF-L2,PF2318,CONVEYOR 2 - Hytrol,conveyor,Hytrol,E24 accumulation,791385,2010,fair,line_stop,,40000.0,120000.0,
+PF-L2-M03,PF-L2,PF2399,YASKAWA MH50 CELL #3,robot_cell,Yaskawa,MH50 cell,947613,2007,good,degraded,,250000.0,500000.0,
+PF-L2-M04,PF-L2,PF7415,DORNER 3200 SERIES #4,conveyor,Dorner,3200 series,332700,2021,fair,degraded,,40000.0,120000.0,

@@ -28,10 +28,12 @@
 Live marketplace search · sensors · login · mobile field app · trained component detector · real CMMS/ERP connectors · reading maintenance logs at scale.
 
 ## Demo script (~3 min)
-1. "Fund X **owns** Plant A and Plant B." Open the registry: Plant A, lines, machines.
+> **Current version of the demo script: [interfaces.md §3](../../build/interfaces.md)** (6 plants: Halvorsen Toledo/Fort Wayne/Lima, Brightwater Waukesha/Oshkosh, target Tillman Rockford). The steps below are the original outline.
+
+1. "Granite Ridge Capital's Halvorsen Industrial **owns** Toledo and Fort Wayne…" Open the registry: Toledo, lines, machines.
 2. CapEx cliff → click a bar → evidence drawer (photo, KB source, confidence).
 3. SPOF: "Line 2 stops if this discontinued drive fails. Lead time 20 weeks."
-4. Sourcing → **"Plant B already has 2 on the shelf."** ← the portfolio moment
+4. Sourcing → **"Fort Wayne already has 2 on the shelf."** ← the portfolio moment
 5. Accuracy tile: precision/recall on the planted answer key.
 6. Live photo → it appears in the registry.
 7. Close: "**And when they buy their next plant, the same scan prices the deal**" → show "pay $X less" as the second lens.
