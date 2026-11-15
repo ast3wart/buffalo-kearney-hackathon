@@ -20,9 +20,9 @@
 ## Results
 | # | eBay active | eBay sold | Radwell | Total | Pass? | Notes / URLs |
 |---|---|---|---|---|---|---|
-| 1 | | | | | | |
-| 2 | | | | | | |
-| 3 | | | | | | |
-| 4 | | | | | | |
+| 1 | 0 | 0 | not found | **0** | ✅ | eBay active + sold: 0 exact matches; Radwell search: not found (2026-11-14) |
+| 2 | – | – | – | – | not checked | stopped at first pass |
+| 3 | – | – | not found | – | not checked on eBay | |
+| 4 | – | – | listed (57C431A, under ABB / Baldor Reliance) | ≥ 1 | ❌ | AutoMax family still traded |
 
-**Winner:** ______ → tell Asher (to-asher.md or chat): part number, total listings found, and paste any URLs. If **none** pass, say so; the fallback is to keep the alternatives path on a part with "low" confidence (1–2 listings) and label it.
+**Winner: #1 Westinghouse Numa-Logic PC-1100** (0 listings) → tell Asher (to-asher.md or chat): part number, total listings found, and paste any URLs. If **none** pass, say so; the fallback is to keep the alternatives path on a part with "low" confidence (1–2 listings) and label it.
