@@ -21,7 +21,7 @@
 4. **Using it on your own plants is the bigger market:**
    - **25,799 US plants with 100+ employees** (MEASURED)
    - **$10k / $30k / $60k** of recurring auditable value per plant per year, plus a **one-time $100–400k** in spares released (VELOCITY)
-   - at the financial model's **~$11.5k per plant per year** (range $4–32k) and **5% adoption**, that's **~$15M ARR** (range $5–42M), with a **~$297M ceiling** at the base price (*updated from the financial model, Nov 14; was $10–25k → $13–32M ARR, $258–645M ceiling*)
+   - at the financial model's **~$5.9k per plant per year** for a 100–249-employee plant (range $1–21k) and **5% adoption**, that's **~$7.6M ARR** (range $1.4–27M), with a **~$152M ceiling** at the base price. Larger plants price higher, so this is a floor (*updated from the financial model, Nov 14 ~10 PM, with Velocity #1–3 plant finances; earlier $11.5k → $15M ARR, $297M ceiling*)
 5. **For a consulting firm (e.g. Kearney): conditional GO on a narrow, expert-reviewed "assessment accelerator", NO-GO on a broad AI platform.**
    - Breakeven is **~45 paid engagements a year** at a **$15k fee uplift**.
    - On photo savings alone, it would take 643 a year, which is not viable.
@@ -107,9 +107,9 @@
 
 | Price / plant / yr | 2% adoption | 5% | 10% | 100% ceiling |
 |---|---|---|---|---|
-| $4.1k (low) | $2.1M | $5.3M | $10.6M | $106M |
-| $11.5k (base) | $5.9M | $14.8M | $29.7M | $297M |
-| $32.2k (high) | $16.6M | $41.5M | $83.1M | $831M |
+| $1.1k (low) | $0.6M | $1.4M | $2.8M | $28M |
+| $5.9k (base) | $3.0M | $7.6M | $15.2M | $152M |
+| $21k (high) | $10.9M | $27.3M | $54.7M | $547M |
 
 Previous hand-picked prices: $10k / $25k / $50k → $12.9M / $32.2M / $64.5M ARR at 5%, $258M / $645M / $1.29B ceiling.
 

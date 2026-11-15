@@ -1,4 +1,4 @@
-# Price sensitivity (Sat Nov 14)
+# Price sensitivity (Sat Nov 14, ~10 PM: Velocity #1–3 plant finances + #16 migration costs)
 
 What a plant would pay per year at 10 / 20 / 30% value capture, across low / base / high savings. Rerun: `python scripts/sensitivity.py`.
 Data: Asher's 6-plant demo registry (`demo.db`, 5 owned plants), quoted as a **full-plant scan extrapolated from the register sample** (`plant_savings(full_plant=True)`).
@@ -8,49 +8,50 @@ Every input is a labeled range in `xray/params.py`; gross margin uses cost to se
 
 | Capture % | low savings | base savings | high savings |
 |---|---|---|---|
-| 10% | $2.1k / 1.2 mo / 56% | $5.7k / 1.2 mo / 84% | $16.1k / 1.2 mo / 94% (quick-yes) |
-| 20% | $4.1k / 2.4 mo / 78% | $11.5k / 2.4 mo / 92% (quick-yes) | $32.2k / 2.4 mo / 97% |
-| 30% | $6.2k / 3.6 mo / 85% | $17.2k / 3.6 mo / 95% (quick-yes) | $48.3k / 3.6 mo / 98% |
-
-Price = capture % x auditable recurring savings, so payback is fixed by the capture % (capture x 12 months) and ROI is 1 / capture (10x / 5x / 3.3x). What moves is the dollar price and the margin. Quick-yes = inside the $10–25k plant-manager approval zone (Velocity #19).
+| 10% | $0.5k / 1.2 mo / -73% | $3.0k / 1.2 mo / 69% | $10.6k / 1.2 mo / 91% (quick-yes) |
+| 20% | $1.1k / 2.4 mo / 14% | $5.9k / 2.4 mo / 85% | $21.2k / 2.4 mo / 96% (quick-yes) |
+| 30% | $1.6k / 3.6 mo / 42% | $8.9k / 3.6 mo / 90% | $31.8k / 3.6 mo / 97% |
 
 ## Per plant at 20% capture
 
 | Plant | Recurring savings (base) | Price low / base / high | Payback | ROI | Gross margin | Quick-yes ($10-25k) |
 |---|---|---|---|---|---|---|
-| PA | $95.7k | $6.8k / $19.1k / $53.5k | 2.4 mo | 5.0x | 95% | yes |
-| PB | $60.6k | $4.9k / $12.1k / $30.2k | 2.4 mo | 5.0x | 92% | yes |
-| PC | $49.9k | $3.6k / $10.0k / $28.2k | 2.4 mo | 5.0x | 91% | no |
-| PD | $44.3k | $3.2k / $8.9k / $25.9k | 2.4 mo | 5.0x | 90% | no |
-| PF | $36.4k | $2.3k / $7.3k / $23.4k | 2.4 mo | 5.0x | 88% | no |
-| **Average** | $57.4k | $4.1k / $11.5k / $32.2k | 2.4 mo | 5.0x | 92% | yes |
+| PA | $47.7k | $1.8k / $9.5k / $32.9k | 2.4 mo | 5.0x | 90% | no |
+| PB | $29.0k | $1.0k / $5.8k / $20.2k | 2.4 mo | 5.0x | 84% | no |
+| PC | $23.2k | $0.7k / $4.6k / $17.3k | 2.4 mo | 5.0x | 80% | no |
+| PD | $20.9k | $0.7k / $4.2k / $15.3k | 2.4 mo | 5.0x | 78% | no |
+| PF | $27.3k | $1.0k / $5.5k / $20.3k | 2.4 mo | 5.0x | 83% | no |
+| **Average** | $29.6k | $1.1k / $5.9k / $21.2k | 2.4 mo | 5.0x | 85% | no |
 
-Stress: list at the base price ($11.5k) and only low-case savings show up ($20.7k/yr): payback 6.6 months.
+Stress: list at the base price ($5.9k) and only low-case savings show up ($5.3k/yr): payback 13.5 months.
 
 ## One-time spares release (cash freed once, not priced)
 
 | Plant | Low | Base | High |
 |---|---|---|---|
-| PA | $180.0k | $300.0k | $550.0k |
-| PB | $140.0k | $232.5k | $425.0k |
-| PC | $100.0k | $165.0k | $300.0k |
-| PD | $90.0k | $150.0k | $275.0k |
-| PF | $60.0k | $105.0k | $200.0k |
+| PA | $28.7k | $79.0k | $191.5k |
+| PB | $23.5k | $64.7k | $156.8k |
+| PC | $18.3k | $50.3k | $122.0k |
+| PD | $17.0k | $46.7k | $113.2k |
+| PF | $13.1k | $35.9k | $87.0k |
 
 ## What moves the price
-- **Carrying cost on excess spares is two-thirds of recurring savings** (66% of base). It scales with the plant's spares inventory and the excess share (10–25%), so plant size drives price: PA is 2.6x PF.
-- **Planned vs emergency replacement is the widest lever** ($0.5k–$53k per plant): it depends on failure rates of aging parts and the emergency multiplier, so it is most of the gap between the base and high cases.
-- **Rush premiums avoided add 13%**; sister-plant spares only 4% in recurring dollars, though they're the most auditable lever (PO + transfer).
-- Downtime avoided and the one-time spares release are shown, never priced.
+- **Plant size.** The demo plants are 90–220 employees, all in the smallest Census band (100–249). Carrying cost and rush premiums scale with the plant's spares and rush spend, which Velocity #1 puts at ~2× for 250–499 employees and ~4× for 500+. So larger plants price higher than the demo average (estimate, not modeled).
+- **Carrying cost on excess spares is the largest lever (39% of base)**, now on Velocity #1's ~$0.37M spares per 170 employees instead of the old $1.8–2.2M placeholder. That change roughly halved the price.
+- **Planned vs emergency replacement is the widest lever (29%)**: aging parts, emergency multiplier 1.1–1.6×, migration costs from Velocity #16.
+- **Sister-plant spares are 13%** of recurring savings and the most auditable lever (PO + transfer). Downtime avoided and the one-time spares release are shown, never priced.
 
 ## Recurring savings by lever (portfolio average, base)
 
 | Lever | Low | Base | High | Share of base |
 |---|---|---|---|---|
-| carrying_cost_avoided | $17.1k | $38.1k | $87.5k | 66% |
-| planned_vs_emergency | $0.5k | $9.5k | $52.9k | 17% |
-| rush_premiums_avoided | $2.6k | $7.7k | $15.3k | 13% |
-| sister_spare_purchases_avoided | $0.5k | $2.1k | $5.4k | 4% |
+| carrying_cost_avoided | $2.4k | $11.6k | $40.2k | 39% |
+| planned_vs_emergency | $0.8k | $8.6k | $42.6k | 29% |
+| rush_premiums_avoided | $0.9k | $5.4k | $13.6k | 18% |
+| sister_spare_purchases_avoided | $1.2k | $4.0k | $9.6k | 13% |
 
 ## For the slide
-**List $10–20k per plant per year (portfolio base $11.5k); 20% value capture; payback under 3 months, under 7 even if only low-case savings show up.** Plus a one-time $105–300k spares release (base) the customer keeps.
+**$5–10k per plant per year for a 100–249-employee plant (portfolio base $5.9k, Toledo $9.5k); 20% value capture; 5× return, payback under 3 months.** Plus a one-time $36–79k spares release (base) the customer keeps. Larger plants scale up with their spares and rush spend.
+- The base price sits below the $10–25k quick-yes zone, so it's an easy approval, not a stretch.
+- Stress case: list at base and only low-case savings show up → payback 13.5 months. Lead with base, footnote the range.
+- The 10% / low-savings cell has negative margin: don't quote 10% capture.
