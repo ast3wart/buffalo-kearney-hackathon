@@ -211,7 +211,12 @@ def evidence(component_id: str) -> dict:
     lst = r.get("listing", pd.DataFrame())
     listings = lst[lst.kb_id == comp["kb_id"]] if "kb_id" in lst else pd.DataFrame()
     alts = r["alternative"][r["alternative"].kb_id == comp["kb_id"]]
-    return {"component": comp, "evidence": records(ev)[0] if len(ev) else None,
+    credits = ROOT / "data/reference/photos/credits.csv"
+    real = []
+    if credits.exists() and comp["kb_id"]:
+        cr = pd.read_csv(credits, dtype=str).fillna("")
+        real = records(cr[cr.kb_ids.str.split(";").apply(lambda ks: comp["kb_id"] in ks)])
+    return {"component": comp, "evidence": records(ev)[0] if len(ev) else None, "real_photos": real,
             "photo": records(photo)[0] if len(photo) else None, "listings": records(listings), "alternatives": records(alts)}
 
 
@@ -223,6 +228,17 @@ def photo_file(plant_id: str, photo_id: str):
     if not p.exists() or not p.resolve().is_relative_to((ROOT / "data/seed/demo").resolve()):
         raise HTTPException(404, "no such photo")
     return FileResponse(p, media_type="image/jpeg")
+
+
+@app.get("/refphotos/{name}")
+def ref_photo(name: str):
+    from fastapi.responses import FileResponse
+
+    base = (ROOT / "data/reference/photos").resolve()
+    p = (base / name).resolve()
+    if not p.is_relative_to(base) or not p.exists() or p.suffix not in (".jpg", ".png"):
+        raise HTTPException(404, "no such photo")
+    return FileResponse(p, media_type="image/png" if p.suffix == ".png" else "image/jpeg")
 
 
 @app.get("/plants/{plant_id}/shelf-matches", response_model=list[ShelfMatch])

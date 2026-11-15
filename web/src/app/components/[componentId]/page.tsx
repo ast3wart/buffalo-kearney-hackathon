@@ -7,6 +7,13 @@ type Ev = {
   evidence: { reading_json: string; source_url: string; confidence: number; reviewer: string } | null;
   photo: { photo_id: string; plant_id: string; quality: string; rendered: string } | null;
   alternatives: { alt_part_no: string; alternative_kind: string; found_by: string; fit_notes: string }[];
+  real_photos: { file: string; author: string; license: string; license_url: string; source_url: string; match_level: string; shows: string }[];
+};
+const MATCH: Record<string, string> = {
+  exact_family: "real photo of this product family",
+  same_family: "real photo of the same family (different model)",
+  brand_style: "real photo of the same manufacturer's PLCs",
+  part_type: "real photo of this type of part (other brand)",
 };
 type Option = {
   kind: "shelf" | "listing" | "successor"; where?: string; recommended?: boolean; part_no?: string; qty?: number; detail?: string; channel?: string; seller?: string; authorized?: string;
@@ -125,6 +132,22 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Card title="Evidence">
+          {e.real_photos.length > 0 && (
+            <div className="mb-4 space-y-3">
+              {e.real_photos.map((rp) => (
+                <figure key={rp.file}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`${API_URL}/refphotos/${rp.file}`} alt={rp.shows} className="w-full rounded border border-line" />
+                  <figcaption className="mt-1 text-xs text-muted">
+                    <b className="text-ink">{rp.shows}</b> · {MATCH[rp.match_level] ?? rp.match_level} · Photo: {rp.author},{" "}
+                    <a className="text-accent hover:underline" href={rp.license_url || rp.source_url} target="_blank">{rp.license}</a>, via{" "}
+                    <a className="text-accent hover:underline" href={rp.source_url} target="_blank">Wikimedia Commons</a>
+                  </figcaption>
+                </figure>
+              ))}
+              <div className="text-xs font-medium uppercase tracking-wider text-muted">The label photo image recognition read:</div>
+            </div>
+          )}
           {e.photo ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}

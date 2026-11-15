@@ -47,3 +47,11 @@ def test_recommendation_order():
     assert shelf["options"][0]["kind"] == "shelf" and shelf["options"][0]["recommended"]
     tillman = c.get("/components/PE-L1-M01-C1/health").json()  # discontinued SLC 5/04 with a successor
     assert tillman["options"][0]["kind"] == "successor" and "manufacturer" in tillman["action"]
+
+
+def test_real_family_photos_with_credit():
+    e = c.get("/components/PA-L1-M01-C1/evidence").json()  # a ControlLogix part
+    if e["component"]["kb_id"] in ("KB-001", "KB-017"):
+        assert e["real_photos"] and all(p["license"] and p["author"] and p["source_url"] for p in e["real_photos"])
+        assert c.get(f"/refphotos/{e['real_photos'][0]['file']}").status_code == 200
+    assert c.get("/refphotos/../credits.csv").status_code == 404
