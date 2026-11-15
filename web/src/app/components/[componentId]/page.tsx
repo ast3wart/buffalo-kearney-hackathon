@@ -9,7 +9,7 @@ type Ev = {
   alternatives: { alt_part_no: string; alternative_kind: string; found_by: string; fit_notes: string }[];
 };
 type Option = {
-  kind: "shelf" | "listing"; where?: string; qty?: number; detail?: string; channel?: string; seller?: string; authorized?: string;
+  kind: "shelf" | "listing" | "successor"; where?: string; recommended?: boolean; part_no?: string; qty?: number; detail?: string; channel?: string; seller?: string; authorized?: string;
   condition?: string; price?: number | null; shipping?: number | null; lead_time_days?: number | null; warranty_months?: string;
   trust_score?: number | null; url?: string; sample?: string;
 };
@@ -18,7 +18,7 @@ type Health = {
   order_by?: string; order_now?: boolean; action: string; line_stop?: boolean; options?: Option[]; best_price?: number | null;
 };
 
-const CH: Record<string, string> = { shelf: "Shelf, another plant", oem: "Manufacturer", authorized_distributor: "Authorized distributor", refurbisher: "Refurbisher", surplus: "Surplus dealer", marketplace: "Marketplace", broker: "Broker" };
+const CH: Record<string, string> = { shelf: "Shelf, another plant", successor: "Successor, from manufacturer", oem: "Manufacturer", authorized_distributor: "Authorized distributor", refurbisher: "Refurbisher", surplus: "Surplus dealer", marketplace: "Marketplace", broker: "Broker" };
 
 export default async function ComponentPage({ params }: { params: Promise<{ componentId: string }> }) {
   const { componentId } = await params;
@@ -73,8 +73,12 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
                 </thead>
                 <tbody>
                   {options.map((o, i) => (
-                    <tr key={i} className={`border-t border-line ${o.kind === "shelf" ? "bg-accent-soft" : ""}`}>
-                      <td className="py-2">{CH[o.kind === "shelf" ? "shelf" : o.channel ?? ""] ?? o.channel}</td>
+                    <tr key={i} className={`border-t border-line ${o.recommended ? "bg-accent-soft" : ""}`}>
+                      <td className="py-2">
+                        {CH[o.kind === "listing" ? o.channel ?? "" : o.kind] ?? o.channel}
+                        {o.recommended && <div><Pill tone="ok">Recommended</Pill></div>}
+                        {o.kind === "successor" && <div className="font-mono text-[11px] text-muted">{o.part_no}: needs migration</div>}
+                      </td>
                       <td>
                         {o.kind === "shelf" ? <><b>{o.where}</b> · qty {o.qty}<div className="font-mono text-[11px] text-muted">&ldquo;{o.detail}&rdquo;</div></> : o.seller}
                         {o.kind === "listing" && o.authorized === "no" && <div className="text-[11px] text-warn">not authorized: counterfeit risk, test on arrival</div>}
@@ -89,7 +93,7 @@ export default async function ComponentPage({ params }: { params: Promise<{ comp
                 </tbody>
               </table>
             )}
-            <p className="mt-2 text-xs text-muted">Shelf first: move a spare you already own before buying. Sample listings are illustrative until real marketplace data is connected.</p>
+            <p className="mt-2 text-xs text-muted">Recommended order: a spare already on a shelf, then the manufacturer or your usual authorized distributor (for discontinued parts, the official successor), then other sources. Sample listings are illustrative until real marketplace data is connected.</p>
           </Card>
         </div>
       )}

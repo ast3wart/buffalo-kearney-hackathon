@@ -40,3 +40,10 @@ def test_part_health_and_marketplace():
     assert m["machine"]["risk"] == "replace_asap" and len(m["parts"]) >= 1
     lines = c.get("/plants/PA/lines").json()
     assert len(lines["lines"]) == 3 and all("value_low" in x for x in lines["lines"])
+
+
+def test_recommendation_order():
+    shelf = c.get("/components/PA-L2-M01-C1/health").json()
+    assert shelf["options"][0]["kind"] == "shelf" and shelf["options"][0]["recommended"]
+    tillman = c.get("/components/PE-L1-M01-C1/health").json()  # discontinued SLC 5/04 with a successor
+    assert tillman["options"][0]["kind"] == "successor" and "manufacturer" in tillman["action"]

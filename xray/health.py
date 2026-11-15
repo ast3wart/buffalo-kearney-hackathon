@@ -68,6 +68,11 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
         shelf = {kb_id: [s for s in shelf_all.get(kb_id, []) if s["plant_id"] != c["plant_id"]]}
         own_spare = any(s["plant_id"] == c["plant_id"] for s in shelf_all.get(kb_id, []))
         options = _lead_options(kb_id, listings, shelf)
+        succ_kb = kb.index[kb.part_no == k.successor_part_no].tolist() if k.successor_part_no else []
+        if k.lifecycle_status == "discontinued" and succ_kb:  # the official successor, bought new from the manufacturer side
+            for l in listings.get(succ_kb[0], []):
+                if l.get("authorized") == "yes":
+                    options.append({"kind": "successor", **l, "part_no": k.successor_part_no})
         buyable = [o for o in options if o["kind"] == "listing" and (o.get("trust_score") or 0) >= 0.6 and o.get("condition") != "for_repair"]
         best = min(buyable, key=lambda o: (o.get("price") or 1e12)) if buyable else None
         fastest = min(options, key=lambda o: o.get("lead_time_days") or 1e9) if options else None
@@ -96,6 +101,15 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
             health = "working"
         succ = k.successor_part_no
         order_txt = "now" if days_left <= 0 else f"by {order_by:%b %Y}"
+        mfr_same = sorted([o for o in options if o["kind"] == "listing" and o.get("authorized") == "yes"], key=lambda o: o.get("price") or 1e12)
+        mfr_succ = sorted([o for o in options if o["kind"] == "successor"], key=lambda o: o.get("price") or 1e12)
+        shelf_opts = [o for o in options if o["kind"] == "shelf"]
+        rec = (shelf_opts[0] if shelf_opts else mfr_same[0] if status != "discontinued" and mfr_same
+               else mfr_succ[0] if mfr_succ else best)
+        for o in options:
+            o["recommended"] = o is rec
+        def cost(o):
+            return f"~${o['price']:,.0f}, ~{int(o['lead_time_days'])} days" if o and o.get("price") else ""
         covered = own_spare and health != "working"
         if covered:
             action = (f"Covered: a spare is on this plant's own shelf. Swap it in when needed and restock one {order_txt}."
@@ -106,17 +120,19 @@ def compute(reg: dict[str, pd.DataFrame], year: int | None = None) -> pd.DataFra
             s = shelf[kb_id][0]
             action = (f"Reserve the spare at {s['plant_name']} now; it can be here in ~{TRANSFER_DAYS} days."
                       + (f" Plan migration to {succ}." if status in AT_RISK and succ else ""))
-        elif status in AT_RISK:
-            action = ((f"Buy one {best['condition'].replace('_', ' ')} spare now (~${best['price']:,.0f}) and schedule migration to {succ}."
-                       if best else f"No reliable spare on the market: start migration to {succ} now." if succ
-                       else "No reliable spare and no successor: find an alternative part.")
-                      if health == "replace_asap" else
-                      f"Buy one spare {order_txt}" + (f" and budget migration to {succ}." if succ else "."))
+        elif status != "discontinued":  # still made: buy it the normal way
+            action = f"Order from the manufacturer or your usual authorized distributor {order_txt} ({cost(rec)})." if rec else \
+                     f"Order from the manufacturer or your usual authorized distributor {order_txt}."
+        elif rec is not None and rec["kind"] == "successor":
+            action = (f"Discontinued: order the successor {succ} from the manufacturer or your usual distributor {order_txt} "
+                      f"({cost(rec)} + migration work). A used or refurbished {k.part_no} is only a stopgap.")
+        elif rec is not None:
+            action = f"Discontinued, no successor sold new: buy the best trusted spare {order_txt} ({rec.get('condition', '').replace('_', ' ')}, {cost(rec)})."
         else:
-            action = ("Order a replacement now." if health == "replace_asap" else f"Order a replacement {order_txt}.")
+            action = "Discontinued, no reliable spare and no successor: find an alternative part."
         out.append({**base, "health": health, "life_used_pct": round(life_pct, 2), "installed": installed,
                     "expected_end_year": end_year, "lead_time_days": lead, "order_by": order_by.isoformat(),
                     "order_now": days_left <= 0 and not covered, "covered_by_own_spare": covered, "action": action, "line_stop": line_stop,
-                    "options": sorted(options, key=lambda o: (o["kind"] != "shelf", o.get("price") or 1e12)),
+                    "options": sorted(options, key=lambda o: (not o.get("recommended"), o["kind"] != "shelf", o.get("price") or 1e12)),
                     "best_price": best["price"] if best else None, "n_listings": len([o for o in options if o["kind"] == "listing"])})
     return pd.DataFrame(out)
