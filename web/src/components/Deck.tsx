@@ -142,10 +142,11 @@ export function Deck({ data }: { data: DeckData }) {
             <p className="mt-2">The plant follows its maintenance schedule: bearings greased, belts changed, oil sampled.</p>
             <p className="mt-3 text-muted">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
             <p className="mt-3 text-xl font-semibold">It fails. The line stops.</p>
+            <p className="mt-6 text-xs text-muted">* One plant&apos;s audit; how representative it is: see the Appendix.</p>
           </div>
           <div className="grid grid-cols-2 content-start gap-x-8 gap-y-5">
             {[
-              ["83%", "of automation parts in one real plant audit were discontinued or end-of-life"],
+              ["83%*", "of automation parts were discontinued or end-of-life"],
               ["55%", "of plants have a plan for obsolete parts. The rest do not."],
               ["44%", "of plants have an equipment interruption every month"],
               ["10–24 wks", "to get a new controller; a discontinued one is resale-only"],
@@ -287,11 +288,19 @@ export function Deck({ data }: { data: DeckData }) {
         </div>
       </div>
     </Slide>,
+
+    <div key="appendix" className="flex h-full flex-col">
+      <div className="flex items-baseline justify-between px-1 pb-2">
+        <span className="text-sm font-semibold uppercase tracking-wider text-accent">Appendix · every formula, assumption and source</span>
+        <span className="text-xs text-muted">search on the left · click outside, then arrows to leave</span>
+      </div>
+      <iframe src="/appendix" className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Appendix" />
+    </div>,
   ];
 
   const [i, setI] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const full = (slides[i] as React.ReactElement).key === "demo";
+  const full = ["demo", "appendix"].includes(String((slides[i] as React.ReactElement).key));
   const go = useCallback((d: number) => setI((x) => Math.min(slides.length - 1, Math.max(0, x + d))), [slides.length]);
   // Slides are laid out on a fixed 16:9 canvas and scaled to fit, so full screen enlarges everything (like PowerPoint).
   const [box, setBox] = useState({ k: 1, x: 0, y: 0 });

@@ -51,6 +51,7 @@ const SECTIONS = [
   { id: "hardware", title: "Cabinet Monitor: design and economics", keywords: "hardware device cabinet monitor bom cost install certification cellular mlx90640 esp32 diagram" },
   { id: "pricing", title: "How we charge", keywords: "pricing fixed fee per plant per device revenue share conflict of interest" },
   { id: "proof", title: "Proof: what we measured", keywords: "accuracy precision recall planted failures false alarms test factory" },
+  { id: "eol83", title: "The 83%* on the problem slide", keywords: "83% asterisk discontinued end-of-life audit siemens 699 843 obsolete representative" },
   { id: "market", title: "Market, competition, risks", keywords: "market size deals pe competition appraisers risks objections" },
   { id: "assumptions", title: "Every assumption", keywords: "assumptions table values justification" },
 ];
@@ -219,6 +220,12 @@ order-by          = failure date − lead time − 14-day buffer`}</F>
             ["False alarms (anomaly detectors)", "~1 in 40 monitored parts", "parts with no planted problem"],
           ]} />
           <p className="text-sm text-muted">Sensor data in the demo is simulated in the exact format the device would send; plants are fictional; part numbers, lifecycle data and listings are real.</p>
+        </Section>
+
+        <Section id="eol83" n={sec.eol83} title="The 83%* on the problem slide">
+          <p><b>What it is:</b> one real plant audit published by Siemens (2025): <b>699 of 843</b> automation assets, from 17 manufacturers, were discontinued or end-of-life. <V chat="Manufacturing Equipment Risk Costs" /></p>
+          <p><b>Why the asterisk:</b> it is one plant, from a vendor that sells upgrades, not a national rate. Siemens&apos; other published audits found <b>35%</b> (3,686 filling/packaging assets), <b>59%</b> (914 process assets) and <b>60%</b> (388 utility assets). <V chat="Manufacturing Equipment Risk Costs" /></p>
+          <p><b>What we claim:</b> a large share of the automation in older plants is past its supported life, often a third to most of it. Our own demo portfolio, built on real part numbers and lifecycle data, has <b>32%</b> of critical parts discontinued or end-of-life. No survey measures a national rate, so we never quote one.</p>
         </Section>
 
         <Section id="market" n={sec.market} title="Market, competition, risks">
