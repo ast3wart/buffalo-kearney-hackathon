@@ -1,0 +1,3 @@
+machine_id,line_id,asset_tag,description,machine_type,make,model,serial,year_built,condition,criticality,redundant_with,replacement_value_low,replacement_value_high,book_value
+PE-L2-M02,PE-L2,PE1511,CNC LATHE 2 - Okuma,cnc_lathe,Okuma,LB3000 EX,42486,2001,poor,line_stop,,160000.0,380000.0,
+PE-L2-M04,PE-L2,PE7574,OKUMA LB3000 EX #4,cnc_lathe,Okuma,LB3000 EX,382891,2009,good,degraded,,160000.0,380000.0,
