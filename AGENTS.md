@@ -14,14 +14,14 @@
 - **Don't pick prices.** Prices come from Brandon's financial model. **No revenue share / share of savings** (decided Nov 15, mentor advice): "money saved" can't be audited, so a share of it is a conflict of interest for both the firm and the plant. Use fixed fees (e.g. per plant, per device).
 - **Downtime avoided is the headline financial figure** (lost revenue is what industrial companies care about most).
 - **We don't replace appraisers or engineers.** They keep the sign-off.
-- **Source of truth:** `docs/plan/roadmap-equipment-xray.md`. If another doc disagrees, the roadmap wins. `docs/plan/idea-equipment-xray.md` is HISTORICAL (deal-only framing).
+- **Source of truth:** `docs/plan/roadmap-equipment-xray.md`. If another doc disagrees, the roadmap wins. `docs/archive/idea-equipment-xray.md` is HISTORICAL (deal-only framing).
 
 ## Read first
 - `docs/plan/roadmap-equipment-xray.md`: strategy, system components, sourcing rules, phases (**source of truth**)
 - `docs/team/roles.md`: who owns what, checkpoints
 - `docs/build/registry-format.md`: the data format
 - `docs/build/interfaces.md`: function signatures, API routes, demo portfolio scale, demo script (**build the DEMO, not the full model**)
-- `docs/plan/pivot-plan/`: POC scope, demo script, tech stack, deck map
+- `docs/archive/pivot-plan/`: POC scope, demo script, tech stack, deck map
 - `docs/research/`: market validation, deep-dive numbers, Brandon's market/PE/flywheel research, research backlog
 
 ## Layout

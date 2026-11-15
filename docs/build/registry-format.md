@@ -15,7 +15,7 @@
 
 **Function names, API routes, demo portfolio scale and demo script:** [interfaces.md](interfaces.md).
 
-**Source of truth for strategy:** [roadmap](../plan/roadmap-equipment-xray.md). Builds on Brandon's schema ([pivot-plan/06](../plan/pivot-plan/06-tech-stack.md)) and integrations ([pivot-plan/07](../plan/pivot-plan/07-integrations.md)).
+**Source of truth for strategy:** [roadmap](../plan/roadmap-equipment-xray.md). Builds on Brandon's schema ([pivot-plan/06](../archive/pivot-plan/06-tech-stack.md)) and integrations ([pivot-plan/07](../archive/pivot-plan/07-integrations.md)).
 
 ## ⚠️ We are building a DEMO, not the full product
 This doc describes the full data model, so the pitch and the roadmap hang together. **For the hackathon, build only the demo minimum below.** Every other column may stay blank, and every other file may be skipped. Don't build features for them.

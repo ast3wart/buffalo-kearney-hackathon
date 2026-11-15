@@ -241,7 +241,7 @@
   - nobody is on the Startup track
   - old, acquisition-heavy companies have the biggest holes
 - **The proposal:** pivot to **Equipment Health Index**, pre-deal equipment diligence on the Startup track. It gives a CapEx cliff, "pay $X less", and the single points of failure from discontinued components.
-- **Where:** `docs/plan/idea-equipment-xray.md`
+- **Where:** `docs/archive/idea-equipment-xray.md`
 - **What you need to do:** answer §13: yes, no or modify, how we split the work, and anything the judge said that it misses.
 - **Update ~12:30 PM:** a mentor liked it and said keep digging. They want a **roadmap and a clear MVP plan, not a full build**, with **parts sourcing** as a key feature and a **PE portfolio** angle. See `docs/plan/roadmap-equipment-xray.md`.
 
