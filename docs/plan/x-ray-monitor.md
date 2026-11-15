@@ -1,4 +1,4 @@
-# Cabinet Sentinel: health-sensing hardware (theoretical prototype)
+# X-Ray Monitor: health-sensing hardware (theoretical prototype)
 
 **Status:** design only (no hardware was built at the hackathon). The demo uses **simulated** readings in exactly the format this device would send (`data/seed/demo/<plant>/condition.csv`, every row `simulated = yes`). The **health model that consumes them is real code**: `xray/condition.py`.
 
@@ -36,7 +36,7 @@ So: **one small box per cabinet** that adds thermal + current sensing and collec
 | Enclosure + mount | Magnetic or DIN mount, IP54 | Survives the cabinet | $20 |
 | **Total hardware** | | | **~$125–440** |
 
-Rough comparison (estimates, to be sourced): a wireless vibration sensor program is priced **per machine per year**, and an inspection service is priced **per visit**. One Sentinel covers a whole cabinet (5–20 parts). It's worth installing only where the "where to spend" math says the line-stop exposure justifies it. **Everywhere else, a thermal photo on the walkthrough is enough.**
+Rough comparison (estimates, to be sourced): a wireless vibration sensor program is priced **per machine per year**, and an inspection service is priced **per visit**. One X-Ray Monitor covers a whole cabinet (5–20 parts). It's worth installing only where the "where to spend" math says the line-stop exposure justifies it. **Everywhere else, a thermal photo on the walkthrough is enough.**
 
 ## What each sensor contributes to the health score
 | Evidence | What the device sends | How the model uses it | Weight |

@@ -2,7 +2,6 @@
 
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceArea, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { SentinelFlow } from "./SentinelFlow";
 
 export type SeriesPoint = { day: number; residual_c: number; ewma_c: number | null; limit_c: number; baseline: boolean };
 export type DeckData = {
@@ -41,7 +40,7 @@ function Ladder() {
   const steps = [
     { n: "1", t: "The plant's own records", d: "maintenance system, purchase orders", c: "best, but usually machine-level only" },
     { n: "2", t: "Label photo", d: "identifies every part in a cabinet", c: "what it is, not how healthy" },
-    { n: "3", t: "Cabinet Sentinel", d: "heat, motor current, built-in diagnostics", c: "how healthy, continuously" },
+    { n: "3", t: "X-Ray Monitor", d: "heat, motor current, built-in diagnostics", c: "how healthy, continuously" },
     { n: "4", t: "Inspection service", d: "only where the risk justifies it", c: "the expert still signs off" },
   ];
   return (
@@ -164,7 +163,6 @@ const W = 1120;
 const H = 630;
 
 export function Deck({ data }: { data: DeckData }) {
-  const [imgOk, setImgOk] = useState(true);
   const slides: React.ReactNode[] = [
     <div key="title" className="flex h-full flex-col justify-center">
       <div className="text-sm font-semibold uppercase tracking-wider text-accent">Kearney × PERLab</div>
@@ -222,19 +220,32 @@ export function Deck({ data }: { data: DeckData }) {
       <Ladder />
     </Slide>,
 
-    <Slide key="device" kicker="The hardware" title="Cabinet Sentinel: one small box per critical cabinet">
-      <div className="grid h-full grid-cols-[1.25fr_1fr] gap-8">
+    <Slide key="device" kicker="The hardware" title="X-Ray Monitor: one small box per critical cabinet">
+      <div className="grid h-full grid-cols-[1.5fr_1fr] gap-8">
         <figure className="flex min-h-0 flex-col">
-          {imgOk ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src="/sentinel.png" alt="Concept image of Cabinet Sentinel installed in a control cabinet" onError={() => setImgOk(false)} className="min-h-0 flex-1 rounded-xl border border-line bg-bg object-cover" />
-          ) : (
-            <div className="flex flex-1 items-center justify-center rounded-xl border border-dashed border-line bg-bg text-muted">concept image goes here (web/public/sentinel.png)</div>
-          )}
-          <figcaption className="mt-2 text-xs text-muted">AI-generated concept image · theoretical prototype, no hardware built yet</figcaption>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/xray-monitor.png" alt="Concept image of the X-Ray Monitor clipped to a DIN rail in a control cabinet" className="min-h-0 flex-1 rounded-xl object-cover" />
+          <figcaption className="mt-2 text-xs text-muted">AI-generated concept image · no hardware built yet</figcaption>
         </figure>
-        <SentinelFlow />
+        <div className="flex flex-col justify-center gap-5">
+          {[
+            ["Sees heat", "thermal camera watches every drive in the cabinet"],
+            ["Feels current", "clamp-on sensors on the motor leads, no rewiring"],
+            ["Never touches controls", "read-only; its own cellular link, not the plant network"],
+            ["~$185 to build", "clips on a DIN rail in a planned stop, ~2.5 h install"],
+          ].map(([t, d]) => (
+            <div key={t} className="border-l-2 border-accent pl-4">
+              <div className="text-xl font-semibold">{t}</div>
+              <div className="text-base text-muted">{d}</div>
+            </div>
+          ))}
+        </div>
       </div>
+    </Slide>,
+
+    <Slide key="diagram" kicker="The hardware" title="How the X-Ray Monitor works">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/xray-monitor-diagram.png" alt="System block diagram of the X-Ray Monitor" className="h-full w-full object-contain object-top" />
     </Slide>,
 
     <Slide key="econ" kicker="The hardware" title="What it costs to build and install">
@@ -260,7 +271,7 @@ export function Deck({ data }: { data: DeckData }) {
 
     <Slide key="ask" kicker="Recommendation" title="3 paid plant pilots + 1 portfolio">
       <div className="grid grid-cols-3 gap-10 pt-6">
-        <Big n="90 days" label="per pilot: registry + Sentinels on line stoppers" />
+        <Big n="90 days" label="per pilot: registry + X-Ray Monitors on line stoppers" />
         <Big n="10" label="cabinets monitored per plant to calibrate the score" />
         <Big n="1" label="Granite Ridge portfolio to prove sharing spares across plants" />
       </div>
@@ -331,7 +342,7 @@ export function Deck({ data }: { data: DeckData }) {
     <Slide key="pricing" kicker="The business" title="How we charge" owner="Financial slides: Brandon">
       <div className="grid grid-cols-2 gap-10 pt-4 text-xl">
         <div className="rounded-xl border border-line bg-bg p-6"><div className="text-3xl font-semibold">Per plant / year</div><div className="mt-2 text-muted">registry, health scores, sourcing</div><div className="mt-4 text-muted">[Brandon: fixed fee]</div></div>
-        <div className="rounded-xl border border-line bg-bg p-6"><div className="text-3xl font-semibold">Per device / year</div><div className="mt-2 text-muted">Cabinet Sentinel, only on line stoppers</div><div className="mt-4 text-muted">[Brandon: fixed fee]</div></div>
+        <div className="rounded-xl border border-line bg-bg p-6"><div className="text-3xl font-semibold">Per device / year</div><div className="mt-2 text-muted">X-Ray Monitor, only on line stoppers</div><div className="mt-4 text-muted">[Brandon: fixed fee]</div></div>
       </div>
       <p className="mt-8 text-xl">No share of &quot;savings&quot;: savings can&apos;t be audited, so a share of them is a conflict of interest.</p>
     </Slide>,

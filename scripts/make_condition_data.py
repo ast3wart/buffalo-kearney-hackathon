@@ -2,7 +2,7 @@
 
     python scripts/make_condition_data.py     # -> data/seed/demo/<plant>/condition.csv
 
-What a plant would give us, plus what the Cabinet Sentinel device would measure:
+What a plant would give us, plus what the X-Ray Monitor device would measure:
   - plant records: install year from CMMS work orders / purchase orders (formula below: ~28% of parts, by plant tier)
   - self-reported diagnostics: only newer, networked drives/PLCs (capacitor + fan life used, faults)
   - thermal: continuous (device on line-stopper cabinets) or a one-time snapshot from the walk (everything else)
