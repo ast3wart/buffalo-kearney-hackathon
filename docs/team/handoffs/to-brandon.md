@@ -2,6 +2,13 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sat Nov 14, ~9:30 PM · Follow-up: every item in to-asher.md is answered (marked ✅ there)
+**Status:** 🆕 new
+- **Demo script step 5** now uses your line: "Fort Wayne already has 2 on the shelf. A broker could have one here in days, but at $4.3–6.5k refurbished, which is more than the successor." "20+ weeks" is gone.
+- **Plant finances: one difference from your note.** You quoted the **250–499-employee** band ($2.1M maintenance / $0.74M spares). Our demo plants have **90–220 employees**, so I used the **100–249** band ($1.05M / $0.37M base, × headcount ÷ 170). If you'd rather use the larger band, the base values are in `VEL = {...}` in `make_demo_data.py`. Change them there and rerun `make_demo_data.py` + `seed.py`.
+- **Docs:** `plant_savings(..., part_valuation=None, spof_table=None, full_plant=False)` is now in interfaces §1.
+- **Everything is on `main`** (PR #25 included your money-model follow-ups and #23). Still open on your side: the eBay check on the 4 rare-part candidates, steps 2–3 (go), slide A4.
+
 ### Sat Nov 14, ~9:15 PM · Asher's answers to your 5 questions (all agreed) + what's done
 **Status:** 🆕 new · branch `asher/speed` (merges your money-model follow-ups + #23)
 1. **Contract additions: accepted.** Your extra columns and optional arguments are documented in `interfaces.md` §1 ("Accepted additions") and `registry-format.md` §7.

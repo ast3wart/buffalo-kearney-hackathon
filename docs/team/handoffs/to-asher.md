@@ -3,7 +3,7 @@
 **Written by Brandon, read by Asher.** Newest on top. Asher: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
 ### Sat Nov 14, ~9 PM · Please lower the target magnitudes in interfaces.md §2 (the model, on your demo.db, lands well below them)
-**Status:** 🆕 new · PR #22
+**Status:** ✅ done (answered in to-brandon.md, ~9:15 PM entry + ~9:30 PM follow-up) · PR #22
 - **Model output on your `demo.db`** (Velocity values swapped in, see PR #22):
   - **Toledo 5-yr CapEx:** $70–351k (target said $1.5–3M)
   - **Top single-point-of-failure exposure:** up to ~$200k/yr (PA-L2-M02-C2, PA-L2-M01-C2); the Kinetix with the Fort Wayne spare is far lower
@@ -15,7 +15,7 @@
 - **plant_financials (mine, your generator writes it):** Velocity #1 says ~$2.1M maintenance and ~$0.74M spares per plant, below the $1.8–2.2M spares placeholder. Tell me whether you want me to edit `make_demo_data.py` or you'll change the ranges; it cuts the one-time spares release by ~60%.
 
 ### Sat Nov 14, late · Money model is in (PR `brandon/money-model`) + PROPOSED contract additions (additive only, nothing renamed)
-**Status:** 🆕 new · `xray/params.py`, `sourcing.py`, `valuation.py`, `pricing.py`, `tests/test_money_model.py`. Smoke-tested on your `demo.db` too (seeded from `asher/demo-data`): runs, no code changes needed on your side.
+**Status:** ✅ done (answered in to-brandon.md, ~9:15 PM entry + ~9:30 PM follow-up) · `xray/params.py`, `sourcing.py`, `valuation.py`, `pricing.py`, `tests/test_money_model.py`. Smoke-tested on your `demo.db` too (seeded from `asher/demo-data`): runs, no code changes needed on your side.
 - **Proposed: extra columns after the §7 ones** (the §7 columns are unchanged and come first):
   - `part_valuation` + `n_low_trust` (listings with trust_score < 0.35: flagged, kept out of the price range)
   - `sourcing_recommendation` + `plant_id, kb_id, spare_plant_id, transfer_cost_low/high, part_value_low/high`
@@ -25,7 +25,7 @@
 - **Zero-listing part in the sample is KB-003** (MicroLogix 1764-LSP → `migrate`), not KB-029.
 
 ### Sat Nov 14, ~8:15 PM · Listings are in (42 real, 6 parts) + the S5 isn't a "no listings" part
-**Status:** 🆕 new · branch `brandon/sample-data`
+**Status:** ✅ done (answered in to-brandon.md, ~9:15 PM entry + ~9:30 PM follow-up) · branch `brandon/sample-data`
 - **`data/reference/listings.csv`**: 42 hand-collected listings (eBay sold, Radwell, DO Supply), 2026-11-14, all `authorized = no`. Parts: KB-009 Kinetix 6000, KB-006 PowerFlex 40, KB-002 CompactLogix L32E, KB-029 S5 CPU 943, plus the successors **KB-022** (2198-D006-ERS3) and **KB-019** (25B-D010N104). Raw page text + screenshots: `data/reference/listings_raw/`. 3 bundles excluded; one "for parts" Kinetix kept as `for_repair`.
 - **⚠️ KB-029 (S5 CPU 943) has 7 listings** (Radwell has 64 refurbished in stock at ~$949). Per your note: **please pick a rarer part for the alternatives path** (or tell me which one and I'll check it has 0–2 listings). Until then the zero-listing case has no real part.
 - **Demo line:** a refurbished Kinetix 6000 costs **$4.3–6.5k**, more than a new-surplus successor Kinetix 5700 (~$4.3k, + migration). Fort Wayne's 2 shelf spares ≈ $9–13k at refurbished prices.
