@@ -18,7 +18,16 @@ PLANTS_100 = 16_807 + 5_727 + 2_254 + 1_011   # MEASURED  Census CBP 2022, NAICS
 PLANTS_250 = 5_727 + 2_254 + 1_011            # MEASURED  250+ employees
 PLANT_VALUE = (10_000, 30_000, 60_000)        # VELOCITY  recurring, auditable value per plant per year (inventory carrying + rush premiums)
 PLANT_ONE_TIME = (100_000, 200_000, 400_000)  # VELOCITY  one-time spares inventory reduction (not annual)
-PRICES = (10_000, 25_000, 50_000)             # OURS      annual price per plant to test
+PRICES = (10_000, 25_000, 50_000)             # OURS      fallback annual price per plant to test
+try:  # MODEL  portfolio-average full-plant price at 20% capture, low / base / high (scripts/sensitivity.py)
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from sensitivity import portfolio_price
+    PRICES = tuple(round(p, -2) for p in portfolio_price())
+    PRICE_SOURCE = "financial model, demo registry, full plant at 20% capture (low / base / high)"
+except Exception as e:  # no demo.db or model error: keep the constants
+    PRICE_SOURCE = f"fallback constants (model unavailable: {type(e).__name__})"
 ADOPTION = (0.02, 0.05, 0.10)                 # OURS
 
 BUILD, RUN, YEARS = 600_000, 250_000, 3       # VELOCITY  narrow accelerator for a consulting firm
@@ -44,6 +53,7 @@ print("\n## B. Own-plant channel (recurring, US plants with 100+ employees)")
 print(f"- Plants: {PLANTS_100:,} with 100+ employees, {PLANTS_250:,} with 250+ (Census CBP 2022)")
 print(f"- Value per plant per year (Velocity): {m(PLANT_VALUE[0])} / {m(PLANT_VALUE[1])} / {m(PLANT_VALUE[2])}"
       f"  + one-time {m(PLANT_ONE_TIME[0])} / {m(PLANT_ONE_TIME[1])} / {m(PLANT_ONE_TIME[2])} inventory release")
+print(f"- Prices tested: {PRICE_SOURCE}")
 print("\n| Price / plant / yr | " + " | ".join(f"{a:.0%} adoption" for a in ADOPTION) + " | 100% (ceiling) |")
 print("|---|" + "---|" * (len(ADOPTION) + 1))
 for p in PRICES:
