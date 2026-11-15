@@ -164,9 +164,12 @@ hours down with spare    = transfer (1–2 days) + swap (2–8 h)
 at stake (one failure)   = (hours without − hours with) × line $/hour × share of output never made up (40–80%)
 
 OUTPUT PROTECTED   = Σ at stake                                  (Toledo: $622k, 668 h of stoppage)
-DOWNTIME AVOIDED   = Σ P(fails within 3 yrs) × at stake, discounted at 10%, per year   (Toledo: ~$19k/yr, $2–71k)
-EXPOSURE / YEAR    = P(fail this year) × hours down × $/hour × unrecovered share        (line-stopper table)`}</F>
-          <p>Failure odds by age: 0–10 yrs 2–5%/yr, 10–20 yrs 4–8%, 20+ yrs 6–10% <V chat="money thread #4" />. Transfer time and cost <V chat="#20 sister-plant transfer" />. Line $/hour from plant revenue and operating hours <V chat="#1 plant baseline" />.</p>
+DOWNTIME AVOIDED   = Σ P(fails within 3 yrs) × at stake, discounted at 10%, per year   (Toledo: ~$77k/yr, $12–205k)
+EXPOSURE / YEAR    = P(fail this year) × hours down × $/hour × unrecovered share        (line-stopper table)
+
+P(fail this year)  = 1 − health/100     (the part's own health score: age, heat, sensor anomalies, faults)
+                   = age table below     (only for parts with no health evidence)`}</F>
+          <p>Fallback failure odds by age, for parts with no health score: 0–10 yrs 2–5%/yr, 10–20 yrs 4–8%, 20+ yrs 6–10% <V chat="money thread #4" />. Transfer time and cost <V chat="#20 sister-plant transfer" />. Line $/hour from plant revenue and operating hours <V chat="#1 plant baseline" />.</p>
         </Section>
 
         <Section id="capex" n={sec.capex} title="CapEx cliff and order-by dates">
