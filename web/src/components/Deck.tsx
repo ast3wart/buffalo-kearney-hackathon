@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { CartesianGrid, Line, LineChart, ReferenceArea, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { SentinelFlow } from "./SentinelFlow";
 
@@ -15,8 +15,8 @@ function Slide({ kicker, title, children, owner }: { kicker?: string; title: str
   return (
     <div className="flex h-full flex-col">
       {kicker && <div className="text-sm font-semibold uppercase tracking-wider text-accent">{kicker}</div>}
-      <h2 className="mt-2 text-4xl font-semibold leading-tight tracking-tight">{title}</h2>
-      <div className="mt-8 min-h-0 flex-1">{children}</div>
+      <h2 className="mt-2 text-balance text-4xl font-semibold leading-tight tracking-tight">{title}</h2>
+      <div className="mt-6 min-h-0 flex-1">{children}</div>
       {owner && <div className="text-right text-xs text-muted">{owner}</div>}
     </div>
   );
@@ -132,40 +132,42 @@ export function Deck({ data }: { data: DeckData }) {
     </Slide>,
 
     <Slide key="problem" kicker="Problem" title="Owners do not know the health of the equipment their plants run on">
-      <div className="flex h-full flex-col gap-4">
-        <div className="grid min-h-0 flex-1 grid-cols-[1.6fr_1fr_1fr] grid-rows-2 gap-3">
-          <div className="row-span-2 rounded-xl border border-line border-l-4 border-l-accent bg-bg p-5 text-lg leading-snug">
+      <div className="flex h-full flex-col">
+        <div className="grid min-h-0 flex-1 grid-cols-[1fr_1.15fr] gap-12">
+          <div className="border-l-2 border-accent pl-6 text-base leading-normal">
             <div className="text-xs font-semibold uppercase tracking-wider text-muted">A typical situation</div>
             <p className="mt-2">The plant follows its maintenance schedule: bearings greased, belts changed, oil sampled.</p>
-            <p className="mt-3">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
-            <p className="mt-3 font-semibold">It fails. The line stops.</p>
+            <p className="mt-3 text-muted">Nobody is watching the 20-year-old drive in the cabinet. The manufacturer stopped making it years ago, and there is no spare.</p>
+            <p className="mt-3 text-xl font-semibold">It fails. The line stops.</p>
           </div>
-          {[
-            ["83%", "of automation parts in one real plant audit were discontinued or end-of-life"],
-            ["55%", "of plants have a plan for obsolete parts. The rest do not."],
-            ["44%", "of plants have an equipment interruption every month"],
-            ["10–24 wks", "to get a new controller; a discontinued one is resale-only"],
-          ].map(([n, d]) => (
-            <div key={n} className="rounded-xl border border-line bg-bg p-4">
-              <div className="tabular text-4xl font-semibold tracking-tight text-accent">{n}</div>
-              <div className="mt-1 text-base leading-snug">{d}</div>
-            </div>
-          ))}
+          <div className="grid grid-cols-2 content-start gap-x-8 gap-y-5">
+            {[
+              ["83%", "of automation parts in one real plant audit were discontinued or end-of-life"],
+              ["55%", "of plants have a plan for obsolete parts. The rest do not."],
+              ["44%", "of plants have an equipment interruption every month"],
+              ["10–24 wks", "to get a new controller; a discontinued one is resale-only"],
+            ].map(([n, d]) => (
+              <div key={n}>
+                <div className="tabular text-4xl font-semibold tracking-tight text-accent">{n}</div>
+                <div className="mt-1 text-[15px] leading-snug text-muted">{d}</div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="flex items-stretch gap-2">
+        <div className="mt-3 flex items-baseline justify-between border-t border-line pt-3">
           {[
             ["Unknown health", "no list of what is in the cabinets"],
             ["Surprise failure", "no warning, no spare"],
             ["Lost output", "days, sometimes weeks"],
             ["Lost revenue", "and spending nobody budgeted"],
           ].map(([t, d], i, arr) => (
-            <div key={t} className="flex flex-1 items-center gap-2">
-              <div className={`flex-1 rounded-xl px-3 py-3 text-center ${i === arr.length - 1 ? "bg-accent text-surface" : "border border-line bg-bg"}`}>
-                <div className="text-lg font-semibold">{t}</div>
-                <div className={`text-sm ${i === arr.length - 1 ? "" : "text-muted"}`}>{d}</div>
+            <Fragment key={t}>
+              <div>
+                <div className={`text-lg font-semibold ${i === arr.length - 1 ? "text-accent" : ""}`}>{t}</div>
+                <div className="text-sm text-muted">{d}</div>
               </div>
-              {i < arr.length - 1 && <span className="text-2xl text-accent">→</span>}
-            </div>
+              {i < arr.length - 1 && <span className="text-xl text-muted">→</span>}
+            </Fragment>
           ))}
         </div>
       </div>
