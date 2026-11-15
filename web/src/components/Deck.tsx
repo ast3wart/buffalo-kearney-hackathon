@@ -6,7 +6,13 @@ import { SentinelFlow } from "./SentinelFlow";
 
 export type SeriesPoint = { day: number; residual_c: number; ewma_c: number | null; limit_c: number; baseline: boolean };
 export type DeckData = {
-  plants: { name: string; state: string; employees: number; company: string }[];
+  companies: {
+    name: string;
+    owned: boolean;
+    since: string;
+    deal: string;
+    plants: { name: string; state: string; employees: number; lines: number; machines: number }[];
+  }[];
   series: SeriesPoint[];
 };
 
@@ -86,6 +92,66 @@ function AnomalyChart({ data }: { data: SeriesPoint[] }) {
   );
 }
 
+// What the fund needs from each company, in company order (Halvorsen, Brightwater, Tillman).
+const NEED = [
+  "which old parts could stop our 3 plants this year?",
+  "where can sister plants share spares instead of buying?",
+  "what will this equipment cost us after we buy it?",
+];
+
+function ClientSlide({ companies }: { companies: DeckData["companies"] }) {
+  const owned = companies.filter((c) => c.owned);
+  const ps = owned.flatMap((c) => c.plants);
+  const sum = (f: (p: (typeof ps)[number]) => number) => ps.reduce((t, p) => t + f(p), 0);
+  const kpis = [
+    [String(owned.length), "portfolio companies"],
+    [String(ps.length), `plants in ${new Set(ps.map((p) => p.state)).size} states`],
+    [sum((p) => p.employees).toLocaleString(), "employees"],
+    [String(sum((p) => p.lines)), "production lines"],
+  ];
+  return (
+    <div className="flex h-full flex-col">
+      <p className="-mt-3 text-xl text-muted">Midwest private equity firm that buys and grows industrial manufacturers.</p>
+      <div className="mt-5 grid grid-cols-4 gap-8 border-y border-line py-4">
+        {kpis.map(([n, l]) => (
+          <div key={l}>
+            <div className="tabular text-4xl font-semibold tracking-tight">{n}</div>
+            <div className="text-sm text-muted">{l}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 grid min-h-0 flex-1 grid-cols-3 gap-6">
+        {companies.map((c, i) => (
+          <div key={c.name} className={`flex flex-col rounded-xl p-4 ${c.owned ? "bg-bg" : "border-2 border-dashed border-line"}`}>
+            <div className="flex items-baseline justify-between gap-2">
+              <span className={`text-xs font-semibold uppercase tracking-wider ${c.owned ? "text-accent" : "text-muted"}`}>
+                {c.owned ? `Owned since ${c.since}` : "Acquisition target"}
+              </span>
+              {c.deal && <span className="tabular text-xs font-semibold text-muted">deal value {c.deal}</span>}
+            </div>
+            <div className="mt-1 text-lg font-semibold leading-tight">{c.name}</div>
+            <div className="mt-3 space-y-1.5">
+              {c.plants.map((p) => (
+                <div key={p.name} className="flex items-baseline justify-between border-t border-line pt-1.5 text-sm">
+                  <span className="font-medium">{p.name}, {p.state}</span>
+                  <span className="tabular text-muted">{p.employees} people · {p.lines} lines</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-auto pt-3 text-sm">
+              <span className="text-muted">Their question: </span>
+              <span className="font-medium">{NEED[i] ?? ""}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p className="mt-5 text-xl">
+        They hired us to answer: <b>which equipment will stop a line, and what do we do about it?</b>
+      </p>
+    </div>
+  );
+}
+
 const ASSUMPTIONS: { what: string; value: string; why: string }[] = [
   { what: "Parts with an install record", value: "~28%", why: "60% CMMS × (15% part-level × 70% complete + 85% machine-level × 60% original × 70%); Velocity research, Plant Engineering surveys" },
   { what: "Record completeness", value: "70%", why: "assumption; a measured CMMS study saw record fields go from 20% to 90% filled (Lukens 2019)" },
@@ -121,17 +187,7 @@ export function Deck({ data }: { data: DeckData }) {
     </div>,
 
     <Slide key="client" kicker="Our client" title="Granite Ridge Capital">
-      <p className="text-2xl text-muted">A Midwest private equity firm investing in industrial manufacturers.</p>
-      <div className="mt-8 grid grid-cols-5 gap-3">
-        {data.plants.map((p) => (
-          <div key={p.name} className="rounded-xl border border-line bg-bg p-4">
-            <div className="text-xl font-semibold">{p.name}, {p.state}</div>
-            <div className="text-sm text-muted">{p.company}</div>
-            <div className="mt-2 text-sm">{p.employees} employees</div>
-          </div>
-        ))}
-      </div>
-      <p className="mt-8 text-xl">The question they hired us for: <b>which equipment will stop a line, and what do we do about it?</b></p>
+      <ClientSlide companies={data.companies} />
     </Slide>,
 
     <Slide key="problem" kicker="Problem" title="Owners do not know the health of the equipment their plants run on">
