@@ -445,9 +445,17 @@ def plant_spof(plant_id: str) -> dict:
 def plant_savings_route(plant_id: str) -> dict:
     s, p = _savings_all(True)
     ss, sp = _savings_all(False)
-    return {"plant_savings": records(s[s.plant_id == plant_id]), "price": records(p[p.plant_id == plant_id]),
-            "sample_savings": records(ss[ss.plant_id == plant_id]), "sample_price": records(sp[sp.plant_id == plant_id]),
-            "basis": "price extrapolated to a whole-plant scan; sample = only the parts in this registry"}
+    out = {"plant_savings": records(s[s.plant_id == plant_id]), "price": records(p[p.plant_id == plant_id]),
+           "sample_savings": records(ss[ss.plant_id == plant_id]), "sample_price": records(sp[sp.plant_id == plant_id]),
+           "basis": "price extrapolated to a whole-plant scan; sample = only the parts in this registry; "
+                    "downtime avoided = scanned rescues only, expected over the horizon, never extrapolated"}
+    try:
+        (downtime_rescues,) = _brandon("pricing", "downtime_rescues")
+        r = downtime_rescues(reg(), _sourcing_tables()[1], _spof_all())
+        out["downtime_rescues"] = records(r[r.plant_id == plant_id])
+    except HTTPException:
+        out["downtime_rescues"] = []
+    return out
 
 
 @app.get("/companies/{company_id}/deal")

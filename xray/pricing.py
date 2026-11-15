@@ -22,6 +22,56 @@ def coverage_share(reg: dict) -> pd.DataFrame:
     return out.fillna(0)
 
 
+def pv_first_failure(p: float, years: int = P.HORIZON_YEARS, rate: float = P.OWNER_DISCOUNT_RATE.base) -> float:
+    """PV-weighted chance the part fails (for the first time) within `years`: sum_t (1-p)^(t-1) p / (1+r)^t.
+    A spare is used once, so only the first failure counts."""
+    return sum((1 - p) ** (t - 1) * p / (1 + rate) ** t for t in range(1, years + 1))
+
+
+def downtime_rescues(reg: dict, sourcing_recommendation: pd.DataFrame, spof_table: pd.DataFrame | None = None,
+                     as_of_year: int = P.AS_OF_YEAR) -> pd.DataFrame:
+    """One row per line-stopper that a sister-plant spare rescues: what one failure would cost with vs without it,
+    the chance it fails within HORIZON_YEARS, and the expected PV avoided. Spares already on the plant's own shelf
+    would have been used anyway, so they earn no credit. Low = low odds x fewest hours saved x low $/h (and so on)."""
+    sr = sourcing_recommendation
+    sp = spof_table if spof_table is not None else spof(reg, sr, as_of_year)
+    cross = (sr.action == "use_shelf_spare") & (sr.spare_plant_id != sr.plant_id)
+    sr_none = sr.copy()
+    sr_none.loc[cross, ["action", "spare_id", "spare_plant_id"]] = ["monitor", "", ""]
+    sp_none = spof(reg, sr_none, as_of_year)
+    k = ["component_id", "hours_down_low", "hours_down_high", "loss_if_fails_low", "loss_if_fails_high"]
+    m = sp_none.merge(sp[k], on="component_id", suffixes=("_none", ""))
+    m = m.merge(sr[["component_id", "spare_id", "spare_plant_id"]], on="component_id", how="left")
+    m = m[m.loss_if_fails_high_none > m.loss_if_fails_high]
+    cols = ["component_id", "plant_id", "line_id", "spare_id", "spare_plant_id", "hours_down_without_low",
+            "hours_down_without_high", "hours_down_with_low", "hours_down_with_high", "at_stake_low", "at_stake_base",
+            "at_stake_high", "p_fail_horizon_low", "p_fail_horizon_base", "p_fail_horizon_high", "expected_pv_low",
+            "expected_pv_base", "expected_pv_high", "horizon_years"]
+    if m.empty:
+        return pd.DataFrame(columns=cols)
+    out = pd.DataFrame({"component_id": m.component_id, "plant_id": m.plant_id, "line_id": m.line_id,
+                        "spare_id": m.spare_id, "spare_plant_id": m.spare_plant_id,
+                        "hours_down_without_low": m.hours_down_low_none, "hours_down_without_high": m.hours_down_high_none,
+                        "hours_down_with_low": m.hours_down_low, "hours_down_with_high": m.hours_down_high})
+    # Loss avoided by one failure: low pairs the shortest outage without with the longest with (fewest hours saved).
+    u = P.UNRECOVERED_SHARE
+    save_lo = (m.hours_down_low_none - m.hours_down_high).clip(lower=0)
+    save_hi = (m.hours_down_high_none - m.hours_down_low).clip(lower=0)
+    save_base = ((m.hours_down_low_none + m.hours_down_high_none) - (m.hours_down_low + m.hours_down_high)) / 2
+    out["at_stake_low"] = save_lo * m.downtime_cost_per_hour_low * u.low
+    out["at_stake_high"] = save_hi * m.downtime_cost_per_hour_high * u.high
+    out["at_stake_base"] = save_base * (m.downtime_cost_per_hour_low + m.downtime_cost_per_hour_high) / 2 * u.base
+    T = P.HORIZON_YEARS
+    for b, p in (("low", m.annual_failure_rate_low), ("base", m.annual_failure_rate), ("high", m.annual_failure_rate_high)):
+        out[f"p_fail_horizon_{b}"] = 1 - (1 - p) ** T
+        out[f"expected_pv_{b}"] = p.map(pv_first_failure) * out[f"at_stake_{b}"]
+    out["horizon_years"] = T
+    money = [c for c in cols if c.startswith(("at_stake", "expected_pv"))]
+    out[money] = out[money].round(2)
+    out[[c for c in cols if c.startswith("p_fail")]] = out[[c for c in cols if c.startswith("p_fail")]].round(3)
+    return out[cols].sort_values("at_stake_base", ascending=False).reset_index(drop=True)
+
+
 def _lever(plant_id, lever, lo, base, hi, one_time, in_base, basis):
     return {"plant_id": plant_id, "lever": lever, "savings_low": round(lo, 2), "savings_base": round(base, 2),
             "savings_high": round(hi, 2), "one_time": "yes" if one_time else "no",
@@ -34,16 +84,12 @@ def plant_savings(reg: dict, sourcing_recommendation: pd.DataFrame | None = None
     """Savings per owned plant per lever, low / base / high (per year unless one_time = yes).
 
     full_plant=True quotes a whole-plant scan: plant-level levers use 100% coverage, and register-level levers
-    (sister spares, planned vs emergency, downtime) are extrapolated by 1 / coverage. Label it as extrapolated."""
+    (sister spares, planned vs emergency) are extrapolated by 1 / coverage. Label it as extrapolated.
+    Downtime avoided is never extrapolated: it only counts the rescues the register actually found."""
     pv = part_valuation if part_valuation is not None else value_parts(reg)
     sr = sourcing_recommendation if sourcing_recommendation is not None else recommend_sourcing(reg, pv, as_of_year)
     sp = spof_table if spof_table is not None else spof(reg, sr, as_of_year)
-    # Downtime avoided = exposure without the sister-plant spares the register found, minus exposure with them.
-    # A spare already on the plant's own shelf would have been used anyway, so it earns no credit.
-    cross = (sr.action == "use_shelf_spare") & (sr.spare_plant_id != sr.plant_id)
-    sr_none = sr.copy()
-    sr_none.loc[cross, ["action", "spare_id", "spare_plant_id"]] = ["monitor", "", ""]
-    sp_none = spof(reg, sr_none, as_of_year)
+    rescues = downtime_rescues(reg, sr, sp, as_of_year)
     cov = coverage_share(reg)
     fin = reg["plant_financials"].set_index("plant_id")
     cv = component_view(reg, as_of_year).set_index("component_id")
@@ -92,15 +138,18 @@ def plant_savings(reg: dict, sourcing_recommendation: pd.DataFrame | None = None
                            f"{len(risk)} at-risk part(s): P(fail) x (emergency - planned), {h:.0%} haircut"))
         rows.append(_lever(plant_id, "spares_inventory_released", *rel, True, False,
                            "one-time cash freed: excess spares x coverage (not priced)"))
-        d_with, d_none = sp[sp.plant_id == plant_id], sp_none[sp_none.plant_id == plant_id]
-        lo = max(d_none.downtime_exposure_per_year_low.sum() - d_with.downtime_exposure_per_year_low.sum(), 0)
-        hi = max(d_none.downtime_exposure_per_year_high.sum() - d_with.downtime_exposure_per_year_high.sum(), 0)
-        lo, hi = lo * up[0], hi * up[2]
-        rows.append(_lever(plant_id, "downtime_avoided", lo, (lo + hi) / 2, hi, False, False,
-                           "expected value from spof, no defensible baseline (shown, not priced)"))
+        # Downtime avoided: expected PV over the horizon, one event per rescued part, shown per year. Not extrapolated.
+        d, T = rescues[rescues.plant_id == plant_id], P.HORIZON_YEARS
+        tot = d[["expected_pv_low", "expected_pv_base", "expected_pv_high"]].sum()
+        rows.append(_lever(plant_id, "downtime_avoided", tot.expected_pv_low / T, tot.expected_pv_base / T,
+                           tot.expected_pv_high / T, False, False,
+                           f"{len(d)} sister-plant rescue(s): expected {T}-yr PV ${tot.expected_pv_base:,.0f} "
+                           f"(per year shown), one failure per spare, outage capped, {P.UNRECOVERED_SHARE.base:.0%} of "
+                           f"output unrecovered; scanned parts only, never extrapolated (shown, not priced)"))
     out = pd.DataFrame(rows)
     if full_plant:
-        out["basis"] = "full plant, extrapolated from the register sample: " + out.basis
+        ext = out.lever != "downtime_avoided"
+        out.loc[ext, "basis"] = "full plant, extrapolated from the register sample: " + out.loc[ext, "basis"]
     return out
 
 

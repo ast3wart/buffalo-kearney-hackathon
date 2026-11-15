@@ -3,7 +3,8 @@ guardrails hold (ranges ordered, one-time money never priced, deal lens only for
 import pandas as pd
 import pytest
 
-from xray.pricing import plant_savings, price
+from xray import params as P
+from xray.pricing import downtime_rescues, plant_savings, price
 from xray.sourcing import recommend_sourcing, trust_scores, value_parts
 from xray.valuation import capex_by_year, deal_adjustment, spof
 
@@ -103,9 +104,40 @@ def test_full_plant_quote_scales_up_and_stays_unpriced_for_one_time(reg):
     sample = plant_savings(reg)
     full = plant_savings(reg, full_plant=True)
     assert full.savings_base.sum() > sample.savings_base.sum()
-    assert full.basis.str.startswith("full plant").all()
+    ext = full.lever != "downtime_avoided"
+    assert full.loc[ext, "basis"].str.startswith("full plant").all()
     assert (full.loc[full.one_time == "yes", "in_price_base"] == "no").all()
     assert (full.savings_low <= full.savings_high).all()
+
+
+def test_downtime_avoided_is_never_extrapolated_or_priced(reg):
+    sample, full = plant_savings(reg), plant_savings(reg, full_plant=True)
+    cols = ["plant_id", "savings_low", "savings_base", "savings_high"]
+    s = sample[sample.lever == "downtime_avoided"][cols].reset_index(drop=True)
+    f = full[full.lever == "downtime_avoided"][cols].reset_index(drop=True)
+    pd.testing.assert_frame_equal(s, f)
+    assert (full.loc[full.lever == "downtime_avoided", "in_price_base"] == "no").all()
+
+
+def test_downtime_rescue_is_one_event_over_the_horizon(model, reg):
+    r = downtime_rescues(reg, model["sr"], model["spof"]).set_index("component_id").loc[KINETIX_L2]
+    assert r.spare_id == "PB-S001"
+    for b in ("low", "base", "high"):
+        assert 0 < r[f"p_fail_horizon_{b}"] < 1
+        # expected PV is below the chance x stake (discounting) and far below a stake every year
+        assert 0 < r[f"expected_pv_{b}"] <= r[f"p_fail_horizon_{b}"] * r[f"at_stake_{b}"]
+    assert r.at_stake_low <= r.at_stake_base <= r.at_stake_high
+    lever = model["savings"].set_index(["plant_id", "lever"]).loc[("PA", "downtime_avoided")]
+    pa = downtime_rescues(reg, model["sr"], model["spof"]).query("plant_id == 'PA'")
+    assert lever.savings_base == pytest.approx(pa.expected_pv_base.sum() / P.HORIZON_YEARS, abs=0.05)
+
+
+def test_no_spare_outage_is_capped(model):
+    sp, op_hours = model["spof"], 16
+    no_spare = sp[sp.action != "use_shelf_spare"]
+    assert (no_spare.hours_down_high <= P.OUTAGE_CAP_DAYS.high * op_hours).all()
+    assert (no_spare.hours_down_low <= P.OUTAGE_CAP_DAYS.low * op_hours).all()
+    assert (sp.loss_if_fails_low <= sp.loss_if_fails_high).all()
 
 
 def test_deal_lens_adds_end_of_life_machines_without_double_count(model, reg):
