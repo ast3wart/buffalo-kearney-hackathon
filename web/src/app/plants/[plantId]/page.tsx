@@ -56,18 +56,18 @@ export default async function PlantPage({ params }: { params: Promise<{ plantId:
       {dt && rescues.length > 0 && (
         <div className="mt-4 rounded-2xl bg-accent p-6 text-surface">
           <div className="text-sm font-semibold uppercase tracking-wider opacity-80">Downtime avoided</div>
-          <div className="mt-2 grid gap-6 md:grid-cols-[1.2fr_1fr_1fr]">
+          <div className="mt-2 grid gap-6 md:grid-cols-[1.3fr_1.1fr_1fr]">
             <div>
-              <div className="tabular text-6xl font-semibold tracking-tight">{usd(dt.savings_base)}<span className="text-3xl opacity-80"> / yr</span></div>
-              <div className="mt-1 text-sm opacity-85">expected lost output avoided · range {usd(dt.savings_low)}–{usd(dt.savings_high)}</div>
+              <div className="tabular text-6xl font-semibold tracking-tight">{usd(atStake)}</div>
+              <div className="mt-1 text-sm opacity-85">of output protected across {rescues.length} line-stopping failure{rescues.length === 1 ? "" : "s"}</div>
             </div>
             <div>
-              <div className="tabular text-4xl font-semibold">{Math.round(hoursSaved)} h</div>
+              <div className="tabular text-6xl font-semibold tracking-tight">{Math.round(hoursSaved)} h</div>
               <div className="mt-1 text-sm opacity-85">of line stoppage avoided if these parts fail, because a spare at a sister plant is found in time</div>
             </div>
-            <div>
-              <div className="tabular text-4xl font-semibold">{usd(atStake)}</div>
-              <div className="mt-1 text-sm opacity-85">of output at stake across {rescues.length} line-stopping failures</div>
+            <div className="self-end">
+              <div className="tabular text-3xl font-semibold">{usd(dt.savings_base)}<span className="text-lg opacity-80"> / yr</span></div>
+              <div className="mt-1 text-sm opacity-85">expected value (chance it fails × what&apos;s at stake) · range {usd(dt.savings_low)}–{usd(dt.savings_high)}</div>
             </div>
           </div>
           <ul className="mt-5 grid gap-2 border-t border-surface/25 pt-4 text-sm md:grid-cols-2">
