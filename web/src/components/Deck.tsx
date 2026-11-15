@@ -94,55 +94,46 @@ function AnomalyChart({ data }: { data: SeriesPoint[] }) {
 
 function ClientSlide({ companies }: { companies: DeckData["companies"] }) {
   const owned = companies.filter((c) => c.owned);
-  const target = companies.find((c) => !c.owned);
   const ps = owned.flatMap((c) => c.plants);
-  const employees = ps.reduce((t, p) => t + p.employees, 0);
-  const profile: [string, React.ReactNode][] = [
-    ["Firm", "Private equity, Midwest"],
-    ["Invests in", "Industrial manufacturers"],
-    ["Portfolio", `${owned.length} companies · ${ps.length} plants · ${employees.toLocaleString()} employees`],
-    ["In diligence", target ? `${target.name} (${target.deal})` : "—"],
-    ["Engagement", "Equipment health and risk across every plant, and the deal"],
+  const sum = (f: (p: (typeof ps)[number]) => number) => ps.reduce((t, p) => t + f(p), 0);
+  const kpis = [
+    [String(owned.length), "portfolio companies"],
+    [String(ps.length), `plants in ${new Set(ps.map((p) => p.state)).size} states`],
+    [sum((p) => p.employees).toLocaleString(), "employees"],
+    [String(sum((p) => p.lines)), "production lines"],
   ];
   return (
-    <div className="grid h-full grid-cols-[1fr_1.35fr] gap-14 pt-2">
-      <dl className="self-start">
-        {profile.map(([k, v]) => (
-          <div key={k} className="border-t border-line py-3 first:border-t-0 first:pt-0">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-muted">{k}</dt>
-            <dd className="mt-1 text-lg leading-snug">{v}</dd>
+    <div className="flex h-full flex-col">
+      <p className="-mt-3 text-xl text-muted">Midwest private equity firm that buys and grows industrial manufacturers.</p>
+      <div className="mt-4 grid grid-cols-4 gap-8 border-y border-line py-3">
+        {kpis.map(([n, l]) => (
+          <div key={l}>
+            <div className="tabular text-5xl font-semibold tracking-tight">{n}</div>
+            <div className="mt-1 text-base text-muted">{l}</div>
           </div>
         ))}
-      </dl>
-      <table className="self-start text-[15px]">
-        <thead>
-          <tr className="border-b-2 border-ink text-left text-xs uppercase tracking-wider text-muted">
-            <th className="pb-2 font-semibold">Company</th>
-            <th className="pb-2 font-semibold">Plant</th>
-            <th className="pb-2 text-right font-semibold">Employees</th>
-            <th className="pb-2 text-right font-semibold">Lines</th>
-          </tr>
-        </thead>
+      </div>
+      <div className="mb-2 mt-5 grid min-h-0 flex-1 grid-cols-3 gap-6">
         {companies.map((c) => (
-          <tbody key={c.name} className={c.owned ? "" : "text-muted"}>
-            {c.plants.map((p, j) => (
-              <tr key={p.name} className={j === 0 ? "border-t border-line" : ""}>
-                <td className="py-1.5 pr-4 align-top">
-                  {j === 0 && (
-                    <>
-                      <div className="font-semibold text-ink">{c.name}</div>
-                      <div className="text-xs text-muted">{c.owned ? `owned since ${c.since}` : `acquisition target · ${c.deal}`}</div>
-                    </>
-                  )}
-                </td>
-                <td className="py-1.5 pr-4">{p.name}, {p.state}</td>
-                <td className="tabular py-1.5 text-right">{p.employees}</td>
-                <td className="tabular py-1.5 text-right">{p.lines}</td>
-              </tr>
-            ))}
-          </tbody>
+          <div key={c.name} className={`flex flex-col rounded-2xl p-5 ${c.owned ? "bg-bg" : "border-2 border-dashed border-line"}`}>
+            <div className="flex items-baseline justify-between gap-2">
+              <span className={`text-xs font-semibold uppercase tracking-wider ${c.owned ? "text-accent" : "text-muted"}`}>
+                {c.owned ? `Owned since ${c.since}` : "Acquisition target"}
+              </span>
+              {c.deal && <span className="tabular text-xs font-semibold text-muted">deal value {c.deal}</span>}
+            </div>
+            <div className="mt-1 text-2xl font-semibold leading-tight">{c.name}</div>
+            <div className="mt-3 flex flex-1 flex-col">
+              {c.plants.map((p) => (
+                <div key={p.name} className="flex items-baseline justify-between border-t border-line py-2.5">
+                  <span className="text-lg font-medium">{p.name}, {p.state}</span>
+                  <span className="tabular text-sm text-muted">{p.employees} people · {p.lines} lines</span>
+                </div>
+              ))}
+            </div>
+          </div>
         ))}
-      </table>
+      </div>
     </div>
   );
 }
