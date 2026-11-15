@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { Deck, type DeckData, type SeriesPoint } from "@/components/Deck";
+import { Deck, type DeckData } from "@/components/Deck";
 import { tryJSON } from "@/lib/api";
 
 type Portfolio = {
@@ -23,11 +23,7 @@ async function companyFacts(): Promise<Record<string, { since: string; dealLow: 
 }
 
 export default async function PitchPage() {
-  const [pf, s, facts] = await Promise.all([
-    tryJSON<Portfolio>("/portfolio"),
-    tryJSON<{ points: SeriesPoint[] }>("/components/PA-L2-M01-C1/series"),
-    companyFacts(),
-  ]);
+  const [pf, facts] = await Promise.all([tryJSON<Portfolio>("/portfolio"), companyFacts()]);
   const plants = pf.data?.plants ?? [];
   const companies: DeckData["companies"] = (pf.data?.companies ?? []).map((c) => ({
     name: c.company_name,
@@ -38,5 +34,5 @@ export default async function PitchPage() {
       .filter((p) => p.company_id === c.company_id)
       .map((p) => ({ name: p.plant_name, state: p.state, employees: Number(p.employees), lines: Number(p.lines), machines: Number(p.machines) })),
   }));
-  return <Deck data={{ companies, series: s.data?.points ?? [] }} />;
+  return <Deck data={{ companies }} />;
 }
