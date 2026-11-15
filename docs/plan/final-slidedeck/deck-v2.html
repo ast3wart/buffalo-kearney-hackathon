@@ -226,7 +226,7 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
 <!-- DEMO -->
 <div class="frame"><section class="slide">
   <div class="kicker">Demo</div>
-  <h1>From the fund down to one part, and what it saves</h1>
+  <h1>From the fund down to one part that can stop a line</h1>
   <div class="steps" style="margin-bottom:16px">
     <div class="card"><span class="k">1</span><h2>Select the fund</h2><p>Granite Ridge. Each company's data stays separate.</p></div>
     <div class="card"><span class="k">2</span><h2>Plant view</h2><p>Health score by plant, line and machine</p></div>
@@ -235,15 +235,62 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
     <div class="card"><span class="k">5</span><h2>Sourcing</h2><p>Fort Wayne has 2 on the shelf</p></div>
     <div class="card"><span class="k">6</span><h2>Human review</h2><p>A person confirms before anything is ordered</p></div>
   </div>
-  <div class="row c3">
+  <div class="row c2">
     <div class="card"><h2>Health score</h2><div class="mid">54 / 100</div><p class="sm">Toledo. Portfolio 58. The acquisition target: <b>4</b>.</p>
       <div class="formula">working 100 · replace soon 50 · replace ASAP 0<br>average, line stoppers count double</div></div>
-    <div class="card"><h2>Money saved</h2><div class="mid">$47.7k / yr</div><p class="sm">Toledo, savings the customer can audit</p>
-      <div class="formula">spares carrying cost + rush premiums<br>+ purchases a sister spare avoids<br>+ planned instead of emergency buys</div></div>
-    <div class="card"><h2>Downtime cut</h2><div class="mid">176 h → 40 h</div><p class="sm">worst case if the Line 2 drive fails, with Fort Wayne's spare. About $84k at stake.</p>
-      <div class="formula">shown as one event, never in the savings</div></div>
+    <div class="card"><h2>The find</h2><div class="mid">2 on a shelf</div><p class="sm">Toledo's Line 2 runs on a discontinued drive with no spare. Fort Wayne has two, under a different description.</p>
+      <div class="formula">next: what that is worth, and how we get paid →</div></div>
   </div>
   <div class="foot"><span>Fictional portfolio, real part numbers and resale prices · 127 of 129 part numbers read exactly from rendered test photos · full formulas in the appendix</span><span>5</span></div>
+</section></div>
+
+<!-- FINANCIALS 1: COST SAVINGS -->
+<div class="frame"><section class="slide">
+  <div class="kicker">Financials · cost savings</div>
+  <h1>What we count, and what we only show</h1>
+  <div class="row c2" style="margin-bottom:18px">
+    <div class="card" style="border-top:4px solid var(--accent)">
+      <h2>Direct savings <span class="tag ok">auditable</span></h2>
+      <div class="mid">$47.7k / yr</div><p class="sm muted" style="margin-bottom:8px">Toledo, each line traced to parts in the registry</p>
+      <table style="font-size:16px">
+        <tr><td style="padding:6px 8px">Spares carrying cost</td><td class="num" style="padding:6px 8px">$16.6k</td></tr>
+        <tr><td style="padding:6px 8px">Planned instead of emergency buys</td><td class="num" style="padding:6px 8px">$12.9k</td></tr>
+        <tr><td style="padding:6px 8px">Purchases a sister plant's spare avoids</td><td class="num" style="padding:6px 8px">$10.5k</td></tr>
+        <tr><td style="padding:6px 8px">Rush premiums</td><td class="num" style="padding:6px 8px">$7.8k</td></tr>
+      </table>
+      <p class="sm" style="margin-top:8px">+ <b>$79k</b> of idle spares cash freed once</p>
+    </div>
+    <div class="card" style="border:2px dashed var(--line);background:var(--slide)">
+      <h2>Downtime avoided <span class="tag warn">estimate</span></h2>
+      <div class="mid" style="color:var(--muted)">~$19k / yr</div><p class="sm muted" style="margin-bottom:8px">Toledo, range $2–71k</p>
+      <div class="formula" style="margin-top:0">chance it fails × hours the spare saves<br>× lost margin per hour<br>× share of output never made up</div>
+      <ul class="sm" style="margin-top:10px">
+        <li>Only spare rescues the scan actually found</li>
+        <li>One failure per spare, over 3 years, at 10%</li>
+        <li>Outage capped at 10–25 days; 40–80% never made up</li>
+      </ul>
+    </div>
+  </div>
+  <div class="trust"><p class="sm"><b>The business case uses only the left side.</b> Downtime depends on judgment calls, so we show it conservatively and never price it.</p></div>
+  <div class="foot"><span>Money model on the demo database (xray/pricing.py) · whole-plant figures extrapolated from the scanned parts · every formula and assumption in appendix A1</span><span>6</span></div>
+</section></div>
+
+<!-- FINANCIALS 2: BUSINESS MODEL -->
+<div class="frame"><section class="slide">
+  <div class="kicker">Financials · business model</div>
+  <h1>We charge for what the customer can count, not for what we say they saved</h1>
+  <div class="flow" style="margin-bottom:20px">
+    <div class="card"><p class="xs" style="color:var(--accent);font-weight:800;letter-spacing:.06em;margin-bottom:4px">1 · ONE-TIME</p><h2>Onboard a plant</h2><p class="sm">First scan: registry, line stoppers, spending by year</p><div class="mid" style="margin-top:12px">$1–2k</div><p class="xs muted">flat, per plant</p></div>
+    <div class="arrow">→</div>
+    <div class="card" style="background:var(--accent-soft)"><p class="xs" style="color:var(--accent);font-weight:800;letter-spacing:.06em;margin-bottom:4px">2 · YEARLY</p><h2>Registry subscription</h2><p class="sm">Kept current: lifecycle alerts, rescans, spares on every plant's shelf</p><div class="mid" style="margin-top:12px">$4–10k</div><p class="xs muted">per plant, tiered by the number of critical parts</p></div>
+    <div class="arrow">→</div>
+    <div class="card"><p class="xs" style="color:var(--accent);font-weight:800;letter-spacing:.06em;margin-bottom:4px">3 · MONTHLY</p><h2>Sensors</h2><p class="sm">Clip-on sensors on the riskiest parts, hardware included</p><div class="mid" style="margin-top:12px">$ / point</div><p class="xs muted">per monitored point <span class="tag warn">price to set</span></p></div>
+  </div>
+  <div class="row c2">
+    <div class="card"><h2>It grows three ways</h2><p class="sm">More plants per company → more sensors per plant → more companies per fund, on one portfolio license</p></div>
+    <div class="trust"><p class="sm"><b>Toledo pays $9.5k a year and saves $47.7k: paid back in 2.4 months.</b> The fee stays fixed whatever we report, so we never judge our own fee.</p></div>
+  </div>
+  <div class="foot"><span>Fees from the money model on the demo plants; our cost to serve a plant is $0.3–1.8k a year · tiers and willingness to pay are tested in the pilots</span><span>7</span></div>
 </section></div>
 
 <!-- CLOSE -->
@@ -257,7 +304,7 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
     <div class="phase"><h2>Later</h2><p>Platform: shared spares and buying across a fund's companies</p></div>
   </div>
   <p class="muted" style="margin-top:26px;max-width:980px">In the pilots we measure three things: accuracy on real worn nameplates, which findings changed a decision, and whether the owner pays to keep it running.</p>
-  <div class="foot"><span>Equipment X-Ray · Team Buffalo</span><span>6</span></div>
+  <div class="foot"><span>Equipment X-Ray · Team Buffalo</span><span>8</span></div>
 </section></div>
 
 <!-- FORMULAS -->
