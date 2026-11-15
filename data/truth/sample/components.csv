@@ -1,0 +1,12 @@
+component_id,kb_id,part_no,lifecycle_status
+PA-L1-M01-C1,KB-017,1756-L83E,active
+PA-L1-M01-C3,KB-009,2094-BC01-MP5-S,discontinued
+PA-L1-M05-C1,KB-002,1769-L32E,discontinued
+PA-L1-M05-C2,KB-006,22B-D010N104,discontinued
+PA-L2-M01-C1,KB-009,2094-BC01-MP5-S,discontinued
+PA-L2-M01-C2,KB-021,2711P-T10C22D9P,active
+PA-L2-M04-C1,KB-018,5069-L320ER,active
+PB-L1-M01-C1,KB-018,5069-L320ER,active
+PB-L2-M01-C1,KB-003,1764-LSP,discontinued
+PE-L2-M02-C1,KB-029,6ES5943-7UB11,discontinued
+PE-L2-M04-C1,KB-029,6ES5943-7UB11,discontinued
