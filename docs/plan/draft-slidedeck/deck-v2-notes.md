@@ -1,6 +1,6 @@
 # Deck v2: what was left out, what Asher fills, and how the numbers are derived
 
-**[deck-v2.html](deck-v2.html)** follows the mentor layout in [final-refinements/05](../final-refinements/05-feedback-notes.md): **8 main slides** (title, problem, solution ×2, demo, financials ×2, close) and **9 appendix slides**. v1 is kept as [deck-v1.html](deck-v1.html). Built Sat Nov 14, ~11:45 PM, numbers from a clean rebuild of `demo.db` on `brandon/downtime-horizon`.
+**[deck-v2.html](deck-v2.html)** follows the mentor layout in [final-refinements/05](../../archive/planning-notes/05-feedback-notes.md): **8 main slides** (title, problem, solution ×2, demo, financials ×2, close) and **9 appendix slides**. v1 is kept as [deck-v1.html](deck-v1.html). Built Sat Nov 14, ~11:45 PM, numbers from a clean rebuild of `demo.db` on `brandon/downtime-horizon`.
 
 | # | Slide | Status |
 |---|---|---|
@@ -44,7 +44,7 @@ The black text in steps 1–4 is my wording of the mentor's notes, not research.
 | Objections table | Appendix A6 | For Q&A |
 | Roadmap in six phases | Slide 6 as four words (now, pilots, then, later); detail in A7 | Mentor: platform expansion comes later; keep it to a line |
 | Go-to-market, market sensitivity table, liquidity angle, unit economics table | Not in v2 (still in `deck-v1-long.html`) | Lowest value per second in a short pitch; liquidity is still an unproven hypothesis |
-| Yearly downtime totals (portfolio, Waukesha) | Dropped | Subjective, and two of them do not reproduce ([final-refinements/04](../final-refinements/04-downtime-waukesha-discrepancy.md)). One Toledo event is shown instead. |
+| Yearly downtime totals (portfolio, Waukesha) | Dropped | Subjective, and two of them do not reproduce ([final-refinements/04](../../archive/planning-notes/04-downtime-waukesha-discrepancy.md)). One Toledo event is shown instead. |
 | Deal view ($429k pay less) | Appendix A8 | A second way in, not the story |
 | "Condition sensing" slide marked hypothesis, with ⚠ cite flags | Replaced by slide 4 | Hardware is now the focus; the unknowns became fill-in boxes instead of caveats |
 

@@ -12,7 +12,7 @@
 - **Print → Save as PDF** gives one 16:9 page per slide (turn on "Background graphics").
 - Add `#check` to the address to list any slide whose content runs past its footer (shown in the tab title). Run it after every edit.
 
-Built from [pivot-plan/04-pitch-deck-mockup.html](../pivot-plan/04-pitch-deck-mockup.html) (structure and style), [final-refinements/02-roadmap-vs-expansion.html](../final-refinements/02-roadmap-vs-expansion.html) (slides 5, 11, 12) and live numbers from the demo database (Sat Nov 14, ~10 PM, branch `brandon/rare-part`).
+Built from [pivot-plan/04-pitch-deck-mockup.html](../../archive/pivot-plan/04-pitch-deck-mockup.html) (structure and style), [final-refinements/02-roadmap-vs-expansion.html](../../archive/planning-notes/02-roadmap-vs-expansion.html) (slides 5, 11, 12) and live numbers from the demo database (Sat Nov 14, ~10 PM, branch `brandon/rare-part`).
 
 ## Slides
 | # | Slide | Changed from the mockup |

@@ -6,9 +6,9 @@
 **Status:** 🆕 new
 - **Shared files touched:** `api/main.py` (`/plants/{id}/savings` now also returns `downtime_rescues`; additive), `web/src/app/plants/[plantId]/page.tsx` (top three rescues), `web/src/app/sources/page.tsx` (price, downtime and Tillman rows).
 - **Downtime avoided is much smaller and no longer extrapolated:** only rescues we found, one failure per spare over 3 years, outage capped at 10–25 operating days, 40–80% of output counted. Toledo ~$19k / yr. Line-stopper exposure drops too. Not priced, as before.
-- **⚠️ Open:** the rework report quoted Waukesha $22k and portfolio $61k; a clean rebuild gives $3.8k and $51k. See `docs/plan/final-refinements/04-downtime-waukesha-discrepancy.md`. Don't quote those two until it's closed.
+- **⚠️ Open:** the rework report quoted Waukesha $22k and portfolio $61k; a clean rebuild gives $3.8k and $51k. See `docs/archive/planning-notes/04-downtime-waukesha-discrepancy.md`. Don't quote those two until it's closed.
 - **Rebuild `demo.db`** (`python scripts/seed.py data/seed/demo demo.db`) before rehearsing.
-- **New docs:** `docs/plan/final-refinements/` (objections, data ladder, app to-do list) and `docs/plan/final-slidedeck/deck-v1.html` (11 slides + appendix; the case study slot on slide 2 is still empty, and the thermal slide needs your sources).
+- **New docs:** `docs/archive/planning-notes/` (objections, data ladder, app to-do list) and `docs/plan/draft-slidedeck/deck-v1.html` (11 slides + appendix; the case study slot on slide 2 is still empty, and the thermal slide needs your sources).
 
 ### Sat Nov 14, ~11 PM · Rare part picked: Westinghouse Numa-Logic PC-1100 (0 listings)
 **Status:** 🆕 new

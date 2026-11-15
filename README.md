@@ -1,73 +1,109 @@
-# Equipment Health Index (working name)
+# Equipment Health Index
 
-**Kearney × PERLab Hackathon · Startup track · Team Buffalo (Asher + Brandon)**
+**Kearney × PERLab Hackathon · Startup track · Team Buffalo (Asher Stewart, Brandon Baarsma)**
 
-> Anyone can ask an AI what a machine is. We tell a plant owner which hidden parts will stop which production lines, what it'll cost and when, and we show the evidence behind every number.
+> A live registry of every critical part across a PE portfolio of industrial plants. It scores each part's health, flags what will stop a production line, and turns that into dollars saved.
 
-Factories run on **controllers, drives and screens their manufacturers stopped making**. One failure there can stop a line for weeks, and most plants don't have a full picture of what's inside their machines.
+## The problem
+Unplanned downtime costs the world's 500 largest companies about **$1.4 trillion a year** (Siemens, 2024). The parts that stop a line are usually small and old: a 20-year-old drive, a discontinued relay, a controller nobody makes anymore. Plants follow their maintenance schedules, but almost nobody tracks the **health of the electronics inside their control cabinets**. Most plants run a maintenance system, but only ~15% of those keep part-level records (Velocity research).
 
-Equipment Health Index takes a plant's equipment list and **photos of nameplates and control cabinets**, and turns them into a **living registry of every machine and every critical part**. From that registry it produces:
-- a **CapEx cliff** (equipment spending needed, year by year)
-- the **single points of failure**
-- **where to source every part**, checking the shelves at your other plants first
+## What it does
+We play a consulting firm hired by **Granite Ridge Capital**, a (fictional) Midwest private equity firm with two portfolio companies, five plants and one acquisition on the table.
 
-The evidence sits behind every number.
+1. **Identify.** Photos of nameplates and cabinet labels are read by Claude vision into part number, maker, serial and date code. Unclear characters are flagged, never guessed.
+2. **Register.** Each part is matched to a lifecycle knowledge base (active / discontinued, rated life, successor) and placed in fund → company → plant → line → machine → part.
+3. **Score health.** A survival model combines age, heat, sensor anomalies and drive fault logs into one number: the chance the part survives the next 12 months (0–100).
+4. **Act.** Every at-risk part gets an order-by date and the best way to get one: a spare already at a sister plant first, then the manufacturer or its successor, then marketplaces flagged for counterfeit risk.
+5. **Price it.** Auditable savings (spares carrying cost, planned vs emergency buys, rush premiums, sister-plant spares), plus **downtime avoided**, shown separately and never priced.
 
-**Who it's for:** **multi-plant manufacturers and PE portfolios.**
-- **Evaluating your own plants is the main way in.**
-- **An acquisition is one way in:** the same scan prices the deal ("pay $X less") and becomes the acquired plant's registry. A seller's pre-exit scan is another.
-- Across plants and portfolio companies, owners **share spares, buy together and free up cash**.
+We also designed the **Cabinet Monitor**, a small DIN-rail box (thermal camera, clamp-on current sensors, cellular modem) that reads parts' temperature and motor current continuously, read-only and off the plant network. Its system diagram is in [docs/plan/hardware/](docs/plan/hardware/cabinet-monitor-diagram.tex) (TikZ).
 
-**Strategy source of truth:** [docs/plan/roadmap-equipment-xray.md](docs/plan/roadmap-equipment-xray.md).
+**What's real and what isn't:** the plants, companies and sensor readings are **fictional / simulated**. Part numbers, lifecycle data, supplier listings and research numbers are **real**, and every number in the app shows its source.
 
-## ⏰ Deadlines
-| | |
-|---|---|
-| **Sun Nov 15, 8:30 AM** | **Submission due** |
-| Sun 9:30 AM / 3:30 PM | Judging / finalist pitches |
+---
 
-## 🗺 Where things are
-| If you want… | Go to |
-|---|---|
-| **The idea**: problem, user, workflow, competition, why us, weekend plan | [docs/plan/idea-equipment-xray.md](docs/plan/idea-equipment-xray.md) |
-| **How the system works + roadmap**: registry, sourcing, PE portfolio, phases | [docs/plan/roadmap-equipment-xray.md](docs/plan/roadmap-equipment-xray.md) |
-| **Who does what + checkpoints** | [docs/team/roles.md](docs/team/roles.md) |
-| **Registry data format (CP0 sign-off)** | [docs/build/registry-format.md](docs/build/registry-format.md) |
-| Handoffs between us (two inboxes) | [docs/team/handoffs/](docs/team/handoffs/README.md): [to Brandon](docs/team/handoffs/to-brandon.md) · [to Asher](docs/team/handoffs/to-asher.md) |
-| Git workflow | [docs/team/workflow.md](docs/team/workflow.md) |
-| **Is the problem big enough? Market validation + recommendation** | [docs/research/market-validation.md](docs/research/market-validation.md) |
-| **Deep dive: defensible numbers, market model, consulting-firm breakeven** | [docs/research/deep-dive-numbers.md](docs/research/deep-dive-numbers.md) · `python scripts/market_model.py` |
-| Velocity research log (required) | [docs/research/velocity.md](docs/research/velocity.md) |
+## Run it on your computer (about 5 minutes)
 
-## 🧭 Status
-- **Plan and roadmap drafted.** Waiting on Brandon's yes, no or changes (§13 of the idea doc).
-- **MVP not built yet.** It will be the AI diagnostic tool: photos and the equipment list go in; machines and components are identified; each is checked against lifecycle data; out comes the CapEx cliff. It runs on a test factory with planted answers, so we can measure accuracy.
-- **Track switch** to Startup is still to be confirmed with the organizers.
+**You need:** [Python 3.11+](https://www.python.org/downloads/) and [Node.js 20+](https://nodejs.org/). No API key is needed: the photo readings are cached, so the demo runs offline.
 
-## 🧱 What's already here (kept from our previous project)
-```
-xray/matching.py    name/catalog-number normalization + fuzzy matching (nameplate text → knowledge-base entry)
-xray/evaluate.py    precision/recall against a planted answer key
-api/main.py         FastAPI shell (/health)
-web/                Next.js 15 + Tailwind + Recharts shell (types generated from the API)
-tests/              pytest · scripts/checkpoint.sh runs the same checks as CI (.github/workflows/checks.yml)
-```
-
-## ▶️ Run
 ```bash
-python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
-cp .env.example .env                         # add ANTHROPIC_API_KEY
-./scripts/demo.sh                            # FAST demo mode: production build + API (use this on stage)
-uvicorn api.main:app --reload --port 8000    # dev API: localhost:8000/docs
-cd web && npm install && npm run dev         # app: localhost:3000
-./scripts/checkpoint.sh                      # tests + type check
-python scripts/export_openapi.py && (cd web && npm run types:api)   # after API changes
+git clone https://github.com/ast3wart/buffalo-kearney-hackathon.git
+cd buffalo-kearney-hackathon
+
+# 1. Python backend
+python3 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# 2. Web app
+(cd web && npm install)
+
+# 3. Build the demo database and start everything
+python scripts/seed.py
+./scripts/demo.sh
 ```
 
-## 🗄 Previous project (Afterlife)
-Before the pivot we built **Afterlife** (Track 3, BOM Cost Linkage), which linked BOMs, spend and warranty claims. Its code and docs are saved in git tags, not on `main`:
+Then open **http://localhost:3000**. (The API and its docs are at http://localhost:8000/docs.)
+
+<details><summary>If <code>demo.sh</code> doesn't work (e.g. on Windows)</summary>
+
+Run the two servers in two terminals:
 ```bash
-git fetch --tags
-git checkout -b afterlife archive/afterlife-main    # everything as it stood on main
-git tag -l 'archive/*'                              # the old branches, one tag each
+uvicorn api.main:app --port 8000                 # terminal 1
+cd web && npm run build && npm start             # terminal 2
 ```
+</details>
+
+---
+
+## Watch the pitch
+Click **Pitch** in the top bar. That's our presentation, built into the app.
+- **← →** (or space) to move between slides, **F** for full screen.
+- **Slide 7 is the live demo** running inside the slide: click inside it to use the app. Click outside it, then use the arrows to move on.
+- **Slide 11 is the appendix**, also live: every formula, assumption and source, searchable.
+- A small **V** next to a number means we found it with **Velocity**, the Kearney × PERLab research platform.
+
+## A 3-minute tour
+1. **Portfolio** (home page): Granite Ridge's two companies and five plants, how many critical parts are discontinued, and which spares are sitting idle at sister plants.
+2. Click **Toledo, OH**: parts to replace ASAP / soon / working, the **CapEx cliff** (spending needed per year), **savings and our fee**, **downtime avoided**, and the line-stoppers ranked by risk.
+3. Open **Line 1 → Komatsu OBS 150-2** (a stamping press): four parts, each with a health score. The **IDEC RH2B-U-AC120V relay** scores **1/100**. It's discontinued, overheating, and no plant has a spare.
+4. Click the relay's **where to buy**: its health drivers, the anomaly statistics that caught it, the financial view, and five real distributors selling its successor part.
+5. Back on the press, the **Kinetix servo drive** shows the opposite case: failing too, but a spare is on Toledo's own shelf.
+6. **Sources** lists every headline number with its source. **Appendix** holds every formula; try searching "weibull", "28%" or "downtime".
+
+## Mess around with the data
+Everything is plain CSV files. Edit, rebuild, refresh.
+
+| Try this | Edit | Then run |
+|---|---|---|
+| Change a part's lifecycle (e.g. mark a PLC discontinued) | `data/reference/kb.csv` (`lifecycle_status`) | `python scripts/seed.py` |
+| Add or remove supplier listings | `data/reference/listings.csv` | `python scripts/seed.py` |
+| Change a plant's size, spares or money inputs | `data/seed/demo/<plant>/*.csv`, `data/seed/demo/plant_financials.csv` | `python scripts/seed.py` |
+| Plant a new failure in the sensor data (e.g. a part that suddenly runs hot) | the `patterns` dict in `scripts/make_condition_data.py` | `python scripts/make_condition_data.py && python scripts/seed.py` |
+| Change model assumptions (failure odds, outage caps, discount rates) | `xray/params.py`, `xray/condition.py` (top of file) | restart the API |
+| Read a new label photo with Claude (needs `ANTHROPIC_API_KEY` in `.env`) | add a photo to `data/seed/demo/<plant>/photos/` | `python scripts/read_photos.py` |
+
+After `seed.py`, restart the API (`./scripts/demo.sh` does both servers) and refresh the browser. Plant IDs: PA Toledo, PB Fort Wayne, PC Lima, PD Waukesha, PE Rockford (the acquisition target), PF Oshkosh.
+
+**Check nothing broke:** `./scripts/checkpoint.sh` runs the tests (accuracy floors against the planted answer key) and the type check.
+
+---
+
+## How it's built
+- **Backend:** Python (pandas, numpy), FastAPI, SQLite. `xray/` holds the logic: `extract.py` (Claude vision), `matching.py` (part matching), `condition.py` (health model), `anomaly.py` (statistics), `health.py` (actions), `sourcing.py`, `valuation.py` and `pricing.py` (money).
+- **Frontend:** Next.js 15, Tailwind, Recharts (`web/`). The deck is `web/src/components/Deck.tsx`.
+- **Test factory:** six synthetic plants with planted answers (`data/truth/`), so accuracy is measured, not assumed: 127/129 labels read exactly, 100% matching precision, 5/5 planted failures caught.
+- **Research:** 20+ Velocity research prompts, logged in [docs/research/velocity.md](docs/research/velocity.md).
+
+| Where | What |
+|---|---|
+| [docs/plan/roadmap-equipment-xray.md](docs/plan/roadmap-equipment-xray.md) | strategy and roadmap |
+| [docs/plan/cabinet-monitor.md](docs/plan/cabinet-monitor.md) · [docs/plan/hardware/](docs/plan/hardware/) | the Cabinet Monitor and its diagram |
+| [docs/plan/financials/](docs/plan/financials/) | the money model spec |
+| [docs/plan/draft-slidedeck/](docs/plan/draft-slidedeck/) | earlier HTML drafts of the deck and the financials speaker script |
+| [docs/research/](docs/research/) | market validation, Velocity log, benchmarks |
+| [docs/build/](docs/build/) | data format and interfaces |
+| [docs/archive/](docs/archive/) | earlier planning notes |
+
+## Previous project
+Before pivoting we built **Afterlife** (BOM cost linkage). It's saved in the git tag `archive/afterlife-main`.

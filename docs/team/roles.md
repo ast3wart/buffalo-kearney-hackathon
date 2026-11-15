@@ -1,6 +1,6 @@
 # Roles and checkpoints (Equipment Health Index)
 
-**Agreed Sat Nov 14, ~4 PM.** This split **replaces the "Rough split" table in [pivot-plan/05-poc-scope.md](../plan/pivot-plan/05-poc-scope.md)**, which was written before we split the work by strength. The scope, build order and demo script in doc 05 still apply. Submission is due **Sun 8:30 AM**.
+**Agreed Sat Nov 14, ~4 PM.** This split **replaces the "Rough split" table in [pivot-plan/05-poc-scope.md](../archive/pivot-plan/05-poc-scope.md)**, which was written before we split the work by strength. The scope, build order and demo script in doc 05 still apply. Submission is due **Sun 8:30 AM**.
 
 The work is split by strength. Both threads build part of the live demo, and both run in parallel.
 
