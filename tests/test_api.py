@@ -1,6 +1,17 @@
+import sys
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
-from api.main import app
+from xray import registry
+
+if not registry.DEFAULT_DB.exists():  # CI: demo.db is gitignored, so build it from the committed seed files
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
+    import seed
+
+    seed.main(Path(__file__).resolve().parent.parent / "data/seed/demo", registry.DEFAULT_DB)
+
+from api.main import app  # noqa: E402
 
 c = TestClient(app)
 
