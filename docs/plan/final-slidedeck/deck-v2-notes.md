@@ -1,6 +1,6 @@
 # Deck v2: what was left out, what Asher fills, and how the numbers are derived
 
-**[deck-v2.html](deck-v2.html)** follows the mentor layout in [final-refinements/05](../final-refinements/05-feedback-notes.md): **6 main slides** (title, problem, solution ×2, demo, close) and **9 appendix slides**. v1 is kept as [deck-v1.html](deck-v1.html). Built Sat Nov 14, ~11:45 PM, numbers from a clean rebuild of `demo.db` on `brandon/downtime-horizon`.
+**[deck-v2.html](deck-v2.html)** follows the mentor layout in [final-refinements/05](../final-refinements/05-feedback-notes.md): **7 main slides** (title, problem, solution ×2, demo, business model, close) and **9 appendix slides**. v1 is kept as [deck-v1.html](deck-v1.html). Built Sat Nov 14, ~11:45 PM, numbers from a clean rebuild of `demo.db` on `brandon/downtime-horizon`.
 
 | # | Slide | Status |
 |---|---|---|
@@ -9,7 +9,8 @@
 | 3 | Solution: the data ladder, hardware on top | Done |
 | 4 | Solution: the hardware | **8 dashed boxes for Asher** |
 | 5 | Demo: fund → plant → part, and what it saves | Done; two demo steps are not in the app (below) |
-| 6 | Close: pilots and what comes next | Done |
+| 6 | Business model: onboarding fee, yearly subscription per plant, fee per sensor; savings shown as the customer's payback | Done; sensor price to set |
+| 7 | Close: pilots and what comes next | Done |
 | A1–A9 | Formulas · proof · business case and price · customer and market · competition · objections · roadmap · deal view · sources | Done |
 
 ## 1. For Asher: the empty spots on slide 4
