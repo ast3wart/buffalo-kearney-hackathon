@@ -248,19 +248,6 @@ export function Deck({ data }: { data: DeckData }) {
       <img src="/xray-monitor-diagram.png" alt="System block diagram of the X-Ray Monitor" className="h-full w-full object-contain object-top" />
     </Slide>,
 
-    <Slide key="econ" kicker="The hardware" title="What it costs to build and install">
-      <div className="grid h-full grid-cols-[1fr_1.3fr] items-center gap-12">
-        <Big n="~$470" label="per cabinet, first year, all in (range $270–900)" />
-        <div className="space-y-5 text-xl">
-          <div className="flex justify-between border-b border-line pb-2"><span>Hardware, at 1,000 units</span><b className="tabular">$185</b></div>
-          <div className="flex justify-between border-b border-line pb-2"><span>Electrician install, ~2.5 h</span><b className="tabular">$250</b></div>
-          <div className="flex justify-between border-b border-line pb-2"><span>Data + cloud, per year</span><b className="tabular">$30</b></div>
-          <div className="flex justify-between text-muted"><span>Comparable monitoring, per machine per year</span><span className="tabular">~$900</span></div>
-        </div>
-      </div>
-      <div className="text-sm text-muted">Only on line-stopper cabinets: ~60 per plant. Velocity-powered estimates; full ranges in the appendix.</div>
-    </Slide>,
-
     <div key="demo" className="flex h-full flex-col">
       <div className="flex items-baseline justify-between px-1 pb-2">
         <span className="text-sm font-semibold uppercase tracking-wider text-accent">Live demo · Granite Ridge Capital</span>
