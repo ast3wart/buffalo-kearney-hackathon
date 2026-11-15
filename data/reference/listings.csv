@@ -1,0 +1,43 @@
+listing_id,kb_id,part_no,channel,seller,seller_location,authorized,condition,price,currency,qty_available,sold_price,shipping,lead_time_days,warranty_months,seller_rating,seller_sales_count,returns_accepted,trust_score,url,seen_on
+LS-0001,KB-002,1769-L32E,marketplace,wilwal9794,US,no,new_surplus,1300.0,USD,,1300.0,7.55,,,100,26,,,https://www.ebay.com/itm/168666201912,2026-11-14
+LS-0002,KB-002,1769-L32E/B,marketplace,plc-automatic,CN,no,new_surplus,528.64,USD,,528.64,0,,,100,39,yes,,https://www.ebay.com/itm/800756563669,2026-11-14
+LS-0003,KB-002,1769-L32E/A,marketplace,judilan,US,no,new_surplus,950.0,USD,,950.0,0,,,99.6,27000,,,https://www.ebay.com/itm/188364907239,2026-11-14
+LS-0004,KB-002,1769-L32E/A,marketplace,plcdcszone,US,no,new_surplus,420.08,USD,,420.08,0,,,100,16,yes,,https://www.ebay.com/itm/237179883959,2026-11-14
+LS-0005,KB-002,1769-L32E,refurbisher,Radwell (refurbished),US,no,refurbished,1400.73,USD,341,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/1769-L32E,2026-11-14
+LS-0006,KB-002,1769-L32E,refurbisher,Radwell (Radwell packaging),US,no,new_surplus,3993.0,USD,10,,,9,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/1769-L32E,2026-11-14
+LS-0007,KB-002,1769-L32E,refurbisher,Radwell (original packaging),US,no,new_surplus,5723.3,USD,6,,,9,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/1769-L32E,2026-11-14
+LS-0008,KB-002,1769-L32E,refurbisher,DO Supply (refurbished),US,no,refurbished,861,USD,53,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-plc/compactlogix-1769/1769-L32E,2026-11-14
+LS-0009,KB-002,1769-L32E,refurbisher,DO Supply (DO Supply packaging),US,no,new_surplus,2991,USD,21,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-plc/compactlogix-1769/1769-L32E,2026-11-14
+LS-0010,KB-002,1769-L32E,refurbisher,DO Supply (original packaging),US,no,new_surplus,3937,USD,9,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-plc/compactlogix-1769/1769-L32E,2026-11-14
+LS-0011,KB-006,22B-D010N104/A,marketplace,marcihardware,US,no,new_surplus,1285.06,USD,,1285.06,0,,,100,3500,,,https://www.ebay.com/itm/206629973929,2026-11-14
+LS-0012,KB-006,22B-D010N104/A,marketplace,baltisales,US,no,new_surplus,1399.0,USD,,1399.0,0,,,100,41700,yes,,https://www.ebay.com/itm/168756447956,2026-11-14
+LS-0013,KB-006,22B-D010N104,marketplace,cade9299,US,no,new_surplus,225.0,USD,,225.0,,,,0,42,,,https://www.ebay.com/itm/137928206051,2026-11-14
+LS-0014,KB-006,22B-D010N104/A,marketplace,ceyfine,US,no,new_surplus,817.32,USD,,817.32,0,,,99.6,225,yes,,https://www.ebay.com/itm/227545442284,2026-11-14
+LS-0015,KB-006,22B-D010N104/A,marketplace,partschase,US,no,new_surplus,540.72,USD,,540.72,0,,,99.5,6500,yes,,https://www.ebay.com/itm/960104243666,2026-11-14
+LS-0016,KB-006,22B-D010N104,refurbisher,Radwell (refurbished),US,no,refurbished,2310.0,USD,152,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/22B-D010N104,2026-11-14
+LS-0017,KB-006,22B-D010N104,refurbisher,Radwell (Radwell packaging),US,no,new_surplus,3520.0,USD,1,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/22B-D010N104,2026-11-14
+LS-0018,KB-006,22B-D010N104,refurbisher,Radwell (original packaging),US,no,new_surplus,5500.0,USD,33,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/22B-D010N104,2026-11-14
+LS-0019,KB-006,22B-D010N104,refurbisher,DO Supply (refurbished),US,no,refurbished,1024,USD,20,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-drives/powerflex-40/22B-D010N104,2026-11-14
+LS-0020,KB-006,22B-D010N104,refurbisher,DO Supply (DO Supply packaging),US,no,new_surplus,2857,USD,1,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-drives/powerflex-40/22B-D010N104,2026-11-14
+LS-0021,KB-006,22B-D010N104,refurbisher,DO Supply (original packaging),US,no,new_surplus,3988,USD,13,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-drives/powerflex-40/22B-D010N104,2026-11-14
+LS-0022,KB-019,25B-D010N104,refurbisher,Radwell (refurbished),US,no,refurbished,1354.5,USD,57,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/25B-D010N104,2026-11-14
+LS-0023,KB-019,25B-D010N104,refurbisher,"Radwell (Radwell packaging, quote)",US,no,new_surplus,1976.21,USD,,,,,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/25B-D010N104,2026-11-14
+LS-0024,KB-019,25B-D010N104,refurbisher,Radwell (original packaging),US,no,new_surplus,2275.63,USD,105,,,6,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/25B-D010N104,2026-11-14
+LS-0025,KB-009,2094-BC01-MP5-S/C,marketplace,cr_supplyshop,US,no,used,2000.0,USD,,2000.0,0,,,100,4700,yes,,https://www.ebay.com/itm/389121111806,2026-11-14
+LS-0026,KB-009,2094-BC01-MP5-S/B,marketplace,baltisales,US,no,used,1826.53,USD,,1826.53,0,,,100,41700,yes,,https://www.ebay.com/itm/158333914556,2026-11-14
+LS-0027,KB-009,2094-BC01-MP5-S,marketplace,cw.surplus,US,no,for_repair,112.49,USD,,112.49,15.1,,,100,193,,,https://www.ebay.com/itm/398341519079,2026-11-14
+LS-0028,KB-009,2094-BC01-MP5-S,refurbisher,Radwell (refurbished),US,no,refurbished,6516.35,USD,11,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/2094-BC01-MP5-S,2026-11-14
+LS-0029,KB-009,2094-BC01-MP5-S,refurbisher,Radwell (Radwell packaging),US,no,new_surplus,12467.51,USD,2,,,6,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/2094-BC01-MP5-S,2026-11-14
+LS-0030,KB-009,2094-BC01-MP5-S,refurbisher,Radwell (original packaging),US,no,new_surplus,13852.79,USD,2,,,6,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/2094-BC01-MP5-S,2026-11-14
+LS-0031,KB-009,2094-BC01-MP5-S,refurbisher,DO Supply (refurbished),US,no,refurbished,4307,USD,7,,,2,,,,,,https://www.dosupply.com/automation/allen-bradley-drives/kinetix-6000/2094-BC01-MP5-S,2026-11-14
+LS-0032,KB-009,2094-BC01-MP5-S,refurbisher,DO Supply (DO Supply packaging),US,no,new_surplus,8941,USD,2,,,3,,,,,,https://www.dosupply.com/automation/allen-bradley-drives/kinetix-6000/2094-BC01-MP5-S,2026-11-14
+LS-0033,KB-009,2094-BC01-MP5-S,refurbisher,DO Supply (original packaging),US,no,new_surplus,11550,USD,3,,,4,,,,,,https://www.dosupply.com/automation/allen-bradley-drives/kinetix-6000/2094-BC01-MP5-S,2026-11-14
+LS-0034,KB-022,2198-D006-ERS3,refurbisher,Radwell (refurbished),US,no,refurbished,2198.79,USD,27,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/2198-D006-ERS3,2026-11-14
+LS-0035,KB-022,2198-D006-ERS3,refurbisher,"Radwell (Radwell packaging, quote)",US,no,new_surplus,3856.05,USD,,,,,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/2198-D006-ERS3,2026-11-14
+LS-0036,KB-022,2198-D006-ERS3,refurbisher,Radwell (original packaging),US,no,new_surplus,4284.5,USD,4,,,3,24,,,,,https://www.radwell.com/Buy/ALLEN%20BRADLEY/ALLEN%20BRADLEY/2198-D006-ERS3,2026-11-14
+LS-0037,KB-029,6ES5943-7UB11,marketplace,maranos_de,DE,no,used,71.65,USD,,71.65,55.0,,,100,29100,,,https://www.ebay.com/itm/407307112303,2026-11-14
+LS-0038,KB-029,6ES5 943-7UB11,marketplace,aslme78,DE,no,used,31.97,USD,,31.97,65.04,,,100,8100,,,https://www.ebay.com/itm/187434274245,2026-11-14
+LS-0039,KB-029,6ES5943-7UB11,marketplace,chipsgate-top,CN,no,new_surplus,849.0,USD,,849.0,0,,,99.7,1100,,,https://www.ebay.com/itm/157765719830,2026-11-14
+LS-0040,KB-029,6ES5943-7UB11,refurbisher,Radwell (refurbished),US,no,refurbished,949.34,USD,64,,,3,24,,,,,https://www.radwell.com/Buy/SIEMENS/SIEMENS/6ES5943-7UB11,2026-11-14
+LS-0041,KB-029,6ES5943-7UB11,refurbisher,"Radwell (never used, Radwell packaging)",US,no,new_surplus,3372.12,USD,7,,,3,24,,,,,https://www.radwell.com/Buy/SIEMENS/SIEMENS/6ES5943-7UB11,2026-11-14
+LS-0042,KB-029,6ES5943-7UB11,refurbisher,"Radwell (never used, original packaging)",US,no,new_surplus,4565.01,USD,4,,,9,24,,,,,https://www.radwell.com/Buy/SIEMENS/SIEMENS/6ES5943-7UB11,2026-11-14

@@ -1,0 +1,3 @@
+reading_id,plant_id,machine_id,component_id,photo_id,raw_text,component_type_hint,method,confidence,date_code
+PB-L1-M01-C1-R1,PB,PB-L1-M01,PB-L1-M01-C1,,5069L320ER,plc,vision_sim,0.88,2017
+PB-L2-M01-C1-R1,PB,PB-L2-M01,PB-L2-M01-C1,,1764-LSP,plc,list,0.88,2010
