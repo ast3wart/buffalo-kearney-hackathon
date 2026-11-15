@@ -17,7 +17,7 @@ export function Nav() {
     <header className="border-b border-line bg-surface">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
         <Link href="/" className="text-lg font-semibold tracking-tight">
-          Equipment X-Ray
+          Equipment Health Index
         </Link>
         <nav className="flex flex-wrap gap-1 text-sm">
           {LINKS.map((l) => {

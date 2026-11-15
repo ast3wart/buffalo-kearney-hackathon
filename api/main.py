@@ -1,4 +1,4 @@
-"""Equipment X-Ray API (docs/build/interfaces.md §1). Reads the SQLite registry built by scripts/seed.py.
+"""Equipment Health Index API (docs/build/interfaces.md §1). Reads the SQLite registry built by scripts/seed.py.
 
 Asher's routes: portfolio, registry tree, evidence, shelf matches, accuracy, live scan.
 Brandon's routes (capex, spof, sourcing, savings, deal) call his pure functions in xray/valuation.py,
@@ -23,7 +23,7 @@ ROOT = Path(__file__).resolve().parent.parent
 TRUTH = ROOT / "data/truth/demo"
 AT_RISK = ("discontinued", "end_of_life")
 
-app = FastAPI(title="Equipment X-Ray API", version="0.2.0")
+app = FastAPI(title="Equipment Health Index API", version="0.2.0")
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:3000"], allow_methods=["*"], allow_headers=["*"])
 
 

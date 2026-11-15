@@ -1,1 +1,1 @@
-"""Equipment X-Ray: pre-deal equipment diligence."""
+"""Equipment Health Index: pre-deal equipment diligence."""

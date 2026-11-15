@@ -41,7 +41,7 @@ function Ladder() {
   const steps = [
     { n: "1", t: "Label photos", when: "day 1 · every cabinet", got: "part number, maker, date code", feeds: <>what the part is → <b>rated life</b> from its manual, discontinued or not; date code = <b>minimum age</b></> },
     { n: "2", t: "Plant records", when: "week 1 · where they exist (~28%)", got: "install dates from the maintenance system and purchase orders", feeds: <>true <b>age</b> → how far along its wear-out curve the part is</> },
-    { n: "3", t: "X-Ray Monitor", when: "continuous · line-stopper cabinets", got: "temperature, motor current, drive fault logs, fan + capacitor life", feeds: <><b>heat</b> ages parts faster (2× per +10 °C); <b>anomalies</b> raise failure risk up to 20×; each <b>fault</b> +30%</> },
+    { n: "3", t: "Cabinet Monitor", when: "continuous · line-stopper cabinets", got: "temperature, motor current, drive fault logs, fan + capacitor life", feeds: <><b>heat</b> ages parts faster (2× per +10 °C); <b>anomalies</b> raise failure risk up to 20×; each <b>fault</b> +30%</> },
   ];
   return (
     <div className="grid h-full grid-cols-[1fr_220px] gap-6">
@@ -187,7 +187,7 @@ export function Deck({ data }: { data: DeckData }) {
   const slides: React.ReactNode[] = [
     <div key="title" className="flex h-full flex-col justify-center">
       <div className="text-sm font-semibold uppercase tracking-wider text-accent">Kearney × PERLab</div>
-      <h1 className="mt-3 text-6xl font-semibold tracking-tight">Equipment X-Ray</h1>
+      <h1 className="mt-3 text-6xl font-semibold tracking-tight">Equipment Health Index</h1>
       <p className="mt-6 max-w-2xl text-balance text-2xl text-muted">Know the health of every part in every plant, before one stops a line.</p>
     </div>,
 
@@ -241,11 +241,11 @@ export function Deck({ data }: { data: DeckData }) {
       <Ladder />
     </Slide>,
 
-    <Slide key="device" kicker="The hardware" title="X-Ray Monitor: one small box per critical cabinet">
+    <Slide key="device" kicker="The hardware" title="Cabinet Monitor: one small box per critical cabinet">
       <div className="grid h-full grid-cols-[1.5fr_1fr] gap-8">
         <figure className="flex min-h-0 flex-col">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/xray-monitor.png" alt="Concept image of the X-Ray Monitor clipped to a DIN rail in a control cabinet" className="min-h-0 flex-1 rounded-xl object-cover" />
+          <img src="/xray-monitor.png" alt="Concept image of the Cabinet Monitor clipped to a DIN rail in a control cabinet" className="min-h-0 flex-1 rounded-xl object-cover" />
           <figcaption className="mt-2 text-xs text-muted">AI-generated concept image · no hardware built yet</figcaption>
         </figure>
         <div className="flex flex-col justify-center gap-5">
@@ -264,9 +264,9 @@ export function Deck({ data }: { data: DeckData }) {
       </div>
     </Slide>,
 
-    <Slide key="diagram" kicker="The hardware" title="How the X-Ray Monitor works">
+    <Slide key="diagram" kicker="The hardware" title="How the Cabinet Monitor works">
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/xray-monitor-diagram.png" alt="System block diagram of the X-Ray Monitor" className="h-full w-full object-contain object-top" />
+      <img src="/cabinet-monitor-diagram.png" alt="System block diagram of the Cabinet Monitor" className="h-full w-full object-contain object-top" />
     </Slide>,
 
     <div key="demo" className="flex h-full flex-col">
@@ -274,12 +274,12 @@ export function Deck({ data }: { data: DeckData }) {
         <span className="text-sm font-semibold uppercase tracking-wider text-accent">Live demo · Granite Ridge Capital</span>
         <span className="text-xs text-muted">click inside to drive the app · click outside, then arrows to leave</span>
       </div>
-      <iframe src="/" className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Equipment X-Ray live demo" />
+      <iframe src="/" className="min-h-0 w-full flex-1 rounded-xl border border-line bg-bg" title="Equipment Health Index live demo" />
     </div>,
 
     <Slide key="ask" kicker="Recommendation" title="3 paid plant pilots + 1 portfolio">
       <div className="grid grid-cols-3 gap-10 pt-6">
-        <Big n="90 days" label="per pilot: registry + X-Ray Monitors on line stoppers" />
+        <Big n="90 days" label="per pilot: registry + Cabinet Monitors on line stoppers" />
         <Big n="10" label="cabinets monitored per plant to calibrate the score" />
         <Big n="1" label="Granite Ridge portfolio to prove sharing spares across plants" />
       </div>
@@ -350,7 +350,7 @@ export function Deck({ data }: { data: DeckData }) {
     <Slide key="pricing" kicker="The business" title="How we charge" owner="Financial slides: Brandon">
       <div className="grid grid-cols-2 gap-10 pt-4 text-xl">
         <div className="rounded-xl border border-line bg-bg p-6"><div className="text-3xl font-semibold">Per plant / year</div><div className="mt-2 text-muted">registry, health scores, sourcing</div><div className="mt-4 text-muted">[Brandon: fixed fee]</div></div>
-        <div className="rounded-xl border border-line bg-bg p-6"><div className="text-3xl font-semibold">Per device / year</div><div className="mt-2 text-muted">X-Ray Monitor, only on line stoppers</div><div className="mt-4 text-muted">[Brandon: fixed fee]</div></div>
+        <div className="rounded-xl border border-line bg-bg p-6"><div className="text-3xl font-semibold">Per device / year</div><div className="mt-2 text-muted">Cabinet Monitor, only on line stoppers</div><div className="mt-4 text-muted">[Brandon: fixed fee]</div></div>
       </div>
       <p className="mt-8 text-xl">No share of &quot;savings&quot;: savings can&apos;t be audited, so a share of them is a conflict of interest.</p>
     </Slide>,

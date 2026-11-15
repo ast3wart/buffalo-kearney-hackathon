@@ -1,6 +1,6 @@
 # AGENTS.md
 
-**Equipment X-Ray** (working name) is the system of record for aging plant equipment (Kearney × PERLab hackathon, Startup track):
+**Equipment Health Index** (working name) is the system of record for aging plant equipment (Kearney × PERLab hackathon, Startup track):
 1. Take photos of nameplates and control cabinets, plus a plant's equipment list and storeroom stock.
 2. Identify the machines and their components with off-the-shelf Claude vision.
 3. Check each one against a lifecycle knowledge base and build a registry: fund/company → plant → line → machine → component.

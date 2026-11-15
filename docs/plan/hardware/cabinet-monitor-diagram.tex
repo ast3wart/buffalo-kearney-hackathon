@@ -1,6 +1,6 @@
-% X-Ray Monitor: system block diagram (concept, rev A).
-% Build:  tectonic x-ray-monitor-diagram.tex      (Overleaf also works: paste this file, compile with pdfLaTeX)
-% PNG:    pdftocairo -png -r 300 -singlefile x-ray-monitor-diagram.pdf ../../../web/public/sentinel-diagram
+% Cabinet Monitor: system block diagram (concept, rev A).
+% Build:  tectonic cabinet-monitor-diagram.tex      (Overleaf also works: paste this file, compile with pdfLaTeX)
+% PNG:    pdftocairo -png -r 300 -singlefile cabinet-monitor-diagram.pdf ../../../web/public/sentinel-diagram
 % Part numbers are the Velocity-researched reference design (docs/research/velocity.md). Concept only; no hardware built.
 \documentclass[tikz,border=12pt]{standalone}
 \usepackage[T1]{fontenc}
@@ -8,7 +8,7 @@
 \renewcommand{\familydefault}{\sfdefault}
 \usetikzlibrary{fit,arrows.meta,calc,backgrounds,decorations.pathmorphing}
 
-\newcommand{\devname}{X-Ray Monitor}
+\newcommand{\devname}{Cabinet Monitor}
 
 \definecolor{ink}{HTML}{1F2523}
 \definecolor{muted}{HTML}{6B7370}
@@ -75,7 +75,7 @@
 % cloud
 \node[blk] (ingest) at (27,0) {Cloud ingest\sub{MQTT over TLS 1.3}};
 \node[core, minimum height=20mm] (xray) at (27,-3.0) {%
-  {\normalsize\bfseries Equipment X-Ray}\\[3pt]
+  {\normalsize\bfseries Equipment Health Index}\\[3pt]
   \scriptsize anomaly statistics\\[0pt]\scriptsize health score 0--100\\[0pt]\scriptsize order-by date + sourcing};
 
 % ---------- zones (labels sit above the dashed line) ----------

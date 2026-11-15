@@ -10,4 +10,4 @@ lsof -ti tcp:8000 | xargs kill 2>/dev/null || true
 $PY -m uvicorn api.main:app --port 8000 > /tmp/xray-api.log 2>&1 &
 (cd web && npm run build >/tmp/xray-build.log 2>&1 && npm start >/tmp/xray-web.log 2>&1) &
 until curl -s localhost:8000/health >/dev/null && curl -s -o /dev/null localhost:3000; do sleep 1; done
-echo "Equipment X-Ray running: http://localhost:3000  (API http://localhost:8000/docs)"
+echo "Equipment Health Index running: http://localhost:3000  (API http://localhost:8000/docs)"

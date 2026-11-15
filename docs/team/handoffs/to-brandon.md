@@ -4,11 +4,11 @@
 
 ### Sun Nov 15, ~12:30 AM · Mentor feedback: drop revenue share, lead with downtime, simpler deck
 **Status:** 🆕 new
-- **Pricing:** revenue share (20% of savings) **won't work**. "Money saved" can't be audited, so both the consulting firm and the plant have a reason to inflate or deflate it: a conflict of interest. Please rebuild `pricing.py` around **fixed fees** (e.g. per plant per year, plus per X-Ray Monitor device per year). AGENTS.md and the roadmap are updated.
+- **Pricing:** revenue share (20% of savings) **won't work**. "Money saved" can't be audited, so both the consulting firm and the plant have a reason to inflate or deflate it: a conflict of interest. Please rebuild `pricing.py` around **fixed fees** (e.g. per plant per year, plus per Cabinet Monitor device per year). AGENTS.md and the roadmap are updated.
 - **Downtime avoided is the most important financial figure**: industrial companies care most about lost revenue. Make it the headline of your financial slides.
 - **Deck:** it now lives in the demo site, **Pitch** tab (`/pitch`, `web/src/components/Deck.tsx`). Two slides are yours, marked "Financial slides: Brandon": **Downtime avoided** and **How we charge**. Rule from the mentor: **one idea per slide, very few numbers on screen**. No demo screenshots.
 - **The order:** introduce **Granite Ridge Capital** first (Midwest PE, industrial manufacturers), then the problem.
-- **Asher's slides:** how we collect data, X-Ray Monitor (diagram + drawing + unit economics), the health and anomaly model, and the live demo.
+- **Asher's slides:** how we collect data, Cabinet Monitor (diagram + drawing + unit economics), the health and anomaly model, and the live demo.
 
 ### Sat Nov 14, ~9:30 PM · Follow-up: every item in to-asher.md is answered (marked ✅ there)
 **Status:** 🆕 new
@@ -209,7 +209,7 @@
 - **For you to settle (money thread):** your doc 03 prices the deal add-on at "low thousands", but the deep dive's consulting breakeven assumes a **$10–20k** module (`docs/research/deep-dive-numbers.md`). **Superseded (~5 PM):** don't pick a number. Your financial model derives it (see the 5 PM entry).
 - **What you need to do now (CP0):** sign off on `registry-format.md`, especially the 💲 columns and outputs.
 
-### Sat Nov 14, ~4 PM · Roles for Equipment X-Ray + registry format to sign off (CP0)
+### Sat Nov 14, ~4 PM · Roles for Equipment Health Index + registry format to sign off (CP0)
 **Status:** 🆕 new · branch `plan/roles-and-registry`
 - **Roles** (`docs/team/roles.md`): you take **💲 the money thread**:
   - `xray/valuation.py`: CapEx cliff, "pay $X less" / holdback, deferred CapEx as a hidden liability
@@ -223,14 +223,14 @@
 - **What you need to do now:** read `docs/build/registry-format.md` (draft), especially the 💲 columns and the outputs you'd produce, and edit anything you'd model differently (e.g. how the holdback is computed). Then we mark it ✅ agreed.
 - **Context for your numbers:** `docs/research/deep-dive-numbers.md` + `scripts/market_model.py` (PR #11).
 
-### Sat Nov 14, afternoon · `main` cleaned up for Equipment X-Ray
+### Sat Nov 14, afternoon · `main` cleaned up for Equipment Health Index
 **Status:** 🆕 new
 - **What changed:** Afterlife-only code, data and docs are gone from `main`. These reusable pieces stay:
   - **`xray/matching.py`**: normalize + fuzzy matching, generalized from `match_spend`, for matching nameplate text to the knowledge base
   - **`xray/evaluate.py`**: precision/recall against an answer key
   - the FastAPI and Next.js shells, CI, and `checkpoint.sh`
 
-  The README and AGENTS.md now describe Equipment X-Ray. Nothing is lost: everything is in the tag `archive/afterlife-main`, and the old branches are in `archive/*` tags.
+  The README and AGENTS.md now describe Equipment Health Index. Nothing is lost: everything is in the tag `archive/afterlife-main`, and the old branches are in `archive/*` tags.
 - **What you need to do:** `git checkout main && git pull && git fetch --prune --tags`. If you have unpushed local Afterlife work, push it to a branch first.
 
 ### Sat Nov 14, ~11:45 AM · 🔄 PROPOSED PIVOT after the judge review: please read and decide
@@ -240,7 +240,7 @@
   - half the room is doing "consultancy efficiency"
   - nobody is on the Startup track
   - old, acquisition-heavy companies have the biggest holes
-- **The proposal:** pivot to **Equipment X-Ray**, pre-deal equipment diligence on the Startup track. It gives a CapEx cliff, "pay $X less", and the single points of failure from discontinued components.
+- **The proposal:** pivot to **Equipment Health Index**, pre-deal equipment diligence on the Startup track. It gives a CapEx cliff, "pay $X less", and the single points of failure from discontinued components.
 - **Where:** `docs/plan/idea-equipment-xray.md`
 - **What you need to do:** answer §13: yes, no or modify, how we split the work, and anything the judge said that it misses.
 - **Update ~12:30 PM:** a mentor liked it and said keep digging. They want a **roadmap and a clear MVP plan, not a full build**, with **parts sourcing** as a key feature and a **PE portfolio** angle. See `docs/plan/roadmap-equipment-xray.md`.

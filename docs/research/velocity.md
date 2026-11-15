@@ -1,6 +1,6 @@
 # Velocity (Growth Signals): required
 
-## Equipment X-Ray (current project)
+## Equipment Health Index (current project)
 Log new research here, newest first. Ideas to run:
 - What value do PE firms get from combining manufacturers (shared spares, pooled buying, standardizing equipment)?
 - How do plants source discontinued industrial parts (controllers, drives, HMIs), and what goes wrong (counterfeits, lead times)?
@@ -15,7 +15,7 @@ Log new research here, newest first. Ideas to run:
    - **USPAP:** an appraiser *may* use third-party/AI-collected data and must judge its reliability; **Advisory Opinion 41 (April 2026)** covers technology use; the appraiser keeps responsibility. **Don't claim:** touchless exact inventory from one photo, or "USPAP-compliant appraisal by AI".
    - **Our result to compare:** 12/12 exact reads on rendered test labels (incl. glare, blur, worn, cut-off), with "unclear" flagged on the cut-off label rather than guessed.
 
-### Sun Nov 15, ~1:00 AM · X-Ray Monitor unit economics (Research chat, quick version; the long version stalled twice)
+### Sun Nov 15, ~1:00 AM · Cabinet Monitor unit economics (Research chat, quick version; the long version stalled twice)
 All **estimates** built from distributor and vendor anchors; **low / base / high**.
 - Hardware at 1,000 units: **$127 / $185 / $285** (MLX90640 ~$31 at 1,000 via Octopart; ESP32-S3 $3.73 at 250 and SHT40 $1.33 at 1,000 via DigiKey; DIN-rail 24→5 V ~$20.50). ⚡ Current clamps are the big unknown: an industrial split-core CT is ~$40 each, so three would exceed the base allowance.
 - Certification, one time: **$25k / $55k / $100k** (safety listing $15–55k, FCC/EMC $5–20k, cellular $5–25k; FCC with a pre-certified module quoted at $4.9–10k by Compliance Testing). Spread over the rollout: ~$9 per cabinet at base.

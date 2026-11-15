@@ -1,4 +1,4 @@
-"""Bottom-up numbers for the Equipment X-Ray story. Run: python scripts/market_model.py
+"""Bottom-up numbers for the Equipment Health Index story. Run: python scripts/market_model.py
 
 Every input is labeled MEASURED (published count), VELOCITY (Velocity Research model/assumption, Nov 14 2026),
 or OURS (our assumption). Sources are in docs/research/deep-dive-numbers.md.
