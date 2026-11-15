@@ -7,6 +7,7 @@ const LINKS = [
   { href: "/", label: "Portfolio" },
   { href: "/plants/PA", label: "Plant view" },
   { href: "/scan", label: "Live scan" },
+  { href: "/sources", label: "Sources" },
 ];
 
 export function Nav() {

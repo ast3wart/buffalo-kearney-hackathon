@@ -20,7 +20,14 @@ export function CapexChart({ rows }: { rows: Row[] }) {
         <CartesianGrid vertical={false} stroke="var(--line)" />
         <XAxis dataKey="year" tickLine={false} axisLine={false} fontSize={12} />
         <YAxis tickFormatter={k} tickLine={false} axisLine={false} fontSize={12} width={56} />
-        <Tooltip formatter={(v: number, n: string) => [k(v), n === "low" ? "low estimate" : "+ to high estimate"]} />
+        <Tooltip
+          cursor={{ fill: "var(--line)", opacity: 0.4 }}
+          contentStyle={{ background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 6, fontSize: 12 }}
+          labelStyle={{ color: "var(--ink)", fontWeight: 600 }}
+          itemStyle={{ color: "var(--ink)" }}
+          formatter={(v: number, n: string, item: { payload?: { low: number; spread: number } }) =>
+            n === "low" ? [k(v), "Low estimate"] : [k((item.payload?.low ?? 0) + v), "High estimate"]}
+        />
         <Bar dataKey="low" stackId="a" fill="var(--alert)" />
         <Bar dataKey="spread" stackId="a" fill="var(--alert-soft)" />
       </BarChart>
