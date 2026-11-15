@@ -1,0 +1,11 @@
+component_id,plant_id,simulated,install_year_record,install_year_basis,thermal_mode,days_observed,ambient_c,temp_c,diag_cap_life_used,diag_fan_life_used,diag_heatsink_c,diag_run_hours,diag_faults_12m
+PE-L1-M01-C1,PE,yes,,,continuous,95,33.3,50.9,,,,,
+PE-L1-M02-C1,PE,yes,,,continuous,71,36.7,54.3,,,,,
+PE-L1-M02-C2,PE,yes,,,continuous,101,30.8,43.3,,,,,
+PE-L1-M03-C1,PE,yes,,,snapshot,1,35.8,49.4,,,,,
+PE-L1-M03-C2,PE,yes,,,snapshot,1,31.6,43.9,,,,,
+PE-L1-M04-C1,PE,yes,,,snapshot,1,35.1,53.5,,,,,
+PE-L2-M01-C1,PE,yes,,,continuous,101,33.5,50.7,,,,,
+PE-L2-M02-C1,PE,yes,,,continuous,106,34.1,52.7,,,,,
+PE-L2-M03-C1,PE,yes,,,snapshot,1,33.7,48.2,,,,,
+PE-L2-M04-C1,PE,yes,,,snapshot,1,33.7,45.2,,,,,

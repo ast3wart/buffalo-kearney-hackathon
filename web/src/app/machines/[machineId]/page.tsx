@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getJSON, usd } from "@/lib/api";
-import { Card, HealthBadge, LifeBar, PageHeader, PartNo, Pill, StatusBadge } from "@/components/ui";
+import { Card, HealthBadge, HealthScore, LifeBar, PageHeader, PartNo, Pill, StatusBadge } from "@/components/ui";
 
 type Part = {
   component_id: string; kb_id: string; part_no: string; part_no_read: string; family: string; component_type: string;
   lifecycle_status: string; method: string; health: string; life_used_pct: number | null; installed: number | null;
   order_by: string | null; order_now: boolean | null; action: string; n_listings: number | null; best_price: number | null;
+  health_score: number | null; confidence: string | null; remaining_years_low: number | null; remaining_years_high: number | null;
 };
 type M = {
   machine: { machine_id: string; make: string; model: string; machine_type: string; year_built: number; criticality: string; serial: string; condition: string; risk: string; value_low: number; value_high: number; parts: number };
@@ -36,7 +37,7 @@ export default async function MachinePage({ params }: { params: Promise<{ machin
       <Card title={`Parts inside (${d.parts.length})`}>
         <table className="w-full text-sm">
           <thead className="text-left text-xs text-muted">
-            <tr><th className="pb-2">Part</th><th>Status</th><th>Life used</th><th>Order by</th><th>Recommended action</th></tr>
+            <tr><th className="pb-2">Part</th><th>Health</th><th>Status</th><th>Life used</th><th>Order by</th><th>Recommended action</th></tr>
           </thead>
           <tbody>
             {d.parts.map((p) => (
@@ -47,6 +48,10 @@ export default async function MachinePage({ params }: { params: Promise<{ machin
                   </Link>
                   <div className="text-xs text-muted">{p.family || (["other", "power_supply"].includes(p.component_type) ? "commodity part · not tracked" : "label unreadable · re-photograph")}</div>
                   {p.kb_id && <div className="mt-0.5"><StatusBadge status={p.lifecycle_status} /></div>}
+                </td>
+                <td>
+                  <HealthScore score={p.health_score} />
+                  {p.remaining_years_low !== null && p.remaining_years_low !== undefined && <div className="text-xs text-muted">{p.remaining_years_low}–{p.remaining_years_high} yrs left</div>}
                 </td>
                 <td><HealthBadge health={p.health} /></td>
                 <td><LifeBar pct={p.life_used_pct} />{p.installed && <div className="text-xs text-muted">since {p.installed}</div>}</td>

@@ -2,6 +2,14 @@
 
 **Written by Asher, read by Brandon.** Newest on top. Brandon: update the **Status** line as you go (🆕 new → 👀 reviewing → ✅ done). How this works: [README.md](README.md).
 
+### Sun Nov 15, ~12:30 AM · Mentor feedback: drop revenue share, lead with downtime, simpler deck
+**Status:** 🆕 new
+- **Pricing:** revenue share (20% of savings) **won't work**. "Money saved" can't be audited, so both the consulting firm and the plant have a reason to inflate or deflate it: a conflict of interest. Please rebuild `pricing.py` around **fixed fees** (e.g. per plant per year, plus per Cabinet Sentinel device per year). AGENTS.md and the roadmap are updated.
+- **Downtime avoided is the most important financial figure**: industrial companies care most about lost revenue. Make it the headline of your financial slides.
+- **Deck:** it now lives in the demo site, **Pitch** tab (`/pitch`, `web/src/components/Deck.tsx`). Two slides are yours, marked "Financial slides: Brandon": **Downtime avoided** and **How we charge**. Rule from the mentor: **one idea per slide, very few numbers on screen**. No demo screenshots.
+- **The order:** introduce **Granite Ridge Capital** first (Midwest PE, industrial manufacturers), then the problem.
+- **Asher's slides:** how we collect data, Cabinet Sentinel (diagram + drawing + unit economics), the health and anomaly model, and the live demo.
+
 ### Sat Nov 14, ~9:30 PM · Follow-up: every item in to-asher.md is answered (marked ✅ there)
 **Status:** 🆕 new
 - **Demo script step 5** now uses your line: "Fort Wayne already has 2 on the shelf. A broker could have one here in days, but at $4.3–6.5k refurbished, which is more than the successor." "20+ weeks" is gone.

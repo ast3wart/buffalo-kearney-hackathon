@@ -11,7 +11,8 @@
 - **Main way in:** a manufacturer evaluating its **own plants**. No deal needed.
 - **An acquisition is ONE way in**, not the main one. The deal market is too small to rely on (~670 reviewed US deals a year, ≤ ~$10M). A seller's pre-exit scan is another way in.
 - **Keep the liquidity angle:** freeing up cash (idle spares, targeted CapEx, cleaner exits, verified collateral). Label it a hypothesis until research backs it.
-- **Don't pick prices.** Prices come from Brandon's financial model (share of cost saved per plant).
+- **Don't pick prices.** Prices come from Brandon's financial model. **No revenue share / share of savings** (decided Nov 15, mentor advice): "money saved" can't be audited, so a share of it is a conflict of interest for both the firm and the plant. Use fixed fees (e.g. per plant, per device).
+- **Downtime avoided is the headline financial figure** (lost revenue is what industrial companies care about most).
 - **We don't replace appraisers or engineers.** They keep the sign-off.
 - **Source of truth:** `docs/plan/roadmap-equipment-xray.md`. If another doc disagrees, the roadmap wins. `docs/plan/idea-equipment-xray.md` is HISTORICAL (deal-only framing).
 

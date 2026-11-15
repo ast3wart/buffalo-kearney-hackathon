@@ -1,0 +1,28 @@
+component_id,plant_id,simulated,install_year_record,install_year_basis,thermal_mode,days_observed,ambient_c,temp_c,diag_cap_life_used,diag_fan_life_used,diag_heatsink_c,diag_run_hours,diag_faults_12m
+PB-L1-M01-C1,PB,yes,,,continuous,69,37.1,46.1,,,,59389,0
+PB-L1-M01-C2,PB,yes,,,continuous,110,31.9,38.5,,,,,
+PB-L1-M02-C1,PB,yes,,,continuous,103,32.6,41.0,,,,41896,1
+PB-L1-M02-C2,PB,yes,,,continuous,90,33.9,41.3,,,,,
+PB-L1-M02-C3,PB,yes,,,continuous,90,36.9,62.6,0.91,0.62,63.2,47569,0
+PB-L1-M03-C1,PB,yes,,,snapshot,1,31.9,44.1,,,,47897,0
+PB-L1-M04-C1,PB,yes,2016,machine record (original part),snapshot,1,37.9,49.9,,,,56469,0
+PB-L1-M04-C2,PB,yes,2019,machine record (original part),snapshot,1,36.1,55.5,0.52,0.97,61.3,46464,0
+PB-L1-M04-C3,PB,yes,2019,machine record (original part),snapshot,1,30.6,37.6,,,,,
+PB-L1-M05-C1,PB,yes,2021,machine record (original part),snapshot,1,32.2,44.0,,,,26030,0
+PB-L1-M05-C2,PB,yes,,,snapshot,1,31.9,55.8,0.0,0.0,60.8,0,0
+PB-L2-M01-C1,PB,yes,,,continuous,117,33.3,46.1,,,,60031,0
+PB-L2-M01-C2,PB,yes,2016,machine record (original part),continuous,96,33.6,40.0,,,,,
+PB-L2-M02-C1,PB,yes,,,continuous,41,33.4,44.7,,,,16341,1
+PB-L2-M03-C1,PB,yes,,,snapshot,1,32.5,46.7,,,,,
+PB-L2-M04-C1,PB,yes,,,snapshot,1,35.2,45.5,,,,11626,0
+PB-L2-M05-C1,PB,yes,,,snapshot,1,36.2,48.7,,,,73451,0
+PB-L3-M01-C1,PB,yes,2007,machine record (original part),continuous,58,32.7,44.2,,,,,
+PB-L3-M01-C2,PB,yes,2010,machine record (original part),continuous,44,36.5,48.5,,,,,
+PB-L3-M01-C3,PB,yes,,,continuous,64,30.9,55.9,,,,,
+PB-L3-M01-C4,PB,yes,2007,machine record (original part),continuous,72,31.6,40.3,,,,,
+PB-L3-M02-C1,PB,yes,2024,machine record (original part),continuous,75,34.3,45.0,,,,11969,0
+PB-L3-M02-C2,PB,yes,2021,machine record (original part),continuous,70,30.5,50.0,0.35,0.68,57.4,26531,0
+PB-L3-M03-C1,PB,yes,2016,machine record (original part),snapshot,1,36.8,49.2,,,,,
+PB-L3-M03-C2,PB,yes,2016,machine record (original part),snapshot,1,34.7,56.8,,,,,
+PB-L3-M04-C1,PB,yes,2014,machine record (original part),snapshot,1,36.3,47.9,,,,,
+PB-L3-M04-C2,PB,yes,,,snapshot,1,36.8,63.0,,,,,

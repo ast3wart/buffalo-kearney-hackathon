@@ -47,7 +47,9 @@ def main(seed_dir: Path, db_path: Path) -> dict[str, pd.DataFrame]:
     kb = pd.read_csv(ref / "kb.csv", dtype=str).fillna("")
     abbr = {a.upper(): e.upper() for a, e in pd.read_csv(ref / "abbreviations.csv", dtype=str).itertuples(index=False)}
     plants = pd.read_csv(seed_dir / "plants.csv", dtype={"plant_id": str})
-    per = {"machine": "assets.csv", "spare_stock": "spares.csv", "reading": "readings.csv", "photo": "photos.csv"}
+    per = {"machine": "assets.csv", "spare_stock": "spares.csv", "reading": "readings.csv", "photo": "photos.csv",
+           "condition": "condition.csv",
+           "thermal_series": "thermal_series.csv", "current_series": "current_series.csv"}
     parts = {t: [] for t in per}
     for pid in plants.plant_id:
         for t, f in per.items():

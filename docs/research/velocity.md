@@ -15,6 +15,27 @@ Log new research here, newest first. Ideas to run:
    - **USPAP:** an appraiser *may* use third-party/AI-collected data and must judge its reliability; **Advisory Opinion 41 (April 2026)** covers technology use; the appraiser keeps responsibility. **Don't claim:** touchless exact inventory from one photo, or "USPAP-compliant appraisal by AI".
    - **Our result to compare:** 12/12 exact reads on rendered test labels (incl. glare, blur, worn, cut-off), with "unclear" flagged on the cut-off label rather than guessed.
 
+### Sun Nov 15, ~1:00 AM · Cabinet Sentinel unit economics (Research chat, quick version; the long version stalled twice)
+All **estimates** built from distributor and vendor anchors; **low / base / high**.
+- Hardware at 1,000 units: **$127 / $185 / $285** (MLX90640 ~$31 at 1,000 via Octopart; ESP32-S3 $3.73 at 250 and SHT40 $1.33 at 1,000 via DigiKey; DIN-rail 24→5 V ~$20.50). ⚡ Current clamps are the big unknown: an industrial split-core CT is ~$40 each, so three would exceed the base allowance.
+- Certification, one time: **$25k / $55k / $100k** (safety listing $15–55k, FCC/EMC $5–20k, cellular $5–25k; FCC with a pre-certified module quoted at $4.9–10k by Compliance Testing). Spread over the rollout: ~$9 per cabinet at base.
+- Install: **1.5 h × $80 = $120 / 2.5 h × $100 = $250 / 4 h × $130 = $520** per cabinet (loaded rates, PILARS 2026).
+- Data + cloud: **$10 / $30 / $90** per device-year (1NCE $14 prepaid for 10 years / 500 MB; Hologram $1/SIM/month + $0.03/MB; AWS IoT Core).
+- Cabinets per 100–1,000-employee plant: 30–100 / 80–250 / 200–500; **on line stoppers: 20 / 60 / 150** (planning assumption, no published benchmark).
+- Comparable monitoring: **$300 / $900 / $2,400 per asset-year** (Erbessd quote: $22/device/month + $400 hardware; Augury unpublished).
+- ⚡ **All-in first-year cost per cabinet: ~$270 / ~$474 / ~$902.** 100-plant rollout: 2,000 / 6,000 / 15,000 units, $0.54M / $2.8M / $13.5M.
+- ⚡ Before quoting: qualify the CTs, confirm the camera's field of view in a real cabinet, test LTE-M reception inside a closed steel cabinet.
+
+### Sun Nov 15, ~12:00 AM · Plant maintenance data: what plants actually track (Research chat "Manufacturing Maintenance Data Adoption")
+Denominator: US plants with 100–1,000 employees at the plant. All **estimates** (no representative survey measures these); **low / base / high**.
+- Plant uses a CMMS/EAM for some records: **45 / 60 / 75%** (anchors: Plant Engineering 2018 survey 53%, 2019 61%). Mainly spreadsheets or paper: 25 / 40 / 55%.
+- Of CMMS plants, **part-level** records with install/replacement dates: **5 / 15 / 30%** (low confidence); records stay at machine level: 70 / 85 / 95%.
+- Installed drives networked with fault/status data: 25 / 45 / 65%; drives that also expose **fan/capacitor life**: **10 / 25 / 45%**. Installed PLCs networked with diagnostics: 50 / 70 / 85%.
+- Plants that **routinely use** drive/PLC self-diagnostics for maintenance: **5 / 12 / 25%** (MaintainX 2026: 31% do condition-based maintenance, a broader practice).
+- Record quality, *measured* case studies only (not national rates): Lukens et al. 2019, 2 of ~8,000 repair records flagged as failures, cost fields 20% → 90% after process fixes; Gitzel et al. 2018, six CMMS cases with missing fields and broken histories after replacements; Emerson field observation, "a handful" of plants with complete parts lists (*vendor*).
+- ⚡ **Used in the demo** (`scripts/make_condition_data.py`): P(part has an install record) = P(CMMS) × [P(part level) × completeness + P(machine level) × P(part original) × completeness] = 0.60 × (0.15 × 0.7 + 0.85 × 0.6 × 0.7) ≈ **28%** (6% part records + 21% machine records). Completeness 0.7 and original 0.6 are **assumptions**. Each plant gets a tier (2 none / 3 machine level / 1 part level, rounded from the expected mix), so the demo shows 39%. Machine-level records count at half weight in the health model's confidence.
+- ⚡ Pitch line: most plants have a CMMS, almost none know part-level history, and the diagnostics already inside the hardware go unread.
+
 ### Sat Nov 14 → Sun Nov 15, night · money-thread inputs (velocity-prompts #1–6, #15–20, gaps G1–G3, backlog P2)
 Each entry: **low / base / high** · source + label · → column it fills · ⚡ surprise or pushback. Labels: *measured / survey / vendor / estimate / assumption*. Chat titles are in Velocity's Research history (Buffalo).
 **✅ All 18 done.** P2 #7, #8, #10, #14 were run by Brandon; the full exports are in this folder (`*_2026-11-15.md`, each with sources and a Growth Signals link).
