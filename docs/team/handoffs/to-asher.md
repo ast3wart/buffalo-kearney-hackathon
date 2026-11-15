@@ -10,6 +10,12 @@
 - **Rebuild `demo.db`** (`python scripts/seed.py data/seed/demo demo.db`) before rehearsing.
 - **New docs:** `docs/plan/final-refinements/` (objections, data ladder, app to-do list) and `docs/plan/final-slidedeck/deck-v1.html` (11 slides + appendix; the case study slot on slide 2 is still empty, and the thermal slide needs your sources).
 
+### Sat Nov 14, ~11 PM · Rare part picked: Westinghouse Numa-Logic PC-1100 (0 listings)
+**Status:** 🆕 new
+- **eBay active + sold: 0** exact matches; **Radwell: not found**. Results in `data/reference/listings_raw/rare-part-check.md`.
+- #4 AutoMax is out (Radwell lists 57C431A under ABB / Baldor Reliance); #3 TI 5TI-1000 also not on Radwell but not checked on eBay; #2 not checked.
+- **For you:** add it to `kb.csv` with its lifecycle source and put it in a Tillman (Rockford) machine. No `listings.csv` rows (that's the point), so `value_parts` gives confidence `none` → alternatives path. Please add an `alternatives.csv` row (successor / similar) so the app has something to show.
+
 ### Sat Nov 14, ~10:30 PM · Final numbers (PR #27) + deal lens now includes end-of-life machines + ⚠️ ~110 duplicate "* 2.*" files on main
 **Status:** 🆕 new · PR #27 (`brandon/final-numbers`)
 - **Your option 2 is in:** `valuation.machine_capex(reg, capex_by_year, part_valuation)` = whole machines past typical life (by machine_type, in params) or past the low end and `poor`; low = rebuild at 40% of replacement value, high = replace new; controls on those machines are netted out. `deal_adjustment` includes it by default (`include_machines=True`) and adds `controls_deferred_low/high`, `machine_deferred_low/high`, `machine_ids`. **No API change needed**: `/companies/CO-TILLMAN/deal` picks it up.
