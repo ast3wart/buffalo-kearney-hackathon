@@ -92,65 +92,57 @@ function AnomalyChart({ data }: { data: SeriesPoint[] }) {
   );
 }
 
-// What the fund needs from each company, in company order (Halvorsen, Brightwater, Tillman).
-const NEED = [
-  "Which old parts could stop our three plants this year?",
-  "Can sister plants share spares instead of buying new?",
-  "What will this equipment cost us after we buy it?",
-];
-
 function ClientSlide({ companies }: { companies: DeckData["companies"] }) {
   const owned = companies.filter((c) => c.owned);
+  const target = companies.find((c) => !c.owned);
   const ps = owned.flatMap((c) => c.plants);
-  const sum = (f: (p: (typeof ps)[number]) => number) => ps.reduce((t, p) => t + f(p), 0);
-  const stats = [
-    `${ps.length} plants`,
-    `${new Set(ps.map((p) => p.state)).size} states`,
-    `${sum((p) => p.employees).toLocaleString()} employees`,
-    `${sum((p) => p.lines)} production lines`,
+  const employees = ps.reduce((t, p) => t + p.employees, 0);
+  const profile: [string, React.ReactNode][] = [
+    ["Firm", "Private equity, Midwest"],
+    ["Invests in", "Industrial manufacturers"],
+    ["Portfolio", `${owned.length} companies · ${ps.length} plants · ${employees.toLocaleString()} employees`],
+    ["In diligence", target ? `${target.name} (${target.deal})` : "—"],
+    ["Engagement", "Equipment health and risk across every plant, and the deal"],
   ];
   return (
-    <div className="flex h-full flex-col justify-center pb-4">
-      {/* fund node */}
-      <div className="mx-auto flex flex-col items-center rounded-2xl bg-ink px-8 py-3 text-surface">
-        <div className="text-xl font-semibold">Granite Ridge Capital</div>
-        <div className="mt-0.5 text-sm opacity-75">{stats.join("  ·  ")}</div>
-      </div>
-      {/* connectors: trunk, then a bar to each company (dashed to the target) */}
-      <div className="relative h-8">
-        <div className="absolute left-1/2 top-0 h-4 w-0.5 -translate-x-1/2 bg-muted" />
-        <div className="absolute left-[16.66%] right-1/2 top-4 h-0.5 bg-muted" />
-        <div className="absolute left-1/2 right-[16.66%] top-4 border-t-2 border-dashed border-muted" />
-        {[16.66, 50, 83.33].map((x, i) => (
-          <div key={x} className={`absolute top-4 h-4 -translate-x-1/2 ${i === 2 ? "border-l-2 border-dashed border-muted" : "w-0.5 bg-muted"}`} style={{ left: `${x}%` }} />
-        ))}
-      </div>
-      <div className="grid grid-cols-3 gap-6">
-        {companies.map((c) => (
-          <div key={c.name} className="flex flex-col">
-            <div className={`rounded-xl px-4 py-3 text-center ${c.owned ? "border-2 border-accent bg-accent-soft" : "border-2 border-dashed border-line"}`}>
-              <div className={`text-[11px] font-semibold uppercase tracking-wider ${c.owned ? "text-accent" : "text-muted"}`}>
-                {c.owned ? `Portfolio company · since ${c.since}` : `Acquisition target · ${c.deal}`}
-              </div>
-              <div className="mt-0.5 text-lg font-semibold leading-tight">{c.name}</div>
-            </div>
-            <div className="ml-6 border-l-2 border-line">
-              {c.plants.map((p) => (
-                <div key={p.name} className="relative flex items-baseline justify-between py-1.5 pl-4 pr-1">
-                  <span className="absolute left-0 top-1/2 h-0.5 w-3 bg-line" />
-                  <span className="font-medium">{p.name}, {p.state}</span>
-                  <span className="tabular text-sm text-muted">{p.employees} people · {p.lines} lines</span>
-                </div>
-              ))}
-            </div>
+    <div className="grid h-full grid-cols-[1fr_1.35fr] gap-14 pt-2">
+      <dl className="self-start">
+        {profile.map(([k, v]) => (
+          <div key={k} className="border-t border-line py-3 first:border-t-0 first:pt-0">
+            <dt className="text-xs font-semibold uppercase tracking-wider text-muted">{k}</dt>
+            <dd className="mt-1 text-lg leading-snug">{v}</dd>
           </div>
         ))}
-      </div>
-      <div className="mt-6 grid grid-cols-3 gap-6">
-        {companies.map((c, i) => (
-          <p key={c.name} className="border-l-2 border-accent pl-3 text-[15px] italic leading-snug text-muted">&ldquo;{NEED[i] ?? ""}&rdquo;</p>
+      </dl>
+      <table className="self-start text-[15px]">
+        <thead>
+          <tr className="border-b-2 border-ink text-left text-xs uppercase tracking-wider text-muted">
+            <th className="pb-2 font-semibold">Company</th>
+            <th className="pb-2 font-semibold">Plant</th>
+            <th className="pb-2 text-right font-semibold">Employees</th>
+            <th className="pb-2 text-right font-semibold">Lines</th>
+          </tr>
+        </thead>
+        {companies.map((c) => (
+          <tbody key={c.name} className={c.owned ? "" : "text-muted"}>
+            {c.plants.map((p, j) => (
+              <tr key={p.name} className={j === 0 ? "border-t border-line" : ""}>
+                <td className="py-1.5 pr-4 align-top">
+                  {j === 0 && (
+                    <>
+                      <div className="font-semibold text-ink">{c.name}</div>
+                      <div className="text-xs text-muted">{c.owned ? `owned since ${c.since}` : `acquisition target · ${c.deal}`}</div>
+                    </>
+                  )}
+                </td>
+                <td className="py-1.5 pr-4">{p.name}, {p.state}</td>
+                <td className="tabular py-1.5 text-right">{p.employees}</td>
+                <td className="tabular py-1.5 text-right">{p.lines}</td>
+              </tr>
+            ))}
+          </tbody>
         ))}
-      </div>
+      </table>
     </div>
   );
 }
@@ -189,7 +181,7 @@ export function Deck({ data }: { data: DeckData }) {
       <p className="mt-6 max-w-2xl text-balance text-2xl text-muted">Know the health of every part in every plant, before one stops a line.</p>
     </div>,
 
-    <Slide key="client" kicker="Our client" title="A Midwest PE firm with five aging plants and a deal on the table">
+    <Slide key="client" kicker="Our client" title="Granite Ridge Capital">
       <ClientSlide companies={data.companies} />
     </Slide>,
 
